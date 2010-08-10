@@ -1,0 +1,8 @@
+Conventions utilisees pour la bibliotheque "ImageObj"
+
+Points et vecteurs representes par des tableaux N*2
+
+angles en degres. 
+    - plus faciles a se representer mentalement
+    - plus faciles a sauvegarder
+    - variations comparables aux variations de translations

@@ -1,0 +1,78 @@
+TODO-list for project imageObj
+------------------------------
+
+- trouver un nom potable pour le projet (2010.06.21)
+    - OOLIP (Object-Oriented Library for Image Processing)
+    - OOLIM (Object-Oriented Library for Image with Matlab)
+    - IOM   (Image Objects for Matlab)
+    - MIPL  (Matlab Image Processing Library)
+
+
+- refaire quelques traitements de demos en utilisant package ImageObj (2010.06.26)
+    + segmentation par LPE
+    + squeletisation
+
+Image structures
+
+- class Image
+    - Definitely choose between 0- or 1- indexing (2010.07.21)
+        + 0 is universally better
+        + 1 is more specific to Matlab
+        + 1 is more consistent with existing functions, and less confusing for
+            Matlab users.
+        
+    - store label of axes ? (2010.06.30)
+    - enhance filtering of some functions (2010.07.13)
+        + open close, dilate, erode
+        + filter
+    - enhance spatial calibration: use specific class ? (2010.07.20)
+        
+- clone function ?                                                              +
+    - ou alors un constructeur avec une image et un nouveau tableau de donnees
+    - ou alors une fonction duplicate, avec psb de changer certaines infos
+        (calibration spatiale, buffer...) (2010.06.29)
+
+- Add support for Region of Interest (2010.07.13)   
+    
+- implement VectorImage
+    - use 'channel' instead of 'band'
+    - stocker le nom des bandes ?
+    
+- implementer la methode resample (2010.06.17)
+    - en entree un resampler, ou deux tableaux de points, ou une image
+    - appliquer a ImageFunction
+    - appliquer a Image (passer par un interpolateur)
+
+    
+- better support for image datatype
+	- support arithmetic for different classes, with psb of specifying output
+		image type
+
+- Think about other image implementations:
+    - ImageView: use data from another image, but cropped (2010.06.24)
+		   
+     
+Interpolators 
+    
+- passer LinearInterpolator en generique 2D/3D (2010.06.17)
+
+- implementer classe generique NearestNeighbor Interpolator (2010.06.17)
+
+- implementer une classe ImageFilter (ImageToImageFilter ?) (2010.06.17)
+    - methode abstraite "applyTo(Img):Img"
+
+
+Parametric transforms:
+   
+- Idealement, ce serait mieux que la composition de deux transfos affine
+    renvoie une transfo qui herite elle-meme de AffineTransform (2010.06.17)
+   
+
+Measures
+
+- add histogram
+
+- think about a way to measure parameters
+    + use consistent interface for returning params
+    + use Table object ?
+
