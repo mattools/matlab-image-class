@@ -1,0 +1,639 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family sfdefault
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Modèles de transformation pour le recalage d'images
+\end_layout
+
+\begin_layout Author
+D.
+ Legland
+\end_layout
+
+\begin_layout Date
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Notes sur l'implémentation des classes de transformation géométrique utilisées
+ pour recaler les images.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Architecture globale
+\end_layout
+
+\begin_layout Standard
+L'idée est de pouvoir manipuler simplement des familles de transformations
+ paramétrées, de manière à identifier les paramètres optimaux pour un modèle
+ de transformation donné.
+ L'identification des paramètres optimaux se fait via des algorithmes d'optimisa
+tion non détaillés ici.
+\end_layout
+
+\begin_layout Standard
+Pour la conception, je suis parti d'une architecture de classes, de la plus
+ générale à la plus particulière.
+ Les classes de transformations peuvent être génériques pour les dimensions
+ (exemple : les transfos affines).
+ Quand ce n'est pas possible, j'ajoute un suffixe 
+\begin_inset Quotes fld
+\end_inset
+
+2D
+\begin_inset Quotes frd
+\end_inset
+
+ ou 
+\begin_inset Quotes fld
+\end_inset
+
+3D
+\begin_inset Quotes frd
+\end_inset
+
+ selon les cas.
+\end_layout
+
+\begin_layout Standard
+La classe de base est la classe Transform.
+ La classe ParametricTransform ajoute la manipulation des paramètres à optimiser.
+ On trouve aussi des classes permettant de limiter la ré-écriture des transforma
+tions spécialisées.
+\end_layout
+
+\begin_layout Subsection
+Transform
+\end_layout
+
+\begin_layout Standard
+Il s'agit de la classe la plus générique.
+ Elle définit principalement la méthode transformPoint, ainsi que quelques
+ méthodes utilitaires.
+\end_layout
+
+\begin_layout Description
+transformPoint transforme un point en un autre
+\end_layout
+
+\begin_layout Description
+transformVector transforme un vecteur en un autre
+\end_layout
+
+\begin_layout Description
+getJacobian renvoie la matrice jacobienne (des dérivées premières en fonction
+ des coordonnées) pour une position donnée
+\end_layout
+
+\begin_layout Description
+compose renvoie un nouvelle transformation, résultat de l'application de
+ la transformation passée en paramètre suivie de cette transformation
+\end_layout
+
+\begin_layout Standard
+Toutes ces méthodes sont abstraites, et nécessitent d'être implémentées
+ dans les classes dérivées.
+\end_layout
+
+\begin_layout Subsection
+ParametricTransform
+\end_layout
+
+\begin_layout Standard
+Cette classe (abstraite) ajoute la gestion des paramètres.
+ Elle définit un champs 
+\begin_inset Quotes fld
+\end_inset
+
+params
+\begin_inset Quotes frd
+\end_inset
+
+, sous la forme d'un vecteur ligne, qui peut être modifié via les méthodes
+ appropriées.
+\end_layout
+
+\begin_layout Standard
+Pour distinguer les transformations paramétrées des transformations non
+ paramétrées, j'ajoute parfois le suffixe 
+\begin_inset Quotes fld
+\end_inset
+
+Model
+\begin_inset Quotes frd
+\end_inset
+
+ au nom de la classe.
+ Exemple : 
+\begin_inset Quotes fld
+\end_inset
+
+TranslationModel
+\begin_inset Quotes frd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Méthodes implémentées
+\end_layout
+
+\begin_layout Description
+getParameters renvoie le vecteur de paramètres
+\end_layout
+
+\begin_layout Description
+setParameters modifie le vecteur de paramètres
+\end_layout
+
+\begin_layout Description
+getParameterLength renvoie la taille du vecteur de paramètres
+\end_layout
+
+\begin_layout Standard
+On a aussi quelques méthodes pour faciliter l'interprétation 
+\end_layout
+
+\begin_layout Description
+getParameterNames renvoie un tableau de chaînes contenant le noms de chaque
+ paramètre
+\end_layout
+
+\begin_layout Description
+getParameterName renvoie le nom du i-ème paramètre
+\end_layout
+
+\begin_layout Standard
+Enfin, on a aussi une méthode pour calculer les dérivées mais en fonction
+ des paramètres :
+\end_layout
+
+\begin_layout Description
+getParametricJacobian calcule la matrice jacobienne, qui a autant de ligne
+ que le nombre de dimensions, et autant de colonne que le nombre de paramètres
+\end_layout
+
+\begin_layout Subsection
+AffineTransform
+\end_layout
+
+\begin_layout Standard
+Cette classe sert de base abstraite aux autres transformations affines.
+ Elle implémente plusieurs méthodes qui se basent sur la matrice de transformati
+on associée.
+ Notons que la matrice de transformation n'est pas définie dans cette classe,
+ mais dans les classes dérivées.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+Méthodes abstraites
+\end_layout
+
+\begin_layout Description
+getAffineMatrix renvoie la matrice affine associées à cette transformation
+\end_layout
+
+\begin_layout Standard
+Il s'agit de la seule méthode abstraite de cette classe, et donc la seule
+ qui nécessite une implémentation par les classes dérivées.
+\end_layout
+
+\begin_layout Subsubsection*
+Méthodes implémentées
+\end_layout
+
+\begin_layout Standard
+Les méthodes suivantes définies par les interfaces sont implémentées par
+ la classe AffineTransform :
+\end_layout
+
+\begin_layout Description
+transformPoint transforme un point en un autre
+\end_layout
+
+\begin_layout Description
+transformVector transforme un vecteur en un autre
+\end_layout
+
+\begin_layout Description
+getJacobian renvoie la matrice jacobienne (des dérivées premières en fonction
+ des coordonnées) pour une position donnée
+\end_layout
+
+\begin_layout Standard
+Note : pour une transformation affine, la matrice jacobienne est obtenue
+ en isolant la partie linéaire de la matrice de transformation.
+\end_layout
+
+\begin_layout Description
+compose renvoie un nouvelle transformation, résultat de l'application de
+ la transformation passée en paramètre suivie de cette transformation
+\end_layout
+
+\begin_layout Standard
+On a aussi une méthode spécifique aux transformations affines
+\end_layout
+
+\begin_layout Description
+getInverse renvoie la transformation affine inverse
+\end_layout
+
+\begin_layout Section
+Implémentations utilitaires
+\end_layout
+
+\begin_layout Subsection
+MatrixAffineTransform
+\end_layout
+
+\begin_layout Standard
+Implémentation classique d'une transformation affine, sous la forme d'une
+ matrice.
+ Utilisées pour des tests, ou pour implémenter des transformations classiques.
+\end_layout
+
+\begin_layout Subsection
+ComposedTransform
+\end_layout
+
+\begin_layout Standard
+Cette classe stocke un tableau de transformations.
+ Lors de l'appel à une des méthodes de calcul (par exemple 
+\begin_inset Quotes fld
+\end_inset
+
+transformPoint
+\begin_inset Quotes frd
+\end_inset
+
+), elle appelle la méthode correspondante pour chaque transformation stockée,
+ et combine les résultats.
+ 
+\end_layout
+
+\begin_layout Standard
+Aucune hypothèse n'est faite sur les transformation stockées, elles doivent
+ juste hériter de 
+\begin_inset Quotes fld
+\end_inset
+
+Transform
+\begin_inset Quotes frd
+\end_inset
+
+, et être définies pour les mêmes dimensions.
+\end_layout
+
+\begin_layout Section
+Modèles de transformation
+\end_layout
+
+\begin_layout Standard
+Toutes les transformations décrites ici héritent à la fois de Transform
+ (et même de AffineTransform pour le moment) ainsi que de ParametricTransform.
+\end_layout
+
+\begin_layout Subsection
+TranslationModel
+\end_layout
+
+\begin_layout Standard
+Une translation en dimension arbitaire, définie par un vecteur de translation.
+\end_layout
+
+\begin_layout Standard
+La matrice associée est donnée par :
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{M} & = & \left[\begin{array}{ccc}
+1 & 0 & \theta_{1}\\
+0 & 1 & \theta_{2}\\
+0 & 0 & 1\end{array}\right]\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+en deux dimensions, ou par 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{M} & = & \left[\begin{array}{cccc}
+1 & 0 & 0 & \theta_{1}\\
+0 & 1 & 0 & \theta_{2}\\
+0 & 0 & 1 & \theta_{3}\\
+0 & 0 & 0 & 1\end{array}\right]\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+en trois dimensions.
+\end_layout
+
+\begin_layout Standard
+La matrice jacobienne en fonction des paramètres est donnée par 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{J}_{\mathbf{\theta}}(\mathbf{x}) & = & \left[\begin{array}{ccc}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1\end{array}\right]\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+CenteredMotionTransform2D
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'une transformation définie par une rotation autour d'un centre
+ donné (par défaut l'origine), suivie d'une translation.
+ On a donc 3 paramètres.
+ L'angle de rotation est stocké en degrés, et converti en radians pour les
+ calculs.
+ Le centre de la rotation est un paramètre non optimisable.
+\end_layout
+
+\begin_layout Standard
+La matrice de transformation est donnée par :
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{M} & = & \left[\begin{array}{ccc}
+\cos\theta & -\sin\theta & c_{x}(1-\cos\theta)+c_{y}\sin\theta+u_{x}\\
+\sin\theta & \cos\theta & c_{y}(1-\cos\theta)-c_{x}\sin\theta+u_{y}\\
+0 & 0 & 1\end{array}\right]\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+où 
+\begin_inset Formula $c_{x}$
+\end_inset
+
+ et 
+\begin_inset Formula $c_{y}$
+\end_inset
+
+ sont les coordonnées du centre de la transformation, et 
+\begin_inset Formula $u_{x}$
+\end_inset
+
+ et 
+\begin_inset Formula $u_{y}$
+\end_inset
+
+ sont les composantes du vecteur de translation.
+\end_layout
+
+\begin_layout Standard
+La matrice jacobienne des dérivées par rapport aux paramètres est donnée
+ par 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{J}_{\mathbf{\theta}}(\mathbf{x}) & = & \left[\begin{array}{ccc}
+-(x-c_{x})\sin\theta-(y-c_{y})\cos\theta & 1 & 0\\
+(x-c_{x})\cos\theta-(y-c_{y})\sin\theta & 0 & 1\end{array}\right]\end{eqnarray*}
+
+\end_inset
+
+avec 
+\begin_inset Formula $\mathbf{x}=(x,y)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+CenteredEulerTransform3D
+\end_layout
+
+\begin_layout Standard
+Cette classe représente une transformation rigide obtenue en combinant trois
+ rotations successives suivies d'une translation.
+ On a donc 6 paramètres.
+ 
+\end_layout
+
+\begin_layout Standard
+Il y a de multiples manières de choisir les angles d'Euler.
+ Pour cette classe, les rotations sont choisies ainsi, dans cet ordre :
+\end_layout
+
+\begin_layout Enumerate
+une rotation autour de l'angle 
+\begin_inset Formula $O_{x}$
+\end_inset
+
+ selon un angle 
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+une rotation autour de l'angle 
+\begin_inset Formula $O_{y}$
+\end_inset
+
+ selon un angle 
+\begin_inset Formula $\varphi$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+une rotation autour de l'angle 
+\begin_inset Formula $O_{z}$
+\end_inset
+
+ selon un angle 
+\begin_inset Formula $\psi$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Pour une rotation autour de l'origine, on obtient la matrice de transformation
+ suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{R}_{XYZ,\mathbf{o}} & = & \left[\begin{array}{cccc}
+c_{y}c_{z} & s_{x}s_{y}c_{z}-c_{x}s_{z} & c_{x}s_{y}c_{z}+s_{x}s_{z} & 0\\
+c_{y}s_{z} & s_{x}s_{y}s_{z}+c_{x}c_{z} & c_{x}s_{y}s_{z}-s_{x}c_{z} & 0\\
+-s_{y} & s_{x}c_{z} & c_{x}c_{y} & 0\\
+0 & 0 & 0 & 1\end{array}\right]\end{eqnarray*}
+
+\end_inset
+
+avec 
+\begin_inset Formula $c_{x}=\cos\varphi$
+\end_inset
+
+, 
+\begin_inset Formula $s_{x}=\sin\varphi$
+\end_inset
+
+, 
+\begin_inset Formula $c_{y}=\cos\theta$
+\end_inset
+
+...
+\end_layout
+
+\begin_layout Standard
+La transformation autour d'un centre arbitraire s'obtient numériquement,
+ en composant avec les matrices de transformation des translations directes
+ et inverses.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+\mathbf{R}_{XYZ,\mathbf{c}} & = & \mathbf{T}_{\mathbf{c}}\mathbf{R}_{XYZ,o}\mathbf{T}_{-\mathbf{c}}\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Pour la matrice Jacobienne, les calculs sont un peu laborieux, mais on retombe
+ sur la version codée dans ITK.
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+On a une hiérarchie de classes de transformations, génériques selon la dimension.
+\end_layout
+
+\begin_layout Standard
+Pour le moment, on a uniquement des transformations affines.
+\end_layout
+
+\begin_layout Standard
+Parmi les points à travailler pour la suite :
+\end_layout
+
+\begin_layout Itemize
+gestion des transfos élastiques
+\end_layout
+
+\begin_layout Itemize
+gestion des fonctions de régularisation associées aux transformations
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+écart à l'origine pour les déplacements
+\end_layout
+
+\begin_layout Itemize
+intégrale de la norme du jacobien pour les transfos fluides ?
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
