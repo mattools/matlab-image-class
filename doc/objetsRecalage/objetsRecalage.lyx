@@ -1,0 +1,682 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{fullpage}
+\end_preamble
+\use_default_options true
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family sfdefault
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ImaegObj : bibliothèque de classes pour le recalage d'images sous Matlab
+\end_layout
+
+\begin_layout Author
+D.
+ Legland
+\end_layout
+
+\begin_layout Date
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Descripion des classes définies et implémentées pour tester les algorithmes
+ de recalage d'images en 2D et 3D sous Matlab.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Inspiration principale : ITK
+\end_layout
+
+\begin_layout Standard
+idée générale : encapsuler les information, et manipuler les objets en se
+ souciant le moins possible de leur implémentation.
+\end_layout
+
+\begin_layout Section
+Images
+\end_layout
+
+\begin_layout Standard
+Pour le moment plusieurs classes image, organisées en hiérarchie :
+\end_layout
+
+\begin_layout Description
+Image interface pour les images, qui définit les méthodes abstraites et
+ fournit quelques utilitaires pour gérer les informations de calibration
+ et les meta-données
+\end_layout
+
+\begin_layout Description
+ScalarImage interface pour les images dont les pixels sont des scalaires,
+ par opposition aux images vectorielles (images spectrales ou couleur)
+\end_layout
+
+\begin_layout Description
+Image2D implémentation pour les images scalaires 2D
+\end_layout
+
+\begin_layout Description
+Image3D implémentation pour les images scalaires 3D
+\end_layout
+
+\begin_layout Description
+VectorImage2D implémentation pour les images vectorielles 2D
+\end_layout
+
+\begin_layout Standard
+À terme, il serait souhaitable d'avoir une classe unique.
+\end_layout
+
+\begin_layout Section
+Transformations
+\end_layout
+
+\begin_layout Standard
+En parallèles des classes image, on définit aussi une hiérarchie de classes
+ pour les transformations géométriques.
+ On a aussi une classe spéciale qui représente une transformation paramétrée.
+ Certaines opérations sont définies en fonctions des spécialisations.
+\end_layout
+
+\begin_layout Standard
+La classe de base est la classe Transform.
+ La classe ParametricTransform ajoute la manipulation des paramètres à optimiser.
+ On trouve aussi des classes permettant de limiter la ré-écriture des transforma
+tions spécialisées.
+\end_layout
+
+\begin_layout Subsection
+Interfaces et classes abstraites
+\end_layout
+
+\begin_layout Subsubsection
+Transform
+\end_layout
+
+\begin_layout Standard
+Il s'agit de la classe la plus générique.
+ Elle définit principalement la méthode transformPoint, ainsi que quelques
+ méthodes utilitaires.
+\end_layout
+
+\begin_layout Description
+transformPoint transforme un point en un autre
+\end_layout
+
+\begin_layout Description
+transformVector transforme un vecteur en un autre
+\end_layout
+
+\begin_layout Description
+getJacobian renvoie la matrice jacobienne (des dérivées premières en fonction
+ des coordonnées) pour une position donnée
+\end_layout
+
+\begin_layout Standard
+Toutes ces méthodes sont abstraites, et nécessitent d'être implémentées
+ dans les classes dérivées.
+ Il est possible aussi de composer les transformations, via la méthode compose.
+\end_layout
+
+\begin_layout Description
+compose renvoie un nouvelle transformation, résultat de l'application de
+ la transformation passée en paramètre suivie de cette transformation
+\end_layout
+
+\begin_layout Subsubsection
+ParametricTransform
+\end_layout
+
+\begin_layout Standard
+Cette classe (abstraite) ajoute la gestion des paramètres.
+ Elle définit un champs 
+\begin_inset Quotes fld
+\end_inset
+
+params
+\begin_inset Quotes frd
+\end_inset
+
+, sous la forme d'un vecteur ligne, qui peut être modifié via les méthodes
+ appropriées.
+\end_layout
+
+\begin_layout Standard
+Pour distinguer les transformations paramétrées des transformations non
+ paramétrées, j'ajoute parfois le suffixe 
+\begin_inset Quotes fld
+\end_inset
+
+Model
+\begin_inset Quotes frd
+\end_inset
+
+ au nom de la classe.
+ Exemple : 
+\begin_inset Quotes fld
+\end_inset
+
+TranslationModel
+\begin_inset Quotes frd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph*
+Méthodes implémentées
+\end_layout
+
+\begin_layout Description
+getParameters renvoie le vecteur de paramètres
+\end_layout
+
+\begin_layout Description
+setParameters modifie le vecteur de paramètres
+\end_layout
+
+\begin_layout Description
+getParameterLength renvoie la taille du vecteur de paramètres
+\end_layout
+
+\begin_layout Standard
+On a aussi quelques méthodes pour faciliter l'interprétation 
+\end_layout
+
+\begin_layout Description
+getParameterNames renvoie un tableau de chaînes contenant le noms de chaque
+ paramètre
+\end_layout
+
+\begin_layout Description
+getParameterName renvoie le nom du i-ème paramètre
+\end_layout
+
+\begin_layout Standard
+Enfin, on a aussi une méthode pour calculer les dérivées mais en fonction
+ des paramètres :
+\end_layout
+
+\begin_layout Description
+getParametricJacobian calcule la matrice jacobienne, qui a autant de lignes
+ que le nombre de dimensions, et autant de colonne que le nombre de paramètres
+\end_layout
+
+\begin_layout Subsubsection
+AffineTransform
+\end_layout
+
+\begin_layout Standard
+Cette classe sert de base abstraite aux autres transformations affines.
+ Elle implémente plusieurs méthodes qui se basent sur la matrice de transformati
+on associée.
+ Notons que la matrice de transformation n'est pas définie dans cette classe,
+ mais dans les classes dérivées.
+ 
+\end_layout
+
+\begin_layout Paragraph*
+Méthodes abstraites
+\end_layout
+
+\begin_layout Description
+getAffineMatrix renvoie la matrice affine associées à cette transformation
+\end_layout
+
+\begin_layout Standard
+Il s'agit de la seule méthode abstraite de cette classe, et donc la seule
+ qui nécessite une implémentation par les classes dérivées.
+\end_layout
+
+\begin_layout Paragraph*
+Méthodes implémentées
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Les méthodes suivantes définies par les interfaces sont implémentées par
+ la classe AffineTransform :
+\end_layout
+
+\begin_layout Description
+transformPoint transforme un point en un autre
+\end_layout
+
+\begin_layout Description
+transformVector transforme un vecteur en un autre
+\end_layout
+
+\begin_layout Description
+getJacobian renvoie la matrice jacobienne (des dérivées premières en fonction
+ des coordonnées) pour une position donnée
+\end_layout
+
+\begin_layout Standard
+Note : pour une transformation affine, la matrice jacobienne est obtenue
+ en isolant la partie linéaire de la matrice de transformation.
+\end_layout
+
+\begin_layout Description
+compose renvoie un nouvelle transformation, résultat de l'application de
+ la transformation passée en paramètre suivie de cette transformation.
+ Essaie de renvoyer une transformation affine si possible.
+\end_layout
+
+\begin_layout Standard
+On a aussi une méthode spécifique aux transformations affines
+\end_layout
+
+\begin_layout Description
+getInverse renvoie la transformation affine inverse
+\end_layout
+
+\begin_layout Subsection
+Modèles de transformation
+\end_layout
+
+\begin_layout Standard
+Toutes les transformations décrites ici héritent à la fois de Transform
+ (et même de AffineTransform pour le moment) ainsi que de ParametricTransform.
+\end_layout
+
+\begin_layout Subsubsection
+TranslationModel
+\end_layout
+
+\begin_layout Standard
+Une translation en dimension arbitaire, définie par un vecteur de translation.
+\end_layout
+
+\begin_layout Subsubsection
+CenteredMotionTransform2D
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'une transformation définie par une rotation autour d'un centre
+ donné (par défaut l'origine), suivie d'une translation.
+ On a donc 3 paramètres.
+ L'angle de rotation est stocké en degrés, et converti en radians pour les
+ calculs.
+ Le centre de la rotation est un paramètre non optimisable.
+\end_layout
+
+\begin_layout Subsubsection
+CenteredEulerTransform3D
+\end_layout
+
+\begin_layout Standard
+Cette classe représente une transformation rigide obtenue en combinant trois
+ rotations successives suivies d'une translation.
+ On a donc 6 paramètres.
+ 
+\end_layout
+
+\begin_layout Standard
+Il y a de multiples manières de choisir les angles d'Euler.
+ Pour cette classe, les rotations sont choisies ainsi, dans cet ordre :
+\end_layout
+
+\begin_layout Enumerate
+une rotation autour de l'angle 
+\begin_inset Formula $O_{x}$
+\end_inset
+
+ selon un angle 
+\begin_inset Formula $\varphi$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+une rotation autour de l'angle 
+\begin_inset Formula $O_{y}$
+\end_inset
+
+ selon un angle 
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+une rotation autour de l'angle 
+\begin_inset Formula $O_{z}$
+\end_inset
+
+ selon un angle 
+\begin_inset Formula $\psi$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Les angles de rotation sont stockés en degré et convertis en radian pour
+ les calculs.
+ Le centre de la rotation est modifiable, mais ne fait pas partie des paramètres
+ optimisables.
+\end_layout
+
+\begin_layout Section
+Implémentations utilitaires
+\end_layout
+
+\begin_layout Subsection
+MatrixAffineTransform
+\end_layout
+
+\begin_layout Standard
+Implémentation classique d'une transformation affine, sous la forme d'une
+ matrice.
+ Utilisées pour des tests, ou pour implémenter des transformations classiques.
+\end_layout
+
+\begin_layout Subsection
+ComposedTransform
+\end_layout
+
+\begin_layout Standard
+Cette classe stocke un tableau de transformations.
+ Lors de l'appel à une des méthodes de calcul (par exemple 
+\begin_inset Quotes fld
+\end_inset
+
+transformPoint
+\begin_inset Quotes frd
+\end_inset
+
+), elle appelle la méthode correspondante pour chaque transformation stockée,
+ et combine les résultats.
+ 
+\end_layout
+
+\begin_layout Standard
+Aucune hypothèse n'est faite sur les transformation stockées, elles doivent
+ juste hériter de 
+\begin_inset Quotes fld
+\end_inset
+
+Transform
+\begin_inset Quotes frd
+\end_inset
+
+, et être définies pour les mêmes dimensions.
+\end_layout
+
+\begin_layout Section
+Interpolation et re-échantillonnage
+\end_layout
+
+\begin_layout Standard
+On a aussi plusieurs classes pour gérer le ré-échantillonnage et l'interpolation
+ des images après transformation.
+\end_layout
+
+\begin_layout Subsection
+Interfaces et classes abstraites
+\end_layout
+
+\begin_layout Description
+ImageFunction interface générale pour les classes d'interpolation.
+ Elle définit une méthode accepte une position (2D ou 3D) en entrée et renvoie
+ une valeur scalaire
+\end_layout
+
+\begin_layout Description
+ImageInterpolator interface d'interpolation, qui se base sur une image.
+\end_layout
+
+\begin_layout Description
+ImageInterpolator2D,
+\begin_inset space ~
+\end_inset
+
+ImageInterpolator3D interfaces permettant de typer les classes dérivées
+\end_layout
+
+\begin_layout Subsection
+Implémentations
+\end_layout
+
+\begin_layout Standard
+Pour le moment on a une implémentation par couple type d'interpolation -
+ dimension.
+ Il n'est pas forcément plus efficace d'avoir des interpolateurs génériques.
+\end_layout
+
+\begin_layout Description
+NearestNeighborInterpolator2D
+\end_layout
+
+\begin_layout Description
+NearestNeighborInterpolator3D
+\end_layout
+
+\begin_layout Description
+LinearInterpolator2D
+\end_layout
+
+\begin_layout Description
+LinearInterpolator3D
+\end_layout
+
+\begin_layout Subsection
+Classes utilitaires
+\end_layout
+
+\begin_layout Subsubsection
+ImageResampler 
+\end_layout
+
+\begin_layout Standard
+Cette classe permet de créer une nouvelle image à partir :
+\end_layout
+
+\begin_layout Enumerate
+d'une base spatiale (origine + espacement + taille),
+\end_layout
+
+\begin_layout Enumerate
+et d'un objet de classe 
+\begin_inset Quotes fld
+\end_inset
+
+ImageFunction
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+BackwardTransformedImage
+\end_layout
+
+\begin_layout Standard
+Cette classe qui implémente l'interface 
+\begin_inset Quotes fld
+\end_inset
+
+ImageFunction
+\begin_inset Quotes frd
+\end_inset
+
+ encapsule une image et une transformation.
+ Quand on évalue la valeur en un point, les coordonnées du point après transform
+ation sont calculées, et utilisées pour évaluer la valeur dans l'image stockée.
+\end_layout
+
+\begin_layout Section
+Métriques 
+\end_layout
+
+\begin_layout Standard
+Pour le recalage on a besoin de définir des métriques entre des images,
+ ou plutôt entre des images interpolées.
+\end_layout
+
+\begin_layout Standard
+Les métriques sont définie par rapport à un ensemble de points de test.
+ Un ensemble de points de tests classique est constitué par l'ensemble des
+ positions des pixels d'une des deux images.
+ Comme on essaie de travailler sur des images interpoler, et donc qui ne
+ définissent pas forcément leur base spatiale, l'ensemble de points tests
+ est spécifié séparément.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+définir les dérivées par rapport à un gradient 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Classes abstraites
+\end_layout
+
+\begin_layout Subsubsection
+ImageToImageMetric
+\end_layout
+
+\begin_layout Standard
+Cette classe stocke trois champs :
+\end_layout
+
+\begin_layout Description
+img1 une instance de ImageFunction qui représente traditionnellement l'image
+ fixe
+\end_layout
+
+\begin_layout Description
+img2 une instance de ImageFunction qui représente traditionnellement l'image
+ mobile
+\end_layout
+
+\begin_layout Description
+points un ensemble de points de test
+\end_layout
+
+\begin_layout Standard
+Elle déclare la méthode suivante, qui sera implémentée dans les classes
+ dérivées :
+\end_layout
+
+\begin_layout Description
+computeValue calcule la valeur de la métrique
+\end_layout
+
+\begin_layout Subsection
+Implémentation
+\end_layout
+
+\begin_layout Standard
+Pour le moment une seule implémentation, basée sur la moyenne des carrés
+ des différences.
+\end_layout
+
+\begin_layout Subsubsection
+MeanSquareDifferencesMetric
+\end_layout
+
+\begin_layout Standard
+Cette classe itère sur tous les points tests, évalue la valeur correspondante
+ dans chacune des deux images, et calcule la moyenne des carrés des différences.
+ La moyenne est calculée pour les points qui sont dans les deux images.
+\end_layout
+
+\end_body
+\end_document
