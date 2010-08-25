@@ -4,15 +4,20 @@
 \begin_header
 \textclass article
 \begin_preamble
+
 \usepackage{fullpage}
+
+\usepackage{textcomp}
+
+\usepackage[numbered, framed]{mcode}
 \end_preamble
 \use_default_options true
 \language french
-\inputencoding auto
+\inputencoding utf8
 \font_roman default
 \font_sans default
-\font_typewriter default
-\font_default_family sfdefault
+\font_typewriter lmtt
+\font_default_family default
 \font_sc false
 \font_osf false
 \font_sf_scale 100
@@ -56,7 +61,7 @@
 \begin_body
 
 \begin_layout Title
-ImaegObj : bibliothèque de classes pour le recalage d'images sous Matlab
+ImageObj : bibliothèque de classes pour le recalage d'images sous Matlab
 \end_layout
 
 \begin_layout Author
@@ -81,7 +86,7 @@ today
 \end_layout
 
 \begin_layout Abstract
-Descripion des classes définies et implémentées pour tester les algorithmes
+Description des classes définies et implémentées pour tester les algorithmes
  de recalage d'images en 2D et 3D sous Matlab.
 \end_layout
 
@@ -146,7 +151,46 @@ VectorImage2D implémentation pour les images vectorielles 2D
 \end_layout
 
 \begin_layout Standard
+On trouve quelques méthodes statiques pour créer les images en utilisant
+ la classe appropriée :
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+img = Image2D.read('cameraman.tif');
+\end_layout
+
+\begin_layout Plain Layout
+
+img.show();
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 À terme, il serait souhaitable d'avoir une classe unique.
+ Une adaptation est en cours (2010.08.24).
 \end_layout
 
 \begin_layout Section
@@ -312,13 +356,16 @@ Il s'agit de la seule méthode abstraite de cette classe, et donc la seule
 
 \begin_layout Paragraph*
 Méthodes implémentées
-\begin_inset Newline newline
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
 Les méthodes suivantes définies par les interfaces sont implémentées par
  la classe AffineTransform :
 \end_layout
@@ -521,6 +568,72 @@ ImageInterpolator2D,
 ImageInterpolator3D interfaces permettant de typer les classes dérivées
 \end_layout
 
+\begin_layout Standard
+La classe ImageInterpolator fournit aussi un constructeur statique, 
+\begin_inset Quotes fld
+\end_inset
+
+create
+\begin_inset Quotes frd
+\end_inset
+
+, qui prend en argument une image et une chaîne de caractères correspondant
+ au type d'interpolation désiré, et qui renvoie un objet d'une classe dérivée.
+ Exemple :
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+img = Image2D.read('cameraman.tif');
+\end_layout
+
+\begin_layout Plain Layout
+
+inter = ImageInterpolator.create(img, 'linear');
+\end_layout
+
+\begin_layout Plain Layout
+
+class(inter)
+\end_layout
+
+\begin_layout Plain Layout
+
+ans =
+\end_layout
+
+\begin_layout Plain Layout
+
+     LinearInterpolator2D
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Implémentations
 \end_layout
@@ -549,6 +662,11 @@ LinearInterpolator3D
 
 \begin_layout Subsection
 Classes utilitaires
+\end_layout
+
+\begin_layout Standard
+Ces classes sont destinées à faciliter la création et la manipulation des
+ images transformées ou rééchantillonnées.
 \end_layout
 
 \begin_layout Subsubsection
@@ -611,19 +729,6 @@ Les métriques sont définie par rapport à un ensemble de points de test.
  est spécifié séparément.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-définir les dérivées par rapport à un gradient 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Classes abstraites
 \end_layout
@@ -659,6 +764,12 @@ Elle déclare la méthode suivante, qui sera implémentée dans les classes
 computeValue calcule la valeur de la métrique
 \end_layout
 
+\begin_layout Standard
+Certaines classes devraient aussi implémenter une méthode pour fournir le
+ vecteur jacobien par rapport aux paramètres d'une transformation.
+ Pour le moment (2010.08.24) il n'y a d'interface pour le spécifier.
+\end_layout
+
 \begin_layout Subsection
 Implémentation
 \end_layout
@@ -669,13 +780,49 @@ Pour le moment une seule implémentation, basée sur la moyenne des carrés
 \end_layout
 
 \begin_layout Subsubsection
-MeanSquareDifferencesMetric
+MeanSquaresImageToImageMetric
 \end_layout
 
 \begin_layout Standard
-Cette classe itère sur tous les points tests, évalue la valeur correspondante
- dans chacune des deux images, et calcule la moyenne des carrés des différences.
+Correspond à une discrétisation de l'intégrale 
+\begin_inset Formula \[
+SSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En pratique, on passe par une moyenne de somme de différences.
+\end_layout
+
+\begin_layout Paragraph
+Méthodes implémentées 
+\end_layout
+
+\begin_layout Description
+computeValue Cette méthode itère sur tous les points tests, évalue la valeur
+ correspondante dans chacune des deux images, et calcule la moyenne des
+ carrés des différences.
  La moyenne est calculée pour les points qui sont dans les deux images.
+\end_layout
+
+\begin_layout Description
+computeValueAndGradient cette méthode prend en entrée une transformation
+ paramétrée ainsi que les composantes d'une image gradient, et renvoie la
+ valeur du vecteur gradient calculé en moyennant, pour les points de test,
+ le produit du jacobien de la transformation par l'image gradient.
+ L'image gradient est interpolée selon les plus proches voisins.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Bibliothèque encore largement en développement.
+ 
 \end_layout
 
 \end_body
