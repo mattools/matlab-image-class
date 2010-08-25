@@ -2,6 +2,7 @@ classdef ImageResampler < handle
 %IMAGERESAMPLER  Resample an image using a given spatial basis
 %
 %   RES = ImageResampler(LX, LY);
+%   RES = ImageResampler(LX, LY, LZ);
 %   RES = ImageResampler(BASE_IMAGE);
 %
 % %   the following is not yet implemented
@@ -52,6 +53,7 @@ methods
             % copy each field
             var = varargin{1};
             this.outputSize = var.outputSize;
+            this.outputType = var.outputType;
             this.origin     = var.origin;
             this.spacing    = var.spacing;
             
@@ -59,6 +61,7 @@ methods
             % Initialize fields from a given image
             img = varargin{1};
             this.outputSize = img.getSize();
+            this.outputType = img.getDataType();
             this.origin     = img.getOrigin();
             this.spacing    = img.getSpacing();
             
@@ -93,11 +96,30 @@ methods
     
     function img2 = resample(this, varargin)
         % Resample an image, or an interpolated image
+        %
+        % IMG2 = this.resample(IMGFUN);
+        % Use image function IMGFUN as reference. IMGFUN is an instance of 
+        % ImageFunction, such as ImageInterpolator.
+        %
         % IMG2 = this.resample(IMG);
+        % Resample image IMG using linear interpolation.
+        %
+        % IMG2 = this.resample(IMG, TYPE);  
+        % Resample image with specified interpolation type. TYPE can be:
+        % 'linear' (default)
+        % 'nearest', but is only supported for 2D images.
+        %
+        
+        if isempty(varargin)
+            error('Need to specify an image to resample');
+        end
+        
         var = varargin{1};
         if isa(var, 'ImageFunction')
+            % if input is already an ImageFunction, nothing to do
             imgFun = var;
         else
+            % extract input image
             if isa(var, 'Image')
                 img = var;
             elseif isnumeric(var)
@@ -106,14 +128,30 @@ methods
                 error('Please specify image to resample');
             end
             
-            %TODO: specifiy interpolation method
-            imgFun = ImageInterpolator.create(img, 'linear');
+            % determines interpolation type
+            interpolationType = 'linear';
+            if length(varargin)>1
+                interpolationType = varargin{2};
+            end
+            
+            % create the appropriate image interpolator
+            imgFun = ImageInterpolator.create(img, interpolationType);
         end
+        
+        outputDim = length(this.outputSize);
         
         lx = (0:this.outputSize(1)-1)*this.spacing(1) + this.origin(1);
         ly = (0:this.outputSize(2)-1)*this.spacing(2) + this.origin(2);
-        if length(this.outputSize)>2
-            % TODO: should be more generic
+        if outputDim==2
+            % Process 2D images
+            [x y] = meshgrid(lx, ly);
+
+            vals = zeros(size(x), this.outputType);
+        
+            vals(:) = imgFun.evaluate([x(:) y(:)]);
+            img2 = Image2D(vals);
+        elseif outputDim==3
+            % Process 3D images
             lz = (0:this.outputSize(3)-1)*this.spacing(3) + this.origin(3);
             [x y z] = meshgrid(lx, ly, lz);
             vals = zeros(size(x), this.outputType);
@@ -121,12 +159,8 @@ methods
             vals(:) = imgFun.evaluate([x(:) y(:) z(:)]);
             img2 = Image3D(vals);
         else
-            [x y] = meshgrid(lx, ly);
-
-            vals = zeros(size(x), this.outputType);
-        
-            vals(:) = imgFun.evaluate([x(:) y(:)]);
-            img2 = Image2D(vals);
+            % TODO: implement for greater dimensions ?
+            error('Resampling is only implemented for dimensions 2 and 3');
         end
         
         % copy spatial calibration info to image

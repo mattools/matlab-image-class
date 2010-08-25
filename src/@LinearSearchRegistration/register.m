@@ -59,14 +59,22 @@ for i = 1:this.nIter
     
     % Call an output function for processing current point
     if ~isempty(this.outputFunction)
-        stop = this.outputFunction(this.params, [], []);
+        % setup optim values
+        optimValues.fval = value;
+        optimValues.iteration = i;
+        optimValues.procedure = 'Linear search';
+        
+        % call output function with appropriate parameters
+        stop = this.outputFunction(this.params, optimValues, 'iter');
         if stop
             break;
         end
     end
 end
 
+% format output arguments
 params = this.params;
 metricValue = value;
 
+% we need a final end because nested functions are used
 end

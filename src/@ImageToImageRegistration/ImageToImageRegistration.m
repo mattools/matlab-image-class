@@ -37,6 +37,9 @@ properties (Access = protected)
     % set of parameters
     params;
     
+    % scaling factor associated to each parameter. 
+    paramScales;
+    
     % output function, called at the end of ach iteration
     outputFunction = [];
     

@@ -15,6 +15,18 @@ if isempty(this.params)
     this.params = this.transfo.getParameters();
 end
 
+% ensure parameter scaling is valid
+if isempty(this.paramScales)
+    this.paramScales = ones(size(this.params));
+end
+if sum(size(this.params)~=size(this.paramScales))>0
+    error('Scaling vector should have same size as parameter vector');
+end
+    
+   
+%% Main processing
+
+% Main iteration    
 for i=1:this.nIter
     if this.verbose
         fprintf('iteration %d / %d\n', i, this.nIter);
@@ -28,8 +40,11 @@ for i=1:this.nIter
     this.metric.setPoints(this.points);
     
     % update metric
-    [ssd deriv] = this.metric.computeValueAndGradient(...
+    [value deriv] = this.metric.computeValueAndGradient(...
         this.transfo, this.gradientImages{:});
+    
+    % adjust derivative vector with respect to parameter scaling
+    deriv = deriv./this.paramScales;
     
     % direction de recherche (on inverse car on cherche minimum)
     direction = -deriv/norm(deriv);
@@ -43,13 +58,20 @@ for i=1:this.nIter
     
     % Call an output function for processing abour current point
     if ~isempty(this.outputFunction)
-        stop = this.outputFunction(this.params, [], []);
+        % setup optim values
+        optimValues.fval = value;
+        optimValues.iteration = i;
+        optimValues.procedure = 'Linear search';
+        
+        % call output function with appropriate parameters
+        stop = this.outputFunction(this.params, optimValues, 'iter');
         if stop
             break;
         end
     end
 end
 
+% format output arguments
 params = this.params;
-metricValue = ssd;
+metricValue = value;
 
