@@ -219,6 +219,17 @@ TranslationModel
 Méthodes implémentées
 \end_layout
 
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+On a tout d'abord quelques méhodes pour manipuler les paramètres :
+\end_layout
+
 \begin_layout Description
 getParameters renvoie le vecteur de paramètres
 \end_layout
@@ -236,7 +247,7 @@ On a aussi quelques méthodes pour faciliter l'interprétation
 \end_layout
 
 \begin_layout Description
-getParameterNames renvoie un tableau de chaînes contenant le noms de chaque
+getParameterNames renvoie un tableau de chaînes contenant le nom de chaque
  paramètre
 \end_layout
 
@@ -250,8 +261,8 @@ Enfin, on a aussi une méthode pour calculer les dérivées mais en fonction
 \end_layout
 
 \begin_layout Description
-getParametricJacobian calcule la matrice jacobienne, qui a autant de ligne
- que le nombre de dimensions, et autant de colonne que le nombre de paramètres
+getParametricJacobian calcule la matrice jacobienne, qui a autant de lignes
+ que le nombre de dimensions, et autant de colonnes que le nombre de paramètres
 \end_layout
 
 \begin_layout Subsection
@@ -259,10 +270,10 @@ AffineTransform
 \end_layout
 
 \begin_layout Standard
-Cette classe sert de base abstraite aux autres transformations affines.
+Cette classe abstraite sert de base aux autres transformations affines.
  Elle implémente plusieurs méthodes qui se basent sur la matrice de transformati
 on associée.
- Notons que la matrice de transformation n'est pas définie dans cette classe,
+ À noter que la matrice de transformation n'est pas définie dans cette classe,
  mais dans les classes dérivées.
  
 \end_layout

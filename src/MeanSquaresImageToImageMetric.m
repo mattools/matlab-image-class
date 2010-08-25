@@ -64,8 +64,8 @@ methods
         isInside = inside1 & inside2;
         
         % compute result
-        diff = (values1(isInside) - values2(isInside)).^2;
-        res = mean(diff);
+        diff = values2(isInside)-values1(isInside);
+        res = mean(diff.^2);
 
         %fprintf('Initial SSD: %f\n', res);
         
