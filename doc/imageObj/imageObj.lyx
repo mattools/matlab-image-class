@@ -663,14 +663,29 @@ Information de visualisation
 
 \begin_layout Standard
 En gros, comment représenter les pixels de l'image.
- Il s'agit d'une aplication qui à une valeur de l'image (NDG, double, complexe...)
+ Il s'agit d'une application qui à une valeur de l'image (NDG, double, complexe...)
  associe une valeur d'affichage (NDG ou RGB).Cela comprend :
 \end_layout
 
 \begin_layout Itemize
-pour une image en NDG, la palette de couleur utilisée.
+pour une image en NDG :
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+une valeur de gamma
+\end_layout
+
+\begin_layout Itemize
+une fonctions linéaire (brillance + contraste, cf.
+ ImageJ)
+\end_layout
+
+\begin_layout Itemize
+la palette de couleur utilisée, si l'image est indexée
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 pour une image d'intensité affichée en niveaux de gris, la dynamique d'affichage
  (min et max)
@@ -679,6 +694,7 @@ pour une image d'intensité affichée en niveaux de gris, la dynamique d'afficha
 \begin_layout Itemize
 pour une image multivariée (spectre, complexe, couleur...), une fonction qui
  détermine la couleur d'affichage en fonction d'un vecteur.
+ Par exemple, on peut afficher le module d'un nombre complexe.
 \end_layout
 
 \begin_layout Standard
@@ -755,8 +771,8 @@ Opérations souhaitées
 \end_layout
 
 \begin_layout Standard
-On a besoin d'opération de base pour accéder aux valeurs des pixels, éventuellem
-ent les modifier, et connaître les informations générales de l'image (taille,
+On a besoin d'opérations de base pour accéder aux valeurs des pixels, éventuelle
+ment les modifier, et connaître les informations générales de l'image (taille,
  nature des éléments...).
  On aimerait aussi avoir des fonctions qui se comportent de la même manière
  quelle que soit la dimension (moyenne, min, max...
@@ -1129,7 +1145,7 @@ où les
 
 \begin_layout Standard
 Pour convertir les coordonnées écran en coordonnées pixel, l'opération semble
- un peu plus compliqué que dans le cas d'un pixel dans les mailles de la
+ un peu plus compliquée que dans le cas d'un pixel dans les mailles de la
  grille, mais reste abordable.
  De plus, sous Matlab on peut déléguer à la gestion des axes.
 \end_layout
@@ -1333,7 +1349,7 @@ Image
 \end_layout
 
 \begin_layout Itemize
-une arborescence de classes, avec une classes abstraite 
+une arborescence de classes, avec une classe abstraite 
 \begin_inset Quotes fld
 \end_inset
 
@@ -1633,7 +1649,7 @@ elementSize la taille du tableau représentant chqaue pixel ou voxel.
  Vaut 1 dans le cas d'une image scalaire, N dans le cas d'une image vectorielle,
  avec N étant le nombre de composantes du vecteur.
  On peut aussi imaginer des images où chaque pixel est une matrice (ex :
- matrice d'orientation), mais l'occupation mémoire peut augmenter rapidement.
+ matrice d'orientations), mais l'occupation mémoire peut augmenter rapidement.
 \end_layout
 
 \begin_layout Description
@@ -1647,7 +1663,15 @@ Conclusions
 \end_layout
 
 \begin_layout Standard
-Pour le moment à l'état de réflexions.
+Pour le moment à l'état de prototype, avec des versions 
+\begin_inset Quotes fld
+\end_inset
+
+forkées
+\begin_inset Quotes frd
+\end_inset
+
+ pour tester des implémentations particulières.
 \end_layout
 
 \end_body

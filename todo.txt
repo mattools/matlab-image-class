@@ -15,17 +15,11 @@ TODO-list for project imageObj
 Image structures
 
 - class Image
-    - Definitely choose between 0- or 1- indexing (2010.07.21)
-        + 0 is universally better
-        + 1 is more specific to Matlab
-        + 1 is more consistent with existing functions, and less confusing for
-            Matlab users.
         
     - store label of axes ? (2010.06.30)
     - enhance filtering of some functions (2010.07.13)
         + open close, dilate, erode
         + filter
-    - enhance spatial calibration: use specific class ? (2010.07.20)
         
 - clone function ?                                                              +
     - ou alors un constructeur avec une image et un nouveau tableau de donnees

@@ -17,11 +17,11 @@ function norm = getNorm(this)
 
 % compute data to display
 % use vector norm
-norm = zeros(this.dataSize(1:2));
+norm = zeros(this.dataSize(1:3));
 nc = this.getChannelNumber();
 for i=1:nc
-    norm = norm + this.data(:,:,i).^2;
+    norm = norm + this.data(:,:,:,i).^2;
 end
 norm = sqrt(norm);
 
-norm = Image2D('data', norm, 'parent', this);
+norm = Image3D('data', norm, 'parent', this);

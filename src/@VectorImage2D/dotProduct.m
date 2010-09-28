@@ -30,8 +30,8 @@ function res = dotProduct(this, vec)
 
 % compute data to display
 % use vector norm
-res = zeros(this.dataSize);
-nc = this.getComponentNumber();
+res = zeros(this.dataSize(1:2));
+nc = this.getChannelNumber();
 for i=1:nc
     res = res + this.data(:,:,i)*vec(i);
 end
