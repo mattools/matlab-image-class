@@ -43,26 +43,16 @@ elseif strcmp(type, '()')
     if ns==1
         % one index: use linearised image
         ind = s1.subs{1};
-        if isnumeric(ind)
-            ind = ind+1;
-        end
         varargout{1} = this.data(ind);
+
     elseif ns==2 || ns==3
         % two indices: parse x and y indices 
         % (there is no need to parse ':', as it will be processed by data's
         % subsref method) 
 
-        % parse x index
+        % parse x and y indices
         ind1 = s1.subs{1};
-        if isnumeric(ind1)
-            ind1 = ind1+1;
-        end
-        
-        % parse y index 
         ind2 = s1.subs{2};
-        if isnumeric(ind2)
-            ind2 = ind2+1;
-        end
         
         if ns==2
             % extract corresponding data, and transpose to comply with
@@ -71,10 +61,6 @@ elseif strcmp(type, '()')
         else
             % parse band index 
             ind3 = s1.subs{3};
-            if isnumeric(ind3)
-                ind3 = ind3+1;
-            end
-
             varargout{1} = permute(this.data(ind1, ind2, ind3), [2 1 3]);
         end
     else
