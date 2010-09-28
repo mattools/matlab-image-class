@@ -7,17 +7,11 @@ function show(this, varargin)
 options = varargin;
 
 % compute physical extents
-xdata = [0 this.dataSize(1)-1]*this.spacing(1) + this.origin(1);
-ydata = [0 this.dataSize(2)-1]*this.spacing(2) + this.origin(2);
+xdata = this.getXData();
+ydata = this.getYData();
 
 % compute data to display
-% use vector norm
-dat = zeros(this.dataSize);
-nc = this.getComponentNumber();
-for i=1:nc
-    dat = dat + this.data(:,:,i)'.^2;
-end
-dat = sqrt(dat);
+dat = this.getDisplayData();
 
 % compute grayscale extent within image
 valMin = min(dat(:));

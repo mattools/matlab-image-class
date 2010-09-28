@@ -1,0 +1,4 @@
+liste of deprecated classes and methods
+
+Image2D
+- getXPositions, getYPositions (2010.09.28)

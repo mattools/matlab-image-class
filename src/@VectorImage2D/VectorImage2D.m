@@ -74,40 +74,47 @@ methods
         n = size(this.data, 3);
     end
     
+    function n = getChannelNumber(this)
+        %Returns the number of channels of vector image
+        %   S = IMG.getSize();
+        
+        n = size(this.data, 3);
+    end
+    
     function p = getPixel(this, x, y)
         % Returns a pixel in an image
         %   P = IMG.getPixel(X, Y)
-        %   X is column index, Y is row index, both 0-indexed.
-        p = squeeze(this.data(x+1, y+1, :))';
+        %   X is column index, Y is row index, both 1-indexed.
+        p = squeeze(this.data(x, y, :))';
     end
   
     function p = getValue(this, x, y, c)
         % Returns a given component value of a given pixel
         %   P = IMG.getValue(X, Y, C)
-        %   X is column index, Y is row index, both 0-indexed.
-        %   C is the component number, 0 indexed
-        p = squeeze(this.data(x+1, y+1, c+1));
+        %   X is column index, Y is row index, both 1-indexed.
+        %   C is the component number, 1 indexed
+        p = squeeze(this.data(x, y, c));
     end
     
     function p = getPixels(this, x, y)
         % Returns pixel array in an image
         %   P = IMG.getPixels(X, Y)
-        %   X is column index, Y is row index, both 0-indexed.
+        %   X is column index, Y is row index, both 1-indexed.
         %   Result P has as many rows as the number of elements in X, and
         %   as many columns as the number of vector components of image.
         nc = size(this.data, 3);
         p = zeros([numel(x) nc], class(this.data));
         for i=1:numel(x)
-            p(i, :) = squeeze(this.data(x+1, y+1, :));
+            p(i, :) = squeeze(this.data(x, y, :));
         end
     end
 
     function setPixel(this, x, y, v)
         % Changes value of a pixel
         %   P = IMG.setPixel(X, Y, VALUES)
-        %   X is column index, Y is row index, both 0-indexed.
+        %   X is column index, Y is row index, both 1-indexed.
         %   VALUE should be the same type as the buffer type.
-        this.data(x+1, y+1, :) = v;
+        this.data(x, y, :) = v;
     end
     
     function dat = getBuffer(this)

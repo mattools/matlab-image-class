@@ -1,10 +1,12 @@
-function res = splitBands(this)
-%SPLITBANDS Return the different bands of the vector image in a cell array
+function res = splitChannels(this)
+%SPLITCHANNELS Puts the different channels of a vector image in a cell array
 %
-%   output = img.splitBands();
+%   CHANNELS = IMG.splitChannels();
+%   CHANNELS is a cell array containing a planar imaeg for each channel of
+%   the vector image.
 %
 %   Example
-%   splitBands
+%   splitChannels
 %
 %   See also
 %
@@ -15,9 +17,7 @@ function res = splitBands(this)
 % Created: 2010-07-20,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-warning('oolip:deprecated', 'deprecated, use splitChannels instead');
-
-nc = this.getComponentNumber();
+nc = this.getChannelNumber();
 
 res = cell(1, nc);
 for i=1:nc

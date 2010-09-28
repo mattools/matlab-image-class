@@ -31,7 +31,7 @@ function varargout = showYSlice(this, sliceIndex)
 %% Extract image info
 
 % compute voxel positions
-ly = this.getYPositions();
+ly = this.getYData();
 
 dim = this.dataSize;
 vx = ((0:dim(1))-.5)*this.calib.spacing(1) - this.calib.origin(1);

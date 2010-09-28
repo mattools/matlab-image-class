@@ -1,15 +1,16 @@
-function lz = getZPositions(this)
-%getZPositions  Return the vector of positions in the z direction
+function ly = getYData(this)
+%GETYDATA  Return the vector of positions in the y direction
 %
-%   ZPO = this.getZPositions();
-%   ZPOS is a 1*Nz row vector, with Nz being the number of voxels in the z
+%   YPOS = this.getYData();
+%   YPOS is a 1*Ny row vector, with Ny being the number of voxels in the y
 %   direction.
 %
 %   Example
-%   getZPositions
+%   getYData
 %
 %   See also
-%   getXPositions, getYPositions
+%   getXData, getZData
+%
 %
 % ------
 % Author: David Legland
@@ -22,4 +23,4 @@ function lz = getZPositions(this)
 dim = this.dataSize;
 
 % compute voxel positions
-lz = (0:dim(3))*this.calib.spacing(3) + this.calib.origin(3);
+ly = (0:dim(2)-1)*this.calib.spacing(2) + this.calib.origin(2);

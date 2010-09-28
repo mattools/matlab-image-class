@@ -1,18 +1,15 @@
-function ly = getYPositions(this)
-%getYPositions  Return the vector of positions in the y direction
+function ly = getYData(this)
+%GETYDATA  Return the vector of positions in the y direction
 %
-%   Deprecated
-%   use getYData() instead
-%
-%   YPOS = this.getYPositions();
-%   YPOS is a 1*Ny row vector, with Ny being the number of voxels in the y
+%   YPOS = this.getYData();
+%   YPOS is a 1*Ny row vector, with Ny being the number of pixels in the y
 %   direction.
 %
 %   Example
-%   getYPositions
+%   getYData
 %
 %   See also
-%   getXPositions
+%   getXData
 %
 %
 % ------
@@ -21,7 +18,6 @@ function ly = getYPositions(this)
 % Created: 2010-06-30,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-warning('oolip:deprecated', 'method is deprecated, use getYData instead');
 
 % spacing and origin in y direction
 sy = this.calib.spacing(2);
@@ -31,4 +27,4 @@ oy = this.calib.origin(2);
 dim = this.dataSize;
 
 % compute voxel positions
-ly = (0:dim(2))*sy + oy;
+ly = (0:dim(2)-1)*sy + oy;

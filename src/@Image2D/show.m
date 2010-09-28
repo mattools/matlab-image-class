@@ -6,18 +6,20 @@ function show(this, varargin)
 
 options = varargin;
 
-% compute physical extents
-calib = this.getSpatialCalibration();
-xdata = [0 this.dataSize(1)-1]*calib.spacing(1) + calib.origin(1);
-ydata = [0 this.dataSize(2)-1]*calib.spacing(2) + calib.origin(2);
 
-% if double, adjust grayscale extent 
-if isfloat(this.data)
-    options = updateDisplayRangeOptions(this, options);
+data = this.getDisplayData();
+
+% if double, adjust grayscale extent
+if isfloat(data)
+    options = updateDisplayRangeOptions(data, options);
 end
 
+% compute physical extents
+xdata = this.getXData();
+ydata = this.getYData();
+
 % display image with approriate spatial reference
-imshow(this.data', options{:}, 'XData', xdata, 'YData', ydata);
+imshow(data, 'XData', xdata, 'YData', ydata, options{:});
 
 % check extent of image
 extent = this.getPhysicalExtent();
@@ -28,11 +30,11 @@ yl = [min(yl(1), extent(3)) max(yl(2), extent(4))];
 xlim(xl); ylim(yl);
 
 
-function options = updateDisplayRangeOptions(img, options)
+function options = updateDisplayRangeOptions(data, options)
 
 % compute grayscale extent within image
-valMin = img.min();
-valMax = img.max();
+valMin = double(min(data(:)));
+valMax = double(max(data(:)));
 
 % If image contains both positive and negative values, use 0-centered
 % gray display

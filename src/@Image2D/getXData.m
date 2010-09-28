@@ -1,18 +1,15 @@
-function lx = getXPositions(this)
-%GETXPOSITIONS  Return the vector of positions in the x direction
+function lx = getXData(this)
+%GETXDATA  Return the vector of positions in the x direction
 %
-%   Deprecated
-%   use getXData() instead
-%
-%   XPOS = this.getXPositions();
-%   XPOS is a 1*Nx row vector, with Nx being the number of voxels in the x
+%   XPOS = this.getXData();
+%   XPOS is a 1*Nx row vector, with Nx being the number of pixels in the x
 %   direction.
 %
 %   Example
-%   getXPositions
+%   getXData
 %
 %   See also
-%   getYPositions
+%   getYData
 %
 %
 % ------
@@ -20,8 +17,6 @@ function lx = getXPositions(this)
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2010-06-30,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
-
-warning('oolip:deprecated', 'method is deprecated, use getXData instead');
 
 % spacing and origin in x direction
 sx = this.calib.spacing(1);
@@ -31,4 +26,4 @@ ox = this.calib.origin(1);
 dim = this.dataSize;
 
 % compute voxel positions
-lx = (0:dim(1))*sx + ox;
+lx = (0:dim(1)-1)*sx + ox;
