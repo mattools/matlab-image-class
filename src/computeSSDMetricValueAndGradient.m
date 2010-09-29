@@ -57,7 +57,7 @@ insideBoth = inside1 & inside2;
 
 % compute result
 diff = values2(insideBoth)-values1(insideBoth);
-res = mean(diff.^2);
+res = sum(diff.^2);
 
 
 %% Compute gradient direction

@@ -1,5 +1,5 @@
 function res = computeSSDMetric(img1, img2, points)
-%COMPUTESSDMETRIC  One-line description here, please.
+%COMPUTESSDMETRIC sum of squared differences between two (interpoalted) images
 %   output = computeSSDMetric(input)
 %
 %   Example
@@ -48,5 +48,5 @@ end
 inds = inside1 & inside2;
 
 % compute result
-diff = (values2(inds)-values1(inds)).^2;
-res = mean(diff);
+diff = (values2(inds) - values1(inds)).^2;
+res = sum(diff);
