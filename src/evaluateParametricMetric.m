@@ -42,7 +42,7 @@ function res = evaluateParametricMetric(params, transfo, metric)
 %         54.4077
 %   
 %   See also
-%
+%   SimplexRegistration/register
 %
 % ------
 % Author: David Legland
