@@ -195,7 +195,7 @@ methods
         end
     end
     
-    function [index isInside] = pointToContinuousIndex(this, point)
+    function [point isInside] = pointToContinuousIndex(this, point)
         % Converts point in physical coordinate into unrounded image index
         
         % Extract spatial calibration
@@ -203,14 +203,17 @@ methods
         origin = this.calib.origin;
 
         % TODO: change name ? physicalToImageCoord ?
-        nI = ones(size(point, 1),1); % repeat points avoiding repmat
-        index = (point - origin(nI, :))./spacing(nI, :) + 1;
+%         nI = ones(size(point, 1),1); % repeat points avoiding repmat
+%         index = (point - origin(nI, :))./spacing(nI, :) + 1;
+        for i=1:length(this.calib.spacing)
+            point(:,i) = (point(:,i)- origin(i))/spacing(i) + 1;
+        end
         
         if nargout>1
             % check if resulting points are inside the image
             isInside = true(size(nI));
-            isInside(find(sum(index<=0, 2))) = false;
-            isInside(find(sum(index>this.dataSize(nI,:), 2))) = false;
+            isInside(find(sum(point<=0, 2))) = false;
+            isInside(find(sum(point>this.dataSize(nI,:), 2))) = false;
         end
     end
     
