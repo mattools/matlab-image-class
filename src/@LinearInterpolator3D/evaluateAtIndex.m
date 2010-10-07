@@ -1,18 +1,8 @@
-function [val isInside] = evaluateAtIndex(this, index, varargin)
+function [val isInside] = evaluateAtIndex(this, varargin)
 % Evaluate the value of an image for a point given in image coord
 
-% eventually convert inputs from x and y to a list of image coord
-dim = [size(index,1) 1];
-if length(varargin)>1
-    var1 = varargin{1};
-    var2 = varargin{2};
-    if sum(size(var1)~=size(index))==0
-        % keep dimension of original array
-        dim = size(index);
-        % create a linear array of indices
-        index = [index(:) var1(:) var2(:)];
-    end
-end
+% eventually convert inputs to a single nPoints-by-ndims array
+[index dim] = ImageFunction.mergeCoordinates(varargin{:});
 
 % number of positions to process
 N = size(index, 1);

@@ -1,8 +1,8 @@
-function [val isInside] = evaluate(this, point, varargin)
+function [val isInside] = evaluate(this, varargin)
 % Evaluate intensity of image at a given physical position
 %
 % VAL = INTERP.evaluate(POS);
-% where POS is a Nx2 array containing alues of x- and y-coordinates
+% where POS is a Nx2 array containing values of x- and y-coordinates
 % of positions to evaluate image, return an array with as many
 % values as POS.
 %
@@ -17,15 +17,8 @@ function [val isInside] = evaluate(this, point, varargin)
 %
 
 
-% eventually convert inputs from x and y to a list of points
-dim = [size(point,1) 1];
-if ~isempty(varargin)
-    var = varargin{1};
-    if sum(size(var)~=size(point))==0
-        dim = size(point);
-        point = [point(:) var(:)];
-    end
-end
+% eventually convert inputs to a single nPoints-by-ndims array
+[point dim] = ImageFunction.mergeCoordinates(varargin{:});
 
 % Evaluates image value for a given position
 coord = this.image.pointToContinuousIndex(point);

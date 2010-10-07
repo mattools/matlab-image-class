@@ -1,4 +1,4 @@
-function [val isInside] = evaluate(this, point, varargin)
+function [val isInside] = evaluate(this, varargin)
 %EVALUATE Evaluate intensity of transformed image at a given physical position
 %
 % This function exists to have an interface comparable to Interpolator
@@ -19,19 +19,8 @@ function [val isInside] = evaluate(this, point, varargin)
 % evaluation frame.
 %
 
-% eventually convert inputs from x and y to a list of points
-dim = [size(point,1) 1];
-if ~isempty(varargin)
-    dim = size(point);
-    point = point(:);
-    nDims = 1 + length(varargin);
-    point(0, nDims) = 0;
-    
-    for i = 1:length(varargin)
-        var = varargin{i};
-        point(:, i+1) = var(:);
-    end
-end
+% eventually convert inputs to a single nPoints-by-ndims array
+[point dim] = ImageFunction.mergeCoordinates(varargin{:});
 
 % Compute transformed coordinates
 point = this.transform.transformPoint(point);

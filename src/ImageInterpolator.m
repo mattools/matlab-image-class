@@ -55,7 +55,7 @@ end % static methods
 
 methods  (Access = protected)
     function this = ImageInterpolator(image)
-        % Constructs a new ImageInterpolator object.
+        % Construct a new ImageInterpolator object.
         
         this.image = image;
     end % constructor declaration
