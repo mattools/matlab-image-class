@@ -1,7 +1,8 @@
-function [res grad] = evaluateParametricMetricValueAndGradient(params, transfo, metric)
+function [res grad] = evaluateParametricMetricValueAndGradient(params, transfo, metric, varargin)
 %evaluateParametricMetricValueAndGradient Function handle for minimisation
 %
-%   VAL = evaluateParametricMetric(PARAMS, TRANSFO, METRIC)
+%   [VAL GRAD] = evaluateParametricMetric(PARAMS, TRANSFO, METRIC, GX, GY)
+%   [VAL GRAD] = evaluateParametricMetric(PARAMS, TRANSFO, METRIC, GX, GY, GZ)
 %   Update the parametric transform TRANSFO with the given parameters, then
 %   computes the metric.
 %   
@@ -53,4 +54,4 @@ function [res grad] = evaluateParametricMetricValueAndGradient(params, transfo, 
 
 transfo.setParameters(params);
 
-[res grad] = metric.computeValueAndGradient();
+[res grad] = metric.computeValueAndGradient(transfo, varargin{:});

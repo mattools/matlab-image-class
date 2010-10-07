@@ -1,5 +1,5 @@
-function res = evaluateParametricMetric(params, transfo, metric)
-%evaluateParametricMetric Function handle for minimisation
+function [res grad] = evaluateParametricMetric(params, transfo, metric)
+%EVALUATEPARAMETRICMETRIC Function handle for wrapping metrics
 %
 %   VAL = evaluateParametricMetric(PARAMS, TRANSFO, METRIC)
 %   Update the parametric transform TRANSFO with the given parameters, then
@@ -53,4 +53,8 @@ function res = evaluateParametricMetric(params, transfo, metric)
 
 transfo.setParameters(params);
 
-res = metric.computeValue();
+if nargout>1
+    [res grad] = metric.computeValueAndGradient();
+else
+    res = metric.computeValue();
+end

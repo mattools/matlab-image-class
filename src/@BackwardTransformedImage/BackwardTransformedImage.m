@@ -132,6 +132,14 @@ methods
         val = reshape(val, dim);
         isInside = reshape(isInside, dim);
     end
+    
+    function d = getDimension(this)
+        %GETDIMENSION  Dimension of the transformed image
+        %
+        %   D = img.getDimension();
+        %   Returns the dimension of the inner interpolated image
+        d = this.interpolator.getDimension();
+    end
 end % methods
 
 end % classdef

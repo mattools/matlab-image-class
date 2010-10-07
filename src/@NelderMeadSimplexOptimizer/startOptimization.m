@@ -1,10 +1,10 @@
-function [params value] = optimize(this)
-%OPTIMIZE  Run the optimizer, and return optimized parameters
+function [params value] = startOptimization(this)
+%STARTOPTIMIZATION  Run the optimizer, and return optimized parameters
 %
-%   output = optimize(input)
+%   output = startOptimization(input)
 %
 %   Example
-%   optimize
+%   startOptimization
 %
 %   See also
 %

@@ -8,7 +8,7 @@ classdef NelderMeadSimplexOptimizer < Optimizer
 %     optimizer = NelderMeadSimplexOptimizer;
 %     optimizer.setCostFunction(@rosenbrock);
 %     optimizer.setParameters([0 0]);
-%     [xOpt value] = optimizer.optimize();
+%     [xOpt value] = optimizer.startOptimization();
 %     xOpt
 %       xOpt =
 %           0.9993    0.9984

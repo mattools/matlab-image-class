@@ -1,5 +1,5 @@
-function [params value] = optimize(this)
-%OPTIMIZE Run the otpimization algorithm
+function [params value] = startOptimization(this)
+%STARTOPTIMIZATION Run the optimization algorithm
 
 
 % ensure there is a valid direction set

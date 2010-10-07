@@ -8,7 +8,7 @@ classdef MultiLinearSearchOptimizer < Optimizer
 %     optimizer = MultiLinearSearchOptimizer;
 %     optimizer.setCostFunction(@rosenbrock);
 %     optimizer.setParameters([0 0]);
-%     [xOpt value] = optimizer.optimize();
+%     [xOpt value] = optimizer.startOptimization();
 %     xOpt
 %       xOpt =
 %           0.9993    0.9984

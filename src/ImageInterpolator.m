@@ -75,6 +75,14 @@ methods
         % Return the inner image of the interpolator
         img = this.img;
     end
+    
+    function d = getDimension(this)
+        %GETDIMENSION  Dimension of the interpolated image
+        %
+        %   D = img.getDimension();
+        %   Returns the dimension of the inner image
+        d = this.image.getDimension();
+    end
 end
 
 end  % classdef

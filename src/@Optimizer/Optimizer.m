@@ -7,7 +7,7 @@ classdef Optimizer < handle
 %   Optimizer
 %
 %   See also
-%
+%   NelderMeadSimplexOptimizer, MultiLinearSearchOptimizer
 %
 % ------
 % Author: David Legland
@@ -36,8 +36,8 @@ end
 
 %% Abstract methods
 methods (Abstract)
-    varargout = optimize(varargin)
-    %OPTIMIZE Start the optimizer until an end condition is reached
+    varargout = startOptimization(varargin)
+    %STARTOPTIMIZATION Start the optimizer until an end condition is reached
 end
 
 %% General methods
