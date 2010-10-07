@@ -89,7 +89,7 @@ today
 Description des classes définies et implémentées pour tester les algorithmes
  de recalage d'images en 2D et 3D sous Matlab.
  La bibliothèque développée propose des classes pour représenter les images,
- différents modèles de transformation, l'interpolation et le ré-échantillnnage
+ différents modèles de transformation, l'interpolation et le ré-échantillonnage
  des images, des métriques pour comparer les images, et plusieurs algorithmes
  d'optimisation.
 \end_layout
@@ -194,7 +194,7 @@ Transformations
 \end_layout
 
 \begin_layout Standard
-En parallèles des classes image, on définit aussi une hiérarchie de classes
+En parallèle des classes image, on définit aussi une hiérarchie de classes
  pour les transformations géométriques.
  On a aussi une classe spéciale qui représente une transformation paramétrée.
  Certaines opérations sont définies en fonctions des spécialisations.
@@ -203,8 +203,8 @@ En parallèles des classes image, on définit aussi une hiérarchie de classes
 \begin_layout Standard
 La classe de base est la classe Transform.
  La classe ParametricTransform ajoute la manipulation des paramètres à optimiser.
- On trouve aussi des classes permettant de limiter la ré-écriture des transforma
-tions spécialisées.
+ On trouve aussi des classes, comme AffineTransform, dont le but est de
+ limiter la ré-écriture des transformations spécialisées.
 \end_layout
 
 \begin_layout Subsection
@@ -226,12 +226,13 @@ transformPoint transforme un point en un autre
 \end_layout
 
 \begin_layout Description
-transformVector transforme un vecteur en un autre
+transformVector transforme un vecteur en un autre (prend en entrée le vecteur
+ en entrée et la position du vecteur)
 \end_layout
 
 \begin_layout Description
-getJacobian renvoie la matrice jacobienne (des dérivées premières en fonction
- des coordonnées) pour une position donnée
+getJacobian renvoie la matrice jacobienne (matrice des dérivées premières
+ en fonction des coordonnées) pour une position donnée
 \end_layout
 
 \begin_layout Standard
@@ -797,6 +798,30 @@ computeValueAndGradient cette méthode prend en entrée une transformation
  L'image gradient est interpolée selon les plus proches voisins.
 \end_layout
 
+\begin_layout Subsubsection
+SumOfSquaredDifferencesMetric
+\end_layout
+
+\begin_layout Standard
+Il s'agit principalement d'une ré-implémentation de la précédente.
+ Elle renvoie une somme au lieu d'une moyenne.
+\end_layout
+
+\begin_layout Standard
+Afin de pouvoir calculer des dérivées, elle déclare les champs suivants
+ :
+\end_layout
+
+\begin_layout Description
+transform le modèle de transformation utilisé, qui doit implémenter la méthode
+ getJacobian.
+\end_layout
+
+\begin_layout Description
+gradientImage une image vectorielle représentant typiquement le gradient
+ de l'image mobile
+\end_layout
+
 \begin_layout Section
 Optimisation
 \end_layout
@@ -858,11 +883,13 @@ Méthode abstraite
 
 \begin_layout Description
 startOptimization démarre l'algorithme d'optimisation jusqu'à ce qu'une
- condition d'arrêt soit atteinte
+ condition d'arrêt soit atteinte.
+ La gestion des conditions d'arrêt (nombre d'itération, déplacement inférieur
+ à un seuil...) est laissée aux classes dérivées.
 \end_layout
 
 \begin_layout Subsection
-Classe implémentées
+Optimisation basée sur la valeur
 \end_layout
 
 \begin_layout Subsubsection
@@ -894,6 +921,43 @@ Cet algorithme recherche le minimum d'une fonction en utilisant plusieurs
  On peut spécifier l'ensemble des directions de recherche (par défaut :
  recherche dans la direction de chaque paramètre individuel, et dans les
  directions de couples de paramètres).
+\end_layout
+
+\begin_layout Subsection
+Optimisation utilisant le gradient
+\end_layout
+
+\begin_layout Standard
+Plusieurs algorithmes utilisent le gradient des fonctions de coût pour accélerer
+ la recherche de l'optimum.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+GradientDescentOptimizer
+\end_layout
+
+\begin_layout Standard
+L'idée de cet algorithme est de se déplacer à chaque itération dans la direction
+ inverse du gradient.
+ La gradient impose la direction, mais le pas est fixé par l'algorithme,
+ en général une focntion décroissante du nombre d'itérations.
+\end_layout
+
+\begin_layout Standard
+Champs à renseigner :
+\end_layout
+
+\begin_layout Description
+nIter le nombre max d'itération
+\end_layout
+
+\begin_layout Description
+step0 l'amplitude du pas de déplacement
+\end_layout
+
+\begin_layout Description
+tau la taux de décroissance du pas de déplacement
 \end_layout
 
 \begin_layout Section
