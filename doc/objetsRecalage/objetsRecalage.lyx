@@ -13,7 +13,7 @@
 \end_preamble
 \use_default_options true
 \language french
-\inputencoding utf8
+\inputencoding utf8x
 \font_roman default
 \font_sans default
 \font_typewriter lmtt
@@ -61,7 +61,7 @@
 \begin_body
 
 \begin_layout Title
-ImageObj : bibliothèque de classes pour le recalage d'images sous Matlab
+OOLIP : bibliothèque de classes pour le recalage d'images sous Matlab
 \end_layout
 
 \begin_layout Author
@@ -88,6 +88,10 @@ today
 \begin_layout Abstract
 Description des classes définies et implémentées pour tester les algorithmes
  de recalage d'images en 2D et 3D sous Matlab.
+ La bibliothèque développée propose des classes pour représenter les images,
+ différents modèles de transformation, l'interpolation et le ré-échantillnnage
+ des images, des métriques pour comparer les images, et plusieurs algorithmes
+ d'optimisation.
 \end_layout
 
 \begin_layout Standard
@@ -117,6 +121,11 @@ Inspiration principale : ITK
 \begin_layout Standard
 idée générale : encapsuler les information, et manipuler les objets en se
  souciant le moins possible de leur implémentation.
+\end_layout
+
+\begin_layout Standard
+Certaines classes sont indépendantes de la dimension de travail.
+ Quand ce n'est pas le cas, la dimension est spécifiée en suffixe du nom.
 \end_layout
 
 \begin_layout Section
@@ -156,15 +165,9 @@ On trouve quelques méthodes statiques pour créer les images en utilisant
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{lstlisting}
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -174,13 +177,6 @@ img = Image2D.read('cameraman.tif');
 \begin_layout Plain Layout
 
 img.show();
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{lstlisting}
 \end_layout
 
 \end_inset
@@ -407,8 +403,10 @@ Modèles de transformation
 \end_layout
 
 \begin_layout Standard
-Toutes les transformations décrites ici héritent à la fois de Transform
- (et même de AffineTransform pour le moment) ainsi que de ParametricTransform.
+Les classes décrites ici permettent de représenter un modèle de transformation
+ dont on peur optimiser les paramètres.
+ Ces transformations héritent donc à la fois de Transform (et même de AffineTran
+sform pour le moment) et de ParametricTransform.
 \end_layout
 
 \begin_layout Subsubsection
@@ -491,11 +489,11 @@ Les angles de rotation sont stockés en degré et convertis en radian pour
  optimisables.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Implémentations utilitaires
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 MatrixAffineTransform
 \end_layout
 
@@ -505,7 +503,7 @@ Implémentation classique d'une transformation affine, sous la forme d'une
  Utilisées pour des tests, ou pour implémenter des transformations classiques.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 ComposedTransform
 \end_layout
 
@@ -583,15 +581,9 @@ create
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
+\begin_inset listings
+inline false
 status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{lstlisting}
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -616,17 +608,6 @@ ans =
 \begin_layout Plain Layout
 
      LinearInterpolator2D
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{lstlisting}
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset
@@ -666,7 +647,7 @@ Classes utilitaires
 
 \begin_layout Standard
 Ces classes sont destinées à faciliter la création et la manipulation des
- images transformées ou rééchantillonnées.
+ images transformées ou ré-échantillonnées.
 \end_layout
 
 \begin_layout Subsubsection
@@ -717,14 +698,14 @@ Métriques
 
 \begin_layout Standard
 Pour le recalage on a besoin de définir des métriques entre des images,
- ou plutôt entre des images interpolées.
+ ou plus exactement entre des images interpolées.
 \end_layout
 
 \begin_layout Standard
 Les métriques sont définie par rapport à un ensemble de points de test.
  Un ensemble de points de tests classique est constitué par l'ensemble des
  positions des pixels d'une des deux images.
- Comme on essaie de travailler sur des images interpoler, et donc qui ne
+ Comme on essaie de travailler sur des images interpolées, et donc qui ne
  définissent pas forcément leur base spatiale, l'ensemble de points tests
  est spécifié séparément.
 \end_layout
@@ -817,12 +798,127 @@ computeValueAndGradient cette méthode prend en entrée une transformation
 \end_layout
 
 \begin_layout Section
-Conclusion
+Optimisation
 \end_layout
 
 \begin_layout Standard
-Bibliothèque encore largement en développement.
+La boîte à outil optimisation de Matlab fournit plusieurs algorithmes d'optimisa
+tion.
+ Cependant, on peut avoir besoin d'algorithmes non implémentés dans la BAO,
+ et l'utilisation des fonctions n'est pas toujours pratique (besoin de beaucoup
+ de code et de pointeurs de fonctions).
+ On a donc créé des classes dédiée à l'optimisation, qui permettent une
+ meilleure modularité.
  
+\end_layout
+
+\begin_layout Standard
+Note : les noms des classes, champs et méthodes s'inspirent principalement
+ d'ITK et de la BAO Optimisation de Matlab.
+\end_layout
+
+\begin_layout Subsection
+Interface
+\end_layout
+
+\begin_layout Subsubsection
+Optimizer
+\end_layout
+
+\begin_layout Standard
+La classe Optimizer définit un algorithme d'optimisation.
+ Elle contient deux champs principaux :
+\end_layout
+
+\begin_layout Description
+costFunction qui représente la fonction de coût à optimiser
+\end_layout
+
+\begin_layout Description
+params qui réprésente l'état courant des paramètres
+\end_layout
+
+\begin_layout Standard
+D'autres champs sont présents pour faciliter la personnalisation :
+\end_layout
+
+\begin_layout Description
+outputFunction un pointeur de fonction qui est censé être appelé à chaque
+ itération
+\end_layout
+
+\begin_layout Description
+displayMode une chaîne de caractères qui spécifie la quantité d'information
+ à afficher à chaque étape
+\end_layout
+
+\begin_layout Paragraph*
+Méthode abstraite
+\end_layout
+
+\begin_layout Description
+startOptimization démarre l'algorithme d'optimisation jusqu'à ce qu'une
+ condition d'arrêt soit atteinte
+\end_layout
+
+\begin_layout Subsection
+Classe implémentées
+\end_layout
+
+\begin_layout Subsubsection
+NelderMeadSimplexOptimizer
+\end_layout
+
+\begin_layout Standard
+Cet algorithme recherche le minimum d'une fonction (supposée convexe) par
+ la méthode du simplexe de Nelder-Mead.
+ En pratique, il s'agit d'une encapsulation de la fonction 
+\begin_inset Quotes fld
+\end_inset
+
+fminsearch
+\begin_inset Quotes frd
+\end_inset
+
+ de Matlab.
+\end_layout
+
+\begin_layout Subsubsection
+MultiLinearSearchOptimizer
+\end_layout
+
+\begin_layout Standard
+Cet algorithme recherche le minimum d'une fonction en utilisant plusieurs
+ recherches linéaires.
+ Implémenté en utilisant la recherche de Brent.
+ On peut spécifier l'ensemble des directions de recherche (par défaut :
+ recherche dans la direction de chaque paramètre individuel, et dans les
+ directions de couples de paramètres).
+\end_layout
+
+\begin_layout Section
+Perspectives
+\end_layout
+
+\begin_layout Standard
+La bibliothèque encore largement en développement.
+ 
+\end_layout
+
+\begin_layout Standard
+Parmi les points à développer ultérieurement :
+\end_layout
+
+\begin_layout Itemize
+la création de paquetages, afin d'organiser un peu mieux les classes
+\end_layout
+
+\begin_layout Itemize
+la gestion des images couleurs
+\end_layout
+
+\begin_layout Itemize
+gérer l'information mutuelle sous forme de classe
 \end_layout
 
 \end_body
