@@ -17,9 +17,9 @@ function [params value] = startOptimization(this)
 
 
 % optimisation parameters
-step0 = 1;
-nIter = 200;
-tau = 50;
+step0   = this.step0;
+nIter   = this.nIter;
+tau     = this.tau;
 
 % allocate memory
 step = zeros(nIter, 1);

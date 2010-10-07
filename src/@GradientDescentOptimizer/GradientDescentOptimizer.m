@@ -17,7 +17,11 @@ classdef GradientDescentOptimizer < Optimizer
 
 properties
     %TODO: add gradient descent control
-    nIter = 200;
+    nIter   = 200;
+    
+    tau     = 50;
+    
+    step0   = 1;
 end
 
 %% Constructor

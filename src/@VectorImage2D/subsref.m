@@ -30,20 +30,19 @@ if strcmp(type, '.')
     else
         builtin('subsref', this, subs);
         if exist('ans', 'var')
-            varargout{1} = ans; %#ok<NOANS>
+            varargout = {ans}; %#ok<NOANS>
         end
     end
     
 elseif strcmp(type, '()')
     % In case of parens reference, index the inner data
-    varargout{1} = 0;
     
     % different processing if 1 or 2 indices are used
     ns = length(s1.subs);
     if ns==1
         % one index: use linearised image
         ind = s1.subs{1};
-        varargout{1} = this.data(ind);
+        varargout = {this.data(ind)};
 
     elseif ns==2 || ns==3
         % two indices: parse x and y indices 
@@ -58,10 +57,12 @@ elseif strcmp(type, '()')
             % extract corresponding data, and transpose to comply with
             % matlab representation
             varargout{1} = permute(this.data(ind1, ind2, :), [2 1 3]);
+            %varargout = {this.data(ind1, ind2, :)};
         else
             % parse band index 
             ind3 = s1.subs{3};
             varargout{1} = permute(this.data(ind1, ind2, ind3), [2 1 3]);
+            %varargout = {this.data(ind1, ind2, ind3)};
         end
     else
         error('VectorImage2D:subsref', ...
