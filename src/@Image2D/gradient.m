@@ -1,13 +1,18 @@
 function varargout = gradient(this, varargin)
 %GRADIENT Compute gradient of planar image
 %
-%   output = gradient(input)
+%   GIMG = IMG.gradient()
+%   Compute the graident of the image IMG. The result is a vector image,
+%   containing in each channel the gradient for a direction.
 %
 %   Example
-%   gradient
+%     % compute and display gradient of cameraman
+%     img = Image.read('cameraman.tif');
+%     grad = img.gradient;
+%     grad.show;
 %
 %   See also
-%   imfilter, fspecial
+%   VectorImage2D, imfilter, fspecial
 %
 % ------
 % Author: David Legland
@@ -16,7 +21,9 @@ function varargout = gradient(this, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
-% default filter for gradient: normalised sobel
+% default filter for gradient: normalized sobel
+% (direction is gradient over direction 1, that correspond to x-direction
+% in Image2D convention for data buffer)
 sx = fspecial('sobel')/8;
 
 % check if another gradient filter is proposed

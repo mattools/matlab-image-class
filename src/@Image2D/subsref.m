@@ -27,7 +27,7 @@ if strcmp(type, '.')
     if nargout>0
         % if some output arguments are asked, pre-allocate result
         varargout = cell(nargout, 1);
-        varargout{:} = builtin('subsref', this, subs);
+        [varargout{:}] = builtin('subsref', this, subs);
     else
         % call parent function, and eventually return answer
         builtin('subsref', this, subs);

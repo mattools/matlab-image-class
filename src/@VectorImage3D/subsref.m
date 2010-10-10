@@ -1,5 +1,5 @@
 function varargout = subsref(this, subs)
-%SUBSREF Overrides subsref method for VectorImage2D objects
+%SUBSREF Overrides subsref method for VectorImage3D objects
 %   output = subsref(input)
 %
 %   Example
@@ -26,7 +26,7 @@ if strcmp(type, '.')
     % if some output arguments are asked, use specific processing
     if nargout>0
         varargout = cell(nargout, 1);
-        varargout{:} = builtin('subsref', this, subs);
+        [varargout{:}] = builtin('subsref', this, subs);
     else
         builtin('subsref', this, subs);
         if exist('ans', 'var')

@@ -1,4 +1,4 @@
-function res = splitChannels(this)
+function varargout = splitChannels(this)
 %SPLITCHANNELS Puts the different channels of a vector image in a cell array
 %
 %   CHANNELS = IMG.splitChannels();
@@ -21,5 +21,14 @@ nc = this.getChannelNumber();
 
 res = cell(1, nc);
 for i=1:nc
-    res{i} = Image2D.create('data', this.data(:, :, i), 'parent', this);
+    res{i} = Image3D.create('data', this.data(:, :, :, i), 'parent', this);
+end
+
+% process output
+if nargout<=1
+    varargout{1} = res;
+elseif nargout==nc
+    varargout = res;
+else
+    error('Wrong number of outputs');
 end

@@ -3,7 +3,7 @@ function slice = getSlice(this, dir, index)
 %
 %   SLICE = this.getSlice(DIR, INDEX)
 %   DIR is 1, 2 or 3 for x, y or z direction respectively, and INDEX is the
-%   slice index, 0-indexed, between 0 and size(img, DIR)-1.
+%   slice index, 1-indexed, between 1 and getSize(img, DIR).
 %   The result SLICE is a matlab array.
 %
 %   Example
@@ -30,13 +30,13 @@ if ndims==3
     switch dir
         case 1
             % x-slice: rows Z, cols Y
-            slice = permute(this.data(index+1, :, :), [3 2 1]);
+            slice = permute(this.data(index, :, :), [3 2 1]);
         case 2
             % y-slice: rows Z, cols X
-            slice = permute(this.data(:, index+1, :), [3 1 2]);
+            slice = permute(this.data(:, index, :), [3 1 2]);
         case 3
             % Z-slice: rows Y, cols X
-            slice = this.data(:, :, index+1)';
+            slice = this.data(:, :, index)';
         otherwise
             error('should specify direction between 1 and 3');
     end
@@ -45,13 +45,13 @@ else
     switch dir
         case 1
             % x-slice: rows Z, cols Y
-            slice = permute(this.data(index+1, :, :, :), [4 2 3 1]);
+            slice = permute(this.data(index, :, :, :), [4 2 3 1]);
         case 2
             % y-slice: rows Z, cols X
-            slice = permute(this.data(:, index+1, :, :), [4 1 3 2]);
+            slice = permute(this.data(:, index, :, :), [4 1 3 2]);
         case 3
             %  Z-slice: rows Y, cols X
-            slice = permute(this.data(:, :, :, index+1), [2 1 3 4]);
+            slice = permute(this.data(:, :, :, index), [2 1 3 4]);
         otherwise
             error('should specify direction between 1 and 3');
     end

@@ -26,7 +26,7 @@ if strcmp(type, '.')
     % if some output arguments are asked, use specific processing
     if nargout>0
         varargout = cell(nargout, 1);
-        varargout{:} = builtin('subsref', this, subs);
+        [varargout{:}] = builtin('subsref', this, subs);
     else
         builtin('subsref', this, subs);
         if exist('ans', 'var')
