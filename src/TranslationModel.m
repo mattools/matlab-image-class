@@ -20,16 +20,23 @@ classdef TranslationModel < ParametricTransform & AffineTransform
 methods
     function this = TranslationModel(varargin)
         % Create a new model for translation transform model
-        if isempty(varargin)
-            % set parameters to default translation in 2D
-            this.params = [0 0];
-        else
+        
+        % set parameters to default translation in 2D
+        this.params = [0 0];
+        
+        if ~isempty(varargin)
             % extract first argument, and try to interpret
             var = varargin{1};
             if isa(var, 'TranslationModel')
                 this.params = var.params;
+                
             elseif isnumeric(var)
-                this.params = var;
+                if isscalar(var)
+                    this.params = zeros(1, var);
+                else
+                    this.params = var;
+                end
+                
             else
                 error('Unable to understand input arguments');
             end

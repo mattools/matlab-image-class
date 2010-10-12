@@ -9,7 +9,9 @@ classdef CenteredEulerTransform3D < AffineTransform & ParametricTransform
 %   params[5] = ty
 %   params[6] = tz
 % 
-%
+%   Creation:
+%   Trans = CenteredEulerTransform3D();
+%   
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
@@ -19,31 +21,42 @@ classdef CenteredEulerTransform3D < AffineTransform & ParametricTransform
 
 %% Declaration of class properties
 properties
-    % Center of the transform. Initialized to (0,0).
+    % Center of the transform. Initialized to (0,0,0).
     center = [0 0 0];
 end
 
 %% Constructors
 methods
     function this = CenteredEulerTransform3D(varargin)
-        % Create a new model for translation transform model
-        if isempty(varargin)
-            % parameters already set to default values
-        else
+        % Create a new centered motion transform
+        
+        this.params = zeros(1, 6);
+        
+        if ~isempty(varargin)
             % extract first argument, and try to interpret
             var = varargin{1};
             if isa(var, 'CenteredEulerTransform3D')
+                % copy constructor
                 this.params = var.params;
+                
             elseif isnumeric(var)
-                if length(var)==6
+                len = length(var);
+                if len==6
                     % all parameters are specified
                     this.params = var;
-                elseif length(var)==3
+                elseif len==3
                     % specify only angles, initialize translation to 0
                     this.params = [var 0 0 0];
+                elseif len==1
+                    % give the possibility to call constructor with the
+                    % dimension of image
+                    if var~=3
+                        error('Defined only for 3 dimensions');
+                    end
                 else
                     error('Please specify 3 angles and a 3D vector');
                 end
+                
             else
                 error('Unable to understand input arguments');
             end
@@ -80,10 +93,10 @@ methods
     function mat = getAffineMatrix(this)
         % Compute affine matrix associated with this transform
         
-        % extract angles
-        phi     = this.params(1)*pi/180;  % converts to radians
-        theta   = this.params(2)*pi/180;  % converts to radians
-        psi     = this.params(3)*pi/180;  % converts to radians
+        % extract angles and convert to radians
+        phi     = this.params(1)*pi/180;
+        theta   = this.params(2)*pi/180;
+        psi     = this.params(3)*pi/180;
 
         % compute elementary rotation matrices
         Rx = createRotationOx(phi);
@@ -111,18 +124,15 @@ methods
             z = varargin{2};
         end
         
-        % extract angles
-        phi     = this.params(1)*pi/180;  % converts to radians
-        theta   = this.params(2)*pi/180;  % converts to radians
-        psi     = this.params(3)*pi/180;  % converts to radians
+        % extract angles, and convert to radians
+        phi     = this.params(1)*pi/180;
+        theta   = this.params(2)*pi/180;
+        psi     = this.params(3)*pi/180;
 
-        % pre-computations
-        cx = cos(phi);
-        sx = sin(phi);
-        cy = cos(theta);
-        sy = sin(theta);
-        cz = cos(psi);
-        sz = sin(psi);
+        % pre-computations of trigonometric functions
+        cx = cos(phi);      sx = sin(phi);
+        cy = cos(theta);    sy = sin(theta);
+        cz = cos(psi);      sz = sin(psi);
 
         % jacobians are computed with respect to transformation center
         x = x - this.center(1);

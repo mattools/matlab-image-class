@@ -24,20 +24,22 @@ end
 methods
     function this = CenteredMotionTransform2D(varargin)
         % Create a new model for translation transform model
-        if isempty(varargin)
-            % parameters already set to default values
-        else
+
+        % setup default parameters
+        this.params = [0 0 0];
+        if ~isempty(varargin)
             % extract first argument, and try to interpret
             var = varargin{1};
             if isa(var, 'CenteredMotionTransform2D')
                 this.params = var.params;
+                
             elseif isnumeric(var)
-                if length(var)==1
-                    this.params = [var 0 0];
+                if length(var)==1 && var(1)~=2
+                    error('CenteredMotionTransform2D is defined only for 2 dimensions');                    
                 elseif length(var)==3
                     this.params = var(1:3);
                 else
-                    error('Please specify angle, or angle and vector');
+                    error('Please specify angle in degrees and vector');
                 end
             else
                 error('Unable to understand input arguments');
