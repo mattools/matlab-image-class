@@ -98,6 +98,10 @@ methods
                 point(:,i) = var(:);
             end
         end
+
+        if size(mat, 2)-1 ~= size(point, 2)
+            error('Point and transform must be same dimension');
+        end
         
         % compute coordinate of result point
         res = zeros(size(point));
