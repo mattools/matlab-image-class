@@ -20,7 +20,8 @@ function grad = evaluate(this, varargin)
 % Created: 2010-10-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-sx = repmat(fspecial('sobel')/8/3, [1 1 3]);
+% default filter for gradient: normalized 3D sobel
+sx = Image3D.createGradientKernels();
 
 % default output type
 outputType = 'double';

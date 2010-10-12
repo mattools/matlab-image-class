@@ -26,7 +26,10 @@ methods(Static)
     end
     
     img = read(fileName, varargin)
+
+    [sx sy sz] = createGradientKernels(varargin)
 end
+
 
 %% Private static methods
 methods(Static)

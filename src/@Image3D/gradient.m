@@ -16,9 +16,8 @@ function varargout = gradient(this, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
-% default filter for gradient: normalised sobel
-% sx = fspecial('sobel')/8; % (old for 2D)
-sx = repmat(fspecial('sobel')/8/3, [1 1 3]);
+% default filter for gradient: normalized 3D sobel
+sx = Image3D.createGradientKernels();
 
 % default output type
 outputType = 'double';
