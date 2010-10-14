@@ -76,7 +76,7 @@ methods (Access = protected)
             
             % update other data depending in image size.
             nd = length(this.dataSize);
-            this.calib      = createDefaultCalibration(nd);
+            this.calib  = SpatialCalibration(nd);
         end
         
         % assumes there are pairs of param-values
@@ -95,7 +95,8 @@ methods (Access = protected)
                     this.setOrigin(value);
                 case 'spacing'
                     this.setSpacing(value);
-                otherwise 
+                otherwise
+                    error(['Unknown parameter name: ' varName]);
             end
             
             varargin(1:2) = [];
@@ -109,15 +110,7 @@ methods (Access = protected)
             siz = size(this.data);
             this.dataSize = siz;            
         end
-        
-        function calib = createDefaultCalibration(nd)
-            % Create a default calibration structure for a given dimension
-            calib = struct;
-            calib.calibrated = false;
-            calib.origin = zeros(1, nd);
-            calib.spacing = ones(1, nd);
-            calib.unitName = '';
-        end
+       
     end
 end % constructor       
 
@@ -165,6 +158,7 @@ methods
     function setOrigin(this, origin)
         % Change image origin
         this.calib.origin = origin;
+        this.calib.calibrated = true;
     end
     
     function ori = getSpacing(this)
@@ -175,6 +169,7 @@ methods
     function setSpacing(this, spacing)
         % Change image spacing
         this.calib.spacing = spacing;
+        this.calib.calibrated = true;
     end
        
     function [index isInside] = pointToIndex(this, point)
