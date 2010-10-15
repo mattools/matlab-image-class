@@ -28,3 +28,6 @@ res = SpatialCalibration(newSpacing, newOrigin);
 % setup other fields
 res.calibrated  = this.calibrated;
 res.unitName    = this.unitName;
+if ~isempty(this.axisNames)
+    res.axisNames = this.axisNames(order);
+end

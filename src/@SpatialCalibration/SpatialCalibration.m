@@ -28,6 +28,9 @@ properties
     
     % the name of the spacing unit, empty by default
     unitName = '';
+    
+    % the name of each axis, stored in a cell array with ND elements
+    axisNames = {};
 end
 
 %% Constructors
@@ -102,6 +105,13 @@ methods
         this.calibrated = b;
     end
     
+    function name = getAxisName(this, axisNumber)
+        % Return the name of the i-th axis of the image.
+        name = '';
+        if length(this.axisNames)>axisNumber
+            name = this.axisNames{axisNumber};
+        end
+    end
 end % general methods
 
 end % classdef
