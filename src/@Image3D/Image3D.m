@@ -26,14 +26,18 @@ methods(Static)
     end
     
     img = read(fileName, varargin)
+    % Read an image from a file
 
     [sx sy sz] = createGradientKernels(varargin)
 end
 
 
 %% Private static methods
-methods(Static)
+methods(Static, Access=private)
     img = readstack(fileName, varargin)
+
+    axis = parseAxisIndex(axis)
+    % convert index or string to index    
 end
 
 %% Constructors

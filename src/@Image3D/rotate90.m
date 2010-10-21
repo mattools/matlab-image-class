@@ -1,5 +1,5 @@
 function res = rotate90(this, axis, varargin)
-%ROTATE90 Rotate 3D image around by 90 degrees around one of the main axes
+%ROTATE90 Rotate 3D image by 90 degrees around one of the main axes
 %
 %   ROTATED = rotate90(IMG, AXIS)
 %   Rotate the 3D image around the axis specified by AXIS.
@@ -23,10 +23,8 @@ function res = rotate90(this, axis, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
-% error checking
-if axis<1 || axis>3
-    error('Axis index must be comprised between 1 and 3');
-end
+% parse axis, and check bounds
+axis = Image3D.parseAxisIndex(axis);
 
 % positive or negative rotation
 n = 1;

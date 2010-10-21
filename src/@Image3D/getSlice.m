@@ -24,6 +24,9 @@ function slice = getSlice(this, dir, index)
 
 %TODO: decide if we return an array or a 2D image in 3D space.
 
+% parse axis, and check bounds
+dir = Image3D.parseAxisIndex(dir);
+
 ndims = length(size(this.data));
 if ndims==3
     % Case of gray scale images
@@ -41,7 +44,8 @@ if ndims==3
             error('should specify direction between 1 and 3');
     end
 else
-    % Case of color images
+    % Case of color images: slice the volume, and keep the channel
+    % component as last one.
     switch dir
         case 1
             % x-slice: rows Z, cols Y
