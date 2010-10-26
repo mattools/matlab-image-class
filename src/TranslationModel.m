@@ -28,13 +28,18 @@ methods
             % extract first argument, and try to interpret
             var = varargin{1};
             if isa(var, 'TranslationModel')
+                % copy constructor
                 this.params = var.params;
                 
             elseif isnumeric(var)
                 if isscalar(var)
+                    % interpret the scalar as the working dimension
                     this.params = zeros(1, var);
-                else
+                elseif size(var, 1)==1
+                    % interpret the vector as the translation parameter
                     this.params = var;
+                else
+                    error('Input argument must be a scalar or a row vector');
                 end
                 
             else
