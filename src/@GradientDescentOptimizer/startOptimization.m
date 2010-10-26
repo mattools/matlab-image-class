@@ -24,13 +24,29 @@ tau     = this.tau;
 % allocate memory
 step = zeros(nIter, 1);
 
+% setup parameters to initial value
+if ~isempty(this.initialParameters)
+    this.params = this.initialParameters;
+end
+
 for i=1:nIter
     fprintf('iter %d / %d\n', i, nIter);
     
     % update metric
     [value deriv] = this.costFunction(this.params);
     
-    % direction de recherche (on inverse car on cherche minimum)
+    % if scales are initialized, scales the derivative
+    if ~isempty(this.parameterScales)
+        % dimension check
+        if length(this.parameterScales) ~= length(this.params)
+            error('Scaling parameters should have same size as parameters');
+        end
+        
+        deriv = deriv ./ this.parameterScales;
+    end
+    
+    % search direction (with a minus sign because we are looking for the
+    % minimum)
     direction = -deriv/norm(deriv);
     
     % compute step depending on current iteration
@@ -54,4 +70,6 @@ for i=1:nIter
     end
 end
 
+% returns the current set of parameters
 params = this.params;
+

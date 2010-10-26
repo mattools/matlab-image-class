@@ -16,11 +16,18 @@ classdef Optimizer < handle
 % Copyright 2010 INRA - Cepia Software Platform.
 
 properties
+    % the function to minimize
+    costFunction;
+    
+    % the initial set of parameters
+    initialParameters = [];
+    
     % the current set of parameters
     params;
 
-    % the function to minimize
-    costFunction;
+    % Some scaling of the parameters for homogeneization
+    % (parameters will be divided by corresponding scale)
+    parameterScales = [];
     
     % the fucntion that will be called at each iteration
     outputFunction = [];
@@ -42,12 +49,28 @@ end
 
 %% General methods
 methods
+    function params = getInitialParameters(this)
+        params = this.initialParameters;
+    end
+    
+    function setInitialParameters(this, params0)
+        this.initialParameters = params0;
+    end
+    
     function params = getParameters(this)
         params = this.params;
     end
     
     function setParameters(this, params)
         this.params = params;
+    end
+    
+    function scales = getParameterScales(this)
+        scales = this.parameterScales;
+    end
+    
+    function setParameterScales(this, scales)
+        this.parameterScales = scales;
     end
     
     function fun = getCostFunction(this)

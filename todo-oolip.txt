@@ -1,12 +1,6 @@
 TODO-list for project imageObj
 ------------------------------
 
-- trouver un nom potable pour le projet (2010.06.21)
-    - OOLIP (Object-Oriented Library for Image Processing)
-    - OOLIM (Object-Oriented Library for Image with Matlab)
-    - IOM   (Image Objects for Matlab)
-    - MIPL  (Matlab Image Processing Library)
-
 
 - refaire quelques traitements de demos en utilisant package ImageObj (2010.06.26)
     + segmentation par LPE
@@ -17,10 +11,26 @@ Image structures
 - class Image
         
     - store label of axes ? (2010.06.30)
+    - manage image orientation (2010.10.22)
+    
+    - use a specific data structure to gather orientation data ? (2010.10.22)
+        + axis names
+        + anatomical orientation
+        + directions
+        + ...
+        Such a stucture could implement a 'rotate90' method, in the same way 
+        than calibration
+    
     - enhance filtering of some functions (2010.07.13)
         + open close, dilate, erode
         + filter
         
+    - use 'imageSize' field, that correspond to number of pixels for physical
+        dimensions (2010.10.12)
+        
+    - aire gerer lesconversion de coordonnees index-position par la classe de
+        calibration spatiale ? (2010.10.14)
+    
 - clone function ?                                                              +
     - ou alors un constructeur avec une image et un nouveau tableau de donnees
     - ou alors une fonction duplicate, avec psb de changer certaines infos
@@ -29,7 +39,6 @@ Image structures
 - Add support for Region of Interest (2010.07.13)   
     
 - implement VectorImage
-    - use 'channel' instead of 'band'
     - stocker le nom des bandes ?
     
 - implementer la methode resample (2010.06.17)
@@ -37,11 +46,20 @@ Image structures
     - appliquer a ImageFunction
     - appliquer a Image (passer par un interpolateur)
 
-    
+- implementer re echantillonnage d'une image 3D par une coupe (2010.10.10)
+    resampleSlicer(IMGFUN, PLANE, UDATA, VDATA);
+    sliceResampler(IMGFUN, PLANE, UDATA, VDATA);
+
+- implementer un gradientEvaluator qui calcule le gradient pour les points
+    demandes. (2010.10.10)
+            
 - better support for image datatype
 	- support arithmetic for different classes, with psb of specifying output
 		image type
 
+	- trouver des moyens faciles de creer des images RGB a partir de 2-3 images
+	    du meme type (2010.10.10)
+	    
 - Think about other image implementations:
     - ImageView: use data from another image, but cropped (2010.06.24)
 		   
@@ -52,7 +70,7 @@ Interpolators
 
 - implementer classe generique NearestNeighbor Interpolator (2010.06.17)
 
-- implementer une classe ImageFilter (ImageToImageFilter ?) (2010.06.17)
+- implementer une classe ImageFilter (mageToImageFilter ?) (2010.06.17)
     - methode abstraite "applyTo(Img):Img"
 
 
@@ -61,10 +79,14 @@ Parametric transforms:
 - Idealement, ce serait mieux que la composition de deux transfos affine
     renvoie une transfo qui herite elle-meme de AffineTransform (2010.06.17)
    
+- permettre de creer un modele de transfo avec comme entree un scalaire, 
+    correspondant a la dimension (2010.10.11)
 
+- stocker des parametres de 'scaling' par defaut pour les transformations
+    classiques (2010.10.12)
+    
+        
 Measures
-
-- add histogram
 
 - think about a way to measure parameters
     + use consistent interface for returning params

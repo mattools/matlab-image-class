@@ -2,7 +2,7 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass article
+\textclass scrartcl
 \begin_preamble
 
 \usepackage{fullpage}
@@ -757,8 +757,8 @@ Implémentation
 \end_layout
 
 \begin_layout Standard
-Pour le moment une seule implémentation, basée sur la moyenne des carrés
- des différences.
+Pour le moment une seule implémentation, basée sur la moyenne (ou la somme)
+ des carrés des différences, mais avec des noms différents...
 \end_layout
 
 \begin_layout Subsubsection
@@ -889,7 +889,13 @@ startOptimization démarre l'algorithme d'optimisation jusqu'à ce qu'une
 \end_layout
 
 \begin_layout Subsection
-Optimisation basée sur la valeur
+Optimisation basée sur la valeur de la fonction
+\end_layout
+
+\begin_layout Standard
+Les algorithmes de cette catégorie ne nécessitent de connaître que la fonction
+ de coût.
+ Leur vitesse de convergence est en général faible.
 \end_layout
 
 \begin_layout Subsubsection
@@ -908,6 +914,10 @@ fminsearch
 \end_inset
 
  de Matlab.
+\end_layout
+
+\begin_layout Standard
+A l'usage, il semble que l'on se retrouve assez vite dans des minima locaux.
 \end_layout
 
 \begin_layout Subsubsection
@@ -930,7 +940,7 @@ Optimisation utilisant le gradient
 \begin_layout Standard
 Plusieurs algorithmes utilisent le gradient des fonctions de coût pour accélerer
  la recherche de l'optimum.
- 
+ Pour le moment, seul l'algorithme de descente de gradient est implémenté.
 \end_layout
 
 \begin_layout Subsubsection
