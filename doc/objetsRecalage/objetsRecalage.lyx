@@ -749,7 +749,13 @@ computeValue calcule la valeur de la métrique
 \begin_layout Standard
 Certaines classes devraient aussi implémenter une méthode pour fournir le
  vecteur jacobien par rapport aux paramètres d'une transformation.
- Pour le moment (2010.08.24) il n'y a d'interface pour le spécifier.
+ Pour le moment (2010.08.24) il n'y a d'interface pour le spécifier, mais
+ le format de la méthode est le suivant :
+\end_layout
+
+\begin_layout Description
+computeValueAndGradient cette méthode prend en entrée une transformation
+ paramétrée ainsi qu'une image gradient.
 \end_layout
 
 \begin_layout Subsection
@@ -779,6 +785,21 @@ SSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
 En pratique, on passe par une moyenne de somme de différences.
 \end_layout
 
+\begin_layout Standard
+Afin de pouvoir calculer des dérivées, elle déclare les champs suivants
+ :
+\end_layout
+
+\begin_layout Description
+transform le modèle de transformation utilisé, qui doit implémenter la méthode
+ getJacobian.
+\end_layout
+
+\begin_layout Description
+gradientImage une image vectorielle représentant typiquement le gradient
+ de l'image mobile
+\end_layout
+
 \begin_layout Paragraph
 Méthodes implémentées 
 \end_layout
@@ -805,21 +826,6 @@ SumOfSquaredDifferencesMetric
 \begin_layout Standard
 Il s'agit principalement d'une ré-implémentation de la précédente.
  Elle renvoie une somme au lieu d'une moyenne.
-\end_layout
-
-\begin_layout Standard
-Afin de pouvoir calculer des dérivées, elle déclare les champs suivants
- :
-\end_layout
-
-\begin_layout Description
-transform le modèle de transformation utilisé, qui doit implémenter la méthode
- getJacobian.
-\end_layout
-
-\begin_layout Description
-gradientImage une image vectorielle représentant typiquement le gradient
- de l'image mobile
 \end_layout
 
 \begin_layout Section
