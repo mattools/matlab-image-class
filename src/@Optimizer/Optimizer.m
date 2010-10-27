@@ -25,6 +25,9 @@ properties
     % the current set of parameters
     params;
 
+    % the current value
+    value; 
+    
     % Some scaling of the parameters for homogeneization
     % (parameters will be divided by corresponding scale)
     parameterScales = [];
@@ -36,9 +39,21 @@ properties
     displayMode = 'iter';
 end
 
+%% Events
+events
+    % notified when the optimization starts
+    OptimizationStarted
+    
+    % notified when the an iteration is run
+    OptimizationIterated
+    
+    % notified when the optimization finishes
+    OptimizationTerminated
+end
+
 %% Constructor
 methods
-    
+    % no need to define anything special
 end
 
 %% Abstract methods
@@ -95,6 +110,30 @@ methods
     
     function setDisplayMode(this, mode)
         this.displayMode = mode;
+    end
+end
+
+%% Listeners management
+methods
+    function addOptimizationListener(this, listener)
+        %Adds an OptimizationListener to this optimizer
+        %
+        % usage: 
+        %   addOptimizationListener(OPTIM, LISTENER);
+        %   OPTIM is an instance of Optimizer
+        %   LISTENER is an instance of OptimizationListener
+        %
+        
+        % Check class of input
+        if ~isa(listener, 'OptimizationListener')
+            error('Input argument should be an instance of OptimizationListener');
+        end
+        
+        % link function handles to events
+        this.addlistener('OptimizationStarted', @listener.optimizationStarted);
+        this.addlistener('OptimizationIterated', @listener.optimizationIterated);
+        this.addlistener('OptimizationTerminated', @listener.optimizationTerminated);
+        
     end
 end
 

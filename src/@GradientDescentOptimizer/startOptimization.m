@@ -29,11 +29,15 @@ if ~isempty(this.initialParameters)
     this.params = this.initialParameters;
 end
 
+% Notify beginning of optimization
+this.notify('OptimizationStarted');
+
 for i=1:nIter
-    fprintf('iter %d / %d\n', i, nIter);
+    %fprintf('iter %d / %d\n', i, nIter);
     
     % update metric
     [value deriv] = this.costFunction(this.params);
+    this.value = value;
     
     % if scales are initialized, scales the derivative
     if ~isempty(this.parameterScales)
@@ -54,8 +58,14 @@ for i=1:nIter
     
     % compute new set of parameters
     this.params = this.params + direction*step(i);
+
     
-    % Call an output function for processing abour current point
+    % Notify the end of iteration to OptimizationListeners
+    this.notify('OptimizationIterated');
+
+    
+    % Call an output function for processing about current point
+    % (for compatibility with Matlab syntax)
     if ~isempty(this.outputFunction)
         % setup optim values
         optimValues.fval = value;
@@ -69,6 +79,9 @@ for i=1:nIter
         end
     end
 end
+
+% Notify termination event
+this.notify('OptimizationTerminated');
 
 % returns the current set of parameters
 params = this.params;

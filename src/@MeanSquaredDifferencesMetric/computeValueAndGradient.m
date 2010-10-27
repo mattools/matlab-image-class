@@ -259,7 +259,7 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside) - values1(isInside);
-res = sum(diff.^2);
+res = mean(diff.^2);
 
 %fprintf('Initial SSD: %f\n', res);
 
@@ -297,7 +297,7 @@ end
 gd = g(inds,:).*diff(:, ones(1, nParams));
 
 % somme des vecteurs gradient valides
-grad = sum(gd, 1);
+grad = mean(gd, 1);
 
 
 function [res grad isInside] = computeValueAndGradient3d(this, transfo, gx, gy, gz)
@@ -315,7 +315,7 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside)-values1(isInside);
-res = sum(diff.^2);
+res = mean(diff.^2);
 
 
 %% Compute gradient direction
@@ -352,4 +352,4 @@ end
 gd = g(inds,:).*diff(:, ones(1, nParams));
 
 % somme des vecteurs gradient valides
-grad = sum(gd, 1);
+grad = mean(gd, 1);
