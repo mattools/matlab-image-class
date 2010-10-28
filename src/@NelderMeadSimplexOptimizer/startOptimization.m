@@ -16,25 +16,53 @@ function [params value] = startOptimization(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
+% Notify beginning of optimization
+this.notify('OptimizationStarted');
+
 % some options
 options = optimset(...
     'TolX', 1e-2, ...
     'MaxIter', this.nIter, ...
-    'Display', 'iter');
+    'Display', this.displayMode);
 
 % Setup the eventual output function
 if ~isempty(this.outputFunction)
     options.OutputFcn = this.outputFunction;
 end
+options.OutputFcn = @outputFunctionHandler;
+
+% resume parameter array
+if ~isempty(this.initialParameters)
+    this.params = this.initialParameters;
+end
 
 % run the simplex optimizer, by calling Matlab optimisation function
-tic;
 [params value] = fminsearch(this.costFunction, this.params, options);
-elapsedTime = toc;
 
-% display some results
-disp(sprintf('Elapsed time: %7.5f s', elapsedTime)); %#ok<DSPS>
-disp('Optimized parameters: ');
-disp(params);
-
+% update inner data
 this.params = params;
+this.value = value;
+
+% Notify the end of optimization
+this.notify('OptimizationTerminated');
+
+
+    function stop = outputFunctionHandler(x, optimValues, state, varargin)
+        
+        stop = false;
+        % If an input function was specified, propagates processing
+        if ~isempty(this.outputFunction)
+            stop = this.outputFunction(x, optimValues, state);
+        end
+        
+        % update current values
+        this.params = x;
+        this.value = optimValues.fval;
+        
+        % Notify iteration
+        if strcmp(state, 'iter')
+            this.notify('OptimizationIterated');
+        end
+    end
+
+end

@@ -58,7 +58,7 @@ methods
 end
 
 methods
-    function optimizationStarted(this, src, event)
+    function optimizationStarted(this, src, event) %#ok<*INUSD>
         % Initialize the parameter array
         params = src.getParameters();
         this.paramValues = params;
@@ -73,10 +73,12 @@ methods
         figure(this.figureHandle);
         nRows = this.plotMatrix(1);
         nCols = this.plotMatrix(2);
+        nv = size(this.paramValues, 1);
         
         for i=1:length(params)
             subplot(nRows, nCols, i);
-            plot(this.paramValues(:, i));
+            plot(1:nv, this.paramValues(:, i));
+            xlim([0 nv]);
             
             if ~isempty(this.labels)
                 title(this.labels{i});

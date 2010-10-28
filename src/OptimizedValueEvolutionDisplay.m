@@ -45,30 +45,36 @@ methods
         if nargin > 1
             this.axisTitle = varargin{2};
         end
-                
+        
     end % end constructor
     
 end
 
 methods
     function optimizationStarted(this, src, event) %#ok<*INUSD>
+        
         % Initialize the parameter array
         this.valueArray = src.value;
     end
     
     function optimizationIterated(this, src, event)
         
-        % 
+        
         % append current value to the value array
         this.valueArray = [this.valueArray; src.value];
         
         % display current list of values
-        plot(this.axisHandle, this.valueArray);
+        nv = length(this.valueArray);
+        plot(this.axisHandle, 1:nv, this.valueArray);
+        set(this.axisHandle, 'xlim', [0 nv]);
         
         % decorate
         if ~isempty(this.axisTitle)
             title(this.axisHandle, this.axisTitle);
         end
+        
+        % refresh display
+        drawnow expose;
     end
     
 end

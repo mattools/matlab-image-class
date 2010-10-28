@@ -7,10 +7,10 @@ function [res isInside] = computeValue(this)
 %
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = this.fixedImage.evaluate(this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = this.transformedImage.evaluate(this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;

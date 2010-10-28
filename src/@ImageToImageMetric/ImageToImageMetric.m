@@ -3,7 +3,7 @@ classdef ImageToImageMetric < handle
 %
 %   output = ImageToImageMetric(input)
 %
-%   IMG1 and IMG2 should be instacne of ImageFunction. If they are not,
+%   IMG1 and IMG2 should be instance of ImageFunction. If they are not,
 %   they are converted using LinearInterpolator by default.
 %
 %   Example
