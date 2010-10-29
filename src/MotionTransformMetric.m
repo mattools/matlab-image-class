@@ -51,19 +51,22 @@ methods
         
         if size(linearPart, 2)==2
             theta = atan2(mat(2,1), mat(1,1));
-            rotLog = sqrt(2)*abs(theta);
+            
         elseif size(linearPart, 1)==3
-            % compute rotation angle theta around the rotation axis (not computed)
+            % compute rotation angle theta around the rotation axis 
+            % (the rotation axis is not computed)
             % valid only for 3D rotation matrices...
-            theta = acos((trace(linearPart)-1)/2);
-            rotLog = sqrt(2)*abs(theta);
+            theta = acos((trace(linearPart) - 1) / 2);
+            
         else
             error('dimension not managed');
         end
         
+        rotLog = 2*theta^2;
+        
         transPart = mat(1:end-1, end);
         
-        res = norm(transPart) + rotLog;
+        res = sum(transPart.^2) + rotLog;
         
     end
     

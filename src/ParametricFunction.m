@@ -20,6 +20,9 @@ classdef ParametricFunction < handle
 methods (Abstract)
     setParameters(this, params)
     % Setup the parameters of the object
+  
+%     params = getParameters(this)
+%     % Returns the parameter vector associated to this transform
     
     res = computeValue(this)
     % Compute the value using the actual parameters (do not change state)
@@ -27,11 +30,15 @@ methods (Abstract)
 end % abstract methods
 
 methods
-    function res = evaluate(this, params)
+    function [res grad] = evaluate(this, params)
         % basic implementation of evaluate function
         % this make possible the call in an Optimization procedure.
         this.setParameters(params);
-        res = this.computeValue();
+        if nargin<=1
+            res = this.computeValue();
+        else
+            [res grad] = this.computeValueAndGradient();
+        end
     end
     
 end % base implementation

@@ -627,8 +627,26 @@ Calibration spatiale
 \end_layout
 
 \begin_layout Standard
-L'approche dans le logiciel ITK est d'intégrer les informations de calibration
- spatiale à la structure de données image.
+On distingue deux types de référencement des coordonnées des pixels :
+\end_layout
+
+\begin_layout Itemize
+soit les pixels sont stockées sur les sommets d'une grille : cela a l'avantage
+ d'avoir des coordonnées entières pour les pixels, et donc de faciliter
+ leur repérage (ex : si on dessine un point en coordonnées (3,5), il sera
+ situé au centre du pixel correspondant)
+\end_layout
+
+\begin_layout Itemize
+soit on considère que les pixels sont situés au centre d'un carré ou cube.
+ L'avantage est que l'affichage est plus simple à gérer (un côté de carré
+ zoom*zoom).
+ Re-échantillonner les images est peut-être aussi plus simple.
+\end_layout
+
+\begin_layout Standard
+Pour la calibration spatiale, l'approche dans le logiciel ITK est d'intégrer
+ les informations à la structure de données image.
  Idée à garder a priori.
  
 \end_layout
@@ -647,7 +665,7 @@ la position du premier pixel
 
 \begin_layout Standard
 Ces deux informations sont en unité métrique, et correspondent à un tableau
- 1D avec autant d'éléments que la dimension de l'image.
+ 1D avec autant d'éléments que le nombre de dimensions spatiales de l'image.
 \end_layout
 
 \begin_layout Standard
@@ -1406,7 +1424,7 @@ autre nom potentiel : dims.
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Description
@@ -1629,7 +1647,7 @@ autre nom ? candidat : buffer
 \end_layout
 
 \begin_layout Description
-imageSize La dimension totale de l'image.
+dataSize La dimension totale de l'image.
  Nécessaire de le stocker pour éviter les problèmes de dimensionnement.
 \begin_inset Note Note
 status open
@@ -1642,6 +1660,11 @@ autre nom potentiel : dims.
 \end_inset
 
  
+\end_layout
+
+\begin_layout Description
+imageSize la dimension spatiale de l'image, c'est à dire le nombre de pixels
+ dans chaque axe représentant une dimension physique
 \end_layout
 
 \begin_layout Description

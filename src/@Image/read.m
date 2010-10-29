@@ -75,3 +75,6 @@ if isfield(info, 'ElementSpacing')
     calib.calibrated = true;
 end
 img.setSpatialCalibration(calib);
+
+[path name] = fileparts(fileName); %#ok<ASGLU>
+img.name = name;

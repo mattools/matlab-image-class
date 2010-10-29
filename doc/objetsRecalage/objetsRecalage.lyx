@@ -129,7 +129,7 @@ Certaines classes sont indépendantes de la dimension de travail.
 \end_layout
 
 \begin_layout Section
-Images
+Structure de donnée Image
 \end_layout
 
 \begin_layout Standard
@@ -189,8 +189,15 @@ img.show();
  Une adaptation est en cours (2010.08.24).
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
-Transformations
+Transformations géométriques
 \end_layout
 
 \begin_layout Standard
@@ -322,7 +329,8 @@ Enfin, on a aussi une méthode pour calculer les dérivées mais en fonction
 
 \begin_layout Description
 getParametricJacobian calcule la matrice jacobienne, qui a autant de lignes
- que le nombre de dimensions, et autant de colonne que le nombre de paramètres
+ que le nombre de dimensions spatiales, et autant de colonne que le nombre
+ de paramètres
 \end_layout
 
 \begin_layout Subsubsection
@@ -536,6 +544,13 @@ Transform
 , et être définies pour les mêmes dimensions.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Interpolation et re-échantillonnage
 \end_layout
@@ -693,8 +708,15 @@ ImageFunction
 ation sont calculées, et utilisées pour évaluer la valeur dans l'image stockée.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
-Métriques 
+Comparaison des images
 \end_layout
 
 \begin_layout Standard
@@ -738,6 +760,20 @@ points un ensemble de points de test
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+voir si on remplace pas le tableau de points par un PointGenerator ou une
+ structure assimilée
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Elle déclare la méthode suivante, qui sera implémentée dans les classes
  dérivées :
 \end_layout
@@ -749,8 +785,7 @@ computeValue calcule la valeur de la métrique
 \begin_layout Standard
 Certaines classes devraient aussi implémenter une méthode pour fournir le
  vecteur jacobien par rapport aux paramètres d'une transformation.
- Pour le moment (2010.08.24) il n'y a d'interface pour le spécifier, mais
- le format de la méthode est le suivant :
+ Pour le moment (2010.08.24) il n'y a pas d'interface pour le spécifier.
 \end_layout
 
 \begin_layout Description
@@ -768,13 +803,13 @@ Pour le moment une seule implémentation, basée sur la moyenne (ou la somme)
 \end_layout
 
 \begin_layout Subsubsection
-MeanSquaresImageToImageMetric
+MeanSquaredDifferencesMetric
 \end_layout
 
 \begin_layout Standard
 Correspond à une discrétisation de l'intégrale 
 \begin_inset Formula \[
-SSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
+MSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
 
 \end_inset
 
@@ -828,8 +863,15 @@ Il s'agit principalement d'une ré-implémentation de la précédente.
  Elle renvoie une somme au lieu d'une moyenne.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
-Optimisation
+Optimisation de la fonction de coût
 \end_layout
 
 \begin_layout Standard
@@ -849,7 +891,7 @@ Note : les noms des classes, champs et méthodes s'inspirent principalement
 \end_layout
 
 \begin_layout Subsection
-Interface
+Interfaces
 \end_layout
 
 \begin_layout Subsubsection
@@ -892,6 +934,138 @@ startOptimization démarre l'algorithme d'optimisation jusqu'à ce qu'une
  condition d'arrêt soit atteinte.
  La gestion des conditions d'arrêt (nombre d'itération, déplacement inférieur
  à un seuil...) est laissée aux classes dérivées.
+\end_layout
+
+\begin_layout Subsubsection
+Fonction à optimiser
+\end_layout
+
+\begin_layout Standard
+La fonction à optimiser est passée sous la forme d'un pointeur de fonction.
+ La fonction doit accepter en premier argument le vecteur de paramètres,
+ et renvoyer la valeur de la fonction de coût en premier argument de sortie.
+ 
+\end_layout
+
+\begin_layout Standard
+Pour les méthodes d'optimisation utilisant le gradient ou la matrice Hessienne,
+ Matlab suppose que la fonction renvoie ces paramètres respectivement en
+ deuxième et troisième arguments de sortie.
+\end_layout
+
+\begin_layout Standard
+Dans un cadre de recalage, on a deux actions à accomplir : 
+\end_layout
+
+\begin_layout Enumerate
+mettre à jour le vecteur de paramètres de l'objet (une transformation, ou
+ un groupe de transformations) à optimiser
+\end_layout
+
+\begin_layout Enumerate
+calculer la valeur d'une métrique qui dépend de l'objet à optimiser.
+\end_layout
+
+\begin_layout Standard
+On peut utiliser un des pointeurs de fonction suivants :
+\end_layout
+
+\begin_layout Description
+evaluateParametricMetric(params,
+\begin_inset space ~
+\end_inset
+
+transfo,
+\begin_inset space ~
+\end_inset
+
+metric) cette fonction met à jour les paramètres de la transformation, et
+ appelle la méthode 
+\begin_inset Quotes fld
+\end_inset
+
+computeValue
+\begin_inset Quotes frd
+\end_inset
+
+ de la métrique.
+\end_layout
+
+\begin_layout Description
+evaluateParametricMetricValueAndGradient la même, mais on évalue aussi le
+ gradient.
+ Les paramètres additionnels (typiquement, l'image de gradient) sont transmis
+ à la méthode 
+\begin_inset Quotes fld
+\end_inset
+
+computeValue
+\begin_inset Quotes frd
+\end_inset
+
+ de l'objet métrique.
+\end_layout
+
+\begin_layout Subsubsection
+MetricEvaluator
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'un objet qui encapsule (1) la transformation paramétrique à
+ optimiser, et (2) une métrique qui dépend de la transformation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% Cree un optimiseur (ici par descente de gradient)
+\end_layout
+
+\begin_layout Plain Layout
+
+optimizer = GradientDescentOptimizer();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Cree un evaluateur, a partir de la transfo et de la metrique
+\end_layout
+
+\begin_layout Plain Layout
+
+evaluator = MetricEvaluator(transfo2, metric);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% associe la focntion de cout a l'optimiseur
+\end_layout
+
+\begin_layout Plain Layout
+
+fun = @evaluator.evaluate;
+\end_layout
+
+\begin_layout Plain Layout
+
+optimizer.setCostFunction(fun);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -974,6 +1148,106 @@ step0 l'amplitude du pas de déplacement
 
 \begin_layout Description
 tau la taux de décroissance du pas de déplacement
+\end_layout
+
+\begin_layout Subsection
+Monitoring de l'optimization
+\end_layout
+
+\begin_layout Standard
+On dispose aussi d'un système de gestion d'évènements, qui permet d'actualiser
+ l'affichage graphique au cours de la procédure d'optimisation.
+ Quelques classes utilitaires pour afficher l'évolution de l'algorithme
+ ont aussi été développées.
+\end_layout
+
+\begin_layout Subsubsection
+OptimizationListener
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'une classe abstraite, dont le but est de fournir une implémentation
+ minimale pour les méthodes suivantes :
+\end_layout
+
+\begin_layout Description
+optimizationStarted appelée quand la procédure d'optimisation démarre
+\end_layout
+
+\begin_layout Description
+optimizationIterated appelée à la fin de chaque itération de la procédure
+ d'optimisation
+\end_layout
+
+\begin_layout Description
+optimizationTerminated appelée lorsque la procédure d'optimisation est terminée
+\end_layout
+
+\begin_layout Standard
+Les classes dérivées ont ainsi juste à re-implémenter l'une ou la totalité
+ de ces méthodes pour avoir un comportement spécifique.
+ On ajoute un listener à un optimiseur de la façon suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+opt = NelderMeadSimplexOptimizer();
+\end_layout
+
+\begin_layout Plain Layout
+
+listener = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+opt.addOptimizationListener(listener);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+ParametersEvolutionDisplay
+\end_layout
+
+\begin_layout Standard
+Affiche l'évolution de plusieurs paramètres dans une fenêtre donnée en fonction
+ du nombre d'itérations.
+\end_layout
+
+\begin_layout Subsubsection
+OptimizedValueListener
+\end_layout
+
+\begin_layout Standard
+Affiche l'évolution de la valeur actuelle de la fonction d'otpimisation
+ en fonction du nombre d'itérations.
+ Affiche dans un objet axes.
+\end_layout
+
+\begin_layout Subsubsection
+ParametricFunctionEvolutionDisplay
+\end_layout
+
+\begin_layout Standard
+Affiche l'évolution de la valeur courante d'une fonction paramétrique quelconque
+ en fonction du nombre d'itérations.
+ Affiche dans un objet axes.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section

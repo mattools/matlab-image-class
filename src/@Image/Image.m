@@ -18,9 +18,9 @@ properties
     % Inner data of image
     data        = [];
     
-    % Size of image, corresponding to buffer size (in x,y... order)
+    % Size of data buffer(in x,y,z,c,t order)
     dataSize    = [];
-    
+        
     % Spatial calibration of image.
     calib;
     

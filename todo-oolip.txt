@@ -27,6 +27,7 @@ Image structures
         
     - use 'imageSize' field, that correspond to number of pixels for physical
         dimensions (2010.10.12)
+    - and keep dataSize for size of the buffer array, and keep its length to 5
         
     - aire gerer lesconversion de coordonnees index-position par la classe de
         calibration spatiale ? (2010.10.14)
@@ -59,6 +60,10 @@ Image structures
 
 	- trouver des moyens faciles de creer des images RGB a partir de 2-3 images
 	    du meme type (2010.10.10)
+	    
+	- differencier dataType et imageType
+	    * dataType : {logical | uint8 | int8 | uint16 | int16 | single | double ...}
+	    * imageType : {intensity | label | binary | vector | color | other }
 	    
 - Think about other image implementations:
     - ImageView: use data from another image, but cropped (2010.06.24)
