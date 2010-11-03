@@ -1,4 +1,4 @@
-classdef ImageToImageMetric < handle
+classdef ImageToImageMetric < BaseFunction
 %IMAGETOIMAGEMETRIC Abstract class that define a metric between 2 images
 %
 %   output = ImageToImageMetric(input)
@@ -11,7 +11,7 @@ classdef ImageToImageMetric < handle
 %   M.evaluate()
 %
 %   See also
-%
+%   MeanSquaredDifferencesMetric
 %
 % ------
 % Author: David Legland
@@ -22,9 +22,11 @@ classdef ImageToImageMetric < handle
 %% Properties
 properties
     % the fixed image
-    img1;    
+    img1;
+    
     % the moving image
-    img2;    
+    img2;
+    
     % the set of points that will be used for evaluating the metric
     points;
     

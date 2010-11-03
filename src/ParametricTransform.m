@@ -1,4 +1,4 @@
-classdef ParametricTransform < Transform
+classdef ParametricTransform < Transform & ParametricObject
 %ParametricTransform  Abstract class for parametric transform ND->ND
 %   output = ParametricTransform(input)
 %

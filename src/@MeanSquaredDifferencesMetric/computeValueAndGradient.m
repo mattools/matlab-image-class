@@ -63,7 +63,10 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside) - values1(isInside);
-res = mean(diff.^2);
+
+% average over all points
+np = length(isInside);
+res = sum(diff.^2)/np;
 
 %fprintf('Initial SSD: %f\n', res);
 
@@ -127,7 +130,10 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside) - values1(isInside);
-res = mean(diff.^2);
+
+% average over all points
+np = length(isInside);
+res = sum(diff.^2)/np;
 
 %fprintf('Initial SSD: %f\n', res);
 
@@ -196,7 +202,10 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside) - values1(isInside);
-res = mean(diff.^2);
+
+% average over all points
+np = length(isInside);
+res = sum(diff.^2)/np;
 
 %fprintf('Initial SSD: %f\n', res);
 
@@ -259,7 +268,10 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside) - values1(isInside);
-res = mean(diff.^2);
+
+% average over all points
+np = length(isInside);
+res = sum(diff.^2)/np;
 
 %fprintf('Initial SSD: %f\n', res);
 
@@ -315,7 +327,10 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = values2(isInside)-values1(isInside);
-res = mean(diff.^2);
+
+% average over all points
+np = length(isInside);
+res = sum(diff.^2)/np;
 
 
 %% Compute gradient direction

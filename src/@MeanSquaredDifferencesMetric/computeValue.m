@@ -17,4 +17,7 @@ isInside = inside1 & inside2;
 
 % compute result
 diff = (values2(isInside) - values1(isInside)).^2;
-res = mean(diff);
+
+% average over all points
+np = length(isInside);
+res = sum(diff)/np;

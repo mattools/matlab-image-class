@@ -50,17 +50,19 @@ this.notify('OptimizationTerminated');
     function stop = outputFunctionHandler(x, optimValues, state, varargin)
         
         stop = false;
+
+        % update current values
+        this.params = x;
+        this.value = optimValues.fval;
+        
         % If an input function was specified, propagates processing
         if ~isempty(this.outputFunction)
             stop = this.outputFunction(x, optimValues, state);
         end
         
-        % update current values
-        this.params = x;
-        this.value = optimValues.fval;
-        
         % Notify iteration
         if strcmp(state, 'iter')
+            this.costFunction(x);
             this.notify('OptimizationIterated');
         end
     end
