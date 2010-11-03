@@ -1,7 +1,9 @@
 classdef MetricEvaluator < handle
 %METRICEVALUATOR Evaluate a metric that depend on a parametric object
 %
-%   output = MetricEvaluator(input)
+%   Usage:
+%   ME = MetricEvaluator(TRANSFO, METRIC);
+%   ME.evaluate(PARAMS);
 %
 %   Example
 %   MetricEvaluator

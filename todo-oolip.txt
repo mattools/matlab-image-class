@@ -29,9 +29,10 @@ Image structures
         dimensions (2010.10.12)
     - and keep dataSize for size of the buffer array, and keep its length to 5
         
-    - aire gerer lesconversion de coordonnees index-position par la classe de
-        calibration spatiale ? (2010.10.14)
+    - faire gerer les conversions de coordonnees index-position par la classe
+        de calibration spatiale ? (2010.10.14)
     
+        
 - clone function ?                                                              +
     - ou alors un constructeur avec une image et un nouveau tableau de donnees
     - ou alors une fonction duplicate, avec psb de changer certaines infos

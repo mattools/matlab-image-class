@@ -1,8 +1,8 @@
 classdef ParametricTransform < Transform & ParametricObject
 %ParametricTransform  Abstract class for parametric transform ND->ND
-%   output = ParametricTransform(input)
 %
-%
+%   Superclass for transformation model that can be represented by a vector
+%   of parameters, and used as input in optimization procedures.
 %
 % ------
 % Author: David Legland

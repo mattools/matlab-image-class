@@ -1,12 +1,18 @@
 classdef Translation < AffineTransform
 %TRANSLATION Defines a translation in ND space
-%   output = Translation(input)
+%   
+%   Representation of a translation transform in ND space.
+%   The translation vector is stored by the class, and the transformation
+%   matrix is computed when needed.
+%
+%   For a parameterized translation, see TranslationModel class.
 %
 %   Example
-%   Translation
+%   % Creates a 3D translation 
+%   T = Translation([3 4 5]);
 %
 %   See also
-%
+%   AffineTransform, TranslationModel
 %
 % ------
 % Author: David Legland
@@ -28,7 +34,7 @@ methods
         % where VEC is a row vector, initialize translation with vector VEC
         %
         % T = Translation(V1, V2...)
-        % Initialize each component separately. each component must be a
+        % Initialize each component separately. Each component must be a
         % scalar.
         %
         % T = Translation;
