@@ -10,6 +10,15 @@ Image structures
 
 - class Image
         
+    - Split class Image into a specific library ? (2010.11.04)
+        + remove some functions (think about a way to have additional methods
+            in a separate directory)
+            o resample
+            o subsample
+            o (backward)transform
+        + can re-organize unit tests
+        + can start a GUI-based prog like ImageM. (ImAGem ?)
+        
     - store label of axes ? (2010.06.30)
     - manage image orientation (2010.10.22)
     
@@ -65,6 +74,7 @@ Image structures
 	- differencier dataType et imageType
 	    * dataType : {logical | uint8 | int8 | uint16 | int16 | single | double ...}
 	    * imageType : {intensity | label | binary | vector | color | other }
+	        -> comment interpreter la dimension channel
 	    
 - Think about other image implementations:
     - ImageView: use data from another image, but cropped (2010.06.24)
@@ -84,10 +94,8 @@ Parametric transforms:
    
 - Idealement, ce serait mieux que la composition de deux transfos affine
     renvoie une transfo qui herite elle-meme de AffineTransform (2010.06.17)
-   
-- permettre de creer un modele de transfo avec comme entree un scalaire, 
-    correspondant a la dimension (2010.10.11)
 
+    
 - stocker des parametres de 'scaling' par defaut pour les transformations
     classiques (2010.10.12)
     

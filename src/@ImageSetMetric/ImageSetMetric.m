@@ -1,7 +1,9 @@
 classdef ImageSetMetric < handle
 %IMAGESETMETRIC  One-line description here, please.
 %
-%   output = ImageSetMetric(input)
+%   METRIC = ImageSetMetric(IMAGES, POINTS);
+%   IMAGES: a cell array containing image interpolators
+%   POINTS: a N-by-2 or N-by3 array containing coordinates of test points
 %
 %   Example
 %   ImageSetMetric
@@ -19,6 +21,7 @@ classdef ImageSetMetric < handle
 properties
     % the set of images
     images 
+    
     % the set of points that will be used for evaluating the metric
     points;
     

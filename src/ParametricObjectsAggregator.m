@@ -43,6 +43,15 @@ methods
     
 end % construction function
 
+
+%% Provate static methods for inner computations
+methods (Static, Access=private)
+    function name = formatParameterName(name, i)
+        name = sprintf('%s (%d)', name, i);
+    end
+end
+
+
 %% Methods implementing the parametric Object interface
 methods
     function params = getParameters(this)
@@ -70,7 +79,7 @@ methods
         
         nObj = length(this.parametrics);
         
-        % dispatch parameters to children
+        % dispatch parameters to children parametric objects
         ind = 0;
         for i=1:nObj
             item = this.parametrics{i};
@@ -119,6 +128,7 @@ methods
             
             nOP = nOP + nP;
         end
+        name = ParametricObjectsAggregator.formatParameterName(name, i);
     end
     
     function names = getParameterNames(this)
@@ -144,7 +154,9 @@ methods
         for i=1:nObj
             names_i = getParameterNames(this.parametrics{i});
             nP = length(names_i);
-            names(ind+(1:nP)) = names_i;
+            for j=1:nP
+                names{ind+j} = ParametricObjectsAggregator.formatParameterName(names_i{j}, i);
+            end
             ind = ind + nP;
         end
      end

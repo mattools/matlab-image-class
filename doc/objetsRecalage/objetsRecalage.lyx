@@ -817,7 +817,7 @@ MSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
 \end_layout
 
 \begin_layout Standard
-En pratique, on passe par une moyenne de somme de différences.
+En pratique, on passe par une moyenne des carrés des différences.
 \end_layout
 
 \begin_layout Standard
@@ -849,9 +849,27 @@ computeValue Cette méthode itère sur tous les points tests, évalue la valeur
 \begin_layout Description
 computeValueAndGradient cette méthode prend en entrée une transformation
  paramétrée ainsi que les composantes d'une image gradient, et renvoie la
- valeur du vecteur gradient calculé en moyennant, pour les points de test,
+ valeur du vecteur gradient calculée en moyennant, pour les points de test,
  le produit du jacobien de la transformation par l'image gradient.
  L'image gradient est interpolée selon les plus proches voisins.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Question en suspens : que faire avec les points qui tombent en dehors ?
+ Pour le moment, je calcule la somme sur les points valides, et divise par
+ le nombre total de points.
+ Si on divise par le nombre de points valides, on peut avoir une métrique
+ plus élevée quand le recalage est meilleur, ce qui est contradictoire...
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1050,7 +1068,7 @@ evaluator = MetricEvaluator(transfo2, metric);
 
 \begin_layout Plain Layout
 
-% associe la focntion de cout a l'optimiseur
+% associe la fonction de cout a l'optimiseur
 \end_layout
 
 \begin_layout Plain Layout
