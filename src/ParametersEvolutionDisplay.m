@@ -84,7 +84,7 @@ methods
                 title(this.labels{i});
             end
         end
-        
+        drawnow;
     end
     
     function optimizationTerminated(this, src, event)

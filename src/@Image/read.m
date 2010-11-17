@@ -48,7 +48,7 @@ elseif strmatch(format, 'dicom')
 else
     % otherwise, assumes format can be managed by Matlab Image Processing
     data = imread(fileName);
-    img = Image2D(data);
+    img = Image(data);
 end
 
 

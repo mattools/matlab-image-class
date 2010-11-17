@@ -31,7 +31,7 @@ methods
             % copy constructor
             var = varargin{1};
             img = var.image;
-        elseif isa(varargin{1}, 'Image2D')
+        elseif isa(varargin{1}, 'Image')
             % copy constructor
             img = varargin{1};
         else

@@ -149,7 +149,7 @@ methods
             vals = zeros(size(x), this.outputType);
         
             vals(:) = imgFun.evaluate([x(:) y(:)]);
-            img2 = Image2D(vals);
+            img2 = Image.create(vals);
         elseif outputDim==3
             % Process 3D images
             lz = (0:this.outputSize(3)-1)*this.spacing(3) + this.origin(3);
@@ -157,7 +157,7 @@ methods
             vals = zeros(size(x), this.outputType);
         
             vals(:) = imgFun.evaluate([x(:) y(:) z(:)]);
-            img2 = Image3D(vals);
+            img2 = Image.create(vals);
         else
             % TODO: implement for greater dimensions ?
             error('Resampling is only implemented for dimensions 2 and 3');

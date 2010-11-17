@@ -60,6 +60,7 @@ if isnumeric(var1)
         data = permute(var1, [2 1 3:nd]);
         imageSize = size(var1);
     end
+    
 elseif ischar(var1)
     % first argument is a string, so we iterate over argument pairs to find
     % which one contains data
@@ -76,14 +77,32 @@ elseif ischar(var1)
     end
 end
 
-
-
-% call specific constructors depending on image dimension
-nd = length(imageSize);
-if nd==2
-    img = Image2D('data', data, varargin{:});
-elseif nd==3
-    img = Image3D('data', data, varargin{:});
-else
-    error('Sorry, dimension not yet managed');
+% process specific options
+arguments = {};
+while length(varargin)>1
+    param = varargin{1};
+    if ~ischar(param)
+        error('Expected parameter name');
+    end
+    
+    if strcmpi(param, 'vector')
+        value = varargin{2};
+        if value 
+            nd = nd-1;
+            imageSize(end) = [];
+            if nd==2
+                data = permute(data, [1 2 4 3]);
+            end
+        end
+    else
+        arguments = [arguments , varargin(1:2)]; %#ok<AGROW>
+    end
+    
+    varargin(1:2) = [];
 end
+
+
+% call constructor depending on image dimension
+nd = length(imageSize);
+img = Image(nd, 'data', data, arguments{:});
+

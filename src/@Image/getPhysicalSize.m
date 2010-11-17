@@ -19,4 +19,5 @@ function s = getPhysicalSize(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % multiply size of data array by element spacing
-s = this.dataSize .* this.calib.spacing;
+nd = getDimension(this);
+s = this.dataSize(1:nd) .* this.calib.spacing;

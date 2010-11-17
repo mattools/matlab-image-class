@@ -22,13 +22,14 @@ function extent = getPhysicalExtent(this)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+nd = getDimension(this);
+
 % extract base data
-sz = this.dataSize;
-sp = this.calib.spacing;
-or = this.calib.origin;
+sz = this.dataSize(1:nd);
+sp = this.calib.spacing(1:nd);
+or = this.calib.origin(1:nd);
 
 % put extent in array
-nd = length(sz);
 extent = (([zeros(nd, 1) sz']-.5).* [sp' sp'] + [or' or'])';
 
 % change array shape to get a single row

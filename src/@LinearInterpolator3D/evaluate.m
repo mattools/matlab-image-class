@@ -58,7 +58,7 @@ dx = (xt-i1);
 dy = (yt-j1);
 dz = (zt-k1);
 
-% values of the 4 pixels around each point
+% % values of the 4 pixels around each point
 val111 = double(this.image.getPixels(i1, j1, k1)).*(1-dx).*(1-dy).*(1-dz);
 val211 = double(this.image.getPixels(i1, j1+1, k1)).*(1-dx).*dy.*(1-dz);
 val121 = double(this.image.getPixels(i1+1, j1, k1)).*dx.*(1-dy).*(1-dz);

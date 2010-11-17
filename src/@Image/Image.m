@@ -18,8 +18,8 @@ properties
     % Inner data of image
     data        = [];
     
-    % Size of data buffer(in x,y,z,c,t order)
-    dataSize    = [];
+    % Size of data buffer(in x,y,z,c,t order), should always have length=5
+    dataSize    = [1 1 1 1 1];
         
     % Spatial calibration of image.
     calib;
@@ -43,6 +43,16 @@ methods (Static, Access = protected)
     img = metaImageRead(info)
 end % static methods
 
+%% Private static methods
+methods(Static, Access=private)
+    img = readstack(fileName, varargin)
+
+    axis = parseAxisIndex(axis)
+    % convert index or string to index    
+    
+    [sx sy sz] = create3dGradientKernels(varargin)
+    % Create kernels for gradient computations
+end
 
 %% Constructor declaration
 methods (Access = protected)
@@ -52,9 +62,10 @@ methods (Access = protected)
         if nargin==0
             % empty constructor
             % (nothing to do !)
+            
         elseif isa(varargin{1}, 'Image')
-            disp('called copy constructor of Image class');
             % copy constructor
+            
             img = varargin{1};
             varargin(1) = [];
             this.data       = img.data;
@@ -64,18 +75,24 @@ methods (Access = protected)
             this.copyFields(img);
 
         else
-            % first argument is either the data buffer, or the image dim
-            if isscalar(varargin{1})
-                nd = varargin{1};
-                this.dataSize = ones(1, nd);
-            else
-                % initialize data buffer and image size
-                setInnerData(varargin{1});
-            end
-            varargin(1) = [];
+            % Generic constructor: parse arguments and init image
             
-            % update other data depending in image size.
-            nd = length(this.dataSize);
+            % first argument is either the data buffer, or the image dim
+            if isnumeric(varargin{1})
+                if isscalar(varargin{1})
+                    this.dataSize = ones(1, 5);
+                    nd = varargin{1};
+                else
+                    % initialize data buffer and image size
+                    setInnerData(this, varargin{1});
+                    nd = ndims(varargin{1});
+                end
+                varargin(1) = [];
+            else
+                error('First argument need to be numeric: either dim or data');
+            end
+            
+            % update other data depending on image dimension
             this.calib  = SpatialCalibration(nd);
         end
         
@@ -86,7 +103,7 @@ methods (Access = protected)
             
             switch varName
                 case 'data'
-                    setInnerData(value);
+                    this.setInnerData(value);
                 case 'parent'
                     this.copyFields(value);
                 case 'name'
@@ -99,16 +116,8 @@ methods (Access = protected)
                     error(['Unknown parameter name: ' varName]);
             end
             
+            % switch to next couple of arguments
             varargin(1:2) = [];
-        end
-        
-        
-        function setInnerData(data)
-            % helper function that initialize data buffer and its size
-            this.data = data;
-            
-            siz = size(this.data);
-            this.dataSize = siz;            
         end
        
     end
@@ -127,9 +136,11 @@ methods (Access = protected)
     function setInnerData(this, data)
         % Initialize data buffer and computes its size
         this.data = data;
-        this.dataSize = size(this.data);
+        
+        siz = size(this.data);
+        this.dataSize(1:length(siz)) = siz;
     end
-    
+
 end % protected methods
 
 

@@ -18,7 +18,7 @@ function res = subsample(this, k, varargin)
 %% Initialisations
 
 % image dimension
-ndim = length(this.dataSize);
+ndim = getDimension(this);
 
 % allow either scalar factor, or factor depending on dim
 if isscalar(k)

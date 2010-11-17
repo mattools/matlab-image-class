@@ -16,7 +16,7 @@ function res = crop(this, box)
 siz = this.dataSize;
 
 % imaeg dimension
-nd = length(siz);
+nd = getDimension(this);
 
 % allocate memory
 indices = cell(nd, 1);
