@@ -48,7 +48,12 @@ elseif strmatch(format, 'dicom')
 else
     % otherwise, assumes format can be managed by Matlab Image Processing
     data = imread(fileName);
-    img = Image(data);
+    
+    vector = false;
+    if size(data, 3)==3
+        vector = true;
+    end
+    img = Image.create(data, 'vector', vector);
 end
 
 

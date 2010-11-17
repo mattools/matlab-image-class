@@ -1,4 +1,4 @@
-function test_suite = testImageResampler(varargin)
+function test_suite = testImageResampler(varargin) %#ok<STOUT>
 % Test function for class ImageResampler2D
 %   output = testImageResampler()
 %
@@ -17,9 +17,9 @@ function test_suite = testImageResampler(varargin)
 
 initTestSuite;
 
-function testResampler2D
+function testResampler2D %#ok<*DEFNU>
 
-img = Image2D.create(imread('cameraman.tif'));
+img = Image.read('cameraman.tif');
 
 res = ImageResampler(1:300, 1:300);
 img2 = res.resample(img, 'linear');
@@ -39,7 +39,7 @@ function testResampler3D
 % create test image
 dat = zeros([20 20 20], 'uint8');
 dat(5:15, 5:15, 5:15) = 255;
-img = Image3D(dat);
+img = Image.create(dat);
 
 % setup resampler
 lx = linspace(0, 19, 20);

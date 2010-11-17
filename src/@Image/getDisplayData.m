@@ -24,6 +24,11 @@ if nc == 1
     % for grayscale images, simply extract appropriate slice, and transpose
     data = this.data(:, :, 1, 1, 1)';
     
+elseif nc == 3
+    % If number of channels is 3, assumes this is a color image
+    % extract appropriate slice, and transpose.
+    data = permute(squeeze(this.data(:, :, 1, :, 1)), [2 1 3]);
+    
 else
     % For vector images, create a new intensity image from norm
     

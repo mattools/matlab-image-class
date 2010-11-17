@@ -1,9 +1,9 @@
-function test_suite = testBackwardTransformedImage2D(varargin)
-%TESTBACKWARDTRANSFORMEDIMAGE2D  One-line description here, please.
-%   output = testBackwardTransformedImage2D(input)
+function test_suite = testBackwardTransformedImage(varargin) %#ok<STOUT>
+%TESTBACKWARDTRANSFORMEDIMAGE  One-line description here, please.
+%   output = testBackwardTransformedImage(input)
 %
 %   Example
-%   testBackwardTransformedImage2D
+%   testBackwardTransformedImage
 %
 %   See also
 %
@@ -16,16 +16,16 @@ function test_suite = testBackwardTransformedImage2D(varargin)
 
 initTestSuite;
 
-function testCreationImageTransform
+function testCreationImageTransform %#ok<*DEFNU>
 
-img = Image2D('cameraman.tif');
+img = Image.read('cameraman.tif');
 trans = TranslationModel([50 20]);
 
 tim = BackwardTransformedImage(img, trans);
 
 function testCreationInterpTransform
 
-img = Image2D('cameraman.tif');
+img = Image.read('cameraman.tif');
 interp = LinearInterpolator2D(img);
 trans = TranslationModel([50 20]);
 

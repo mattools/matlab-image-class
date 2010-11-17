@@ -1,4 +1,4 @@
-function test_suite = testLinearInterpolator3D(varargin)
+function test_suite = testLinearInterpolator3D(varargin) %#ok<STOUT>
 % Test function for class LinearInterpolator3D
 %   output = testImArea(input)
 %
@@ -17,7 +17,7 @@ function test_suite = testLinearInterpolator3D(varargin)
 
 initTestSuite;
 
-function testCreateInterpolator
+function testCreateInterpolator %#ok<*DEFNU>
 
 dim = [15 12 10];
 REF = 200;
@@ -25,7 +25,7 @@ REF = 200;
 % create test image
 dat = zeros([dim(2) dim(1) dim(3)], 'uint8');
 dat(3:end-3, 5:end-5, 3:end-3) = REF;
-img = Image3D(dat);
+img = Image.create(dat);
 
 % create interpolator
 interp = LinearInterpolator3D(img);
@@ -101,7 +101,7 @@ REF = 200;
 % create test image
 dat = zeros([dim(2) dim(1) dim(3)], 'uint8');
 dat(3:end-3, 5:end-5, 3:end-3) = REF;
-img = Image3D(dat);
+img = Image.create(dat);
 
 % create interpolator
 interp = LinearInterpolator3D(img);

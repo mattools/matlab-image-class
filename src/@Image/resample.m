@@ -30,7 +30,7 @@ interpolator = LinearInterpolator2D(this);
 dat = interpolator.evaluateAtIndex(x, y);
 
 % Create new image with interpolated data
-res = Image2D(dat);
+res = Image.create(dat);
 
 % compute basis of new image
 lx = (lx-1)*this.calib.spacing(1) + this.calib.origin(1);

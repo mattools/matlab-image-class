@@ -1,4 +1,4 @@
-function test_suite = testNearestNeighborInterpolator2D(varargin)
+function test_suite = testNearestNeighborInterpolator2D(varargin) %#ok<STOUT>
 % Test function for class NearestNeighborInterpolator2D
 %   output = testImArea(input)
 %
@@ -18,7 +18,7 @@ function test_suite = testNearestNeighborInterpolator2D(varargin)
 initTestSuite;
 
 
-function testCreateInterpolator
+function testCreateInterpolator %#ok<*DEFNU>
 
 dim = [15 10];
 REF = 200;
@@ -26,7 +26,7 @@ REF = 200;
 % create test image
 dat = zeros([dim(2) dim(1)], 'uint8');
 dat(3:end-3, 5:end-5) = REF;
-img = Image2D(dat);
+img = Image.create(dat);
 
 % create interpolator
 interp = NearestNeighborInterpolator2D(img);
@@ -100,7 +100,7 @@ REF = 200;
 % create test image
 dat = zeros([dim(2) dim(1)], 'uint8');
 dat(3:end-3, 5:end-5) = REF;
-img = Image2D(dat);
+img = Image.create(dat);
 
 % create interpolator
 interp = NearestNeighborInterpolator2D(img);

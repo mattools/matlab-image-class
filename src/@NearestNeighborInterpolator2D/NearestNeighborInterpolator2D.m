@@ -29,9 +29,13 @@ methods
             % copy constructor
             var = varargin{1};
             image = var.image;
-        elseif isa(varargin{1}, 'Image2D')
+        elseif isa(varargin{1}, 'Image')
             % initialisation constructor
             image = varargin{1};
+            if getDimension(image)~=2
+                error('Image dimension should equal 2');
+            end
+            
         else
             error('Wrong parameter when constructing a nearest neighbor interpolator');
         end

@@ -89,7 +89,7 @@ end
 res(isInside) = vals(isInside);
 
 % create image object for storing result
-img2 = Image2D(this);
+img2 = Image(this);
 img2.data = res';
 img2.setOrigin([lx(1) ly(1)]);
 img2.setSpacing([lx(2)-lx(1) ly(2)-ly(1)]);

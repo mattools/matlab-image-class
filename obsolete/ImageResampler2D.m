@@ -108,7 +108,7 @@ methods
         vals = zeros(size(x), outputType); %#ok<CPROP,PROP>
         vals(:) = imgFun.evaluate([x(:) y(:)]);
         
-        img2 = Image2D(vals);
+        img2 = Image.create(vals);
         img2.setOrigin(this.origin);
         img2.setSpacing(this.spacing);
     end
