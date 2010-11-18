@@ -25,7 +25,7 @@ function slice = getSlice(this, dir, index)
 %TODO: decide if we return an array or a 2D image in 3D space.
 
 % parse axis, and check bounds
-dir = Image3D.parseAxisIndex(dir);
+dir = Image.parseAxisIndex(dir);
 
 ndims = length(size(this.data));
 if ndims==3

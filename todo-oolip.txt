@@ -8,6 +8,14 @@ TODO-list for project imageObj
 
 Image structures
 
+- metriques :
+    - comments gerer les points d'echantillonnage ? Pour le moment, ils sont
+        stockes dans la classe, mais il serait plus juste de les transmettre
+        en parametres ?
+        Dans ce cas, utiliser une classe pecifique pour eviter les copies de
+        memoire
+        
+        
 - class Image
         
     - Split class Image into a specific library ? (2010.11.04)
@@ -86,7 +94,7 @@ Interpolators
 
 - implementer classe generique NearestNeighbor Interpolator (2010.06.17)
 
-- implementer une classe ImageFilter (mageToImageFilter ?) (2010.06.17)
+- implementer une classe ImageFilter (ImageToImageFilter ?) (2010.06.17)
     - methode abstraite "applyTo(Img):Img"
 
 

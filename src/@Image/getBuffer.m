@@ -2,6 +2,10 @@ function dat = getBuffer(this)
 %GETBUFFER Return data buffer using matlab index convention
 %
 %   DATA = getBuffer(IMG)
+%   For 2D images, DATA is a Ny-by-Nx-by-Nc array.
+%   For 3D images, DATA is a Ny-by-Nx-by-Nz or Ny-by-Nx-by-Nc-by-Nz array,
+%   depending if image is a scalar or vector image.
+%
 %
 %   Example
 %   getBuffer
@@ -15,9 +19,4 @@ function dat = getBuffer(this)
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-nd = this.getDimension();
-if nd==2
-    dat = squeeze(permute(this.data, [2 1 4 5 3]));
-else
-    dat = squeeze(permute(this.data, [2 1 3:5]));
-end
+dat = squeeze(permute(this.data, [2 1 4 3 5]));

@@ -1,4 +1,4 @@
-function test_suite = testCenteredMotionTransform2D(varargin)
+function test_suite = testCenteredMotionTransform2D(varargin) %#ok<STOUT>
 %testCenteredMotionTransform2D  One-line description here, please.
 %   output = testCenteredMotionTransform2D(input)
 %
@@ -17,7 +17,7 @@ function test_suite = testCenteredMotionTransform2D(varargin)
 
 initTestSuite;
 
-function test_getAffineMatrix
+function test_getAffineMatrix %#ok<*DEFNU>
 
 
 center = [6 8];

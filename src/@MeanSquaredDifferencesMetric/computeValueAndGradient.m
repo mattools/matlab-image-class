@@ -200,6 +200,10 @@ end
 % keep only valid values
 isInside = inside1 & inside2;
 
+if sum(isInside) < 100
+    error('Too many points outside registration window');
+end
+
 % compute result
 diff = values2(isInside) - values1(isInside);
 
