@@ -32,7 +32,8 @@ properties
     % (parameters will be divided by corresponding scale)
     parameterScales = [];
     
-    % the fucntion that will be called at each iteration
+    % the function that will be called at each iteration
+    % (the use of Optimization Events is more convenient)
     outputFunction = [];
     
     % Specifies which information will be displayed at each iteration

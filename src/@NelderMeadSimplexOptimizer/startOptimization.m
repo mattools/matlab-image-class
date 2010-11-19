@@ -1,7 +1,11 @@
 function [params value] = startOptimization(this)
 %STARTOPTIMIZATION  Run the optimizer, and return optimized parameters
 %
-%   output = startOptimization(input)
+%   PARAMS = startOptimization(OPTIM)
+%   PARAMS = OPTIM.startOptimization()
+%
+%   [PARAMS VALUE] = startOptimization(OPTIM)
+%   [PARAMS VALUE] = OPTIM.startOptimization()
 %
 %   Example
 %   startOptimization
