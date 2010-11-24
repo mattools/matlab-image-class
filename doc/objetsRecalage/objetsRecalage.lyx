@@ -129,34 +129,39 @@ Certaines classes sont indépendantes de la dimension de travail.
 \end_layout
 
 \begin_layout Section
-Structure de donnée Image
+Classe Image
 \end_layout
 
 \begin_layout Standard
-Pour le moment plusieurs classes image, organisées en hiérarchie :
+Les différents outils reposent sur une classe 
+\begin_inset Quotes fld
+\end_inset
+
+Image
+\begin_inset Quotes frd
+\end_inset
+
+, qui a pour but de pouvoir gérer :
 \end_layout
 
-\begin_layout Description
-Image interface pour les images, qui définit les méthodes abstraites et
- fournit quelques utilitaires pour gérer les informations de calibration
- et les meta-données
+\begin_layout Itemize
+des images métricielles 2D ou 3D
 \end_layout
 
-\begin_layout Description
-ScalarImage interface pour les images dont les pixels sont des scalaires,
- par opposition aux images vectorielles (images spectrales ou couleur)
+\begin_layout Itemize
+éventuellement vectorielles
 \end_layout
 
-\begin_layout Description
-Image2D implémentation pour les images scalaires 2D
+\begin_layout Itemize
+éventuellement fonction du temps
 \end_layout
 
-\begin_layout Description
-Image3D implémentation pour les images scalaires 3D
+\begin_layout Itemize
+avec une calibration spatiale
 \end_layout
 
-\begin_layout Description
-VectorImage2D implémentation pour les images vectorielles 2D
+\begin_layout Standard
+Cela fait donc 5 dimensions à gérer, dont 3 dimensions spatiales.
 \end_layout
 
 \begin_layout Standard
@@ -185,8 +190,8 @@ img.show();
 \end_layout
 
 \begin_layout Standard
-À terme, il serait souhaitable d'avoir une classe unique.
- Une adaptation est en cours (2010.08.24).
+Il reste cependant encore beaucoup de méthodes non implémentées ou incomplètes
+ (2010.11.24).
 \end_layout
 
 \begin_layout Standard
@@ -329,7 +334,7 @@ Enfin, on a aussi une méthode pour calculer les dérivées mais en fonction
 
 \begin_layout Description
 getParametricJacobian calcule la matrice jacobienne, qui a autant de lignes
- que le nombre de dimensions spatiales, et autant de colonne que le nombre
+ que le nombre de dimensions spatiales, et autant de colonnes que le nombre
  de paramètres
 \end_layout
 
@@ -413,9 +418,50 @@ Modèles de transformation
 
 \begin_layout Standard
 Les classes décrites ici permettent de représenter un modèle de transformation
- dont on peur optimiser les paramètres.
- Ces transformations héritent donc à la fois de Transform (et même de AffineTran
-sform pour le moment) et de ParametricTransform.
+ dont on peut optimiser les paramètres.
+ Ces transformations héritent donc à la fois de Transform et de ParametricTransf
+orm.
+ 
+\end_layout
+
+\begin_layout Standard
+Conventions (par toujours) utilisées :
+\end_layout
+
+\begin_layout Itemize
+on utilise le suffixe 
+\begin_inset Quotes fld
+\end_inset
+
+Model
+\begin_inset Quotes frd
+\end_inset
+
+ ou 
+\begin_inset Quotes fld
+\end_inset
+
+TransformModel
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+on utilise le préfixe 
+\begin_inset Quotes fld
+\end_inset
+
+Centered
+\begin_inset Quotes frd
+\end_inset
+
+ pour préciser que l'on peut modifier le centre de la transformation.
+\end_layout
+
+\begin_layout Itemize
+on ajoute le suffixe 2D ou 3D quand la transformation n'est pas générique.
 \end_layout
 
 \begin_layout Subsubsection
@@ -496,6 +542,42 @@ Les angles de rotation sont stockés en degré et convertis en radian pour
  les calculs.
  Le centre de la rotation est modifiable, mais ne fait pas partie des paramètres
  optimisables.
+\end_layout
+
+\begin_layout Subsubsection
+CenteredAffineTransformModel3D
+\end_layout
+
+\begin_layout Standard
+Représente une transformation affine paramérable.
+ Les paramètres sont les 12 coefficients de la matrice de transformation
+ (d'abord les coefficients de la première ligne, puis la deuxième...).
+\end_layout
+
+\begin_layout Subsubsection
+CenteredQuadTransformModel3D
+\end_layout
+
+\begin_layout Standard
+Modèle de transformation dans lequel les coordonnées du point transformé
+ sont calculées à partir de fonctions quadratiques des coordonnées du point
+ d'entrée.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray*}
+x' & = & p_{1}+p_{4}x+p_{7}y+p_{10}z+p_{13}x^{2}+p_{16}y^{2}+p_{19}z^{2}+p_{22}xy+p_{25}xz+p_{28}yz\\
+y' & = & p_{2}+p_{5}x+p_{8}y+p_{11}z+p_{14}x^{2}+p_{17}y^{2}+p_{20}z^{2}+p_{23}xy+p_{26}xz+p_{29}yz\\
+z' & = & p{}_{3}+p_{6}x+p_{9}y+p_{12}z+p_{15}x^{2}+p_{18}y^{2}+p_{21}z^{2}+p_{24}xy+p_{27}xz+p_{30}yz\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le centre de la transformation est initialisé par défaut à (0,0,0).
 \end_layout
 
 \begin_layout Subsection

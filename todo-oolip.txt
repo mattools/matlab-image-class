@@ -6,57 +6,57 @@ TODO-list for project imageObj
     + segmentation par LPE
     + squeletisation
 
-Image structures
+    
+class Image
+===========
+        
+- Split class Image into a specific library ? (2010.11.04)
+    + remove some functions (think about a way to have additional methods
+        in a separate directory)
+        o resample
+        o subsample
+        o (backward)transform
+    + can re-organize unit tests
+    + can start a GUI-based prog like ImageM. (ImAGem ?)
+    
+- implement VectorImage
+    - stocker le nom des bandes ?
+    
+- store label of axes ? (2010.06.30)
+- manage image anatomical orientation (2010.10.22)
 
-- metriques :
-    - mieux gerer les points qui tombent zn dehors des fenetres.
-        avant: on calcule moyenne sur les points dans les 2 fenetres
-        maintenant : on affecte une valeur par defaut
-        a faire:
-            + ajouter setter pour valeur par defaut (dans interpolateur)
-            + gerer les points en dehors pour calculer les gradients
-            
-    - comments gerer les points d'echantillonnage ? Pour le moment, ils sont
-        stockes dans la classe, mais il serait plus juste de les transmettre
-        en parametres ?
-        Dans ce cas, utiliser une classe pecifique pour eviter les copies de
-        memoire
-        
-- echantillonneurs varies :
-    + plus denses au centre de l'image       
-        
-- class Image
-        
-    - Split class Image into a specific library ? (2010.11.04)
-        + remove some functions (think about a way to have additional methods
-            in a separate directory)
-            o resample
-            o subsample
-            o (backward)transform
-        + can re-organize unit tests
-        + can start a GUI-based prog like ImageM. (ImAGem ?)
-        
-    - store label of axes ? (2010.06.30)
-    - manage image orientation (2010.10.22)
+- support arithmetic for different classes, with psb of specifying output
+	image type
+
+- trouver des moyens faciles de creer des images RGB a partir de 2-3 images
+    du meme type (2010.10.10)
     
-    - use a specific data structure to gather orientation data ? (2010.10.22)
-        + axis names
-        + anatomical orientation
-        + directions
-        + ...
-        Such a stucture could implement a 'rotate90' method, in the same way 
-        than calibration
+- differencier dataType et imageType
+    * dataType : {logical | uint8 | int8 | uint16 | int16 | single | double ...}
+    * imageType : {intensity | label | binary | vector | color | other }
+        -> comment interpreter la dimension channel
     
-    - enhance filtering of some functions (2010.07.13)
-        + open close, dilate, erode
-        + filter
-        
-    - use 'imageSize' field, that correspond to number of pixels for physical
-        dimensions (2010.10.12)
-    - and keep dataSize for size of the buffer array, and keep its length to 5
-        
-    - faire gerer les conversions de coordonnees index-position par la classe
-        de calibration spatiale ? (2010.10.14)
+- Think about other image implementations:
+    - ImageView: use data from another image, but cropped (2010.06.24)
+	   
+
+- use a specific data structure to gather orientation data ? (2010.10.22)
+    + axis names
+    + anatomical orientation
+    + directions
+    + ...
+    Such a stucture could implement a 'rotate90' method, in the same way 
+    than calibration
+
+- enhance filtering of some functions (2010.07.13)
+    + open close, dilate, erode
+    + filter
+    
+- use 'imageSize' field, that correspond to number of pixels for physical
+    dimensions (2010.10.12)
+    
+- faire gerer les conversions de coordonnees index-position par la classe
+    de calibration spatiale ? (2010.10.14)
     
         
 - clone function ?                                                              +
@@ -65,10 +65,18 @@ Image structures
         (calibration spatiale, buffer...) (2010.06.29)
 
 - Add support for Region of Interest (2010.07.13)   
+- Add support for binary images (asked for a long time...)
+
+
+Interpolators 
+=============
     
-- implement VectorImage
-    - stocker le nom des bandes ?
-    
+- passer LinearInterpolator en generique 2D/3D (2010.06.17)
+
+- implementer classe generique NearestNeighbor Interpolator (2010.06.17)
+
+- add management of gradient image by interpolator classes (2010.11.24)
+
 - implementer la methode resample (2010.06.17)
     - en entree un resampler, ou deux tableaux de points, ou une image
     - appliquer a ImageFunction
@@ -78,48 +86,49 @@ Image structures
     resampleSlicer(IMGFUN, PLANE, UDATA, VDATA);
     sliceResampler(IMGFUN, PLANE, UDATA, VDATA);
 
-- implementer un gradientEvaluator qui calcule le gradient pour les points
-    demandes. (2010.10.10)
-            
-- better support for image datatype
-	- support arithmetic for different classes, with psb of specifying output
-		image type
-
-	- trouver des moyens faciles de creer des images RGB a partir de 2-3 images
-	    du meme type (2010.10.10)
-	    
-	- differencier dataType et imageType
-	    * dataType : {logical | uint8 | int8 | uint16 | int16 | single | double ...}
-	    * imageType : {intensity | label | binary | vector | color | other }
-	        -> comment interpreter la dimension channel
-	    
-- Think about other image implementations:
-    - ImageView: use data from another image, but cropped (2010.06.24)
-		   
-     
-Interpolators 
     
-- passer LinearInterpolator en generique 2D/3D (2010.06.17)
+Parametric transforms
+=====================
 
-- implementer classe generique NearestNeighbor Interpolator (2010.06.17)
-
-- implementer une classe ImageFilter (ImageToImageFilter ?) (2010.06.17)
-    - methode abstraite "applyTo(Img):Img"
-
-
-Parametric transforms:
-   
 - Idealement, ce serait mieux que la composition de deux transfos affine
     renvoie une transfo qui herite elle-meme de AffineTransform (2010.06.17)
 
-    
 - stocker des parametres de 'scaling' par defaut pour les transformations
     classiques (2010.10.12)
+    + definir une 'valeur moyenne' typique, ou alors le parameterScaling 
+    + definir une 'variabilite' par defaut
     
+
+Metriques 
+=========
+
+- mieux gerer les points qui tombent en dehors des fenetres.
+    avant: on calcule moyenne sur les points dans les 2 fenetres
+    maintenant : on affecte une valeur par defaut
+    a faire:
+        + ajouter setter pour valeur par defaut (dans interpolateur)
+        + gerer les points en dehors pour calculer les gradients
         
-Measures
+- comments gerer les points d'echantillonnage ? Pour le moment, ils sont
+    stockes dans la classe, mais il serait plus juste de les transmettre
+    en parametres ?
+    Dans ce cas, utiliser une classe pecifique pour eviter les copies de
+    memoire
+
+    
+Divers
+======
+
+- echantillonneurs varies :
+    + plus denses au centre de l'image       
+        
+- implementer une classe ImageFilter (ImageToImageFilter ?) (2010.06.17)
+    - methode abstraite "applyTo(Img):Img"
 
 - think about a way to measure parameters
     + use consistent interface for returning params
     + use Table object ?
+
+- implementer un gradientEvaluator qui calcule le gradient pour les points
+    demandes. (2010.10.10)
 

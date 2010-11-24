@@ -4,14 +4,18 @@ classdef Transform < handle
 %   Transform are designed to transform points into other points. This
 %   class defines some abstract methods that have to be implemented by
 %   derived classes.
-%   
+%
+%   Abstract classes:
+%   transformPoint  - Computes coordinates of transformed point
+%   transformVector - Computes coordinates of transformed vector
+%   getJacobian     - Computes jacobian matrix 
+%
 %   Example
 %   trans = (...); % define a transform by using a derived class 
 %   pt = (...);    % create a point corresponding to transform input
 %   pt2 = trans.transformPoint(pt);
 %
 %   See also
-%   Transform2D, Transform3D
 %
 %
 % ------
@@ -32,11 +36,11 @@ end
 methods (Abstract)
     
     transformPoint(this, point)
-    % TRANSFORMPOINT Computes coordinate of transformed point
+    % TRANSFORMPOINT Computes coordinates of transformed point
     % PT2 = this.transformPoint(PT);
     
     transformVector(this, vector, position)
-    % TRANSFORMVECTOR Computes coordinate of transformed vecror
+    % TRANSFORMVECTOR Computes coordinates of transformed vector
     % VEC2 = this.transformPoint(VEC, PT);
     
     jacobian = getJacobian(this, position)
