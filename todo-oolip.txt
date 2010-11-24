@@ -9,12 +9,21 @@ TODO-list for project imageObj
 Image structures
 
 - metriques :
+    - mieux gerer les points qui tombent zn dehors des fenetres.
+        avant: on calcule moyenne sur les points dans les 2 fenetres
+        maintenant : on affecte une valeur par defaut
+        a faire:
+            + ajouter setter pour valeur par defaut (dans interpolateur)
+            + gerer les points en dehors pour calculer les gradients
+            
     - comments gerer les points d'echantillonnage ? Pour le moment, ils sont
         stockes dans la classe, mais il serait plus juste de les transmettre
         en parametres ?
         Dans ce cas, utiliser une classe pecifique pour eviter les copies de
         memoire
         
+- echantillonneurs varies :
+    + plus denses au centre de l'image       
         
 - class Image
         
