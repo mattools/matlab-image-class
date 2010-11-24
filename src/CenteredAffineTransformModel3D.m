@@ -26,7 +26,7 @@ methods
     function this = CenteredAffineTransformModel3D(varargin)
         % Create a new centered affine transform model
         
-        this.params = zeros(1, 12);
+        this.params = [1 0 0 0   0 1 0 0   0 0 1 0];
         
         if ~isempty(varargin)
             % extract first argument, and try to interpret
@@ -53,7 +53,6 @@ methods
                     if var~=3
                         error('Defined only for 3 dimensions');
                     end
-                    this.params = [1 0 0 0   0 1 0 0   0 0 1 0];
                     
                 else
                     error('Please specify affine parameters');
