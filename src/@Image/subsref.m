@@ -69,9 +69,8 @@ elseif strcmp(type, '()')
     else
         subs2 = s1.subs([2 1 3:end]);
         varargout{1} = permute(this.data(subs2{:}), [2 1 3:5]);
-%         error('Image:subsref', ...
-%             'too many indices');
     end
+    
 else
     error('Image:subsref', ...
         'can not manage such reference');

@@ -33,7 +33,7 @@ end
 % extract basic data for creating image
 var1 = varargin{1};
 data = [];
-if isnumeric(var1)
+if isnumeric(var1) || islogical(var1)
     varargin(1) = [];
     if size(var1, 1)==1
         % first argument is the image size

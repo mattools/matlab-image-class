@@ -9,7 +9,16 @@ TODO-list for project imageObj
     
 class Image
 ===========
-        
+    
+- small convenient functions (2010.11.26)
+    + imRescale (find a better name) 
+    + arithmetic operation
+        o mplus
+        o mtimes
+        O ...
+    + hsv2rgb
+    + concatenation (cat, horzcat, vertcat)
+    
 - Split class Image into a specific library ? (2010.11.04)
     + remove some functions (think about a way to have additional methods
         in a separate directory)
@@ -17,7 +26,7 @@ class Image
         o subsample
         o (backward)transform
     + can re-organize unit tests
-    + can start a GUI-based prog like ImageM. (ImAGem ?)
+    + can start a GUI-based prog like ImageM. (ImAGem ? ImaGEM ?)
 
 - image creation
     specify how to use (static constructor or constructor),
@@ -26,12 +35,6 @@ class Image
         
 - implement VectorImage
     - stocker le nom des bandes ?
-    
-- support arithmetic for different classes, with psb of specifying output
-	image type
-
-- trouver des moyens faciles de creer des images RGB a partir de 2-3 images
-    du meme type (2010.10.10)
     
 - differencier dataType et imageType
     * dataType : {logical | uint8 | int8 | uint16 | int16 | single | double ...}
