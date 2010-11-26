@@ -1,5 +1,5 @@
 function res = flip(this, d)
-%FLIP Flips an image along one of its dimensions
+%FLIP Flip an image along one of its dimensions
 %
 %   IMG2 = IMG.flip(D);
 %   IMG2 = flip(IMG, D);
@@ -24,26 +24,15 @@ function res = flip(this, d)
 % Created: 2010-02-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-% check image dimension
-nd = getDimension(this);
-if nd ~= 2
-    error('Flip is defined only for 2D images');
-end
-
 % ensure dimension is given
 if nargin==1
     d = 1;
 end
 
-% create empty result image
-res = Image(2, 'parent', this);
-
-% compute flipped data
-if d==1
-    res.setInnerData(this.data(end:-1:1, :));
-elseif d==2
-    res.setInnerData(this.data(:, end:-1:1));
-else
-    error('Wrong dimension parameter');
+% check dim
+if d > getDimension(this)
+    error('Can not flip a dimension greater than image dimension');
 end
 
+% create empty result image
+res = Image(2, 'data', flipdim(this.data, d), 'parent', this);
