@@ -18,13 +18,15 @@ class Image
         o (backward)transform
     + can re-organize unit tests
     + can start a GUI-based prog like ImageM. (ImAGem ?)
-    
+
+- image creation
+    specify how to use (static constructor or constructor),
+    with all psb (2D, 3D, vector, color, movie)
+    and implement
+        
 - implement VectorImage
     - stocker le nom des bandes ?
     
-- store label of axes ? (2010.06.30)
-- manage image anatomical orientation (2010.10.22)
-
 - support arithmetic for different classes, with psb of specifying output
 	image type
 
@@ -39,6 +41,9 @@ class Image
 - Think about other image implementations:
     - ImageView: use data from another image, but cropped (2010.06.24)
 	   
+
+- store label of axes ? (2010.06.30)
+- manage image anatomical orientation (2010.10.22)
 
 - use a specific data structure to gather orientation data ? (2010.10.22)
     + axis names
@@ -65,6 +70,7 @@ class Image
         (calibration spatiale, buffer...) (2010.06.29)
 
 - Add support for Region of Interest (2010.07.13)   
+
 - Add support for binary images (asked for a long time...)
 
 

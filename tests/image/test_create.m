@@ -57,3 +57,13 @@ assertEqual(uint8(7), img.getPixel(2, 2, 2));
 % get a pixel not on diagonal
 assertEqual(uint8(10), img.getPixel(2, 3, 1));
 
+
+function test_createColor
+
+dat = imread('peppers.png');
+dim = size(dat);
+img = Image.createRGB(dat);
+
+assertEqual(2, getDimension(img));
+assertEqual(dim([2 1]), getSize(img));
+

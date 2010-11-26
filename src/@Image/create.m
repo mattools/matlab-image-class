@@ -56,9 +56,9 @@ if isnumeric(var1)
         
     else
         % first argument is image data
-        nd = ndims(var1);
-        data = permute(var1, [2 1 3:nd]);
         imageSize = size(var1);
+        nd = length(imageSize);
+        data = permute(var1, [2 1 3:nd]);
     end
     
 elseif ischar(var1)
@@ -91,10 +91,12 @@ while length(varargin)>1
             nd = nd-1;
             imageSize(end) = [];
             if nd==2
-                data = permute(data, [1 2 4 3]);
+                data = permute(data, [1 2 4 3 5]);
             end
         end
+        
     else
+        % non processed arguments will given to constructor
         arguments = [arguments , varargin(1:2)]; %#ok<AGROW>
     end
     

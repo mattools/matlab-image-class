@@ -31,6 +31,7 @@ end
 %% Static methods
 methods (Static)
     img = create(varargin)
+    img = createRGB(varargin)
     
     img = read(fileName, varargin)
     
