@@ -49,13 +49,13 @@ else
     switch dir
         case 1
             % x-slice: rows Z, cols Y
-            slice = permute(this.data(index, :, :, :), [4 2 3 1]);
+            slice = permute(this.data(index, :, :, :), [3 2 4 1]);
         case 2
             % y-slice: rows Z, cols X
-            slice = permute(this.data(:, index, :, :), [4 1 3 2]);
+            slice = permute(this.data(:, index, :, :), [3 1 4 2]);
         case 3
             %  Z-slice: rows Y, cols X
-            slice = permute(this.data(:, :, :, index), [2 1 3 4]);
+            slice = permute(this.data(:, :, index, :), [2 1 4 3]);
         otherwise
             error('should specify direction between 1 and 3');
     end

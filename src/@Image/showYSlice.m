@@ -45,10 +45,13 @@ params = {'facecolor','texturemap', 'edgecolor', 'none'};
 
 % compute position of voxel vertices in 3D space
 [xz_x xz_z] = meshgrid(vx, vz);
-xz_y = ones(size(xz_x))*ly(sliceIndex+1);
+xz_y = ones(size(xz_x))*ly(sliceIndex);
 
-% extract slice in z direction
+% extract slice in Y direction
 slice = this.getSlice(2, sliceIndex);
+
+% % for ZX slice, we permute
+% slice = permute(slice, [2 1 3]);
 
 % eventually converts to uint8, rescaling data between 0 and max value
 if ~strcmp(class(slice), 'uint8')
@@ -56,9 +59,13 @@ if ~strcmp(class(slice), 'uint8')
     slice = uint8(slice*255/max(slice(:)));
 end
 
-% repeat slice three times to manage a color image
-hs = surface(xz_x, xz_y, xz_z, ...
-    repmat(slice, [1 1 3]), params{:});
+% convert grayscale to rgb (needed by 'surface' function)
+if length(size(slice))==2
+    slice = repmat(slice, [1 1 3]);
+end
+
+% display voxel values in appropriate reference space
+hs = surface(xz_x, xz_y, xz_z, slice, params{:});
 
 
 %% process output arguments
