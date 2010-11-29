@@ -19,7 +19,7 @@ if isa(arg, 'Image')
     arg = arg.data;
 end
 
-newData = bsxfun(@rdivide, this.data, arg);
+newData = bsxfun(@rdivide, this.data, cast(arg, class(this.data)));
 
 nd = getDimension(this);
 res = Image(nd, 'data', newData, 'parent', this);

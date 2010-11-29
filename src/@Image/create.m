@@ -34,7 +34,6 @@ end
 var1 = varargin{1};
 data = [];
 if isnumeric(var1) || islogical(var1)
-    varargin(1) = [];
     if size(var1, 1)==1
         % first argument is the image size
         imageSize = var1;
@@ -44,14 +43,14 @@ if isnumeric(var1) || islogical(var1)
         type = 'uint8';
         if nargin==2
             type = varargin{2};
-            varargin{1} = [];
+            varargin(2) = [];
         end
         
         % create empty data buffer
         if ~strcmp(type, 'logical')
-            data = zeros(imageSize([2 1 3:nd]), type);
+            data = zeros(imageSize, type);
         else
-            data = false(imageSize([2 1 3:nd]));
+            data = false(imageSize);
         end
         
     else
@@ -60,6 +59,7 @@ if isnumeric(var1) || islogical(var1)
         nd = length(imageSize);
         data = permute(var1, [2 1 3:nd]);
     end
+    varargin(1) = [];
     
 elseif ischar(var1)
     % first argument is a string, so we iterate over argument pairs to find
