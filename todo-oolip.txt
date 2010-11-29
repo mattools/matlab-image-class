@@ -12,12 +12,12 @@ class Image
     
 - small convenient functions (2010.11.26)
     + imRescale (find a better name) 
-    + arithmetic operation
-        o mplus
-        o mtimes
-        O ...
     + hsv2rgb
     + concatenation (cat, horzcat, vertcat)
+    + operateur min et max: un ou deux arguments
+        -> un argument: renvoie le max dans l'image
+        -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
+        
     
 - Split class Image into a specific library ? (2010.11.04)
     + remove some functions (think about a way to have additional methods

@@ -89,10 +89,10 @@ img = Image.read('peppers.png');
 h = histogram(img);
 
 assertEqual([256 3], size(h));
-assertEqual(getElementNumber(img), sum(h(:)));
+assertEqual(getElementNumber(img), sum(h(:,1)));
 
 
-function test_peppers_display %#ok<*DEFNU>
+function test_peppers_display
 
 img = Image.read('peppers.png');
 figure;

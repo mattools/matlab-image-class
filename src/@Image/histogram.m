@@ -115,13 +115,19 @@ while ~isempty(varargin)
         minimg = var(1);
         maximg = var(2);
         
-    elseif islogical(var)
+    elseif islogical(var) || isa(var, 'Image')
         % argument is a ROI
         roi = var;
+        if isa(roi, 'Image')
+            roi = roi.data;
+            if ~islogical(roi)
+                error('ROI image must be binary');
+            end
+        end
         
         % compute roi physical size
         roiSize = size(roi);
-        if vectorImage && length(roiSize)>length(imgSize)
+        if vectorImage && (length(roiSize) > length(imgSize))
             roiSize(3) = [];
         end
         

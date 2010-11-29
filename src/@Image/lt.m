@@ -21,5 +21,5 @@ end
 
 newData = bsxfun(@lt, this.data, arg);
 
-nd = lttDimension(this);
-res = Imalt(nd, 'data', newData, 'parent', this);
+nd = getDimension(this);
+res = Image(nd, 'data', newData, 'parent', this);

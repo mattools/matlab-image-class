@@ -4,10 +4,17 @@ function img = read(fileName, varargin)
 %   IMG = Image.read(FILENAME)
 %
 %   Example
+%   % read a grayscale image
 %   img = Image.read('cameraman.tif');
 %
+%   % read a color image
+%   img = Image.read('peppers.png');
+%
+%   % read a 3D image
+%   img = Image.read('brainMRI.hdr');
+%
 %   See also
-%   Image2D/read, Image3D/read, imread
+%   imread
 %
 % ------
 % Author: David Legland
