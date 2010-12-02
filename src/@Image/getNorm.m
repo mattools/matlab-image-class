@@ -25,4 +25,5 @@ for i=1:nc
 end
 norm = sqrt(norm);
 
-norm = Image('data', norm, 'parent', this);
+nd = this.getDimension();
+norm = Image(nd, 'data', norm, 'parent', this);

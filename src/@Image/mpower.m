@@ -1,5 +1,5 @@
 function res = mpower(this, arg)
-%mpower Overload the mpower operator for image object
+%MPOWER Overload the mpower operator for image object
 %
 %   output = mpower(input)
 %
