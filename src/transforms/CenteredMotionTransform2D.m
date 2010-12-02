@@ -1,4 +1,4 @@
-classdef CenteredMotionTransform2D < AffineTransform & ParametricTransform
+classdef CenteredMotionTransform2D < AffineTransform & ParametricTransform & CenteredTransformAbstract
 %Transformation model for a centered rotation followed by a translation
 %   
 %   Inner optimisable parameters of the transform have the following form:
@@ -14,19 +14,16 @@ classdef CenteredMotionTransform2D < AffineTransform & ParametricTransform
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
-%% Declaration of class properties
-properties
-    % Center of the transform. Initialized to (0,0).
-    center = [0 0];
-end
-
 %% Constructors
 methods
     function this = CenteredMotionTransform2D(varargin)
-        % Create a new model for translation transform model
+        % Create a new model for 2D motion transform model
+        % (defined by 1 rotation angle and 2 translation parameters)
 
         % setup default parameters
         this.params = [0 0 0];
+        this.center = [0 0];
+        
         if ~isempty(varargin)
             % extract first argument, and try to interpret
             var = varargin{1};
@@ -35,8 +32,11 @@ methods
                 
             elseif isnumeric(var)
                 if length(var)==1 && var(1)~=2
-                    error('CenteredMotionTransform2D is defined only for 2 dimensions');                    
+                    % if argument is a scalar, it corresponds to dimension
+                    error('CenteredMotionTransform2D is defined only for 2 dimensions');
+                    
                 elseif length(var)==3
+                    % if argument is a row vector, it is the parameters
                     this.params = var(1:3);
                 else
                     error('Please specify angle in degrees and vector');
@@ -61,17 +61,7 @@ methods
 end
 
 %% Standard methods
-methods    
-    function setCenter(this, center)
-        % Changes the center of rotation of the transform
-        this.center = center;
-    end
-    
-    function center = getCenter(this)
-        % Returns the center of rotation of the transform
-        center = this.center;
-    end
-    
+methods        
     function mat = getAffineMatrix(this)
         % Compute affine matrix associated with this transform
         
@@ -107,12 +97,16 @@ methods
             y = varargin{1};
         end
         
+        % precompute angle functions
         theta = this.params(1)*pi/180;
         cot = cos(theta);
         sit = sin(theta);
+        
+        % recenter the point coordinates
         x = x - this.center(1);
         y = y - this.center(2);
         
+        % compute parametric jacobian
         jacobian = [...
             (-sit*x - cot*y) 1 0 ;
             ( cot*x - sit*y) 0 1 ];

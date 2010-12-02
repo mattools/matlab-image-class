@@ -1,4 +1,4 @@
-classdef CenteredAffineTransformModel3D < AffineTransform & ParametricTransform
+classdef CenteredAffineTransformModel3D < AffineTransform & ParametricTransform & CenteredTransformAbstract
 %CENTEREDAFFINETRANSFORMMODEL3D  One-line description here, please.
 %
 %   output = CenteredAffineTransformModel3D(input)
@@ -15,11 +15,6 @@ classdef CenteredAffineTransformModel3D < AffineTransform & ParametricTransform
 % Created: 2010-11-18,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-%% Properties
-properties
-    % Center of the transform. Initialized to (0,0,0).
-    center = [0 0 0];
-end
 
 %% Constructors
 methods
@@ -82,16 +77,27 @@ methods
 end
 
 %% Methods specific to this class
-methods    
-    function setCenter(this, center)
-        % Changes the center of rotation of the transform
-        this.center = center;
+methods
+    function initFromAffineTransform(this, transform)
+        % Initialize parameters from an affine transform (class or matrix)
+        %
+        % Example
+        % T = CenteredAffineTransformModel3D();
+        % mat = createEulerAnglesRotation(.1, .2, .3);
+        % T.initFromAffineTransform(mat);
+        % T.getParameters()
+        %
+        
+        % if the first argument is a Transform, extract its affine matrix
+        if isa(transform, 'AffineTransform')
+            transform = getAffineMatrix(transform);
+        end
+        
+        % format matrix to have a row vector of 12 elements
+        params0 = transform(1:3, :)';
+        this.params = params0(:)';
     end
-    
-    function center = getCenter(this)
-        % Returns the center of rotation of the transform
-        center = this.center;
-    end
+
 end
 
 

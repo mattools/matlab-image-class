@@ -90,6 +90,19 @@ methods
         center = this.center;
     end
     
+    function initFromTranslation(this, vector)
+        % Initialize parameters from a translation vector
+        %
+        % Example
+        % T = CenteredEulerTransform3D();
+        % T.initFromTranslation([10 15 20]);
+        % T.getParameters()
+        % ans = 
+        %     [0 0 0 10 15 20]
+        %
+        this.parameters = [0 0 0 vector];
+    end
+    
     function mat = getAffineMatrix(this)
         % Compute affine matrix associated with this transform
         

@@ -464,6 +464,23 @@ Centered
 on ajoute le suffixe 2D ou 3D quand la transformation n'est pas générique.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO :
+\end_layout
+
+\begin_layout Itemize
+peaufiner le choix des conventions de noms pour les transfos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 TranslationModel
 \end_layout
@@ -486,7 +503,7 @@ Il s'agit d'une transformation définie par une rotation autour d'un centre
 \end_layout
 
 \begin_layout Subsubsection
-CenteredEulerTransform3D
+EulerTransformModel3D (CenteredEulerTransform3D)
 \end_layout
 
 \begin_layout Standard
@@ -592,6 +609,23 @@ MatrixAffineTransform
 Implémentation classique d'une transformation affine, sous la forme d'une
  matrice.
  Utilisées pour des tests, ou pour implémenter des transformations classiques.
+\end_layout
+
+\begin_layout Subsubsection
+CenteredTransformAbstract
+\end_layout
+
+\begin_layout Standard
+Squelette d'implémentation d'une transformation centrée autour d'un point.
+ La classe définit un champ 
+\begin_inset Quotes fld
+\end_inset
+
+center
+\begin_inset Quotes frd
+\end_inset
+
+, ainsi qu'un accesseur et un modifieur.
 \end_layout
 
 \begin_layout Subsubsection
