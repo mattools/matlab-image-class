@@ -1,9 +1,9 @@
 function channel = getChannel(this, index)
-%GETCHANNEL Returns a specific channel of a Vector Image
+%GETCHANNEL Return a specific channel of a Vector Image
 %
 %   CHANNEL = img.getChannel(INDEX)
 %   INDEX is 1-indexed.
-%   CHANNEL is a scalar image the same dimension asthe input image
+%   CHANNEL is a scalar image the same dimension as the input image
 %
 %   Example
 %   getChannel
@@ -18,5 +18,6 @@ function channel = getChannel(this, index)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
-% create a new Image2D from data
-channel = Image('data', this.data(:,:,:,index,:), 'parent', this);
+% create a new Image from data
+nd = getDimension(this);
+channel = Image(nd, 'data', this.data(:,:,:,index,:), 'parent', this);

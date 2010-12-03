@@ -1,14 +1,13 @@
-function [sx sy sz] = createGradientKernels(varargin)
-%CREATEGRADIENTKERNELS Create gradient kernels for computing gradient images 
+function [sx sy sz] = create3dGradientKernels(varargin)
+%CREATE3DGRADIENTKERNELS Create kernels for computing gradient of 3D images 
 %
-%   SX = Image2D.createGradientKernels;
-%   [SX SY SZ] = Image2D.createGradientKernels;
+%   SX = Image.create3dGradientKernels;
+%   [SX SY SZ] = Image.create3dGradientKernels;
 %
 %   Example
-%   createGradientKernels
 %
 %   See also
-%
+%   gradient
 %
 % ------
 % Author: David Legland
