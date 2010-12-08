@@ -61,7 +61,7 @@
 \begin_body
 
 \begin_layout Title
-OOLIP : bibliothèque de classes pour le recalage d'images sous Matlab
+Structures de données pour le recalage d'images
 \end_layout
 
 \begin_layout Author
@@ -145,7 +145,7 @@ Image
 \end_layout
 
 \begin_layout Itemize
-des images métricielles 2D ou 3D
+des images matricielles 2D ou 3D
 \end_layout
 
 \begin_layout Itemize
@@ -176,7 +176,7 @@ status open
 
 \begin_layout Plain Layout
 
-img = Image2D.read('cameraman.tif');
+img = Image.read('cameraman.tif');
 \end_layout
 
 \begin_layout Plain Layout
@@ -680,22 +680,47 @@ On a aussi plusieurs classes pour gérer le ré-échantillonnage et l'interpolat
 Interfaces et classes abstraites
 \end_layout
 
-\begin_layout Description
-ImageFunction interface générale pour les classes d'interpolation.
- Elle définit une méthode accepte une position (2D ou 3D) en entrée et renvoie
- une valeur scalaire
+\begin_layout Subsubsection
+ImageFunction 
+\end_layout
+
+\begin_layout Standard
+Interface générale pour les classes d'interpolation.
+ Elle déclare une méthode d'évaluation de la fonction :
 \end_layout
 
 \begin_layout Description
-ImageInterpolator interface d'interpolation, qui se base sur une image.
+
+\series bold
+evaluate
+\series default
+ accepte une position (2D ou 3D) en entrée et renvoie une valeur scalaire.
+\end_layout
+
+\begin_layout Standard
+La classe implémente aussi deux méthodes utilitaires (en accès protégé)
+ :
 \end_layout
 
 \begin_layout Description
-ImageInterpolator2D,
-\begin_inset space ~
-\end_inset
+mergeCoordinates pour transformer plusieurs tableaux de coordonnées en un
+ seul tableau de points et un paramètre de taille de tablean
+\end_layout
 
-ImageInterpolator3D interfaces permettant de typer les classes dérivées
+\begin_layout Description
+splitCoordinates qui fait l'opération inverse de la précédente : le tableau
+ de coordonnées est transformé en plusieurs tableaux contenant les coordonnées
+ x, y...
+ 
+\end_layout
+
+\begin_layout Subsubsection
+ImageInterpolator
+\end_layout
+
+\begin_layout Standard
+Classe abstraite, qui encapsule une image, et sert de base aux autres implémenta
+tions d'interpolations.
 \end_layout
 
 \begin_layout Standard
@@ -747,30 +772,49 @@ ans =
 
 \end_layout
 
+\begin_layout Subsubsection
+ImageInterpolator2D, ImageInterpolator3D 
+\end_layout
+
+\begin_layout Standard
+Interfaces permettant de typer les classes dérivées.
+\end_layout
+
 \begin_layout Subsection
 Implémentations
 \end_layout
 
 \begin_layout Standard
-Pour le moment on a une implémentation par couple type d'interpolation -
- dimension.
- Il n'est pas forcément plus efficace d'avoir des interpolateurs génériques.
+Je suis parti au début sur une implémentation par couple type d'interpolation
+ - dimension.
+ Avoir des interpolateurs génériques selon la dimension requiert plus de
+ travail.
+ Seul l'interopolation au plus proche voisins est générique pour le moment.
 \end_layout
 
-\begin_layout Description
-NearestNeighborInterpolator2D
+\begin_layout Subsubsection
+NearestNeighborInterpolator
 \end_layout
 
-\begin_layout Description
-NearestNeighborInterpolator3D
+\begin_layout Standard
+Interpolation au plus proche voisin.
+ Marche en 2D et en 3D, pour des images scalaires et de vecteurs.
 \end_layout
 
-\begin_layout Description
+\begin_layout Subsubsection
 LinearInterpolator2D
 \end_layout
 
-\begin_layout Description
+\begin_layout Standard
+Interpolation linéaire pour des images 2D.
+\end_layout
+
+\begin_layout Subsubsection
 LinearInterpolator3D
+\end_layout
+
+\begin_layout Standard
+Interpolation linéaire pour des images 3D.
 \end_layout
 
 \begin_layout Subsection
@@ -822,6 +866,33 @@ ImageFunction
  encapsule une image et une transformation.
  Quand on évalue la valeur en un point, les coordonnées du point après transform
 ation sont calculées, et utilisées pour évaluer la valeur dans l'image stockée.
+\end_layout
+
+\begin_layout Subsection
+Implémentation obsolètes
+\end_layout
+
+\begin_layout Standard
+Ces implémentations étaient utilisées dans des versions précédentes, mais
+ des classes plus génériques ont été créées depuis.
+\end_layout
+
+\begin_layout Subsubsection
+NearestNeighborInterpolator2D
+\end_layout
+
+\begin_layout Standard
+Interpolation au plus proche voisin pour des images scalaires 2D.
+ Obsolète.
+\end_layout
+
+\begin_layout Subsubsection
+NearestNeighborInterpolator3D
+\end_layout
+
+\begin_layout Standard
+Interpolation au plus proche voisin pour des images scalaires 3D.
+ Obsolète.
 \end_layout
 
 \begin_layout Standard
