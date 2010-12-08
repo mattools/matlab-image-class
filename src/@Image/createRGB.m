@@ -125,4 +125,4 @@ end
 rgb = permute(rgb, [2 1 4 3 5]);
 
 % create new image object
-rgb = Image(nd, 'data', rgb);
+rgb = Image(nd, 'data', rgb, 'type', 'color');

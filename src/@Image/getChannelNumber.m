@@ -7,7 +7,7 @@ function nc = getChannelNumber(this)
 %   getChannelNumber
 %
 %   See also
-%
+%   getSize, getElementSize
 %
 % ------
 % Author: David Legland

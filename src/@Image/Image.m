@@ -1,11 +1,10 @@
 classdef Image < handle
-%Abstract Image class, reference for more specialized implementations
+%Image class that handles up to 3 spatial dimensions, channels, and time
 %   
 %   Example
 %   
 %   See also
-%   Image2D, Image3D
-%
+%   
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
@@ -20,7 +19,17 @@ properties
     
     % Size of data buffer(in x,y,z,c,t order), should always have length=5
     dataSize    = [1 1 1 1 1];
-        
+    
+    % The type of image (grayscale, color, complex...)
+    % It is represented as one of the strings:
+    % 'binary', data buffer contains one channel of logical values
+    % 'grayscale' (the default), data buffer contains 1 channel
+    % 'color', data buffer contains 3 channels
+    % 'vector', data buffer contains several channels
+    % 'complex', data buffer contains 2 channels
+    % 'other', data buffer contains one channel, but this is not grayscale
+    type        = 'grayscale';
+    
     % Spatial calibration of image.
     calib;
     
@@ -109,6 +118,8 @@ methods (Access = protected)
                     this.copyFields(value);
                 case 'name'
                     this.name = value;
+                case 'type'
+                    this.type = value;
                 case 'origin'
                     this.setOrigin(value);
                 case 'spacing'
@@ -132,6 +143,7 @@ methods (Access = protected)
         % Does not copy the data buffer.
         this.calib  = that.calib;
         this.name   = that.name;
+        this.type   = that.type;
     end
     
     function setInnerData(this, data)
