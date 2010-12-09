@@ -16,8 +16,23 @@ function [res grad isInside] = computeValueAndGradient(this, varargin)
 % res = ssdMetric.computeValueAndGradient(model);
 %
 
-if ~isempty(this.transform) && ~isempty(this.gradientImage)
-    nd = this.img1.getDimension();
+
+nd = this.img1.getDimension();
+
+useClassFields = ~isempty(this.transform) && ~isempty(this.gradientImage);
+
+if useClassFields
+    
+    % If the gradient image is an image function, it is assumed to be a 
+    % gradient interpolator or a gradient evaluator
+    if isa(this.gradientImage, 'ImageFunction')
+        [res grad isInside] = ...
+            computeValueAndGradientFromGradientFunction(this);
+        return;
+    end
+    
+    % if gradient image is a standard image, use specific methods that
+    % perform dimension-specific nearest-neighbor interpolation
     if nd==2
         [res grad isInside] = computeValueAndGradientLocal2d(this);
     elseif nd==3
@@ -25,13 +40,17 @@ if ~isempty(this.transform) && ~isempty(this.gradientImage)
     else
         [res grad isInside] = computeValueAndGradientLocal(this);
     end
+    
 else
     % deprecation warning
     warning('oolip:deprecated', ...
         'Deprecated syntax. Please initialize metric fields instead');
+  
+    if length(varargin)<nd
+        error('Requires as many gradient components as the number of dimensions');
+    end
     
     % assumes transfor and gradient components are given as arguments
-    nd = this.img1.getDimension();
     if nd == 2
         [res grad isInside] = computeValueAndGradient2d(this, varargin{:});
     else
@@ -43,14 +62,6 @@ end
 
 
 function [res grad isInside] = computeValueAndGradientLocal(this)
-
-% error checking
-if isempty(this.transform)
-    error('Gradient computation requires transform');
-end
-if isempty(this.gradientImage)
-    error('Gradient computation requires a gradient image');
-end
 
 % compute values in image 1
 [values1 inside1] = this.img1.evaluate(this.points);
@@ -109,15 +120,6 @@ grad = mean(gd, 1);
 
 function [res grad isInside] = computeValueAndGradientLocal2d(this)
 %Assumes gradient image is 2D
-
-
-% error checking
-if isempty(this.transform)
-    error('Gradient computation requires transform');
-end
-if isempty(this.gradientImage)
-    error('Gradient computation requires a gradient image');
-end
 
 % compute values in image 1
 [values1 inside1] = this.img1.evaluate(this.points);
@@ -182,14 +184,6 @@ grad = mean(gd, 1);
 function [res grad isInside] = computeValueAndGradientLocal3d(this)
 %Assumes gradient image is 3D
 
-
-% error checking
-if isempty(this.transform)
-    error('Gradient computation requires transform');
-end
-if isempty(this.gradientImage)
-    error('Gradient computation requires a gradient image');
-end
 
 % compute values in image 1
 [values1 inside1] = this.img1.evaluate(this.points);
@@ -256,10 +250,78 @@ gd = g(inds,:).*diff(:, ones(1, nParams));
 grad = mean(gd, 1);
 
 
+function [res grad isInside] = computeValueAndGradientFromGradientFunction(this)
+% Assumes gradient image is an ImageFunction that evaluates or interpolates
+% gradient of another image
+% the interpolated/evaluated gradient is not transformed, this operation is
+% left to this function
+
+% compute values in image 1
+[values1 inside1] = this.img1.evaluate(this.points);
+
+% compute values in image 2
+[values2 inside2] = this.img2.evaluate(this.points);
+
+% keep only valid values
+isInside = inside1 & inside2;
+
+if sum(isInside) < 100
+    error('Too many points outside registration window');
+end
+
+% compute result
+diff = values2(isInside) - values1(isInside);
+
+% average over all points
+np  = length(isInside);
+res = sum(diff .^ 2) / np;
+
+%fprintf('Initial SSD: %f\n', res);
+
+
+transfo = this.transform;
+nParams = length(transfo.getParameters());
+
+% compute transformed coordinates
+points2 = transfo.transformPoint(this.points);
+
+% evaluate gradient, and re-compute points within image frame, as gradient
+% evaluator can have different behaviour at image borders.
+[gradVals gradInside] = this.gradientImage.evaluate(points2);
+
+% convert to indices
+inds    = find(gradInside);
+nbInds  = length(inds);
+g = zeros(nbInds, nParams);
+
+for i=1:nbInds
+    iInd = inds(i);
+    
+    % calcule jacobien pour points valides (repere image fixe)
+    p0 = this.points(iInd, :);
+    jac = getParametricJacobian(transfo, p0);
+    
+    % % local contribution to metric gradient
+    g(iInd, :) = gradVals(iInd, :)*jac;
+end
+
+% re-compute differences, by considering position that can be used for
+% computing gradient
+diff = values2(gradInside) - values1(gradInside);
+
+% compute gradient vectors weighted by local differences
+gd = g(inds,:).*diff(:, ones(1, nParams));
+
+% remove some NAN values that could occur for an obscure reason
+gd = gd(~isnan(gd(:,1)), :);
+
+% mean of valid gradient vectors
+grad = mean(gd, 1);
 
 
 
 function [res grad isInside] = computeValueAndGradient2d(this, transfo, gx, gy)
+% Old function to compute metric and gradient of a 2D image using 2 args
 
 % compute values in image 1
 [values1 inside1] = this.img1.evaluate(this.points);
@@ -279,8 +341,6 @@ res = sum(diff.^2)/np;
 
 %fprintf('Initial SSD: %f\n', res);
 
-
-%% Compute gradient direction
 
 % convert to indices
 inds = find(isInside);
@@ -317,8 +377,7 @@ grad = mean(gd, 1);
 
 
 function [res grad isInside] = computeValueAndGradient3d(this, transfo, gx, gy, gz)
-
-%% Compute metric value
+% Old function to compute metric and gradient of a 3D image using 3 args
 
 % compute values in image 1
 [values1 inside1] = this.img1.evaluate(this.points);
@@ -336,8 +395,6 @@ diff = values2(isInside)-values1(isInside);
 np = length(isInside);
 res = sum(diff.^2)/np;
 
-
-%% Compute gradient direction
 
 % convert to indices
 inds = find(isInside);

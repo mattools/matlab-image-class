@@ -1,4 +1,4 @@
-function grad = evaluate(this, varargin)
+function [grad isInside]= evaluate(this, varargin)
 %EVALUATE Return gradient evaluated for specified point
 %
 %   GRAD = evaluate(THIS, POINTS)
@@ -7,6 +7,10 @@ function grad = evaluate(this, varargin)
 %   GRAD = evaluate(THIS, PX, PY)
 %   Where PX and PY are arrays the same size, return an array with one
 %   dimension more that PX, containing gradient for each point.
+%
+%   [GRAD ISINSIDE] = evaluate(...)
+%   Also returns an array of boolean indicating which points are within the
+%   image frame.
 %
 %   Example
 %   evaluate
@@ -25,7 +29,9 @@ nd = this.image.getDimension();
 
 % size of elements: number of channels by number of frames
 elSize = this.image.getElementSize();
-
+if elSize(1) > 1
+    error('Can not evaluate gradient of a vector image');
+end 
 
 % eventually convert inputs to a single nPoints-by-ndims array
 [point dim] = ImageFunction.mergeCoordinates(varargin{:});
@@ -47,7 +53,7 @@ end
 N = size(coord, 1);
 
 % Create default result image
-dim2 = [dim0 elSize];
+dim2 = [dim0 nd];
 grad = ones(dim2)*this.defaultValue;
 
 % % Create default result image
@@ -64,8 +70,9 @@ end
 % select points located inside interpolation area
 % (smaller than image physical size)
 siz = this.image.getSize();
-isBefore    = sum(coord<1.5, 2) > 0;
-isAfter     = sum(coord>=(siz(ones(N,1), :))-.5, 2) > 0;
+isBefore    = sum(coord < 1.5, 2) > 0;
+isAfter     = sum(coord >= (siz(ones(N,1), :))-.5, 2) > 0;
+%isAfter     = sum(bsxfun(@ge, coord, siz + .5), 2) > 0;
 isInside    = ~(isBefore | isAfter);
 
 xt = xt(isInside);

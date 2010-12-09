@@ -62,8 +62,8 @@ N = size(coord, 1);
 % select points located inside interpolation area
 % (smaller than image physical size)
 siz = this.image.getSize();
-isBefore    = sum(coord<.5, 2)>0;
-isAfter     = sum(coord>=(siz(ones(N,1), :))+.5, 2)>0;
+isBefore    = sum(coord < .5, 2)>0;
+isAfter     = sum(coord >= (siz(ones(N,1), :))+.5, 2)>0;
 isInside    = ~(isBefore | isAfter);
 
 xt = xt(isInside);
