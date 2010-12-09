@@ -25,9 +25,10 @@ properties
     % 'binary', data buffer contains one channel of logical values
     % 'grayscale' (the default), data buffer contains 1 channel
     % 'color', data buffer contains 3 channels
+    % 'label', data buffer contains 1 channel
     % 'vector', data buffer contains several channels
     % 'complex', data buffer contains 2 channels
-    % 'other', data buffer contains one channel, but this is not grayscale
+    % 'unknown'
     type        = 'grayscale';
     
     % Spatial calibration of image.

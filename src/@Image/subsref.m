@@ -63,7 +63,7 @@ elseif strcmp(type, '()')
         
         % extract corresponding data, and permute to comply with matlab
         % array representation
-        varargout{1} = permute(this.data(ind1, ind2, ind3,: , :), ...
+        varargout{1} = permute(this.data(ind1, ind2, ind3, :, :), ...
             [2 1 3 4 5]);
         
     else
