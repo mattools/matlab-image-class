@@ -43,7 +43,7 @@ dim0 = dim;
 if dim0(end) == 1
     dim0 = dim0(1:end-1);
 end
-resNDim = length(dim);
+resNDim = length(dim0);
 
 % Create default result image
 dim2 = [dim0 elSize];
@@ -75,7 +75,7 @@ i1 = round(xt);
 j1 = round(yt);
 if nd > 2
     zt = zt(isInside);
-    k1 = rounds(zt);
+    k1 = round(zt);
 end
 
 % values of the nearest neighbor
@@ -101,9 +101,9 @@ else
     [subs{:}] = ind2sub(dim, find(isInside));
     
     % pre-compute some indices of interpolated values
-    subs2 = cell(1, length(dim2));
-    subs2{nd+1} = 1:elSize(1);
-    subs2{nd+2} = 1:elSize(2);
+    subs2 = num2cell(ones(1, length(dim2)));
+    subs2{resNDim+1} = 1:elSize(1);
+    subs2{resNDim+2} = 1:elSize(2);
     
     % iterate on interpolated values
     for i = 1:length(subs{1})

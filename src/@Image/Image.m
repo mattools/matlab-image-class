@@ -45,6 +45,9 @@ methods (Static)
     
     img = read(fileName, varargin)
     
+    [sx sy sz] = create3dGradientKernels(varargin)
+    % Create kernels for gradient computations
+    
 end % static methods
 
 
@@ -61,8 +64,6 @@ methods(Static, Access=private)
     axis = parseAxisIndex(axis)
     % convert index or string to index    
     
-    [sx sy sz] = create3dGradientKernels(varargin)
-    % Create kernels for gradient computations
 end
 
 %% Constructor declaration
