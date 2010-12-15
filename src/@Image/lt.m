@@ -1,5 +1,5 @@
 function res = lt(this, arg)
-%LT Overload the lt operator for Imalt objects
+%LT Overload the lt operator for Image objects
 %
 %   output = lt(input)
 %
@@ -22,4 +22,4 @@ end
 newData = bsxfun(@lt, this.data, arg);
 
 nd = getDimension(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image(nd, 'data', newData, 'parent', this, 'type', 'binary');

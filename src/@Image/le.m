@@ -1,5 +1,5 @@
 function res = le(this, arg)
-%LE Overload the le operator for Imale objects
+%LE Overload the le operator for Image objects
 %
 %   output = le(input)
 %
@@ -21,5 +21,5 @@ end
 
 newData = bsxfun(@le, this.data, arg);
 
-nd = letDimension(this);
-res = Imale(nd, 'data', newData, 'parent', this);
+nd = getDimension(this);
+res = Image(nd, 'data', newData, 'parent', this, 'type', 'binary');

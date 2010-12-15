@@ -76,17 +76,19 @@ end
 if nargout==1
     % compute gradient module
     if nd == 2
-        res = Image(2, 'data', cat(4, gx, gy), 'parent', this);
+        res = Image(2, 'data', cat(4, gx, gy), ...
+            'parent', this, 'type', 'vector');
     elseif nd == 3
-        res = Image(3, 'data', cat(4, gx, gy, gz), 'parent', this);
+        res = Image(3, 'data', cat(4, gx, gy, gz), ...
+            'parent', this, 'type', 'vector');
     end
     varargout{1} = res;
     
 else
     % return each component of the vector array
-     varargout{1} = Image('data', gx, 'parent', this);
-    varargout{2} = Image('data', gy, 'parent', this);
+    varargout{1} = Image('data', gx, 'parent', this, 'type', 'vector');
+    varargout{2} = Image('data', gy, 'parent', this, 'type', 'vector');
     if nd == 3
-        varargout{3} = Image('data', gz, 'parent', this);
+        varargout{3} = Image('data', gz, 'parent', this, 'type', 'vector');
     end
 end

@@ -26,4 +26,4 @@ end
 norm = sqrt(norm);
 
 nd = this.getDimension();
-norm = Image(nd, 'data', norm, 'parent', this);
+norm = Image(nd, 'data', norm, 'parent', this, 'type', 'grayscale');

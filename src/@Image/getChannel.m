@@ -20,4 +20,5 @@ function channel = getChannel(this, index)
 
 % create a new Image from data
 nd = getDimension(this);
-channel = Image(nd, 'data', this.data(:,:,:,index,:), 'parent', this);
+channel = Image(nd, 'data', this.data(:,:,:,index,:), ...
+    'parent', this, 'type', 'grayscale');

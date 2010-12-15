@@ -90,8 +90,9 @@ methods (Access = protected)
             % Generic constructor: parse arguments and init image
             
             % first argument is either the data buffer, or the image dim
-            if isnumeric(varargin{1})
+            if isnumeric(varargin{1}) || islogical(varargin{1})
                 if isscalar(varargin{1})
+                    % if argument is scalar, this is the image dimension
                     this.dataSize = ones(1, 5);
                     nd = varargin{1};
                 else
@@ -152,8 +153,20 @@ methods (Access = protected)
         % Initialize data buffer and computes its size
         this.data = data;
         
+        % determines size of data buffer
         siz = size(this.data);
         this.dataSize(1:length(siz)) = siz;
+        
+        % determines a priori type of image
+        if islogical(this.data)
+            this.type = 'binary';
+        elseif this.dataSize(4) == 3
+            this.type = 'color';
+        elseif this.dataSize(4) == 2
+            this.type = 'complex';
+        elseif this.dataSize(4) > 3
+            this.type = 'vector';
+        end
     end
 
 end % protected methods

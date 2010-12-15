@@ -38,7 +38,7 @@ if nargin == 1
         nd = 2;
     end
     
-    rgb = Image(nd, 'data', data);
+    rgb = Image(nd, 'data', data, 'type', 'color');
     return;
 end
 

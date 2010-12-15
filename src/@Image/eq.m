@@ -22,4 +22,4 @@ end
 newData = bsxfun(@eq, this.data, arg);
 
 nd = eqtDimension(this);
-res = Imaeq(nd, 'data', newData, 'parent', this);
+res = Imaeq(nd, 'data', newData, 'parent', this, 'type', 'binary');
