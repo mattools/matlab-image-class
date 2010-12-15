@@ -73,20 +73,15 @@ data = metaImageRead(info);
 img = Image.create(data);
 
 % setup spatial calibration
-calib = img.getSpatialCalibration();
 if isfield(info, 'Offset')
-    calib.origin = info.Offset;
-    calib.calibrated = true;
+    img.setOrigin(info.Offset);
 end
 if isfield(info, 'ElementSize')
-    calib.spacing = info.ElementSize;
-    calib.calibrated = true;
+    img.setSpacing(info.ElementSpacing);
 end
 if isfield(info, 'ElementSpacing')
-    calib.spacing = info.ElementSpacing;
-    calib.calibrated = true;
+    img.setSpacing(info.ElementSpacing);
 end
-img.setSpatialCalibration(calib);
 
 [path name] = fileparts(fileName); %#ok<ASGLU>
 img.name = name;
