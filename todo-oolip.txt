@@ -9,15 +9,20 @@ TODO-list for project imageObj
     
 class Image
 ===========
+
+- type of image is implemented, but not initialized when needed...
+    + binary images
+    + color images
+    + vector images
     
 - small convenient functions (2010.11.26)
     + imRescale (find a better name) 
-    + hsv2rgb
+    + hsv2rgb (ou autre fonction de conversion d'espace couleurs)
     + concatenation (cat, horzcat, vertcat)
     + operateur min et max: un ou deux arguments
         -> un argument: renvoie le max dans l'image
         -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
-        
+    + cast : remplacer 'convertType' par cast (2010.12.13)
     
 - Split class Image into a specific library ? (2010.11.04)
     + remove some functions (think about a way to have additional methods
@@ -40,20 +45,13 @@ class Image
 - faire gerer les conversions de coordonnees index-position par la classe
     de calibration spatiale ? (2010.10.14)
     
-
 - inclure info sur dynamique des niveaux de gris (2010.12.03)
     + grayRange pour dynamique des niveaux de gris de l'image (min et max des elements)
     + displayRange pour dynamique utilisee pour l'affichage
     
-- differencier dataType et imageType
-    * dataType : {logical | uint8 | int8 | uint16 | int16 | single | double ...}
-    * imageType : {intensity | label | binary | vector | color | other }
-        -> comment interpreter la dimension channel
-    
 - Think about other image implementations:
     - ImageView: use data from another image, but cropped (2010.06.24)
 	   
-
 - stocker le nom des canaux ?
     + channelNames
 
@@ -91,9 +89,10 @@ Interpolators
     
 - passer LinearInterpolator en generique 2D/3D (2010.06.17)
 
-- implementer classe generique NearestNeighbor Interpolator (2010.06.17)
-
 - add management of gradient image by interpolator classes (2010.11.24)
+
+- implementer un gradientEvaluator qui calcule le gradient pour les points
+    demandes. (2010.10.10)
 
 - implementer la methode resample (2010.06.17)
     - en entree un resampler, ou deux tableaux de points, ou une image
@@ -103,6 +102,7 @@ Interpolators
 - implementer re echantillonnage d'une image 3D par une coupe (2010.10.10)
     resampleSlicer(IMGFUN, PLANE, UDATA, VDATA);
     sliceResampler(IMGFUN, PLANE, UDATA, VDATA);
+
 
     
 Parametric transforms
@@ -154,7 +154,3 @@ Divers
 - think about a way to measure parameters
     + use consistent interface for returning params
     + use Table object ?
-
-- implementer un gradientEvaluator qui calcule le gradient pour les points
-    demandes. (2010.10.10)
-

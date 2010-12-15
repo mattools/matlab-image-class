@@ -50,7 +50,4 @@ res = Image.create('data', this.data(subsArray{:}), 'parent', this);
 %% Post-processing
 
 % update calibration
-calib = res.getSpatialCalibration();
-calib.spacing = calib.spacing.*k;
-res.setSpatialCalibration(calib);
-
+res.spacing = this.spacing .* k;

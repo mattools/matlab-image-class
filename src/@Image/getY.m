@@ -16,6 +16,6 @@ function ydata = getY(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 siz = this.dataSize;
-ydata = (0:siz(2)-1)*this.calib.spacing(2) + this.calib.origin(2);
+ydata = (0:siz(2)-1)*this.spacing(2) + this.origin(2);
 ydata = reshape(ydata, [siz(2) 1 1]);
 ydata = ydata(:, ones(siz(1), 1), ones(siz(3), 1));

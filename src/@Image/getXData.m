@@ -23,4 +23,4 @@ function lx = getXData(this)
 dim = this.dataSize;
 
 % compute voxel positions
-lx = (0:dim(1)-1)*this.calib.spacing(1) + this.calib.origin(1);
+lx = (0:dim(1)-1)*this.spacing(1) + this.origin(1);

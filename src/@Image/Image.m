@@ -30,12 +30,19 @@ properties
     % 'complex', data buffer contains 2 channels
     % 'unknown'
     type        = 'grayscale';
-    
-    % Spatial calibration of image.
-    calib;
-    
+        
     % Image name, empty by default
     name        = '';
+    
+    % boolean flag indicating whether the image is calibrated or not
+    calibrated  = false;
+    
+    % spatial origin of image
+    % corresponding to position of pixel (1,1) or voxel (1,1,1)
+    origin      = [0 0];
+    
+    % the amount of space between two pixels or voxels
+    spacing     = [1 1];
 end
 
 %% Static methods
@@ -106,7 +113,8 @@ methods (Access = protected)
             end
             
             % update other data depending on image dimension
-            this.calib  = SpatialCalibration(nd);
+            this.origin  = zeros(1, nd);
+            this.spacing = ones(1, nd);
         end
         
         % assumes there are pairs of param-values
@@ -144,9 +152,12 @@ methods (Access = protected)
     function copyFields(this, that)
         % Initialize inner fields with the fields of the parameter image
         % Does not copy the data buffer.
-        this.calib  = that.calib;
         this.name   = that.name;
         this.type   = that.type;
+        
+        this.calibrated = that.calibrated;
+        this.origin     = that.origin;
+        this.spacing    = that.spacing;
     end
     
     function setInnerData(this, data)
@@ -175,52 +186,34 @@ end % protected methods
 %% Spatial calibration methods
 methods
    
-    function calib = getSpatialCalibration(this)
-        % Return spatial calibration of image
-        %
-        % CALIB = img.getSpatialCalibration();
-        calib = this.calib;
-    end
-    
-    function setSpatialCalibration(this, calib)
-        % Change spatial calibration of image
-        %
-        % img.setSpatialCalibration(CALIB);
-        this.calib = calib;
-    end
-    
     function ori = getOrigin(this)
         % Return image origin
-        ori = this.calib.origin;
+        ori = this.origin;
     end
     
     function setOrigin(this, origin)
         % Change image origin
-        this.calib.origin = origin;
-        this.calib.calibrated = true;
+        this.origin = origin;
+        this.calibrated = true;
     end
     
     function ori = getSpacing(this)
         % Return image spacing
-        ori = this.calib.spacing;
+        ori = this.spacing;
     end
     
     function setSpacing(this, spacing)
         % Change image spacing
-        this.calib.spacing = spacing;
-        this.calib.calibrated = true;
+        this.spacing = spacing;
+        this.calibrated = true;
     end
        
     function [index isInside] = pointToIndex(this, point)
         % Converts point in physical coordinate into image index
 
-        % Extract spatial calibration
-        spacing = this.calib.spacing;
-        origin = this.calib.origin;
-
         % repeat points avoiding repmat
         nI = ones(size(point, 1),1);
-        index = round((point - origin(nI, :))./spacing(nI, :)) + 1;
+        index = round((point - this.origin(nI, :))./this.spacing(nI, :))+1;
 
         if nargout>1
             isInside = true(size(nI));
@@ -232,15 +225,11 @@ methods
     function [point isInside] = pointToContinuousIndex(this, point)
         % Converts point in physical coordinate into unrounded image index
         
-        % Extract spatial calibration
-        spacing = this.calib.spacing;
-        origin = this.calib.origin;
-
         % TODO: change name ? physicalToImageCoord ?
 %         nI = ones(size(point, 1),1); % repeat points avoiding repmat
 %         index = (point - origin(nI, :))./spacing(nI, :) + 1;
-        for i=1:length(this.calib.spacing)
-            point(:,i) = (point(:,i)- origin(i))/spacing(i) + 1;
+        for i=1:length(this.spacing)
+            point(:,i) = (point(:,i)- this.origin(i))/this.spacing(i) + 1;
         end
         
         if nargout>1
@@ -253,7 +242,7 @@ methods
     
     function point = indexToPoint(this, index)
         % Converts image index into point in physical coordinate
-        point = (index-1).*this.calib.spacing + this.calib.origin;
+        point = (index-1).*this.spacing + this.origin;
     end
     
 end % methods

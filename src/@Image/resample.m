@@ -33,9 +33,9 @@ dat = interpolator.evaluateAtIndex(x, y);
 res = Image.create(dat);
 
 % compute basis of new image
-lx = (lx-1)*this.calib.spacing(1) + this.calib.origin(1);
-ly = (ly-1)*this.calib.spacing(2) + this.calib.origin(2);
+lx = (lx-1)*this.spacing(1) + this.origin(1);
+ly = (ly-1)*this.spacing(2) + this.origin(2);
 
 % set up new image
-res.calib.origin = [lx(1) ly(1)];
-res.calib.spacing = [lx(2)-lx(1) ly(2)-ly(1)];
+res.origin = [lx(1) ly(1)];
+res.spacing = [lx(2)-lx(1) ly(2)-ly(1)];

@@ -65,64 +65,44 @@ end
 % ensure n is between 0 (no rotation) and 3 (rotation in inverse direction)
 n = mod(n, 4);
 
-% default values
-imInds = [1 2 3];
-permDim = [];
+% indices of spatial dimensions to permute, row index is axis index
+permDimArray = { ...
+    [1 3 2], [1 2 3], [1 3 2], [1 2 3] ; ...    % x-axis rotation
+    [3 2 1], [1 2 3], [3 2 1], [1 2 3] ; ...    % y-axis rotation
+    [2 1 3], [1 2 3], [2 1 3], [1 2 3] ; ...    % z-axis rotation
+    };
 
-% compute indices for rotation
-switch axis
-    case 1
-        % Rotate around X axis
-        if n==1
-            imInds = [1 3 2];
-            permDim = 2;
-        elseif n==2
-            permDim = [2 3];
-        elseif n==3
-            imInds = [1 3 2];
-            permDim = 3;
-        end
-        
-    case 2
-        % Rotate around Y axis
-        if n==1
-            imInds = [3 2 1];
-            permDim = 3;
-        elseif n==2
-            permDim = [1 3];
-        elseif n==3
-            imInds = [3 2 1];
-            permDim = 1;
-        end
-        
-    case 3
-        % Rotate around Z axis
-        if n==1
-            imInds = [2 1 3];
-            permDim = 1;
-        elseif n==2
-            permDim = [1 2];
-        elseif n==3
-            imInds = [2 1 3];
-            permDim = 2;
-        end        
+% indices of spatial dimensions that need to be flipped
+flipDimArray = { ...
+    2, [2 3], 3, [] ; ...   % x-axis rotation
+    3, [1 3], 1, [] ; ...   % y-axis rotation
+    1, [1 2], 2, [] ; ...   % z-axis rotation
+    };
+
+if n>0
+    permDims = permDimArray{axis, n};
+    flipDims = flipDimArray{axis, n};
+else
+    permDims = [1 2 3];
+    flipDims = [];
 end
 
 % add non spatial dimensions
-imInds = [imInds 4 5];
+permDims = [permDims 4 5];
 
 % apply matrix dimension permutation
-newData = permute(this.data, imInds);
+newData = permute(this.data, permDims);
 
 % depending on rotation, some dimensions must be fliped
-for i=1:length(permDim)
-    newData = flipdim(newData, permDim(i));
+for i=1:length(flipDims)
+    newData = flipdim(newData, flipDims(i));
 end
 
 % create the new result image
 res = Image(nd, 'data', newData, 'parent', this);
 
 % also permute spacing and origin of image
-calib = permute(this.getSpatialCalibration(), imInds(1:nd));
-res.setSpatialCalibration(calib);
+res.origin  = permute(this.origin, permDims);
+res.spacing = permute(this.spacing, permDims);
 
+    

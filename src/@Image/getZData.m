@@ -22,4 +22,4 @@ function lz = getZData(this)
 dim = this.dataSize;
 
 % compute voxel positions
-lz = (0:dim(3)-1)*this.calib.spacing(3) + this.calib.origin(3);
+lz = (0:dim(3)-1)*this.spacing(3) + this.origin(3);

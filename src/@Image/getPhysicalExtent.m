@@ -26,8 +26,8 @@ nd = getDimension(this);
 
 % extract base data
 sz = this.dataSize(1:nd);
-sp = this.calib.spacing(1:nd);
-or = this.calib.origin(1:nd);
+sp = this.spacing;
+or = this.origin;
 
 % put extent in array
 extent = (([zeros(nd, 1) sz']-.5).* [sp' sp'] + [or' or'])';

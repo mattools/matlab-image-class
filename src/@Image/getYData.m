@@ -23,4 +23,4 @@ function ly = getYData(this)
 dim = this.dataSize;
 
 % compute voxel positions
-ly = (0:dim(2)-1)*this.calib.spacing(2) + this.calib.origin(2);
+ly = (0:dim(2)-1)*this.spacing(2) + this.origin(2);

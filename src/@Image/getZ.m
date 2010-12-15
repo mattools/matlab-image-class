@@ -16,6 +16,6 @@ function zdata = getZ(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 siz = this.dataSize;
-zdata = (0:siz(3)-1)'*this.calib.spacing(3) + this.calib.origin(3);
+zdata = (0:siz(3)-1)'*this.spacing(3) + this.origin(3);
 zdata = reshape(zdata, [1 1 siz(3)]);
 zdata = zdata(ones(siz(2), 1), ones(siz(1),1), :);
