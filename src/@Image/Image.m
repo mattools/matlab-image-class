@@ -43,6 +43,8 @@ properties
     
     % the amount of space between two pixels or voxels
     spacing     = [1 1];
+    
+    unitName    = '';
 end
 
 %% Static methods
