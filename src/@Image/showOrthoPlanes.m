@@ -64,11 +64,10 @@ imshow(sliceXY, 'xdata', xdata, 'ydata', ydata);
 line([xdata(1) xdata(end)], [yPos yPos], 'color', 'r');
 line([xPos xPos], [ydata(1) ydata(end)], 'color', 'r');
 
-if ~isempty(this.calib.axisNames)
-    xlabel(this.calib.getAxisName(1));
-    ylabel(this.calib.getAxisName(2));
+if ~isempty(this.axisNames)
+    xlabel(this.getAxisName(1));
+    ylabel(this.getAxisName(2));
 end
-
 
 
 %% Display ZY Slice
@@ -80,24 +79,10 @@ imshow(sliceZY, 'xdata', zdata, 'ydata', ydata);
 line([zdata(1) zdata(end)], [yPos yPos], 'color', 'r');
 line([zPos zPos], [ydata(1) ydata(end)], 'color', 'r');
 
-if ~isempty(this.calib.axisNames)
-    xlabel(this.calib.getAxisName(2));
-    ylabel(this.calib.getAxisName(3));
+if ~isempty(this.axisNames)
+    xlabel(this.getAxisName(2));
+    ylabel(this.getAxisName(3));
 end
-
-% %% Display YZ Slice
-% 
-% subplot(2, 2, 2); hold on;
-% 
-% imshow(sliceYZ, 'xdata', ydata, 'ydata', zdata);
-% 
-% line([ydata(1) ydata(end)], [zPos zPos], 'color', 'r');
-% line([yPos yPos], [zdata(1) zdata(end)], 'color', 'r');
-% 
-% if ~isempty(this.calib.axisNames)
-%     xlabel(this.calib.getAxisName(2));
-%     ylabel(this.calib.getAxisName(3));
-% end
 
 
 %% Display XZ Slice
@@ -109,9 +94,9 @@ imshow(sliceXZ, 'xdata', xdata, 'ydata', zdata);
 line([xdata(1) xdata(end)], [zPos zPos], 'color', 'r');
 line([xPos xPos], [zdata(1) zdata(end)], 'color', 'r');
 
-if ~isempty(this.calib.axisNames)
-    xlabel(this.calib.getAxisName(1));
-    ylabel(this.calib.getAxisName(3));
+if ~isempty(this.axisNames)
+    xlabel(this.getAxisName(1));
+    ylabel(this.getAxisName(3));
 end
 
 
@@ -120,9 +105,6 @@ end
 subplot(2, 2, 4);
 
 this.showOrthoSlices(pos);
-
-% set(gca, 'ydir', 'reverse');
-% set(gca, 'zdir', 'reverse');
 
 line([xdata(1) xdata(end)], [yPos yPos], [zPos zPos], 'color', 'r');
 line([xPos xPos], [ydata(1) ydata(end)], [zPos zPos], 'color', 'r');

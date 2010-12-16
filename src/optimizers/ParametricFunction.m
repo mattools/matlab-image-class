@@ -34,7 +34,7 @@ methods
         % basic implementation of evaluate function
         % this make possible the call in an Optimization procedure.
         this.setParameters(params);
-        if nargin<=1
+        if nargout<=1
             res = this.computeValue();
         else
             [res grad] = this.computeValueAndGradient();

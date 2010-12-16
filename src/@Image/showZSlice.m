@@ -34,11 +34,8 @@ function varargout = showZSlice(this, sliceIndex)
 lz = this.getZData();
 
 dim = this.dataSize;
-vx = ((0:dim(1))-.5)*this.calib.spacing(1) - this.calib.origin(1);
-vy = ((0:dim(2))-.5)*this.calib.spacing(2) - this.calib.origin(2);
-
-% % reverse z axis to have first slice on top
-% set(gca, 'zdir', 'reverse');
+vx = ((0:dim(1))-.5)*this.spacing(1) - this.origin(1);
+vy = ((0:dim(2))-.5)*this.spacing(2) - this.origin(2);
 
 % global parameters for surface display
 params = {'facecolor','texturemap', 'edgecolor', 'none'};

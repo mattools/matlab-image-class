@@ -34,12 +34,9 @@ function varargout = showYSlice(this, sliceIndex)
 ly = this.getYData();
 
 dim = this.dataSize;
-vx = ((0:dim(1))-.5)*this.calib.spacing(1) - this.calib.origin(1);
-vz = ((0:dim(3))-.5)*this.calib.spacing(3) - this.calib.origin(3);
+vx = ((0:dim(1))-.5)*this.spacing(1) - this.origin(1);
+vz = ((0:dim(3))-.5)*this.spacing(3) - this.origin(3);
 
-% % reverse z axis to have first slice on top
-% set(gca, 'zdir', 'reverse');
-% 
 % global parameters for surface display
 params = {'facecolor','texturemap', 'edgecolor', 'none'};
 
