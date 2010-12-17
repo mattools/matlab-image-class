@@ -37,9 +37,9 @@ end
 %% Extract data
 
 % extract each slice
-sliceXY = this.getSlice(3, pos(3));
-sliceZY = this.getSlice(1, pos(1))';
-sliceXZ = this.getSlice(2, pos(2));
+sliceXY = squeeze(this.getSlice(3, pos(3)));
+sliceZY = squeeze(this.getSlice(1, pos(1)))';
+sliceXZ = squeeze(this.getSlice(2, pos(2)));
 
 % get spatial calibration
 xdata = this.getXData();
@@ -59,7 +59,7 @@ clf;
 
 subplot(2, 2, 1); hold on;
 
-imshow(sliceXY, 'xdata', xdata, 'ydata', ydata);
+show(sliceXY, 'xdata', xdata, 'ydata', ydata);
 
 line([xdata(1) xdata(end)], [yPos yPos], 'color', 'r');
 line([xPos xPos], [ydata(1) ydata(end)], 'color', 'r');
@@ -74,7 +74,7 @@ end
 
 subplot(2, 2, 2); hold on;
 
-imshow(sliceZY, 'xdata', zdata, 'ydata', ydata);
+show(sliceZY, 'xdata', zdata, 'ydata', ydata);
 
 line([zdata(1) zdata(end)], [yPos yPos], 'color', 'r');
 line([zPos zPos], [ydata(1) ydata(end)], 'color', 'r');
@@ -89,7 +89,7 @@ end
 
 subplot(2, 2, 3); hold on;
 
-imshow(sliceXZ, 'xdata', xdata, 'ydata', zdata);
+show(sliceXZ, 'xdata', xdata, 'ydata', zdata);
 
 line([xdata(1) xdata(end)], [zPos zPos], 'color', 'r');
 line([xPos xPos], [zdata(1) zdata(end)], 'color', 'r');

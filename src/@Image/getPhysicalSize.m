@@ -18,6 +18,7 @@ function s = getPhysicalSize(this)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-% multiply size of data array by element spacing
 nd = getDimension(this);
-s = this.dataSize(1:nd) .* this.calib.spacing;
+
+% multiply size of data array by element spacing
+s = this.dataSize(1:nd) .* this.spacing;

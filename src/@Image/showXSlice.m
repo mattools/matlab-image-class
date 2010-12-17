@@ -45,6 +45,7 @@ yz_x = ones(size(yz_y))*lx(sliceIndex);
 
 % extract slice in x direction
 slice = this.getSlice(1, sliceIndex);
+slice = slice.getBuffer()';
 
 % % for YZ slice, we permute
 % slice = permute(slice, [2 1 3]);

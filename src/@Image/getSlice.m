@@ -11,7 +11,8 @@ function slice = getSlice(this, dir, index)
 %   I = analyze75read(analyze75info('brainMRI.hdr'));
 %   img = Image3D(I);
 %   slice = img.getSlice(3, 13);
-%   imshow(slice);
+%   slice = slice.squeeze();
+%   slice.show();
 %
 %   See also
 %
@@ -22,41 +23,41 @@ function slice = getSlice(this, dir, index)
 % Created: 2010-06-30,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-%TODO: decide if we return an array or a 2D image in 3D space.
-
 % parse axis, and check bounds
 dir = Image.parseAxisIndex(dir);
 
-ndims = length(size(this.data));
-if ndims==3
-    % Case of gray scale images
-    switch dir
-        case 1
-            % x-slice: rows Z, cols Y
-            slice = permute(this.data(index, :, :), [3 2 1]);
-        case 2
-            % y-slice: rows Z, cols X
-            slice = permute(this.data(:, index, :), [3 1 2]);
-        case 3
-            % Z-slice: rows Y, cols X
-            slice = this.data(:, :, index)';
-        otherwise
-            error('should specify direction between 1 and 3');
-    end
-else
-    % Case of color images: slice the volume, and keep the channel
-    % component as last one.
-    switch dir
-        case 1
-            % x-slice: rows Z, cols Y
-            slice = permute(this.data(index, :, :, :), [3 2 4 1]);
-        case 2
-            % y-slice: rows Z, cols X
-            slice = permute(this.data(:, index, :, :), [3 1 4 2]);
-        case 3
-            %  Z-slice: rows Y, cols X
-            slice = permute(this.data(:, :, index, :), [2 1 4 3]);
-        otherwise
-            error('should specify direction between 1 and 3');
-    end
+% ndims = length(size(this.data));
+% if ndims==3
+switch dir
+    case 1
+        % x-slice: rows Z, cols Y
+        %slice = permute(this.data(index, :, :), [3 2 1]);
+        slice = Image(3, 'data', this.data(index, :, :), 'parent', this);
+    case 2
+        % y-slice: rows Z, cols X
+        %slice = permute(this.data(:, index, :), [3 1 2]);
+        slice = Image(3, 'data', this.data(:, index, :), 'parent', this);
+    case 3
+        % Z-slice: rows Y, cols X
+        % slice = this.data(:, :, index)';
+        slice = Image(3, 'data', this.data(:, :, index), 'parent', this);
+    otherwise
+        error('should specify direction between 1 and 3');
 end
+% else
+%     % Case of color images: slice the volume, and keep the channel
+%     % component as last one.
+%     switch dir
+%         case 1
+%             % x-slice: rows Z, cols Y
+%             slice = permute(this.data(index, :, :, :), [3 2 4 1]);
+%         case 2
+%             % y-slice: rows Z, cols X
+%             slice = permute(this.data(:, index, :, :), [3 1 4 2]);
+%         case 3
+%             %  Z-slice: rows Y, cols X
+%             slice = permute(this.data(:, :, index, :), [2 1 4 3]);
+%         otherwise
+%             error('should specify direction between 1 and 3');
+%     end
+% end

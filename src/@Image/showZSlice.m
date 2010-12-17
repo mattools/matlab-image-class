@@ -46,6 +46,7 @@ xy_z = ones(size(xy_x))*lz(sliceIndex);
 
 % extract slice in z direction
 slice = this.getSlice(3, sliceIndex);
+slice = slice.getBuffer();
 
 % eventually converts to uint8, rescaling data between 0 and max value
 if ~strcmp(class(slice), 'uint8')

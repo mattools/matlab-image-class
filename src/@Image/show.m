@@ -4,8 +4,19 @@ function show(this, varargin)
 % and spacing.
 %
 
-options = varargin;
+if this.dimension~=2
+    % compute number of image dimension
+    nd = sum(this.dataSize(1:3)>1);
+    if nd==2
+        img = this.squeeze();
+        img.show(varargin{:});
+        return;
+    else
+        error('Method "show" can be applied only to 2D images');
+    end
+end
 
+options = varargin;
 
 data = this.getDisplayData();
 

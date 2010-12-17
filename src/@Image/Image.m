@@ -20,6 +20,9 @@ properties
     % Size of data buffer(in x,y,z,c,t order), should always have length=5
     dataSize    = [1 1 1 1 1];
     
+    % number of spatial dimensions of the image, between 0 and 3.
+    dimension   = 1;
+    
     % The type of image (grayscale, color, complex...)
     % It is represented as one of the strings:
     % 'binary', data buffer contains one channel of logical values
@@ -44,7 +47,12 @@ properties
     % the amount of space between two pixels or voxels
     spacing     = [1 1];
     
+    % the name of the spatial unit
     unitName    = '';
+    
+    % the name of each of the axes
+    axisNames   = {};
+    
 end
 
 %% Static methods
@@ -115,13 +123,14 @@ methods (Access = protected)
             end
             
             % update other data depending on image dimension
+            this.dimension = nd;
             this.origin  = zeros(1, nd);
             this.spacing = ones(1, nd);
         end
         
         % assumes there are pairs of param-values
         while length(varargin)>1
-            varName = varargin{1};
+            varName = lower(varargin{1});
             value = varargin{2};
             
             switch varName
@@ -131,12 +140,18 @@ methods (Access = protected)
                     this.copyFields(value);
                 case 'name'
                     this.name = value;
+                case 'dimension'
+                    this.dimension = value;
                 case 'type'
                     this.type = value;
                 case 'origin'
                     this.setOrigin(value);
                 case 'spacing'
                     this.setSpacing(value);
+                case 'unitname'
+                    this.unitName = value;
+                case 'axisnames'
+                    this.axisNames = value;
                 otherwise
                     error(['Unknown parameter name: ' varName]);
             end
@@ -160,6 +175,8 @@ methods (Access = protected)
         this.calibrated = that.calibrated;
         this.origin     = that.origin;
         this.spacing    = that.spacing;
+        this.unitName   = that.unitName;
+        this.axisNames  = that.axisNames;
     end
     
     function setInnerData(this, data)
