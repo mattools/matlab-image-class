@@ -2,7 +2,7 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass article
+\textclass scrartcl
 \use_default_options true
 \language french
 \inputencoding auto
@@ -141,10 +141,6 @@ quand on clone une image, doit-on cloner aussi le tampon -> a priori oui...
 
 \end_layout
 
-\begin_layout Subsection
-Motivation
-\end_layout
-
 \begin_layout Standard
 La plateforme Matlab est très performante pour traiter les images, mais
  manque parfois de souplesse pour manipuler les données.
@@ -190,45 +186,9 @@ Image
  Il s'agit d'une classe 
 \end_layout
 
-\begin_layout Subsection
-Wishlist
-\end_layout
-
 \begin_layout Standard
-Autres éléments de la 
-\begin_inset Quotes fld
-\end_inset
-
-wish-list
-\begin_inset Quotes frd
-\end_inset
-
- :
-\end_layout
-
-\begin_layout Itemize
-gestion intégrée des ROI
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-setROI(...), avec comme arg soit une image binaire, soit un polygone/polyèdre.
- Par défaut, toute l'image.
-\end_layout
-
-\end_deeper
-\begin_layout Subsection
-Terminologie
-\end_layout
-
-\begin_layout Description
-index vecteur ligne contenant les coordonnées entières d'un pixel selon
- chaque dimension
-\end_layout
-
-\begin_layout Description
-position vecteur ligne contenant les coordonnées (en virgule flottante)
- d'un point dans l'espace physique
+La section suivante commence par faire l'inventaire des images rencontrées
+ couramment.
 \end_layout
 
 \begin_layout Section
@@ -596,17 +556,50 @@ nm
 ...)
 \end_layout
 
+\begin_layout Description
+calibrated indicateur booléen qui est mis à VRAI si la calibration doit
+ être prise en compte.
+\end_layout
+
+\begin_layout Subsection
+Orientation
+\end_layout
+
+\begin_layout Standard
+Toujours concernant la calibration spatiale, on stocke des informations
+ sur la manière de s'orienter dans l'image.
+ 
+\end_layout
+
+\begin_layout Description
+axisNames le nom de chacun des axes.
+\end_layout
+
+\begin_layout Description
+(?)anatomicalOrientation un code de trois lettres décrivant l'orientation
+ anatomique de l'objet représenté dans l'image.
+\end_layout
+
+\begin_layout Description
+\begin_inset Note Note
+status open
+
 \begin_layout Subsection
 Meta-données
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Enfin, on aime garder quelques meta-informations
 \end_layout
 
 \begin_layout Description
 infos une structure de données contenant le nom de l'image, son fichier
  d'origine, l'auteur, la date de prise de vue...
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -669,7 +662,7 @@ Création d'une image couleur
 \end_layout
 
 \begin_layout Standard
-Une focntion createRGB, à laquelle on passe de 1 à 3 arguments, et qui renvoie
+Une fonction createRGB, à laquelle on passe de 1 à 3 arguments, et qui renvoie
  l'image RGB correspondante.
 \end_layout
 
@@ -873,7 +866,15 @@ le système des indices, entre 1 et le nombre d'éléments dans la direction
 \end_layout
 
 \begin_layout Itemize
-le système physique, en unité utilisateur
+le système physique, en unité utilisateur, qu'on appelle 
+\begin_inset Quotes fld
+\end_inset
+
+positions
+\begin_inset Quotes frd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1087,6 +1088,50 @@ préciser la forme du retour
 \end_layout
 
 \begin_layout Subsection
+Gestion des dimensions
+\end_layout
+
+\begin_layout Standard
+Comment gérer les coupes 2D dans un espace 3D ? C'est techniquement faisable,
+ mais il faut préciser la notion de dimension.
+\end_layout
+
+\begin_layout Standard
+Par exemple, une coupe XZ aura comme taille [Nx 1 Nz].
+ Si on applique une fonction 
+\begin_inset Quotes fld
+\end_inset
+
+squeeze
+\begin_inset Quotes frd
+\end_inset
+
+ ou équivalent, la taille deviendra [Nx Nz 1], et la dimension sera égale
+ à 2.
+\end_layout
+
+\begin_layout Standard
+Dans ce cas, comment différencier une image 2D et une coupe XY ? Dans les
+ deux cas, la taille est [Nx Ny 1].
+ 
+\end_layout
+
+\begin_layout Standard
+Une solution envisageable est de stocker le nombre de dimensions dans une
+ variable 
+\begin_inset Quotes fld
+\end_inset
+
+nd
+\begin_inset Quotes frd
+\end_inset
+
+, qui contient le nombre de dimensions spatiales.
+ Ainsi, si nd vaut par exemple 3, alors la dimension de l'image sera de
+ 3 même si elle se limite à un point, qui correspond à un simple voxel.
+\end_layout
+
+\begin_layout Subsection
 Classe utilitaire Images 
 \end_layout
 
@@ -1101,28 +1146,6 @@ read pour charger une image depuis un fichier
 
 \begin_layout Description
 write pour sauver les données image dans un ou plusieurs fichiers.
-\end_layout
-
-\begin_layout Subsection
-Itérateurs sur pixels ?
-\end_layout
-
-\begin_layout Standard
-Il serait pratique d'avoir une fonction pour itérer sur les pixels de l'image.
- Voir si gérable en pratique avec Matlab.
-\end_layout
-
-\begin_layout Standard
-Principe :
-\end_layout
-
-\begin_layout Itemize
-une classe Iterator
-\end_layout
-
-\begin_layout Standard
-En fait, si le gain est intéressant en C++ via la gestion de pointeur, le
- gain semble négligeable sous Matlab.
 \end_layout
 
 \end_body

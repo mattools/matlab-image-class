@@ -601,6 +601,12 @@ Le centre de la transformation est initialisé par défaut à (0,0,0).
 Implémentations utilitaires
 \end_layout
 
+\begin_layout Standard
+Les transformations présentées ici servent soit de base à l'implémentation
+ de transformations utilisables directement, soit permettent de combiner
+ les transformations entre elles.
+\end_layout
+
 \begin_layout Subsubsection
 MatrixAffineTransform
 \end_layout
@@ -674,6 +680,9 @@ Interpolation et re-échantillonnage
 \begin_layout Standard
 On a aussi plusieurs classes pour gérer le ré-échantillonnage et l'interpolation
  des images après transformation.
+ En particulier, on dispose d'une classe abstraite ImageFunction, qui permet
+ de manipuler une image interpolée ou une image après transformation de
+ manière transparente.
 \end_layout
 
 \begin_layout Subsection
@@ -789,7 +798,7 @@ Je suis parti au début sur une implémentation par couple type d'interpolation
  - dimension.
  Avoir des interpolateurs génériques selon la dimension requiert plus de
  travail.
- Seul l'interopolation au plus proche voisins est générique pour le moment.
+ Seul l'interpolation au plus proche voisins est générique pour le moment.
 \end_layout
 
 \begin_layout Subsubsection
@@ -798,7 +807,9 @@ NearestNeighborInterpolator
 
 \begin_layout Standard
 Interpolation au plus proche voisin.
- Marche en 2D et en 3D, pour des images scalaires et de vecteurs.
+ Marche en 2D et en 3D, pour des images scalaires et des images de vecteurs
+ (chaque composante vectorielle est interpolée individuellement, par une
+ approche marginale).
 \end_layout
 
 \begin_layout Subsubsection
@@ -806,7 +817,7 @@ LinearInterpolator2D
 \end_layout
 
 \begin_layout Standard
-Interpolation linéaire pour des images 2D.
+Interpolation linéaire pour des images 2D, testé sur des images scalaires.
 \end_layout
 
 \begin_layout Subsubsection
@@ -814,7 +825,21 @@ LinearInterpolator3D
 \end_layout
 
 \begin_layout Standard
-Interpolation linéaire pour des images 3D.
+Interpolation linéaire pour des images 3D, testé sur des images scalaires.
+\end_layout
+
+\begin_layout Subsubsection
+NearestNeighborGradientEvaluator
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'une classe d'évaluation du gradient d'une image, qui stocke
+ l'image de base, et calcule une interpolation du gradient à chaque appel
+ de la fonction evaluate.
+ Cette manière de faire permet de travailler sur des images gradient de
+ la même manière que si on stockait le gradient interpolé, mais avec un
+ coût mémoire moindre.
+ Par contre, le temps d'éxécution est plus important.
 \end_layout
 
 \begin_layout Subsection
@@ -918,6 +943,8 @@ Les métriques sont définie par rapport à un ensemble de points de test.
  Comme on essaie de travailler sur des images interpolées, et donc qui ne
  définissent pas forcément leur base spatiale, l'ensemble de points tests
  est spécifié séparément.
+ De plus, cela permet de ne donner qu'un sous-ensemble réduit des points
+ (de l'ordre de quelques milliers), et ainsi d'accélérer les temps d'éxécution.
 \end_layout
 
 \begin_layout Subsection
@@ -1068,6 +1095,26 @@ Il s'agit principalement d'une ré-implémentation de la précédente.
  Elle renvoie une somme au lieu d'une moyenne.
 \end_layout
 
+\begin_layout Subsection
+Autres fonctions de coût
+\end_layout
+
+\begin_layout Standard
+On a d'autres fonctions de coût, principalement les fonctions de régularisation
+ des transformations.
+\end_layout
+
+\begin_layout Subsubsection
+MotionRegularizationFunction
+\end_layout
+
+\begin_layout Standard
+Calcule une valeur qui augmente au fur et à mesure que la transformation
+ s'éloigne de l'identité.
+ Le coût se décompose en un coût de translation (norme du vecteur) et un
+ coût de rotation (norme de l'angle de rotation, en degrés).
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage clearpage
 \end_inset
@@ -1076,7 +1123,7 @@ Il s'agit principalement d'une ré-implémentation de la précédente.
 \end_layout
 
 \begin_layout Section
-Optimisation de la fonction de coût
+Optimisation
 \end_layout
 
 \begin_layout Standard
@@ -1085,7 +1132,7 @@ tion.
  Cependant, on peut avoir besoin d'algorithmes non implémentés dans la BAO,
  et l'utilisation des fonctions n'est pas toujours pratique (besoin de beaucoup
  de code et de pointeurs de fonctions).
- On a donc créé des classes dédiée à l'optimisation, qui permettent une
+ On a donc créé des classes dédiées à l'optimisation, qui permettent une
  meilleure modularité.
  
 \end_layout
@@ -1096,7 +1143,15 @@ Note : les noms des classes, champs et méthodes s'inspirent principalement
 \end_layout
 
 \begin_layout Subsection
-Interfaces
+Interface pour l'optimisation
+\end_layout
+
+\begin_layout Standard
+On définit plusieurs classes d'interfaces, qui spécifient les méthodes à
+ implémenter.
+ On a principalement une interface pour les algorithmes d'optimisation propremen
+t dits, et des interfaces pour manipuler et combiner les fonctions de coût,
+ qui peuvent être paramétriques ou non.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1104,12 +1159,40 @@ Optimizer
 \end_layout
 
 \begin_layout Standard
-La classe Optimizer définit un algorithme d'optimisation.
- Elle contient deux champs principaux :
+La classe Optimizer est une classe abstraite, parente de tous les classes
+ implémentant un algorithme d'optimisation.
+\end_layout
+
+\begin_layout Paragraph*
+Champs de classe
+\end_layout
+
+\begin_layout Standard
+La classe Optimizer contient deux champs principaux :
 \end_layout
 
 \begin_layout Description
-costFunction qui représente la fonction de coût à optimiser
+costFunction qui représente la fonction de coût à optimiser (sous la forme
+ d'un pointeur de fonction dont le premier argument est le vecteur de paramètres
+)
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Note : possibilité de remplacer ultérieurement par un objet 
+\begin_inset Quotes fld
+\end_inset
+
+évaluable
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Description
@@ -1137,7 +1220,7 @@ Méthode abstraite
 \begin_layout Description
 startOptimization démarre l'algorithme d'optimisation jusqu'à ce qu'une
  condition d'arrêt soit atteinte.
- La gestion des conditions d'arrêt (nombre d'itération, déplacement inférieur
+ La gestion des conditions d'arrêt (nombre d'itérations, déplacement inférieur
  à un seuil...) est laissée aux classes dérivées.
 \end_layout
 
@@ -1211,6 +1294,26 @@ computeValue
  de l'objet métrique.
 \end_layout
 
+\begin_layout Subsection
+Objets 
+\begin_inset Quotes fld
+\end_inset
+
+optimisables
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le passage par pointeur de fonction n'est pas des plus pratiques, surtout
+ quand on travaille avec des fonctions de coût qui combinent plusieurs éléments
+ (métrique entre les images, termes de régularisation...).
+ L'idée de cette section est de présenter quelques classes qui simplifient
+ la création de la fonction de coût.
+\end_layout
+
 \begin_layout Subsubsection
 MetricEvaluator
 \end_layout
@@ -1273,6 +1376,63 @@ optimizer.setCostFunction(fun);
 
 \end_layout
 
+\begin_layout Subsubsection
+ParametricFunction
+\end_layout
+
+\begin_layout Standard
+Classe abstraite qui déclare deux méthodes, et implémente la méthode evaluate.
+ 
+\end_layout
+
+\begin_layout Description
+(abstract)
+\begin_inset space ~
+\end_inset
+
+setParameters(params) modifie les paramètres internes
+\end_layout
+
+\begin_layout Description
+(abstract)
+\begin_inset space ~
+\end_inset
+
+computeValue() calcule la valeur avec les paramètres courants
+\end_layout
+
+\begin_layout Description
+evaluate(params) appelle les deux fonctions précédentes, et renvoie la valeur
+ courante, ainsi qu'éventuellement le gradient.
+\end_layout
+
+\begin_layout Subsubsection
+ParametricObject
+\end_layout
+
+\begin_layout Standard
+Classe de base (interface) pour les objets paramétriques.
+ Les classes dérivées sont les transformations paramétriques, ainsi que
+ les agglomérations de transfos.
+ Dans ce dernier cas, la modification d'un paramètre est dispatché à la
+ transformation concernée.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Note : on pourrait éventuellement avoir aussi une classe (abstraite ?) qui
+ soit une base pour la gestion des paramètres, et une classe d'interface
+ ?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Optimisation basée sur la valeur de la fonction
 \end_layout
@@ -1318,6 +1478,67 @@ Cet algorithme recherche le minimum d'une fonction en utilisant plusieurs
  directions de couples de paramètres).
 \end_layout
 
+\begin_layout Subsubsection
+BoundedMultiLinearOptimizer 
+\end_layout
+
+\begin_layout Standard
+Algorithme basique 
+\begin_inset Quotes fld
+\end_inset
+
+maison
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Le principe est similaire à la recherche linéaire multiple, mais selon
+ un principe différent.
+ On définit (1) les bornes de variations pour chaque paramètre et (2) le
+ nombre de points de test entre ces bornes.
+ On itère ensuite en générant des valeurs différentes pour un paramètre
+ à la fois, et en gardant la valeur qui minimise la fonction de coût.
+\end_layout
+
+\begin_layout Standard
+Avantage : simple à mettre en oeuvre
+\end_layout
+
+\begin_layout Standard
+Inconvénients : assez lente, et ne permet pas de réduire la précision de
+ manière incrémentale
+\end_layout
+
+\begin_layout Subsubsection
+GaussianLinearSearchOptimizer
+\end_layout
+
+\begin_layout Standard
+Un autre algorithme 
+\begin_inset Quotes fld
+\end_inset
+
+maison
+\begin_inset Quotes frd
+\end_inset
+
+ basé sur la recherche linéaire.
+ Cette fois ci, les valeurs de rechrche pour chaque paramètre sont générées
+ en utilisant une distribution gaussienne centrée sur la dernière meilleure
+ valeur trouvée, et avec une variance que l'on peut préciser.
+\end_layout
+
+\begin_layout Standard
+Avantages : assez rapide, et se prête bien à une recherche multi-précision,
+ par exemple en divisant la variance de chaque paramètre par un facteur
+ constant au bout d'un nombre suffisant d'itérations.
+\end_layout
+
+\begin_layout Standard
+Inconvénients : nécessite encore beaucoup d'évaluation de la fonction de
+ coût, et risque de minima non trouvés si on cherche paramètre après paramètre
+\end_layout
+
 \begin_layout Subsection
 Optimisation utilisant le gradient
 \end_layout
@@ -1336,7 +1557,7 @@ GradientDescentOptimizer
 L'idée de cet algorithme est de se déplacer à chaque itération dans la direction
  inverse du gradient.
  La gradient impose la direction, mais le pas est fixé par l'algorithme,
- en général une focntion décroissante du nombre d'itérations.
+ en général une fonction décroissante du nombre d'itérations.
 \end_layout
 
 \begin_layout Standard
@@ -1348,7 +1569,7 @@ nIter le nombre max d'itération
 \end_layout
 
 \begin_layout Description
-step0 l'amplitude du pas de déplacement
+step0 l'amplitude du pas de déplacement à la première itération
 \end_layout
 
 \begin_layout Description
