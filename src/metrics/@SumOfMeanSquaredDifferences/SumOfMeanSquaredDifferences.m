@@ -16,6 +16,15 @@ classdef SumOfMeanSquaredDifferences < ImageSetMetric
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
+%% Some properties specific to the SSD metric
+properties
+    % the transform model (necessary to compute the metric gradient)
+    transforms;
+    
+    % The gradient images, or gradient evaluators.
+    gradients;
+end
+
 %% Constructor
 methods
     function this = SumOfMeanSquaredDifferences(varargin)
