@@ -67,7 +67,7 @@ end
 if isa(refImage, 'Image')
     % get size in ijk ordering
     dim = getSize(refImage);
-    dim = dim([2 1 3]);
+    dim = dim([2 1 3:end]);
 else
     dim = size(refImage);
 end

@@ -16,7 +16,9 @@ function res = squeeze(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 keepDims = find(this.dataSize(1:3)~=1);
+removeDims = find(this.dataSize(1:3)==1);
 
 nd = length(keepDims);
 
-res = Image(nd, 'data', squeeze(this.data));
+res = Image(nd, 'data', permute(this.data, [keepDims removeDims 4 5]));
+res.type = this.type;
