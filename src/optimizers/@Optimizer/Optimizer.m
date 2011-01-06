@@ -94,7 +94,14 @@ methods
     end
     
     function setCostFunction(this, fun)
-        this.costFunction = fun;
+        % Set up the cost function.
+        % The input can be either a function handle, or an instance of
+        % CostFunction.
+        if isa(fun, 'function_handle')
+            this.costFunction = fun;
+        elseif isa(fun, 'CostFunction')
+            this.costFunction = @fun.evaluate;
+        end
     end
     
     function fun = getOutputFunction(this)
