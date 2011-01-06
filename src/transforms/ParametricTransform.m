@@ -19,6 +19,39 @@ properties
     paramNames = {};
 end
 
+%% Constructor (protected)
+methods (Access = protected)
+    function this = ParametricTransform(varargin)
+        % Construct a new parametric transform.
+        %
+        % TRANSFO = ParametricTransform(NP);
+        % Specifies the number of parameters.
+        %
+        % TRANSFO = ParametricTransform(PARAMS);
+        % Specifies the initial parameter vector. PARAMS should by a row
+        % vector.
+        %
+        % TRANSFO = ParametricTransform(..., NAMES);
+        % Also specifies the parameter names.
+        %
+        
+        % initialize parameter vector
+        if ~isempty(varargin)
+            var = varargin{1};
+            if length(var)==1
+                this.params = zeros(1, var);
+            else
+                this.params = var;
+            end
+        end
+        
+        % parameter names ciould also be specified
+        if nargin>1
+            this.paramNames = varargin{2};
+        end
+    end
+end
+
 %% Methods for managing parameters
 methods
     function p = getParameters(this)
@@ -54,6 +87,7 @@ methods
             error('Index greater than the number of parameters');
         end
         
+        % return a parameter name if it was initialized
         name = '';
         if paramIndex<=length(this.paramNames)
             name = this.paramNames{paramIndex};

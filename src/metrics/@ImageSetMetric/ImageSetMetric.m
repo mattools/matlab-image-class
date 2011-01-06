@@ -2,7 +2,8 @@ classdef ImageSetMetric < handle
 %IMAGESETMETRIC  One-line description here, please.
 %
 %   METRIC = ImageSetMetric(IMAGES, POINTS);
-%   IMAGES: a cell array containing image interpolators
+%   IMAGES: a cell array containing image functions (image interpolators,
+%       or instances of BackwardTransformedImage)
 %   POINTS: a N-by-2 or N-by3 array containing coordinates of test points
 %
 %   Example
@@ -20,7 +21,7 @@ classdef ImageSetMetric < handle
 %% Properties
 properties
     % the set of images
-    images 
+    images;
     
     % the set of points that will be used for evaluating the metric
     points;
@@ -53,7 +54,7 @@ end % methods
 methods (Access=private)
     
     function ensureImagesValidity(this)
-        % checks that images are instances of ImageFunction, otherwise
+        % Checks that images are instances of ImageFunction, otherwise
         % create appropriate interpolators
         for i=1:length(this.images)
             img = this.images{i};
@@ -70,7 +71,7 @@ methods (Access=private)
                 img = Image.create(img);
                 img = ImageInterpolator.create(img, 'linear');
             else
-                error('unknown image data');
+                error('Unknown image data');
             end
             this.images{i} = img;
             

@@ -17,9 +17,6 @@ function [val isInside] = evaluate(this, varargin)
 %   not the given position as located inside the evaluation frame.
 %
 
-% value for pixels outside interpolation frame
-defaultValue = NaN;
-
 % number of dimensions of base image
 nd = this.image.getDimension();
 
@@ -46,8 +43,8 @@ end
 resNDim = length(dim0);
 
 % Create default result image
-dim2 = [dim0 elSize];
-val = ones(dim2)*defaultValue;
+val = zeros([dim0 elSize]);
+val(:) = this.outsideValue;
 
 % extract x and y
 xt = coord(:, 1);
@@ -101,7 +98,7 @@ else
     [subs{:}] = ind2sub(dim, find(isInside));
     
     % pre-compute some indices of interpolated values
-    subs2 = num2cell(ones(1, length(dim2)));
+    subs2 = num2cell(ones(1, length(elSize)));
     subs2{resNDim+1} = 1:elSize(1);
     subs2{resNDim+2} = 1:elSize(2);
     

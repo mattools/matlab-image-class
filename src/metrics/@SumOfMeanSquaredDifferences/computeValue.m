@@ -1,7 +1,7 @@
-function val = computeValue(this)
-%COMPUTEVALUE Compute metric value 
+function fval = computeValue(this)
+%COMPUTEVALUE Compute metric value using current state
 %
-%   output = computeValue(input)
+%   FVAL = this.computeValue()
 %
 %   Example
 %   computeValue
@@ -12,8 +12,8 @@ function val = computeValue(this)
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
-% Created: 2010-11-09,    using Matlab 7.9.0.529 (R2009b)
-% Copyright 2010 INRA - Cepia Software Platform.
+% Created: 2011-01-06,    using Matlab 7.9.0.529 (R2009b)
+% Copyright 2011 INRA - Cepia Software Platform.
 
 
 % extract number of images
@@ -29,13 +29,15 @@ for i=1:nCombis
     i1 = combis(i,1);
     i2 = combis(i,2);
     
-    res(i) = computeSSDMetric(this.images{i1}, this.images{i2}, this.points);
+    res(i) = computeMeanSquaredDifferences(...
+        this.images{i1}, this.images{i2}, this.points);
 end
 
 % sum of SSD computed over couples
-val = sum(res);
+fval = sum(res);
 
-function res = computeSSDMetric(img1, img2, points)
+
+function res = computeMeanSquaredDifferences(img1, img2, points)
 
 % compute values in image 1
 [values1 inside1] = img1.evaluate(points);
@@ -43,10 +45,15 @@ function res = computeSSDMetric(img1, img2, points)
 % compute values in image 2
 [values2 inside2] = img2.evaluate(points);
 
-% keep only valid values
-inds = inside1 & inside2;
+% consider zero outside of images
+% TODO: use user-specified default value
+outsideValue = 0;
+values1(~inside1) = outsideValue;
+values2(~inside2) = outsideValue;
 
-% compute result
-diff    = (values2(inds) - values1(inds)).^2;
-res     = sum(diff) / length(inds);
+% compute squared differences
+diff = (values2 - values1).^2;
+
+% Sum of squared differences normalized by number of test points
+res = mean(diff);
 

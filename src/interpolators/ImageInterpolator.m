@@ -19,7 +19,7 @@ properties
     image;
     
     % default value, used when interpolation position is outside image
-    defaultValue = NaN;
+    outsideValue = NaN;
 end
 
 %% Static methods
@@ -66,8 +66,8 @@ methods(Static)
                 error('Argument must be a character string');
             end
             switch lower(paramName)
-                case 'defaultvalue'
-                    interp.defaultValue = varargin{2};
+                case 'outsidevalue'
+                    interp.outsideValue = varargin{2};
                 otherwise
                     error(['Unknown parameter: ' paramName]);
             end
@@ -94,11 +94,22 @@ end % abstract methods
 
 %% General methods
 methods
-    function img = getImage(varargin)
+    function img = getImage(this)
         % Return the inner image of the interpolator
         img = this.img;
     end
     
+    function val = getOutsideValue(this)
+        % Return the value returnd when points are outside image bounds
+        val = this.outsideValue;
+    end
+    
+    function setOutsideValue(this, val)
+        % Change the value returnd when points are outside image bounds
+        this.outsideValue = val;
+    end
+    
+
     function d = getDimension(this)
         %GETDIMENSION  Dimension of the interpolated image
         %
@@ -113,15 +124,16 @@ methods
         %   Result is [1 1] for scalar images, [Nc 1] for color or vector
         %   images, [1 Nf] for frame images (movies).
         %
+        
         if isempty(varargin)
-            dim = this.dataSize(4:5);
+            dim = this.image.dataSize(4:5);
             
         else
             d = varargin{1};
             if d > 2
                 error('Second argument must be 1 or 2');
             end
-            dim = this.dataSize(d + 3);
+            dim = this.image.dataSize(d + 3);
         end
     end
 end

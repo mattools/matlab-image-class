@@ -1,5 +1,5 @@
-function [res grad] = evaluate(this, params)
-%EVALUATE  One-line description here, please.
+function varargout = evaluate(this, params)
+%EVALUATE Evaluate the value and eventually the gradient of the function
 %
 %   output = evaluate(input)
 %
@@ -12,31 +12,40 @@ function [res grad] = evaluate(this, params)
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
-% Created: 2010-12-23,    using Matlab 7.9.0.529 (R2009b)
-% Copyright 2010 INRA - Cepia Software Platform.
+% Created: 2011-01-06,    using Matlab 7.9.0.529 (R2009b)
+% Copyright 2011 INRA - Cepia Software Platform.
 
-% Setup the parameters of the object
+% number of images
+nImg = length(this.images);
 
-% number of parameters
-nFP = length(params);
-
-% number of transforms
-nF = length(this.transforms);
-
-% number of parameter by transform
-nP = nFP/nF;
-
-% update each transform
-for i=1:nF
-    par = params((i-1)*nP+1:i*nP);
-    transfo = this.transforms{i};
-    transfo.setParameters(par);
+% ensure we have initialized transformed images and gradients
+if length(this.transformedImages)~=nImg
+    createTransformedImages(this);
+end
+if length(this.transformedGradients)~=nImg
+    createTransformedGradients(this);
 end
 
+% update transform parameters
+ind1 = 1;
+for i=1:nImg
+    % number of parameters of current transform
+    transfo = this.transforms{i};
+    nParams = transfo.getParameterLength();
+    
+    % extract parameters corresponding to current transform
+    ind2 = ind1 + nParams-1;
+    transfoParams = params(ind1:ind2);
+    transfo.setParameters(transfoParams);
+    
+    % update for next transform
+    ind1 = ind2 + 1;
+end
 
-% compute the value
-if nargout<=1
-    res = computeValue(this);
+% compute metric value and eventually gradient
+if nargout <= 1
+    varargout = {computeValue(this)};
 else
-    [res grad] = computeValueAndGradient(this);
+    [fval grad] = computeValueAndGradient(this);
+    varargout = {fval, grad};
 end

@@ -29,8 +29,10 @@ point = this.transform.transformPoint(point);
 [val isInside] = this.interpolator.evaluate(point);
 
 % convert to have the same size as inputs
-val = reshape(val, dim);
+elDim = this.interpolator.getElementSize();
+val = reshape(val, [dim elDim]);
 isInside = reshape(isInside, dim);
-end
+
+
 
 
