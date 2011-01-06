@@ -1,4 +1,4 @@
-classdef CenteredEulerTransform3D < AffineTransform & ParametricTransform
+classdef CenteredEulerTransform3D < AffineTransform & ParametricTransform & CenteredTransformAbstract
 %Transformation model for a centered rotation followed by a translation
 %   
 %   Inner optimisable parameters of the transform have the following form:
@@ -19,16 +19,12 @@ classdef CenteredEulerTransform3D < AffineTransform & ParametricTransform
 % Copyright 2010 INRA - Cepia Software Platform.
 
 
-%% Declaration of class properties
-properties
-    % Center of the transform. Initialized to (0,0,0).
-    center = [0 0 0];
-end
-
 %% Constructors
 methods
     function this = CenteredEulerTransform3D(varargin)
         % Create a new centered motion transform
+        
+        this = this@CenteredTransformAbstract([0 0 0]);
         
         this.params = zeros(1, 6);
         
@@ -80,16 +76,6 @@ end
 
 %% Standard methods
 methods    
-    function setCenter(this, center)
-        % Changes the center of rotation of the transform
-        this.center = center;
-    end
-    
-    function center = getCenter(this)
-        % Returns the center of rotation of the transform
-        center = this.center;
-    end
-    
     function initFromTranslation(this, vector)
         % Initialize parameters from a translation vector
         %

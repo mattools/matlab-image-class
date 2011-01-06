@@ -6,6 +6,17 @@ classdef CenteredMotionTransform2D < AffineTransform & ParametricTransform & Cen
 %   params[2] = tx
 %   params[3] = ty
 % 
+%   TRANS = CenteredMotionTransform2D();
+%   Create using default parameters (all zero).
+%
+%   TRANS = CenteredMotionTransform2D(PARAMS);
+%   Create a new transform model by initializing parameters. PARAMS is a
+%   1-by-3 row vector containing TX, TY, and THETA parameters.
+%
+%   TRANS = CenteredMotionTransform2D('center', CENTER);
+%   Initialize the center of the transform. CENTER must be a 1-by-2 row
+%   vector containing coordinates of the transform center.
+%
 %
 % ------
 % Author: David Legland
@@ -20,10 +31,16 @@ methods
         % Create a new model for 2D motion transform model
         % (defined by 1 rotation angle and 2 translation parameters)
 
+        % call parent constructor for initializing center
+        this = this@CenteredTransformAbstract([0 0]);
+        
+        % call parent constructor for initializing parameters
+        this = this@ParametricTransform([0 0 0]);
+        
         % setup default parameters
         this.params = [0 0 0];
         this.center = [0 0];
-        
+
         if ~isempty(varargin)
             % extract first argument, and try to interpret
             var = varargin{1};
