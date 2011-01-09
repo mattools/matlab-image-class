@@ -2,7 +2,7 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass scrartcl
+\textclass scrreprt
 \begin_preamble
 
 \usepackage{fullpage}
@@ -45,7 +45,7 @@
 \use_bibtopic false
 \paperorientation portrait
 \secnumdepth 3
-\tocdepth 2
+\tocdepth 1
 \paragraph_separation indent
 \defskip medskip
 \quotes_language french
@@ -103,14 +103,7 @@ LatexCommand tableofcontents
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
+\begin_layout Chapter
 Introduction
 \end_layout
 
@@ -128,7 +121,7 @@ Certaines classes sont indépendantes de la dimension de travail.
  Quand ce n'est pas le cas, la dimension est spécifiée en suffixe du nom.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Classe Image
 \end_layout
 
@@ -145,19 +138,27 @@ Image
 \end_layout
 
 \begin_layout Itemize
-des images matricielles 2D ou 3D
+différentes dimensions spatiales d'images : 2D ou 3D, voire 1D (profils)
+ ou 0D (une valeur scalaire)
 \end_layout
 
 \begin_layout Itemize
-éventuellement vectorielles
+différents types de données : des images en niveau de gris, mais aussi des
+ images couleur, spectrales, labels, des images de gradients...
 \end_layout
 
 \begin_layout Itemize
-éventuellement fonction du temps
+des images en fonction du temps
 \end_layout
 
 \begin_layout Itemize
-avec une calibration spatiale
+la calibration spatiale des images, et la conservation de cette calibration
+ quand on extrait une coupe 2D d'une image 3D par exemple
+\end_layout
+
+\begin_layout Itemize
+des informations de calibration de l'affichage (pour les images en niveaux
+ de gris)
 \end_layout
 
 \begin_layout Standard
@@ -190,18 +191,463 @@ img.show();
 \end_layout
 
 \begin_layout Standard
-Il reste cependant encore beaucoup de méthodes non implémentées ou incomplètes
- (2010.11.24).
+La classe est utilisable pour des cas classiques (images en niveaux de gris
+ en 2D et 3D, images de gradient).
+ Il reste cependant encore beaucoup de méthodes non implémentées ou incomplètes,
+ elle reste donc à utiliser avec prudence (2010.11.24).
+\end_layout
+
+\begin_layout Chapter
+Interpolation et re-échantillonnage
 \end_layout
 
 \begin_layout Standard
-\begin_inset Newpage clearpage
+On a aussi plusieurs classes pour gérer le ré-échantillonnage et l'interpolation
+ des images après transformation.
+ En particulier, on dispose d'une classe abstraite ImageFunction, qui permet
+ de manipuler une image interpolée ou une image après transformation de
+ manière transparente.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+un tit schéma
+\end_layout
+
 \end_inset
 
 
 \end_layout
 
 \begin_layout Section
+Interfaces et classes abstraites
+\end_layout
+
+\begin_layout Subsection
+ImageFunction 
+\end_layout
+
+\begin_layout Standard
+Interface générale pour les classes d'interpolation.
+ Elle déclare une méthode d'évaluation de la fonction :
+\end_layout
+
+\begin_layout Description
+
+\series bold
+evaluate
+\series default
+ accepte une position (2D ou 3D) en entrée et renvoie une valeur scalaire.
+\end_layout
+
+\begin_layout Standard
+La classe implémente aussi deux méthodes utilitaires (en accès protégé)
+ :
+\end_layout
+
+\begin_layout Description
+mergeCoordinates pour transformer plusieurs tableaux de coordonnées en un
+ seul tableau de points et un paramètre de taille de tablean
+\end_layout
+
+\begin_layout Description
+splitCoordinates qui fait l'opération inverse de la précédente : le tableau
+ de coordonnées est transformé en plusieurs tableaux contenant les coordonnées
+ x, y...
+ 
+\end_layout
+
+\begin_layout Subsection
+ImageInterpolator
+\end_layout
+
+\begin_layout Standard
+Classe abstraite, qui encapsule une image, et sert de base aux autres implémenta
+tions d'interpolations.
+\end_layout
+
+\begin_layout Standard
+La classe ImageInterpolator fournit aussi un constructeur statique, 
+\begin_inset Quotes fld
+\end_inset
+
+create
+\begin_inset Quotes frd
+\end_inset
+
+, qui prend en argument une image et une chaîne de caractères correspondant
+ au type d'interpolation désiré, et qui renvoie un objet d'une classe dérivée.
+ Exemple :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+img = Image2D.read('cameraman.tif');
+\end_layout
+
+\begin_layout Plain Layout
+
+inter = ImageInterpolator.create(img, 'linear');
+\end_layout
+
+\begin_layout Plain Layout
+
+class(inter)
+\end_layout
+
+\begin_layout Plain Layout
+
+ans =
+\end_layout
+
+\begin_layout Plain Layout
+
+     LinearInterpolator2D
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+ImageInterpolator2D, ImageInterpolator3D 
+\end_layout
+
+\begin_layout Standard
+Interfaces permettant de typer les classes dérivées.
+\end_layout
+
+\begin_layout Section
+Implémentations
+\end_layout
+
+\begin_layout Standard
+Je suis parti au début sur une implémentation par couple type d'interpolation
+ - dimension.
+ Avoir des interpolateurs génériques selon la dimension requiert plus de
+ travail.
+ Seule l'interpolation au plus proche voisins est générique pour le moment.
+\end_layout
+
+\begin_layout Subsection
+NearestNeighborInterpolator
+\end_layout
+
+\begin_layout Standard
+Interpolation au plus proche voisin.
+ Marche en 2D et en 3D, pour des images scalaires et des images de vecteurs
+ (chaque composante vectorielle est interpolée individuellement, par une
+ approche marginale).
+\end_layout
+
+\begin_layout Subsection
+LinearInterpolator2D
+\end_layout
+
+\begin_layout Standard
+Interpolation linéaire pour des images 2D, testé sur des images scalaires.
+\end_layout
+
+\begin_layout Subsection
+LinearInterpolator3D
+\end_layout
+
+\begin_layout Standard
+Interpolation linéaire pour des images 3D, testé sur des images scalaires.
+\end_layout
+
+\begin_layout Subsection
+NearestNeighborGradientEvaluator
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'une classe d'évaluation du gradient d'une image, qui stocke
+ l'image de base, et calcule une interpolation du gradient à chaque appel
+ de la fonction evaluate.
+ Cette manière de faire permet de travailler sur des images gradient de
+ la même manière que si on stockait le gradient interpolé, mais avec un
+ coût mémoire moindre.
+ Par contre, le temps d'éxécution est plus important.
+\end_layout
+
+\begin_layout Section
+Classes utilitaires
+\end_layout
+
+\begin_layout Standard
+Ces classes sont destinées à faciliter la création et la manipulation des
+ images transformées ou ré-échantillonnées.
+\end_layout
+
+\begin_layout Subsection
+ImageResampler 
+\end_layout
+
+\begin_layout Standard
+Cette classe permet de créer une nouvelle image à partir :
+\end_layout
+
+\begin_layout Enumerate
+d'une base spatiale (origine + espacement + taille),
+\end_layout
+
+\begin_layout Enumerate
+et d'un objet de classe 
+\begin_inset Quotes fld
+\end_inset
+
+ImageFunction
+\begin_inset Quotes frd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+BackwardTransformedImage
+\end_layout
+
+\begin_layout Standard
+Cette classe qui implémente l'interface 
+\begin_inset Quotes fld
+\end_inset
+
+ImageFunction
+\begin_inset Quotes frd
+\end_inset
+
+ encapsule une image et une transformation.
+ Quand on évalue la valeur en un point, les coordonnées du point après transform
+ation sont calculées, et utilisées pour évaluer la valeur dans l'image stockée.
+\end_layout
+
+\begin_layout Section
+Implémentation obsolètes
+\end_layout
+
+\begin_layout Standard
+Ces implémentations étaient utilisées dans des versions précédentes, mais
+ des classes plus génériques ont été créées depuis.
+\end_layout
+
+\begin_layout Subsection
+NearestNeighborInterpolator2D
+\end_layout
+
+\begin_layout Standard
+Interpolation au plus proche voisin pour des images scalaires 2D.
+ Obsolète.
+\end_layout
+
+\begin_layout Subsection
+NearestNeighborInterpolator3D
+\end_layout
+
+\begin_layout Standard
+Interpolation au plus proche voisin pour des images scalaires 3D.
+ Obsolète.
+\end_layout
+
+\begin_layout Chapter
+Comparaison des images
+\end_layout
+
+\begin_layout Standard
+Pour le recalage on a besoin de définir des métriques entre des images,
+ ou plus exactement entre des images interpolées.
+ Comme on veut calculer des gradients par rapport à une transformation paramétri
+que, on prévoit aussi quelques fonctions adéquates.
+\end_layout
+
+\begin_layout Standard
+Les métriques sont définie par rapport à un ensemble de points de test.
+ Un ensemble de points de tests classique est constitué par l'ensemble des
+ positions des pixels d'une des deux images.
+ Comme on essaie de travailler sur des images interpolées, et donc qui ne
+ définissent pas forcément leur base spatiale, l'ensemble de points tests
+ est spécifié séparément.
+ De plus, cela permet de ne donner qu'un sous-ensemble réduit des points
+ (de l'ordre de quelques milliers), et ainsi d'accélérer les temps d'éxécution.
+\end_layout
+
+\begin_layout Section
+Classes abstraites
+\end_layout
+
+\begin_layout Subsection
+ImageToImageMetric
+\end_layout
+
+\begin_layout Standard
+Cette classe stocke trois champs :
+\end_layout
+
+\begin_layout Description
+img1 une instance de ImageFunction qui représente traditionnellement l'image
+ fixe
+\end_layout
+
+\begin_layout Description
+img2 une instance de ImageFunction qui représente traditionnellement l'image
+ mobile
+\end_layout
+
+\begin_layout Description
+points un ensemble de points de test
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+voir si on remplace pas le tableau de points par un PointGenerator ou une
+ structure assimilée
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Elle déclare la méthode suivante, qui sera implémentée dans les classes
+ dérivées :
+\end_layout
+
+\begin_layout Description
+computeValue calcule la valeur de la métrique
+\end_layout
+
+\begin_layout Standard
+Certaines classes devraient aussi implémenter une méthode pour fournir le
+ vecteur jacobien par rapport aux paramètres d'une transformation.
+ Pour le moment (2010.08.24) il n'y a pas d'interface pour le spécifier.
+\end_layout
+
+\begin_layout Description
+computeValueAndGradient cette méthode prend en entrée une transformation
+ paramétrée ainsi qu'une image gradient.
+\end_layout
+
+\begin_layout Section
+Implémentation
+\end_layout
+
+\begin_layout Standard
+Pour le moment une seule implémentation, basée sur la moyenne (ou la somme)
+ des carrés des différences, mais avec des noms différents...
+\end_layout
+
+\begin_layout Subsection
+MeanSquaredDifferencesMetric
+\end_layout
+
+\begin_layout Standard
+Correspond à une discrétisation de l'intégrale 
+\begin_inset Formula \[
+MSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En pratique, on passe par une moyenne des carrés des différences.
+\end_layout
+
+\begin_layout Standard
+Afin de pouvoir calculer des dérivées, elle déclare les champs suivants
+ :
+\end_layout
+
+\begin_layout Description
+transform le modèle de transformation utilisé, qui doit implémenter la méthode
+ getJacobian.
+\end_layout
+
+\begin_layout Description
+gradientImage une image vectorielle représentant typiquement le gradient
+ de l'image mobile
+\end_layout
+
+\begin_layout Subsubsection
+Méthodes implémentées 
+\end_layout
+
+\begin_layout Description
+computeValue Cette méthode itère sur tous les points tests, évalue la valeur
+ correspondante dans chacune des deux images, et calcule la moyenne des
+ carrés des différences.
+ La moyenne est calculée pour les points qui sont dans les deux images.
+\end_layout
+
+\begin_layout Description
+computeValueAndGradient cette méthode prend en entrée une transformation
+ paramétrée ainsi que les composantes d'une image gradient, et renvoie la
+ valeur du vecteur gradient calculée en moyennant, pour les points de test,
+ le produit du jacobien de la transformation par l'image gradient.
+ L'image gradient est interpolée selon les plus proches voisins.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Question en suspens : que faire avec les points qui tombent en dehors ?
+ Pour le moment, je calcule la somme sur les points valides, et divise par
+ le nombre total de points.
+ Si on divise par le nombre de points valides, on peut avoir une métrique
+ plus élevée quand le recalage est meilleur, ce qui est contradictoire...
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+SumOfSquaredDifferencesMetric
+\end_layout
+
+\begin_layout Standard
+Il s'agit principalement d'une ré-implémentation de la précédente.
+ Elle renvoie une somme au lieu d'une moyenne.
+\end_layout
+
+\begin_layout Section
+Autres fonctions de coût
+\end_layout
+
+\begin_layout Standard
+On a d'autres fonctions de coût, principalement les fonctions de régularisation
+ des transformations.
+\end_layout
+
+\begin_layout Subsection
+MotionRegularizationFunction
+\end_layout
+
+\begin_layout Standard
+Calcule une valeur qui augmente au fur et à mesure que la transformation
+ s'éloigne de l'identité.
+ Le coût se décompose en un coût de translation (norme du vecteur) et un
+ coût de rotation (norme de l'angle de rotation, en degrés).
+\end_layout
+
+\begin_layout Chapter
 Transformations géométriques
 \end_layout
 
@@ -219,11 +665,11 @@ La classe de base est la classe Transform.
  limiter la ré-écriture des transformations spécialisées.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Interfaces et classes abstraites
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Transform
 \end_layout
 
@@ -258,7 +704,7 @@ compose renvoie un nouvelle transformation, résultat de l'application de
  la transformation passée en paramètre suivie de cette transformation
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 ParametricTransform
 \end_layout
 
@@ -298,7 +744,7 @@ TranslationModel
 .
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsubsection*
 Méthodes implémentées
 \end_layout
 
@@ -338,7 +784,7 @@ getParametricJacobian calcule la matrice jacobienne, qui a autant de lignes
  de paramètres
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 AffineTransform
 \end_layout
 
@@ -351,7 +797,7 @@ on associée.
  
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsubsection*
 Méthodes abstraites
 \end_layout
 
@@ -364,7 +810,7 @@ Il s'agit de la seule méthode abstraite de cette classe, et donc la seule
  qui nécessite une implémentation par les classes dérivées.
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsubsection*
 Méthodes implémentées
 \end_layout
 
@@ -412,7 +858,7 @@ On a aussi une méthode spécifique aux transformations affines
 getInverse renvoie la transformation affine inverse
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Modèles de transformation
 \end_layout
 
@@ -481,7 +927,7 @@ peaufiner le choix des conventions de noms pour les transfos
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 TranslationModel
 \end_layout
 
@@ -489,7 +935,7 @@ TranslationModel
 Une translation en dimension arbitaire, définie par un vecteur de translation.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 CenteredMotionTransform2D
 \end_layout
 
@@ -502,7 +948,7 @@ Il s'agit d'une transformation définie par une rotation autour d'un centre
  Le centre de la rotation est un paramètre non optimisable.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 EulerTransformModel3D (CenteredEulerTransform3D)
 \end_layout
 
@@ -561,7 +1007,7 @@ Les angles de rotation sont stockés en degré et convertis en radian pour
  optimisables.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 CenteredAffineTransformModel3D
 \end_layout
 
@@ -571,7 +1017,7 @@ Représente une transformation affine paramérable.
  (d'abord les coefficients de la première ligne, puis la deuxième...).
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 CenteredQuadTransformModel3D
 \end_layout
 
@@ -597,7 +1043,7 @@ z' & = & p{}_{3}+p_{6}x+p_{9}y+p_{12}z+p_{15}x^{2}+p_{18}y^{2}+p_{21}z^{2}+p_{24
 Le centre de la transformation est initialisé par défaut à (0,0,0).
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Implémentations utilitaires
 \end_layout
 
@@ -607,7 +1053,7 @@ Les transformations présentées ici servent soit de base à l'implémentation
  les transformations entre elles.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 MatrixAffineTransform
 \end_layout
 
@@ -617,7 +1063,7 @@ Implémentation classique d'une transformation affine, sous la forme d'une
  Utilisées pour des tests, ou pour implémenter des transformations classiques.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 CenteredTransformAbstract
 \end_layout
 
@@ -634,7 +1080,7 @@ center
 , ainsi qu'un accesseur et un modifieur.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 ComposedTransform
 \end_layout
 
@@ -666,463 +1112,7 @@ Transform
 , et être définies pour les mêmes dimensions.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage clearpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Interpolation et re-échantillonnage
-\end_layout
-
-\begin_layout Standard
-On a aussi plusieurs classes pour gérer le ré-échantillonnage et l'interpolation
- des images après transformation.
- En particulier, on dispose d'une classe abstraite ImageFunction, qui permet
- de manipuler une image interpolée ou une image après transformation de
- manière transparente.
-\end_layout
-
-\begin_layout Subsection
-Interfaces et classes abstraites
-\end_layout
-
-\begin_layout Subsubsection
-ImageFunction 
-\end_layout
-
-\begin_layout Standard
-Interface générale pour les classes d'interpolation.
- Elle déclare une méthode d'évaluation de la fonction :
-\end_layout
-
-\begin_layout Description
-
-\series bold
-evaluate
-\series default
- accepte une position (2D ou 3D) en entrée et renvoie une valeur scalaire.
-\end_layout
-
-\begin_layout Standard
-La classe implémente aussi deux méthodes utilitaires (en accès protégé)
- :
-\end_layout
-
-\begin_layout Description
-mergeCoordinates pour transformer plusieurs tableaux de coordonnées en un
- seul tableau de points et un paramètre de taille de tablean
-\end_layout
-
-\begin_layout Description
-splitCoordinates qui fait l'opération inverse de la précédente : le tableau
- de coordonnées est transformé en plusieurs tableaux contenant les coordonnées
- x, y...
- 
-\end_layout
-
-\begin_layout Subsubsection
-ImageInterpolator
-\end_layout
-
-\begin_layout Standard
-Classe abstraite, qui encapsule une image, et sert de base aux autres implémenta
-tions d'interpolations.
-\end_layout
-
-\begin_layout Standard
-La classe ImageInterpolator fournit aussi un constructeur statique, 
-\begin_inset Quotes fld
-\end_inset
-
-create
-\begin_inset Quotes frd
-\end_inset
-
-, qui prend en argument une image et une chaîne de caractères correspondant
- au type d'interpolation désiré, et qui renvoie un objet d'une classe dérivée.
- Exemple :
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-img = Image2D.read('cameraman.tif');
-\end_layout
-
-\begin_layout Plain Layout
-
-inter = ImageInterpolator.create(img, 'linear');
-\end_layout
-
-\begin_layout Plain Layout
-
-class(inter)
-\end_layout
-
-\begin_layout Plain Layout
-
-ans =
-\end_layout
-
-\begin_layout Plain Layout
-
-     LinearInterpolator2D
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-ImageInterpolator2D, ImageInterpolator3D 
-\end_layout
-
-\begin_layout Standard
-Interfaces permettant de typer les classes dérivées.
-\end_layout
-
-\begin_layout Subsection
-Implémentations
-\end_layout
-
-\begin_layout Standard
-Je suis parti au début sur une implémentation par couple type d'interpolation
- - dimension.
- Avoir des interpolateurs génériques selon la dimension requiert plus de
- travail.
- Seul l'interpolation au plus proche voisins est générique pour le moment.
-\end_layout
-
-\begin_layout Subsubsection
-NearestNeighborInterpolator
-\end_layout
-
-\begin_layout Standard
-Interpolation au plus proche voisin.
- Marche en 2D et en 3D, pour des images scalaires et des images de vecteurs
- (chaque composante vectorielle est interpolée individuellement, par une
- approche marginale).
-\end_layout
-
-\begin_layout Subsubsection
-LinearInterpolator2D
-\end_layout
-
-\begin_layout Standard
-Interpolation linéaire pour des images 2D, testé sur des images scalaires.
-\end_layout
-
-\begin_layout Subsubsection
-LinearInterpolator3D
-\end_layout
-
-\begin_layout Standard
-Interpolation linéaire pour des images 3D, testé sur des images scalaires.
-\end_layout
-
-\begin_layout Subsubsection
-NearestNeighborGradientEvaluator
-\end_layout
-
-\begin_layout Standard
-Il s'agit d'une classe d'évaluation du gradient d'une image, qui stocke
- l'image de base, et calcule une interpolation du gradient à chaque appel
- de la fonction evaluate.
- Cette manière de faire permet de travailler sur des images gradient de
- la même manière que si on stockait le gradient interpolé, mais avec un
- coût mémoire moindre.
- Par contre, le temps d'éxécution est plus important.
-\end_layout
-
-\begin_layout Subsection
-Classes utilitaires
-\end_layout
-
-\begin_layout Standard
-Ces classes sont destinées à faciliter la création et la manipulation des
- images transformées ou ré-échantillonnées.
-\end_layout
-
-\begin_layout Subsubsection
-ImageResampler 
-\end_layout
-
-\begin_layout Standard
-Cette classe permet de créer une nouvelle image à partir :
-\end_layout
-
-\begin_layout Enumerate
-d'une base spatiale (origine + espacement + taille),
-\end_layout
-
-\begin_layout Enumerate
-et d'un objet de classe 
-\begin_inset Quotes fld
-\end_inset
-
-ImageFunction
-\begin_inset Quotes frd
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-BackwardTransformedImage
-\end_layout
-
-\begin_layout Standard
-Cette classe qui implémente l'interface 
-\begin_inset Quotes fld
-\end_inset
-
-ImageFunction
-\begin_inset Quotes frd
-\end_inset
-
- encapsule une image et une transformation.
- Quand on évalue la valeur en un point, les coordonnées du point après transform
-ation sont calculées, et utilisées pour évaluer la valeur dans l'image stockée.
-\end_layout
-
-\begin_layout Subsection
-Implémentation obsolètes
-\end_layout
-
-\begin_layout Standard
-Ces implémentations étaient utilisées dans des versions précédentes, mais
- des classes plus génériques ont été créées depuis.
-\end_layout
-
-\begin_layout Subsubsection
-NearestNeighborInterpolator2D
-\end_layout
-
-\begin_layout Standard
-Interpolation au plus proche voisin pour des images scalaires 2D.
- Obsolète.
-\end_layout
-
-\begin_layout Subsubsection
-NearestNeighborInterpolator3D
-\end_layout
-
-\begin_layout Standard
-Interpolation au plus proche voisin pour des images scalaires 3D.
- Obsolète.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage clearpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Comparaison des images
-\end_layout
-
-\begin_layout Standard
-Pour le recalage on a besoin de définir des métriques entre des images,
- ou plus exactement entre des images interpolées.
-\end_layout
-
-\begin_layout Standard
-Les métriques sont définie par rapport à un ensemble de points de test.
- Un ensemble de points de tests classique est constitué par l'ensemble des
- positions des pixels d'une des deux images.
- Comme on essaie de travailler sur des images interpolées, et donc qui ne
- définissent pas forcément leur base spatiale, l'ensemble de points tests
- est spécifié séparément.
- De plus, cela permet de ne donner qu'un sous-ensemble réduit des points
- (de l'ordre de quelques milliers), et ainsi d'accélérer les temps d'éxécution.
-\end_layout
-
-\begin_layout Subsection
-Classes abstraites
-\end_layout
-
-\begin_layout Subsubsection
-ImageToImageMetric
-\end_layout
-
-\begin_layout Standard
-Cette classe stocke trois champs :
-\end_layout
-
-\begin_layout Description
-img1 une instance de ImageFunction qui représente traditionnellement l'image
- fixe
-\end_layout
-
-\begin_layout Description
-img2 une instance de ImageFunction qui représente traditionnellement l'image
- mobile
-\end_layout
-
-\begin_layout Description
-points un ensemble de points de test
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-voir si on remplace pas le tableau de points par un PointGenerator ou une
- structure assimilée
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Elle déclare la méthode suivante, qui sera implémentée dans les classes
- dérivées :
-\end_layout
-
-\begin_layout Description
-computeValue calcule la valeur de la métrique
-\end_layout
-
-\begin_layout Standard
-Certaines classes devraient aussi implémenter une méthode pour fournir le
- vecteur jacobien par rapport aux paramètres d'une transformation.
- Pour le moment (2010.08.24) il n'y a pas d'interface pour le spécifier.
-\end_layout
-
-\begin_layout Description
-computeValueAndGradient cette méthode prend en entrée une transformation
- paramétrée ainsi qu'une image gradient.
-\end_layout
-
-\begin_layout Subsection
-Implémentation
-\end_layout
-
-\begin_layout Standard
-Pour le moment une seule implémentation, basée sur la moyenne (ou la somme)
- des carrés des différences, mais avec des noms différents...
-\end_layout
-
-\begin_layout Subsubsection
-MeanSquaredDifferencesMetric
-\end_layout
-
-\begin_layout Standard
-Correspond à une discrétisation de l'intégrale 
-\begin_inset Formula \[
-MSD=\int\left(I_{1}(x)-I_{2}(x)\right)^{2}dx\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-En pratique, on passe par une moyenne des carrés des différences.
-\end_layout
-
-\begin_layout Standard
-Afin de pouvoir calculer des dérivées, elle déclare les champs suivants
- :
-\end_layout
-
-\begin_layout Description
-transform le modèle de transformation utilisé, qui doit implémenter la méthode
- getJacobian.
-\end_layout
-
-\begin_layout Description
-gradientImage une image vectorielle représentant typiquement le gradient
- de l'image mobile
-\end_layout
-
-\begin_layout Paragraph
-Méthodes implémentées 
-\end_layout
-
-\begin_layout Description
-computeValue Cette méthode itère sur tous les points tests, évalue la valeur
- correspondante dans chacune des deux images, et calcule la moyenne des
- carrés des différences.
- La moyenne est calculée pour les points qui sont dans les deux images.
-\end_layout
-
-\begin_layout Description
-computeValueAndGradient cette méthode prend en entrée une transformation
- paramétrée ainsi que les composantes d'une image gradient, et renvoie la
- valeur du vecteur gradient calculée en moyennant, pour les points de test,
- le produit du jacobien de la transformation par l'image gradient.
- L'image gradient est interpolée selon les plus proches voisins.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Question en suspens : que faire avec les points qui tombent en dehors ?
- Pour le moment, je calcule la somme sur les points valides, et divise par
- le nombre total de points.
- Si on divise par le nombre de points valides, on peut avoir une métrique
- plus élevée quand le recalage est meilleur, ce qui est contradictoire...
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-SumOfSquaredDifferencesMetric
-\end_layout
-
-\begin_layout Standard
-Il s'agit principalement d'une ré-implémentation de la précédente.
- Elle renvoie une somme au lieu d'une moyenne.
-\end_layout
-
-\begin_layout Subsection
-Autres fonctions de coût
-\end_layout
-
-\begin_layout Standard
-On a d'autres fonctions de coût, principalement les fonctions de régularisation
- des transformations.
-\end_layout
-
-\begin_layout Subsubsection
-MotionRegularizationFunction
-\end_layout
-
-\begin_layout Standard
-Calcule une valeur qui augmente au fur et à mesure que la transformation
- s'éloigne de l'identité.
- Le coût se décompose en un coût de translation (norme du vecteur) et un
- coût de rotation (norme de l'angle de rotation, en degrés).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage clearpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
+\begin_layout Chapter
 Optimisation
 \end_layout
 
@@ -1142,8 +1132,8 @@ Note : les noms des classes, champs et méthodes s'inspirent principalement
  d'ITK et de la BAO Optimisation de Matlab.
 \end_layout
 
-\begin_layout Subsection
-Interface pour l'optimisation
+\begin_layout Section
+Interfaces pour l'optimisation
 \end_layout
 
 \begin_layout Standard
@@ -1154,7 +1144,7 @@ t dits, et des interfaces pour manipuler et combiner les fonctions de coût,
  qui peuvent être paramétriques ou non.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Optimizer
 \end_layout
 
@@ -1163,7 +1153,7 @@ La classe Optimizer est une classe abstraite, parente de tous les classes
  implémentant un algorithme d'optimisation.
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsubsection*
 Champs de classe
 \end_layout
 
@@ -1172,9 +1162,8 @@ La classe Optimizer contient deux champs principaux :
 \end_layout
 
 \begin_layout Description
-costFunction qui représente la fonction de coût à optimiser (sous la forme
- d'un pointeur de fonction dont le premier argument est le vecteur de paramètres
-)
+costFunction représente la fonction de coût à optimiser, sous la forme d'un
+ pointeur de fonction dont le premier argument est le vecteur de paramètres)
 \begin_inset Note Note
 status open
 
@@ -1196,7 +1185,7 @@ Note : possibilité de remplacer ultérieurement par un objet
 \end_layout
 
 \begin_layout Description
-params qui réprésente l'état courant des paramètres
+params réprésente l'état courant des paramètres
 \end_layout
 
 \begin_layout Standard
@@ -1210,22 +1199,22 @@ outputFunction un pointeur de fonction qui est censé être appelé à chaque
 
 \begin_layout Description
 displayMode une chaîne de caractères qui spécifie la quantité d'information
- à afficher à chaque étape
+ à afficher (rien, juste le début et la fin, chaque itération...)
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsubsection*
 Méthode abstraite
 \end_layout
 
 \begin_layout Description
-startOptimization démarre l'algorithme d'optimisation jusqu'à ce qu'une
+startOptimization() démarre l'algorithme d'optimisation jusqu'à ce qu'une
  condition d'arrêt soit atteinte.
  La gestion des conditions d'arrêt (nombre d'itérations, déplacement inférieur
  à un seuil...) est laissée aux classes dérivées.
 \end_layout
 
-\begin_layout Subsubsection
-Fonction à optimiser
+\begin_layout Subsection
+Optimisation via un pointeur de fonction
 \end_layout
 
 \begin_layout Standard
@@ -1295,6 +1284,62 @@ computeValue
 \end_layout
 
 \begin_layout Subsection
+CostFunction
+\end_layout
+
+\begin_layout Standard
+Il s'agit d'une classe abstraite (interface) qui devrait servir de base
+ à la totalité des fonctions de coût.
+ La méthode évaluate accepte en entrée un vecteur de paramètres.
+ Selon le nombre d'arguments en sortie, cette méthode renvoie une valeur
+ scalaire, le gradient, ainsi que la matrice Hessienne.
+\end_layout
+
+\begin_layout Description
+(abstract)
+\begin_inset space ~
+\end_inset
+
+evaluate(params) évalue la fonction de coût en fonction du vecteur de paramètres.
+ 
+\end_layout
+
+\begin_layout Standard
+On utilise via un optiliseur de la manière suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+evaluator = ...
+ % cree une instance d'une sous-classe de CostFunction.
+\end_layout
+
+\begin_layout Plain Layout
+
+% associe la fonction de cout a l'optimiseur
+\end_layout
+
+\begin_layout Plain Layout
+
+fun = @evaluator.evaluate;
+\end_layout
+
+\begin_layout Plain Layout
+
+optimizer.setCostFunction(fun);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Objets 
 \begin_inset Quotes fld
 \end_inset
@@ -1314,7 +1359,7 @@ Le passage par pointeur de fonction n'est pas des plus pratiques, surtout
  la création de la fonction de coût.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 MetricEvaluator
 \end_layout
 
@@ -1376,7 +1421,7 @@ optimizer.setCostFunction(fun);
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 ParametricFunction
 \end_layout
 
@@ -1406,7 +1451,7 @@ evaluate(params) appelle les deux fonctions précédentes, et renvoie la valeur
  courante, ainsi qu'éventuellement le gradient.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 ParametricObject
 \end_layout
 
@@ -1433,151 +1478,8 @@ Note : on pourrait éventuellement avoir aussi une classe (abstraite ?) qui
 
 \end_layout
 
-\begin_layout Subsection
-Optimisation basée sur la valeur de la fonction
-\end_layout
-
-\begin_layout Standard
-Les algorithmes de cette catégorie ne nécessitent de connaître que la fonction
- de coût.
- Leur vitesse de convergence est en général faible.
-\end_layout
-
-\begin_layout Subsubsection
-NelderMeadSimplexOptimizer
-\end_layout
-
-\begin_layout Standard
-Cet algorithme recherche le minimum d'une fonction (supposée convexe) par
- la méthode du simplexe de Nelder-Mead.
- En pratique, il s'agit d'une encapsulation de la fonction 
-\begin_inset Quotes fld
-\end_inset
-
-fminsearch
-\begin_inset Quotes frd
-\end_inset
-
- de Matlab.
-\end_layout
-
-\begin_layout Standard
-A l'usage, il semble que l'on se retrouve assez vite dans des minima locaux.
-\end_layout
-
-\begin_layout Subsubsection
-MultiLinearSearchOptimizer
-\end_layout
-
-\begin_layout Standard
-Cet algorithme recherche le minimum d'une fonction en utilisant plusieurs
- recherches linéaires.
- Implémenté en utilisant la recherche de Brent.
- On peut spécifier l'ensemble des directions de recherche (par défaut :
- recherche dans la direction de chaque paramètre individuel, et dans les
- directions de couples de paramètres).
-\end_layout
-
-\begin_layout Subsubsection
-BoundedMultiLinearOptimizer 
-\end_layout
-
-\begin_layout Standard
-Algorithme basique 
-\begin_inset Quotes fld
-\end_inset
-
-maison
-\begin_inset Quotes frd
-\end_inset
-
-.
- Le principe est similaire à la recherche linéaire multiple, mais selon
- un principe différent.
- On définit (1) les bornes de variations pour chaque paramètre et (2) le
- nombre de points de test entre ces bornes.
- On itère ensuite en générant des valeurs différentes pour un paramètre
- à la fois, et en gardant la valeur qui minimise la fonction de coût.
-\end_layout
-
-\begin_layout Standard
-Avantage : simple à mettre en oeuvre
-\end_layout
-
-\begin_layout Standard
-Inconvénients : assez lente, et ne permet pas de réduire la précision de
- manière incrémentale
-\end_layout
-
-\begin_layout Subsubsection
-GaussianLinearSearchOptimizer
-\end_layout
-
-\begin_layout Standard
-Un autre algorithme 
-\begin_inset Quotes fld
-\end_inset
-
-maison
-\begin_inset Quotes frd
-\end_inset
-
- basé sur la recherche linéaire.
- Cette fois ci, les valeurs de rechrche pour chaque paramètre sont générées
- en utilisant une distribution gaussienne centrée sur la dernière meilleure
- valeur trouvée, et avec une variance que l'on peut préciser.
-\end_layout
-
-\begin_layout Standard
-Avantages : assez rapide, et se prête bien à une recherche multi-précision,
- par exemple en divisant la variance de chaque paramètre par un facteur
- constant au bout d'un nombre suffisant d'itérations.
-\end_layout
-
-\begin_layout Standard
-Inconvénients : nécessite encore beaucoup d'évaluation de la fonction de
- coût, et risque de minima non trouvés si on cherche paramètre après paramètre
-\end_layout
-
-\begin_layout Subsection
-Optimisation utilisant le gradient
-\end_layout
-
-\begin_layout Standard
-Plusieurs algorithmes utilisent le gradient des fonctions de coût pour accélerer
- la recherche de l'optimum.
- Pour le moment, seul l'algorithme de descente de gradient est implémenté.
-\end_layout
-
-\begin_layout Subsubsection
-GradientDescentOptimizer
-\end_layout
-
-\begin_layout Standard
-L'idée de cet algorithme est de se déplacer à chaque itération dans la direction
- inverse du gradient.
- La gradient impose la direction, mais le pas est fixé par l'algorithme,
- en général une fonction décroissante du nombre d'itérations.
-\end_layout
-
-\begin_layout Standard
-Champs à renseigner :
-\end_layout
-
-\begin_layout Description
-nIter le nombre max d'itération
-\end_layout
-
-\begin_layout Description
-step0 l'amplitude du pas de déplacement à la première itération
-\end_layout
-
-\begin_layout Description
-tau la taux de décroissance du pas de déplacement
-\end_layout
-
-\begin_layout Subsection
-Monitoring de l'optimization
+\begin_layout Section
+Monitoring de l'optimisation
 \end_layout
 
 \begin_layout Standard
@@ -1587,7 +1489,7 @@ On dispose aussi d'un système de gestion d'évènements, qui permet d'actualise
  ont aussi été développées.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 OptimizationListener
 \end_layout
 
@@ -1640,7 +1542,7 @@ opt.addOptimizationListener(listener);
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 ParametersEvolutionDisplay
 \end_layout
 
@@ -1649,17 +1551,17 @@ Affiche l'évolution de plusieurs paramètres dans une fenêtre donnée en fonct
  du nombre d'itérations.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 OptimizedValueListener
 \end_layout
 
 \begin_layout Standard
-Affiche l'évolution de la valeur actuelle de la fonction d'otpimisation
+Affiche l'évolution de la valeur actuelle de la fonction d'optimisation
  en fonction du nombre d'itérations.
  Affiche dans un objet axes.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 ParametricFunctionEvolutionDisplay
 \end_layout
 
@@ -1669,14 +1571,171 @@ Affiche l'évolution de la valeur courante d'une fonction paramétrique quelconq
  Affiche dans un objet axes.
 \end_layout
 
+\begin_layout Chapter
+Algorithmes d'optimisation
+\end_layout
+
 \begin_layout Standard
-\begin_inset Newpage clearpage
+Plusieurs algorithmes d'optimisation ont été implémentés en se basant sur
+ l'interface 
+\begin_inset Quotes fld
 \end_inset
 
+Optimizer
+\begin_inset Quotes frd
+\end_inset
 
+.
+ Il s'agit soit de réécritures complètes, soit d'encapsulation de fonctions
+ de la boîte à outils optimization de Matlab.
 \end_layout
 
 \begin_layout Section
+Optimisation basée sur la valeur de la fonction
+\end_layout
+
+\begin_layout Standard
+Les algorithmes de cette catégorie ne nécessitent de connaître que la fonction
+ de coût.
+ Leur vitesse de convergence est en général faible.
+ La classe la plus pratique pour le moment est GaussianLinearSearchOptimizer.
+\end_layout
+
+\begin_layout Subsection
+NelderMeadSimplexOptimizer
+\end_layout
+
+\begin_layout Standard
+Cet algorithme recherche le minimum d'une fonction (supposée convexe) par
+ la méthode du simplexe de Nelder-Mead.
+ En pratique, il s'agit d'une encapsulation de la fonction 
+\begin_inset Quotes fld
+\end_inset
+
+fminsearch
+\begin_inset Quotes frd
+\end_inset
+
+ de Matlab.
+\end_layout
+
+\begin_layout Standard
+A l'usage, il semble que l'on se retrouve assez vite dans des minima locaux.
+\end_layout
+
+\begin_layout Subsection
+MultiLinearSearchOptimizer
+\end_layout
+
+\begin_layout Standard
+Cet algorithme recherche le minimum d'une fonction en utilisant plusieurs
+ recherches linéaires.
+ Implémenté en utilisant la recherche de Brent.
+ On peut spécifier l'ensemble des directions de recherche (par défaut :
+ recherche dans la direction de chaque paramètre individuel, et dans les
+ directions de couples de paramètres).
+\end_layout
+
+\begin_layout Subsection
+BoundedMultiLinearOptimizer 
+\end_layout
+
+\begin_layout Standard
+Algorithme basique 
+\begin_inset Quotes fld
+\end_inset
+
+maison
+\begin_inset Quotes frd
+\end_inset
+
+.
+ Le principe est similaire à la recherche linéaire multiple, mais selon
+ un principe différent.
+ On définit (1) les bornes de variations pour chaque paramètre et (2) le
+ nombre de points de test entre ces bornes.
+ On itère ensuite en générant des valeurs différentes pour un paramètre
+ à la fois, et en gardant la valeur qui minimise la fonction de coût.
+\end_layout
+
+\begin_layout Description
+Avantage simple à mettre en oeuvre
+\end_layout
+
+\begin_layout Description
+Inconvénients assez lente, et ne permet pas de réduire la précision de manière
+ incrémentale
+\end_layout
+
+\begin_layout Subsection
+GaussianLinearSearchOptimizer
+\end_layout
+
+\begin_layout Standard
+Un autre algorithme 
+\begin_inset Quotes fld
+\end_inset
+
+maison
+\begin_inset Quotes frd
+\end_inset
+
+ basé sur la recherche linéaire.
+ Cette fois ci, les valeurs de rechrche pour chaque paramètre sont générées
+ en utilisant une distribution gaussienne centrée sur la dernière meilleure
+ valeur trouvée, et avec une variance que l'on peut préciser.
+\end_layout
+
+\begin_layout Description
+Avantages assez rapide, et se prête bien à une recherche multi-précision,
+ par exemple en divisant la variance de chaque paramètre par un facteur
+ constant au bout d'un nombre suffisant d'itérations.
+\end_layout
+
+\begin_layout Description
+Inconvénients nécessite encore beaucoup d'évaluation de la fonction de coût,
+ et risque de minima non trouvés si on cherche paramètre après paramètre
+\end_layout
+
+\begin_layout Section
+Optimisation utilisant le gradient
+\end_layout
+
+\begin_layout Standard
+Plusieurs algorithmes utilisent le gradient des fonctions de coût pour accélerer
+ la recherche de l'optimum.
+ Pour le moment, seul l'algorithme de descente de gradient est implémenté,
+ mais Matlab en propose d'autres.
+\end_layout
+
+\begin_layout Subsection
+GradientDescentOptimizer
+\end_layout
+
+\begin_layout Standard
+L'idée de cet algorithme est de se déplacer à chaque itération dans la direction
+ inverse du gradient.
+ La gradient impose la direction, mais le pas est fixé par l'algorithme,
+ en général une fonction décroissante du nombre d'itérations.
+\end_layout
+
+\begin_layout Standard
+Champs à renseigner :
+\end_layout
+
+\begin_layout Description
+nIter le nombre max d'itération
+\end_layout
+
+\begin_layout Description
+step0 l'amplitude du pas de déplacement à la première itération
+\end_layout
+
+\begin_layout Description
+tau la taux de décroissance du pas de déplacement
+\end_layout
+
+\begin_layout Chapter
 Perspectives
 \end_layout
 
