@@ -1,11 +1,11 @@
-classdef NelderMeadSimplexOptimizer < Optimizer
-%NELDERMEADSIMPLEXOPTIMIZER  One-line description here, please.
+classdef MatlabSimplexOptimizer < Optimizer
+%MATLABSIMPLEXOPTIMIZER Encapsulation of Matlab function fminsearch
 %
-%   output = NelderMeadSimplexOptimizer(input)
+%   output = MatlabSimplexOptimizer(input)
 %
 %   Example
 %   % Run the simplex otpimizer on the Rosenbrock function
-%     optimizer = NelderMeadSimplexOptimizer;
+%     optimizer = MatlabSimplexOptimizer;
 %     optimizer.setCostFunction(@rosenbrock);
 %     optimizer.setParameters([0 0]);
 %     [xOpt value] = optimizer.startOptimization();
@@ -15,6 +15,10 @@ classdef NelderMeadSimplexOptimizer < Optimizer
 %     value
 %       value =
 %           5.5924e-006
+%
+%
+%   Requires
+%   Optimization Toolbox
 %
 %   See also
 %
@@ -32,8 +36,8 @@ end
 
 %% Constructor
 methods
-    function this = NelderMeadSimplexOptimizer(varargin)
-        this = this@Optimizer(varargin{:});
+    function this = MatlabSimplexOptimizer(varargin)
+        this = this@Optimizer();
     end
 end
 
