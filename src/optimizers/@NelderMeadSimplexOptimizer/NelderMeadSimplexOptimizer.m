@@ -27,7 +27,7 @@ classdef NelderMeadSimplexOptimizer < Optimizer
 %% Properties
 properties
     % maximum number of iterations
-    nIter = 200;
+    nIter = 100;
     
     % tolerance on function value 
     ftol = 1e-5;
@@ -53,28 +53,48 @@ methods
     function this = NelderMeadSimplexOptimizer(varargin)
         %Create a new Simplex Optimizer
         %
-        % OPT = NelderMeadSimplexOptimizer(PARAMS0, DELTA);
+        % OPT = NelderMeadSimplexOptimizer();
+        % Creates a new optimizer, whose inner fields will be initialized
+        % later.
+        %
+        % OPT = NelderMeadSimplexOptimizer(FUN, PARAMS0);
+        % OPT = NelderMeadSimplexOptimizer(FUN, PARAMS0, DELTA);
+        % FUN is either a function handle, or an instance of CostFunction
         % PARAMS0 is the initial set of parameters
         % DELTA is the variation of parameters in each direction, given
         % either as a scalar, or as a row vector with the same size as the
-        % parameter vector.
+        % parameter vector. If not specified, it is initialized as a row
+        % vector the same size as PARAMS0, with values 1e-5.
         %
         
-        %this = this@Optimizer(varargin{:});
+        this = this@Optimizer();
         
-        if nargin~=2
-            error('Simplex optimizer constructor requires 2 input arguments');
+        if nargin==0
+            return;
         end
         
-        % setup initial optimal value
-        this.params = varargin{1};
-        
+        if nargin>=2
+            % setup cost function
+            this.setCostFunction(varargin{1});
+
+            % setup initial optimal value
+            params = varargin{2};
+            this.setInitialParameters(params);
+            this.setParameters(params);
+
+        end
+
         % setup vector of variation amounts in each direction
-        del = varargin{2};
-        if length(del)==1
-            this.deltas = del * ones(size(this.params));
+        if nargin>2
+            del = varargin{3};
         else
-            this.deltas = varargin{2};
+            del = 1e-5;
+        end
+        
+        if length(del)==1
+            this.deltas = del * ones(size(params));
+        else
+            this.deltas = del;
         end
         
     end % end of constructor
@@ -89,12 +109,18 @@ methods (Access = private)
         
         nd = length(this.params);
         
+        % ensure delta has valid value
+        if isempty(this.deltas)
+            this.deltas = 1e-5 * ones(1, nd);
+        end
+        
+        % initialize vertex coordinates
         this.simplex = repmat(this.params, nd+1, 1);
         for i=1:nd
             this.simplex(i+1, i) = this.params(i) + this.deltas(i);
         end
         
-        % compute sum of vertices coordinates
+        % compute sum of vertex coordinates
         this.psum = sum(this.simplex, 1);
 
         % evaluate function for each vertex of the simplex

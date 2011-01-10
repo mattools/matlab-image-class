@@ -102,7 +102,7 @@ end
 res = Image(nd, 'data', newData, 'parent', this);
 
 % also permute spacing and origin of image
-res.origin  = permute(this.origin, permDims);
-res.spacing = permute(this.spacing, permDims);
+res.origin  = this.origin(permDims(1:3));
+res.spacing = this.spacing(permDims(1:3));
 
     

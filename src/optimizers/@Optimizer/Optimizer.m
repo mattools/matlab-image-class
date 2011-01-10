@@ -53,9 +53,30 @@ events
 end
 
 %% Constructor
-methods
-    % no need to define anything special
-end
+methods (Access = protected)
+    function this = Optimizer(costFun, params0, varargin)
+        % Initialize a new Optimizer
+        %
+        % Usage (in sub-class constructor):
+        % this = this@Optimizer();
+        % this = this@Optimizer(FUN, PARAMS);
+        % FUN is either a function handle, or an instance of CostFunction
+        % PARAMS is the initial set of parameters
+        %
+        % See Also
+        % setCostFunction, setInitialParameters
+        
+        if nargin==0
+            return;
+        end
+        
+        setCostFunction(this, costFun);
+        setInitialParameters(this, params0);
+        setParameters(this, params0);
+        
+    end 
+        
+end % Constructors
 
 %% Abstract methods
 methods (Abstract)
@@ -95,8 +116,14 @@ methods
     
     function setCostFunction(this, fun)
         % Set up the cost function.
-        % The input can be either a function handle, or an instance of
+        %
+        % Usage
+        % OPTIM.setCostFunction(FUN);
+        % setCostFunction(OPTIM, FUN);
+        % 
+        % The input FUN can be either a function handle, or an instance of
         % CostFunction.
+        
         if isa(fun, 'function_handle')
             this.costFunction = fun;
         elseif isa(fun, 'CostFunction')
@@ -119,7 +146,8 @@ methods
     function setDisplayMode(this, mode)
         this.displayMode = mode;
     end
-end
+    
+end % general methods
 
 %% Listeners management
 methods
@@ -130,7 +158,9 @@ methods
         %   addOptimizationListener(OPTIM, LISTENER);
         %   OPTIM is an instance of Optimizer
         %   LISTENER is an instance of OptimizationListener
-        %
+        %   The listener will listen the events of type:
+        %   OptimizationStarted, OptimizationIterated, and
+        %   OptimizationTerminated 
         
         % Check class of input
         if ~isa(listener, 'OptimizationListener')

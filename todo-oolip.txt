@@ -1,29 +1,28 @@
-TODO-list for project imageObj
-------------------------------
+TODO-list for project OOLIP
+---------------------------
 
+TODO recalage:
 
-- refaire quelques traitements de demos en utilisant package ImageObj (2010.06.26)
+- ajouter regularisation des fonctions
+
+- passer en coordonnees physiques (essayer avec BF)
+
+- refaire quelques traitements de demos en utilisant class Image (2010.06.26)
     + segmentation par LPE
     + squeletisation
 
     
 class Image
-===========
-
-- type of image is implemented, but not initialized when needed...
-    + binary images
-    + color images
-    + vector images
-    
+===========    
 - small convenient functions (2010.11.26)
     + imRescale (find a better name) 
-    + hsv2rgb (ou autre fonction de conversion d'espace couleurs)
     + concatenation (cat, horzcat, vertcat)
     + operateur min et max: un ou deux arguments
         -> un argument: renvoie le max dans l'image
         -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
     + cast : remplacer 'convertType' par cast (2010.12.13)
-    
+        -> pas sur, peut-etre preferable garder cast pour transformer en type primitifs
+        
 - Split class Image into a specific library ? (2010.11.04)
     + remove some functions (think about a way to have additional methods
         in a separate directory)
@@ -37,14 +36,7 @@ class Image
     specify how to use (static constructor or constructor),
     with all psb (2D, 3D, vector, color, movie)
     and implement
-        
-- virer classe calibration spatiale, et faire tout gerer par image (2010.12.03)
-    + origin
-    + spacing
-    + DCM / directionMatrix
-- faire gerer les conversions de coordonnees index-position par la classe
-    de calibration spatiale ? (2010.10.14)
-    
+
 - inclure info sur dynamique des niveaux de gris (2010.12.03)
     + grayRange pour dynamique des niveaux de gris de l'image (min et max des elements)
     + displayRange pour dynamique utilisee pour l'affichage
@@ -55,16 +47,7 @@ class Image
 - stocker le nom des canaux ?
     + channelNames
 
-- store label of axes ? (2010.06.30)
 - manage image anatomical orientation (2010.10.22)
-
-- use a specific data structure to gather orientation data ? (2010.10.22)
-    + axis names
-    + anatomical orientation
-    + directions
-    + ...
-    Such a stucture could implement a 'rotate90' method, in the same way 
-    than calibration
 
 - enhance filtering of some functions (2010.07.13)
     + open, close, dilate, erode
@@ -80,8 +63,6 @@ class Image
         (calibration spatiale, buffer...) (2010.06.29)
 
 - Add support for Region of Interest (2010.07.13)   
-
-- Add support for binary images (asked for a long time...)
 
 
 Interpolators 

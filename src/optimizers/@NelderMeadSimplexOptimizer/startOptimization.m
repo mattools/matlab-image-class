@@ -19,8 +19,7 @@ function [params value] = startOptimization(this)
 % Created: 2010-10-06,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-%TODO: make simplex a field, and provide psb to start optimization with
-% specified simplex
+%TODO: provide psb to start optimization with a specified simplex
 
 TINY = 1e-10;
 
@@ -42,17 +41,17 @@ while true
     % first, determines the indices of points with the highest (i.e.
     % worst), next highest, and lowest (i.e. best) values. 
     [dummy indices] = sort(this.evals); %#ok<ASGLU>
-    ilo     = indices(1);
-    ihi     = indices(end);
-    inhi    = indices(end-1);
+    indLow  = indices(1);
+    indHigh = indices(end);
+    indNext = indices(end-1);
     
     % update optimized value and position
-    this.params = this.simplex(ilo, :);
-    this.value  = this.evals(ilo);
+    this.params = this.simplex(indLow, :);
+    this.value  = this.evals(indLow);
     
     % compute relative difference between highest and lowest
-    yLow    = this.evals(ilo);
-    yHigh   = this.evals(ihi);
+    yLow    = this.evals(indLow);
+    yHigh   = this.evals(indHigh);
     rtol = 2 * abs(yHigh - yLow) / (abs(yHigh) + abs(yLow) + TINY);
 
     % termination with function evaluation
@@ -64,41 +63,53 @@ while true
     
     % first extrapolate by a factor -1 through the face of the simplex
     % opposite to the highest point.
-    [pTry yTry] = this.evaluateReflection(ihi, -1);
+    [pTry yTry] = this.evaluateReflection(indHigh, -1);
     
     % if the value at the evaluated position is better than current
     % highest value, then replace the highest value
-    if yTry < this.evals(ihi)
-        disp('reflection');
-        this.updateSimplex(ihi, pTry, yTry)
+    if yTry < this.evals(indHigh)
+        this.updateSimplex(indHigh, pTry, yTry);
+        if strcmp(this.displayMode, 'iter')
+            disp('reflection');
+        end
+        this.notify('OptimizationIterated');
     end
 
     
-    if yTry <= this.evals(ilo)
+    if yTry <= this.evals(indLow)
         % if new evaluation is better than current minimum, try to expand
-        [pTry yTry] = this.evaluateReflection(ihi, 2);
+        [pTry yTry] = this.evaluateReflection(indHigh, 2);
         
-        if yTry < this.evals(ihi)
+        if yTry < this.evals(indHigh)
             % expansion was successful
-            disp('expansion');
-            this.updateSimplex(ihi, pTry, yTry);
+            this.updateSimplex(indHigh, pTry, yTry);
+            if strcmp(this.displayMode, 'iter')
+                disp('expansion');
+            end
+            this.notify('OptimizationIterated');
         end
     
-    elseif yTry >= this.evals(inhi)
+    elseif yTry >= this.evals(indNext)
         % if new evaluation is worse than the second-highest point, look
         % for an intermediate point (i.e. do a one-dimensional contraction)
-        [pTry yTry] = this.evaluateReflection(ihi, .5);
+        [pTry yTry] = this.evaluateReflection(indHigh, .5);
         
-        if yTry < this.evals(ihi)
+        if yTry < this.evals(indHigh)
             % contraction was successful
-            disp('contraction');
-            this.updateSimplex(ihi, pTry, yTry);
+            this.updateSimplex(indHigh, pTry, yTry);
+            if strcmp(this.displayMode, 'iter')
+                disp('contraction');
+            end
+            this.notify('OptimizationIterated');
             
         else
-            % 1D contraction was not successful, so perform a
-            % multidimensional contraction
-            disp('multiple contraction');
-            this.contractSimplex(this, ilo);
+            % 1D contraction was not successful, so perform a shrink
+            % (multidimensional contraction) around lowest point
+            this.contractSimplex(indLow);
+            if strcmp(this.displayMode, 'iter')
+                disp('shrink');
+            end
+            this.notify('OptimizationIterated');
         end
         
     end
@@ -110,8 +121,8 @@ while true
 
     iter = iter + 1;
     
-    % send iteration event
-    this.notify('OptimizationIterated');
+%     % send iteration event
+%     this.notify('OptimizationIterated');
 
 end % main iteration loop
 
@@ -124,7 +135,4 @@ this.notify('OptimizationTerminated');
 % return the current state of the optimizer
 params = this.params;
 value = this.value;
-
-end
-
 
