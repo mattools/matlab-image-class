@@ -1,4 +1,4 @@
-function test_suite = test_NelderMeadSimplexOptimizer(varargin)
+function test_suite = test_NelderMeadSimplexOptimizer(varargin) %#ok<STOUT>
 %TESTTRANSLATION  Test function for class Translation
 %   output = testTranslation(input)
 %
