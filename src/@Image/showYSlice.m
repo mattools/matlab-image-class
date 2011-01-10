@@ -46,10 +46,7 @@ xz_y = ones(size(xz_x))*ly(sliceIndex);
 
 % extract slice in Y direction
 slice = this.getSlice(2, sliceIndex);
-slice = slice.getBuffer()';
-
-% % for ZX slice, we permute
-% slice = permute(slice, [2 1 3]);
+slice = slice.squeeze().getBuffer();
 
 % eventually converts to uint8, rescaling data between 0 and max value
 if ~strcmp(class(slice), 'uint8')

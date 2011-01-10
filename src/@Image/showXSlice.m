@@ -45,10 +45,7 @@ yz_x = ones(size(yz_y))*lx(sliceIndex);
 
 % extract slice in x direction
 slice = this.getSlice(1, sliceIndex);
-slice = slice.getBuffer()';
-
-% % for YZ slice, we permute
-% slice = permute(slice, [2 1 3]);
+slice = slice.squeeze().getBuffer();
 
 % eventually converts to uint8, rescaling data between 0 and max value
 if ~strcmp(class(slice), 'uint8')
