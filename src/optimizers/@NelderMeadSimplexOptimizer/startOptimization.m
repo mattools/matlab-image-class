@@ -1,11 +1,24 @@
-function [params value] = startOptimization(this)
+function [params value converged output] = startOptimization(this)
 %STARTOPTIMIZATION Run the optimizer, and return optimized parameters
 %
 %   PARAMS = startOptimization(OPTIM)
 %   PARAMS = OPTIM.startOptimization()
+%   Returns the optimized parameter set.
 %
 %   [PARAMS VALUE] = startOptimization(OPTIM)
 %   [PARAMS VALUE] = OPTIM.startOptimization()
+%   Returns the optimized parameter set and the best function evaluation.
+%
+%   [PARAMS VALUE CONVERGED] = startOptimization(OPTIM)
+%   [PARAMS VALUE CONVERGED] = OPTIM.startOptimization()
+%   Also returns a boolean indicating whether the algorithm converged or
+%   not.
+%
+%   [PARAMS VALUE CONVERGED OUTPUT] = startOptimization(OPTIM)
+%   [PARAMS VALUE CONVERGED OUTPUT] = OPTIM.startOptimization()
+%   Also returns a data structure containing information about the
+%   algorithm. See documentation of 'fminsearch' for details.
+%
 %
 %   Example
 %   startOptimization
@@ -16,7 +29,7 @@ function [params value] = startOptimization(this)
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
-% Created: 2010-10-06,    using Matlab 7.9.0.529 (R2009b)
+% Created: 2011-01-09,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 %TODO: provide psb to start optimization with a specified simplex
@@ -31,6 +44,10 @@ this.notify('OptimizationStarted');
 
 % initialize the simplex.
 initializeSimplex(this);
+
+% state of the algorithm
+exitMessage = 'Algorithm started';
+converged = false;
 
 
 %% Main loop
@@ -50,12 +67,14 @@ while true
     this.value  = this.evals(indLow);
     
     % compute relative difference between highest and lowest
-    yLow    = this.evals(indLow);
-    yHigh   = this.evals(indHigh);
-    rtol = 2 * abs(yHigh - yLow) / (abs(yHigh) + abs(yLow) + TINY);
+    fLow    = this.evals(indLow);
+    fHigh   = this.evals(indHigh);
+    rtol = 2 * abs(fHigh - fLow) / (abs(fHigh) + abs(fLow) + TINY);
 
     % termination with function evaluation
     if rtol < this.ftol
+        exitMessage = sprintf('Function converged with relative tolerance %g', this.ftol);
+        converged = true;
         break;
     end
     
@@ -63,12 +82,12 @@ while true
     
     % first extrapolate by a factor -1 through the face of the simplex
     % opposite to the highest point.
-    [pTry yTry] = this.evaluateReflection(indHigh, -1);
+    [xTry fTry] = this.evaluateReflection(indHigh, -1);
     
     % if the value at the evaluated position is better than current
     % highest value, then replace the highest value
-    if yTry < this.evals(indHigh)
-        this.updateSimplex(indHigh, pTry, yTry);
+    if fTry < this.evals(indHigh)
+        this.updateSimplex(indHigh, xTry, fTry);
         if strcmp(this.displayMode, 'iter')
             disp('reflection');
         end
@@ -76,27 +95,27 @@ while true
     end
 
     
-    if yTry <= this.evals(indLow)
+    if fTry <= this.evals(indLow)
         % if new evaluation is better than current minimum, try to expand
-        [pTry yTry] = this.evaluateReflection(indHigh, 2);
+        [xTry fTry] = this.evaluateReflection(indHigh, 2);
         
-        if yTry < this.evals(indHigh)
+        if fTry < this.evals(indHigh)
             % expansion was successful
-            this.updateSimplex(indHigh, pTry, yTry);
+            this.updateSimplex(indHigh, xTry, fTry);
             if strcmp(this.displayMode, 'iter')
                 disp('expansion');
             end
             this.notify('OptimizationIterated');
         end
     
-    elseif yTry >= this.evals(indNext)
+    elseif fTry >= this.evals(indNext)
         % if new evaluation is worse than the second-highest point, look
         % for an intermediate point (i.e. do a one-dimensional contraction)
-        [pTry yTry] = this.evaluateReflection(indHigh, .5);
+        [xTry fTry] = this.evaluateReflection(indHigh, .5);
         
-        if yTry < this.evals(indHigh)
+        if fTry < this.evals(indHigh)
             % contraction was successful
-            this.updateSimplex(indHigh, pTry, yTry);
+            this.updateSimplex(indHigh, xTry, fTry);
             if strcmp(this.displayMode, 'iter')
                 disp('contraction');
             end
@@ -116,23 +135,36 @@ while true
     
     % termination with number of iterations
     if iter > this.nIter
+        exitMessage = sprintf('Iteration number reached maximum allowed value: %d', this.nIter);
         break;
     end
 
     iter = iter + 1;
-    
-%     % send iteration event
-%     this.notify('OptimizationIterated');
-
 end % main iteration loop
 
 
 %% Terminates
 
+if converged
+    if strmatch(this.displayMode, {'iter', 'final'})
+        disp(exitMessage);
+    end
+else
+    if strmatch(this.displayMode, {'iter', 'final', 'notify'})
+        disp(exitMessage);
+    end
+end
+
 % send termination event
 this.notify('OptimizationTerminated');
 
 % return the current state of the optimizer
-params = this.params;
-value = this.value;
+params  = this.params;
+value   = this.value;
+
+% create output structure
+output.algorithm    = '';
+output.funcCount    = this.numFunEvals;
+output.iterations   = iter;
+output.message      = exitMessage;
 

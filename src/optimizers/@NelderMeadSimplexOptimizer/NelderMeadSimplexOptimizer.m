@@ -21,13 +21,13 @@ classdef NelderMeadSimplexOptimizer < Optimizer
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
-% Created: 2010-10-06,    using Matlab 7.9.0.529 (R2009b)
+% Created: 2011-01-09,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 %% Properties
 properties
     % maximum number of iterations
-    nIter = 100;
+    nIter = 200;
     
     % tolerance on function value 
     ftol = 1e-5;

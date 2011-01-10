@@ -37,7 +37,12 @@ properties
     outputFunction = [];
     
     % Specifies which information will be displayed at each iteration
-    displayMode = 'iter';
+    % Can be one of:
+    % 'iter'    display information at each iteration
+    % 'final'   display only message of convergence
+    % 'notify'  display message if convergence failed
+    % 'off'     does not display anything
+    displayMode = 'notify';
 end
 
 %% Events
