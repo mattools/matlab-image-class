@@ -16,7 +16,7 @@ function [fval grad] = computeValueAndGradient(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 
-% extract number of images (whic is also the number of transforms)
+% extract number of images (which is also the number of transforms)
 nImages = length(this.images);
 
 % number of parameter for each transform (assumes this is the same)
@@ -28,37 +28,74 @@ fval = 0;
 % initialize empty gradient
 grad = zeros(1, nImages*nParams);
 
-% index of current params vactor within gloabl param vector
+% index of current params vactor within global param vector
 ind = 1;
+
+nPoints = size(this.points, 1);
+allValues = zeros(nPoints, nImages);
+
+% compute values in each image
+for i=1:nImages
+    [values inside] = this.transformedImages{i}.evaluate(this.points);
+    allValues(:, i) = values;
+    allValues(~inside, i) = 0;
+end
+
 
 % Main iteration over all images (image1)
 % image1 is assumed to be the moving image
 for i=1:nImages
     % extract data specific to current image
-    image1 = this.transformedImages{i};
     transfo = this.transforms{i};
     gradient = this.transformedGradients{i};
     
     % initialize zero gradient vector for current transform
     grad_i = zeros(1, nParams);
+            
+    % evaluate gradient, and re-compute points within image frame, as
+    % gradient evaluator can have different behaviour at image borders.
+    [gradVals gradInside] = gradient.evaluate(this.points);
+    
+    % convert to indices
+    inds    = find(gradInside);
+    nbInds  = length(inds);
+    g = zeros(nbInds, nParams);
+    
+    for k=1:nbInds
+        iInd = inds(k);
+        
+        % compute spatial jacobien for current point
+        % (in physical coords)
+        p0  = this.points(iInd, :);
+        jac = getParametricJacobian(transfo, p0);
+        
+        % local contribution to metric gradient
+        g(iInd, :) = gradVals(iInd, :)*jac;
+    end
     
     % second iteration over all other images
     % image2 is fixed image, and we look for average transform towards all
     % images
     for j=[1:i-1 i+1:nImages]
-        % extract other image
-        image2 = this.transformedImages{j};
+        % compute differences
+        diff = allValues(:,i) - allValues(:,j);
         
-        % compute metric value and gradient on current combination of
-        % images, transforms and parameters
-        [fij gij] = computeMeanSquaredDifferences(image2, image1, ...
-            this.points, transfo, gradient);
-        %TODO: could avoid a great number of computation, as gradient is
-        %evaluated within j-loop but does not change...
+        % Sum of squared differences normalized by number of test points
+        fij = mean(diff.^2);
+
+        % re-compute differences, by considering position that can be used
+        % for computing gradient
+        diff = allValues(gradInside,i) - allValues(gradInside,j);
+
+        % compute gradient vectors weighted by local differences
+        gd = g(inds,:).*diff(:, ones(1, nParams));
+
+        % mean of valid gradient vectors
+        gij = mean(gd, 1);
 
         % compute sum of values for all images
-        fval = fval + fij;
-        grad_i = grad_i + gij;
+        fval    = fval + fij;
+        grad_i  = grad_i + gij;
     end
     
     % update global parameter vector
@@ -66,63 +103,5 @@ for i=1:nImages
     ind = ind + nParams;
 end
 
-
-
-
-
-function [fval grad] = computeMeanSquaredDifferences(img1, img2, points, ...
-    transfo, gradient)
-% Compute Value and gradient for a couple of images
-
-% compute values in image 1
-[values1 inside1] = img1.evaluate(points);
-
-% compute values in image 2
-[values2 inside2] = img2.evaluate(points);
-
-% consider zero outside of images
-% TODO: use user-specified default value
-outsideValue = 0;
-values1(~inside1) = outsideValue;
-values2(~inside2) = outsideValue;
-
-% compute squared differences
-diff = values2 - values1;
-
-% Sum of squared differences normalized by number of test points
-fval = mean(diff.^2);
-
-
-nParams = transfo.getParameterLength();
-
-% evaluate gradient, and re-compute points within image frame, as gradient
-% evaluator can have different behaviour at image borders.
-[gradVals gradInside] = gradient.evaluate(points);
-
-% convert to indices
-inds    = find(gradInside);
-nbInds  = length(inds);
-g = zeros(nbInds, nParams);
-
-for i=1:nbInds
-    iInd = inds(i);
-    
-    % compute spatial jacobien for current point (in physical coords)
-    p0 = points(iInd, :);
-    jac = getParametricJacobian(transfo, p0);
-    
-    % local contribution to metric gradient
-    g(iInd, :) = gradVals(iInd, :)*jac;
-end
-
-% re-compute differences, by considering position that can be used for
-% computing gradient
-diff = values2(gradInside) - values1(gradInside);
-
-% compute gradient vectors weighted by local differences
-gd = g(inds,:).*diff(:, ones(1, nParams));
-
-% mean of valid gradient vectors
-grad = mean(gd, 1);
 
 
