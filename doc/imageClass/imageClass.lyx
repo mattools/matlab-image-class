@@ -1,4 +1,4 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.9 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -142,6 +142,20 @@ quand on clone une image, doit-on cloner aussi le tampon -> a priori oui...
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+vocabulaire : comment appeler les images de vecteurs ? images spectrales
+ ?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 La plateforme Matlab est très performante pour traiter les images, mais
  manque parfois de souplesse pour manipuler les données.
  En particulier :
@@ -159,7 +173,12 @@ pour les images couleur, la couleur est gérée comme une dimension, ce qui
 \end_layout
 
 \begin_layout Itemize
-pas de gestion de la résolution ou des meta-informations des images
+pas de gestion de la résolution des images, ce qui vite pénible en 3D où
+ la résolution est souvent différente pour l'axe z
+\end_layout
+
+\begin_layout Itemize
+pas de gestion des meta-données
 \end_layout
 
 \begin_layout Itemize
@@ -351,14 +370,15 @@ Information de visualisation
 \begin_layout Standard
 En gros, comment représenter les pixels de l'image.
  Il s'agit d'une application qui à une valeur de l'image (NDG, double, complexe...)
- associe une valeur d'affichage (NDG ou RGB).Cela comprend :
+ associe une valeur d'affichage (en niveaux de gris ou en couleurs RGB).
+ La transcription dépend du type d'image.
 \end_layout
 
-\begin_layout Itemize
-pour une image en NDG :
+\begin_layout Standard
+Pour une image en niveaux de gris, plusieurs paramètres peuvent être pris
+ en compte :
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 une valeur de gamma
 \end_layout
@@ -372,15 +392,16 @@ une fonctions linéaire (brillance + contraste, cf.
 la palette de couleur utilisée, si l'image est indexée
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
-pour une image d'intensité affichée en niveaux de gris, la dynamique d'affichage
- (min et max)
+\begin_layout Standard
+Pour une image d'intensité affichée en niveaux de gris, on doit en général
+ spécifier la dynamique d'affichage (min et max), ce qui permet de recalibrer
+ l'affichage pour des valeurs entre 0 et 255.
 \end_layout
 
-\begin_layout Itemize
-pour une image multivariée (spectre, complexe, couleur...), une fonction qui
- détermine la couleur d'affichage en fonction d'un vecteur.
+\begin_layout Standard
+Pour une image multivariée (spectre, complexe, couleur...), on peut passer
+ par une fonction qui détermine la couleur d'affichage en fonction d'un
+ vecteur.
  Par exemple, on peut afficher le module d'un nombre complexe.
 \end_layout
 
@@ -606,6 +627,13 @@ infos une structure de données contenant le nom de l'image, son fichier
 Création des images
 \end_layout
 
+\begin_layout Standard
+La bibliothèque permet de créer des images à partir d'un tableau contenant
+ les données, de charger l'image contenue dans un fichier, ou de créer des
+ images en combinant des images déjà en mémoire.
+ 
+\end_layout
+
 \begin_layout Subsection
 Constructeur Image
 \end_layout
@@ -735,6 +763,32 @@ Renvoie la dimension dans laquelle est inclue l'image.
 Accès et modification des valeurs de l'image
 \end_layout
 
+\begin_layout Subsubsection
+Utilisation de l'indexage direct
+\end_layout
+
+\begin_layout Standard
+Les fonctions subsref et sunsasgn ont été surchargées, ce qui permet un
+ accés direct (en lecture et en écriture) aux valeurs de l'image.
+\end_layout
+
+\begin_layout Standard
+Permet : 
+\end_layout
+
+\begin_layout Itemize
+renvoyer la valeur d'un pixel à une position donnée
+\end_layout
+
+\begin_layout Itemize
+crop image en spécifiant une plage.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Utilisation de fonctions d'accès
+\end_layout
+
 \begin_layout Description
 pixel
 \end_layout
@@ -754,23 +808,6 @@ Extrait une sous-image, soit de même dimension, soit de dimension réduite.
 \end_layout
 
 \begin_layout Subsubsection
-Utilisation de subsref ?
-\end_layout
-
-\begin_layout Standard
-Permet : 
-\end_layout
-
-\begin_layout Itemize
-renvoyer la valeur d'un pixel à une position donnée
-\end_layout
-
-\begin_layout Itemize
-crop image en spécifiant une plage.
- 
-\end_layout
-
-\begin_layout Subsubsection
 Statistiques de base
 \end_layout
 
@@ -778,19 +815,6 @@ Statistiques de base
 Ces fonctions renvoient des valeurs calculées sur l'ensemble des pixels
  de l'image.
  Elle s'appliquent à des images scalaires, ou vectorielles.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Idéalement, il devrait s'agir de l'ensemble des pixels dans la région d'intérêt
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Description

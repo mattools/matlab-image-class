@@ -1163,25 +1163,7 @@ La classe Optimizer contient deux champs principaux :
 
 \begin_layout Description
 costFunction représente la fonction de coût à optimiser, sous la forme d'un
- pointeur de fonction dont le premier argument est le vecteur de paramètres)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Note : possibilité de remplacer ultérieurement par un objet 
-\begin_inset Quotes fld
-\end_inset
-
-évaluable
-\begin_inset Quotes frd
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+ pointeur de fonction dont le premier argument est le vecteur de paramètres
 \end_layout
 
 \begin_layout Description
@@ -1199,7 +1181,41 @@ outputFunction un pointeur de fonction qui est censé être appelé à chaque
 
 \begin_layout Description
 displayMode une chaîne de caractères qui spécifie la quantité d'information
- à afficher (rien, juste le début et la fin, chaque itération...)
+ à afficher.
+ Peut être une valeur à choisir parmi 
+\begin_inset Quotes fld
+\end_inset
+
+off
+\begin_inset Quotes frd
+\end_inset
+
+ (n'affiche rien - dangereux); 
+\begin_inset Quotes fld
+\end_inset
+
+iter
+\begin_inset Quotes frd
+\end_inset
+
+ (affiche le résultat de chaque itération), 
+\begin_inset Quotes fld
+\end_inset
+
+notify
+\begin_inset Quotes frd
+\end_inset
+
+ (affiche le résultat si l'algorithme ne converge pas, valeur par défaut),
+ ou 
+\begin_inset Quotes fld
+\end_inset
+
+final
+\begin_inset Quotes frd
+\end_inset
+
+ (affiche juste le résultat final).
 \end_layout
 
 \begin_layout Subsubsection*
@@ -1514,7 +1530,7 @@ optimizationTerminated appelée lorsque la procédure d'optimisation est termin�
 \begin_layout Standard
 Les classes dérivées ont ainsi juste à re-implémenter l'une ou la totalité
  de ces méthodes pour avoir un comportement spécifique.
- On ajoute un listener à un optimiseur de la façon suivante :
+ On ajoute un écouteur à un optimiseur de la façon suivante :
 \end_layout
 
 \begin_layout Standard
@@ -1590,6 +1606,59 @@ Optimizer
  de la boîte à outils optimization de Matlab.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO :
+\end_layout
+
+\begin_layout Itemize
+uniformiser la construction des optimiseurs 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+pas d'argument (nécessite initialisation ultérieure)
+\end_layout
+
+\begin_layout Itemize
+fonction à optimiser et vecteur de départ (permet construction en une ligne)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+uniformiser la gestion de la verbosité
+\end_layout
+
+\begin_layout Itemize
+Mieux gérer les conditions d'arrêt :
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+précision en x
+\end_layout
+
+\begin_layout Itemize
+précision en f
+\end_layout
+
+\begin_layout Itemize
+max_fun_eval
+\end_layout
+
+\begin_layout Itemize
+max_iter (pour les algos itératifs)
+\end_layout
+
+\end_deeper
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Optimisation basée sur la valeur de la fonction
 \end_layout
@@ -1599,28 +1668,6 @@ Les algorithmes de cette catégorie ne nécessitent de connaître que la fonctio
  de coût.
  Leur vitesse de convergence est en général faible.
  La classe la plus pratique pour le moment est GaussianLinearSearchOptimizer.
-\end_layout
-
-\begin_layout Subsection
-NelderMeadSimplexOptimizer
-\end_layout
-
-\begin_layout Standard
-Cet algorithme recherche le minimum d'une fonction (supposée convexe) par
- la méthode du simplexe de Nelder-Mead.
- En pratique, il s'agit d'une encapsulation de la fonction 
-\begin_inset Quotes fld
-\end_inset
-
-fminsearch
-\begin_inset Quotes frd
-\end_inset
-
- de Matlab.
-\end_layout
-
-\begin_layout Standard
-A l'usage, il semble que l'on se retrouve assez vite dans des minima locaux.
 \end_layout
 
 \begin_layout Subsection
@@ -1697,6 +1744,54 @@ Inconvénients nécessite encore beaucoup d'évaluation de la fonction de coût,
  et risque de minima non trouvés si on cherche paramètre après paramètre
 \end_layout
 
+\begin_layout Subsection
+MatlabSimplexOptimizer
+\end_layout
+
+\begin_layout Standard
+Cet algorithme recherche le minimum d'une fonction (supposée convexe) par
+ la méthode du simplexe de Nelder-Mead.
+ En pratique, il s'agit d'une encapsulation de la fonction 
+\begin_inset Quotes fld
+\end_inset
+
+fminsearch
+\begin_inset Quotes frd
+\end_inset
+
+ de Matlab.
+\end_layout
+
+\begin_layout Standard
+Un défaut de la fonction fminsearch est qu'on ne peut pas spécifier la taille
+ initiale du simplexe, ce qui fait que la recherche se fait dans un domaine
+ trop étroit.
+\end_layout
+
+\begin_layout Standard
+A l'usage, il semble que l'on se retrouve assez vite dans des minima locaux.
+\end_layout
+
+\begin_layout Subsection
+NelderMeadSimplexOptimizer
+\end_layout
+
+\begin_layout Standard
+Implémentation de l'algorithme du simplexe basée sur le livre Numerical
+ Recipes (3ème édition).
+ Permet de spécifier le delta initial dans chaque direction.
+\end_layout
+
+\begin_layout Standard
+Rappel : on utilise un tableau de taille 
+\begin_inset Formula $(n+1)*n$
+\end_inset
+
+ pour stocker les coordonnées des sommets du simplexe.
+ La méthode est donc plus appropriée pour des problèmes présentant un petit
+ nombre de paramètres.
+\end_layout
+
 \begin_layout Section
 Optimisation utilisant le gradient
 \end_layout
@@ -1735,13 +1830,19 @@ step0 l'amplitude du pas de déplacement à la première itération
 tau la taux de décroissance du pas de déplacement
 \end_layout
 
+\begin_layout Standard
+On peut ensuite avoir des variantes de la descente de gradient, par exemple
+ en utilisant une descente stochastique de gradient (on retire les points
+ d'évaluation à chaque itération).
+\end_layout
+
 \begin_layout Chapter
 Perspectives
 \end_layout
 
 \begin_layout Standard
-La bibliothèque encore largement en développement.
- 
+La bibliothèque est encore largement en développement, mais est déjà fonctionnel
+le.
 \end_layout
 
 \begin_layout Standard
