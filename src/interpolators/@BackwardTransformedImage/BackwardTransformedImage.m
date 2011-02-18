@@ -49,7 +49,7 @@ methods
             % empty constructor
             % (nothing to do !)
 
-        elseif isa(varargin{1}, 'BackwardTransformedImage')
+        elseif nargin==1 && isa(varargin{1}, 'BackwardTransformedImage')
             % copy constructor: copy each field
             tim = varargin{1};
             this.transform      = tim.transform;

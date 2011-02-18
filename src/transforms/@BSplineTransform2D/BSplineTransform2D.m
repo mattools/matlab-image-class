@@ -15,11 +15,15 @@ classdef BSplineTransform2D < ParametricTransform
 % Created: 2010-12-22,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+
 %% Properties
 properties
+    % Number of vertices of the grid in each direction
     gridSize;
-    gridSpacing;
+    % Coordinates of the first vertex of the grid
     gridOrigin;
+    % Spacing between the vertices
+    gridSpacing;
 end 
 
 %% Constructor
@@ -71,8 +75,7 @@ methods
         xg = xg(isInside);
         yg = yg(isInside);
         
-%         % compute indices in linear indexing
-%         dimX = this.gridSize(1);
+        % compute indices in linear indexing
         dimXY = prod(this.gridSize);
 
        % initialize zeros translation vector
@@ -88,8 +91,6 @@ methods
                 % linear index of translation components
                 indX = sub2ind([this.gridSize], xv, yv);
                 indY = sub2ind([this.gridSize], xv, yv) + dimXY;
-%                 indX = (xv-1) + dimX*(yv-1) + 1;
-%                 indY = (xv-1) + dimX*(yv-1) + 1 + dimXY;
                 
                 % translation vector of the current vertex
                 dxv = this.params(indX)';
@@ -106,18 +107,7 @@ methods
         point2 = point;
         point2(isInside, 1) = point(isInside, 1) + dx;
         point2(isInside, 2) = point(isInside, 2) + dy;
-        
-        function b = beta3(x)
-            %BETA3  One-line description here, please.
-            b = zeros(size(x));
-            ax = abs(x);
-            
-            ind = ax<=1;
-            b(ind) = -ax(ind).^2 + ax(ind).^3/2 + 2/3;
-            
-            ind = ax<=2 & ax>1;
-            b(ind) = (2 - ax(ind)).^3 / 6;
-        end
+                
     end
     
     function ux = getUx(this, x, y)
@@ -141,21 +131,12 @@ methods
     end
     
     function drawGrid(this)
-        % Draw the transformed grid
-        lx = (0:this.gridSize(1) - 1) * this.gridSpacing(1) + this.gridOrigin(1);
-        ly = (0:this.gridSize(2) - 1) * this.gridSpacing(2) + this.gridOrigin(2);
-        
-        % create base mesh
-        [x y] = meshgrid(lx, ly);
-        
-        % add grid shifts
-        x = x' + reshape(this.params(1:end/2), this.gridSize);
-        y = y' + reshape(this.params(end/2+1:end), this.gridSize);
-        
-        inds = reshape((1:numel(x)), this.gridSize);
-        
+
         % create vertex array
-        v = [x(:) y(:)];
+        v = getGridVertices(this);
+        
+        nv = size(v, 1);
+        inds = reshape(1:nv, this.gridSize);
         
         % edges in direction x
         ne1 = (this.gridSize(2) - 1) * this.gridSize(1);
@@ -170,16 +151,94 @@ methods
         drawGraph(v, e);
     end
     
+    function vertices = getGridVertices(this)
+        % get coordinates of grid vertices
+        
+        % base coordinates of grid vertices
+        lx = (0:this.gridSize(1) - 1) * this.gridSpacing(1) + this.gridOrigin(1);
+        ly = (0:this.gridSize(2) - 1) * this.gridSpacing(2) + this.gridOrigin(2);
+        
+        % create base mesh
+        [x y] = meshgrid(lx, ly);
+        
+        % add grid shifts
+        x = x' + reshape(this.params(1:end/2), this.gridSize);
+        y = y' + reshape(this.params(end/2+1:end), this.gridSize);
+        
+        % create vertex array
+        vertices = [x(:) y(:)];
+    end
+    
     function transformVector(this, varargin) %#ok<MANU>
         error('oolip:UnimplementedMethod', ...
             'Method "%s" is not implemented for class "%s"', ...
             'transformVector', mfilename);
     end
     
-    function getJacobian(this, point) %#ok<INUSD,MANU>
-        error('oolip:UnimplementedMethod', ...
-            'Method "%s" is not implemented for class "%s"', ...
-            'getJacobian', mfilename);
+    function jac = getJacobian(this, point)
+        % Jacobian matrix of the given point
+        %
+        
+        % extract coordinates
+        x = point(:, 1);
+        y = point(:, 2);
+        
+        % compute position wrt to the grid vertices
+        xg = (x - this.gridOrigin(1)) / this.gridSpacing(1) + 1;
+        yg = (y - this.gridOrigin(2)) / this.gridSpacing(2) + 1;
+        
+        % compute indices of values within interpolation area
+        isInsideX = xg>=2 & xg<this.gridSize(1)-1;
+        isInsideY = yg>=2 & yg<this.gridSize(2)-1;
+        isInside = isInsideX & isInsideY;
+        xg = xg(isInside);
+        yg = yg(isInside);
+        
+        % compute indices in linear indexing
+        dimXY = prod(this.gridSize);
+
+        % initialize zeros translation vector
+        nValid = length(xg);
+       
+        dxx = ones(nValid, 1);
+        dxy = zeros(nValid, 1);
+        dyx = zeros(nValid, 1);
+        dyy = ones(nValid, 1);
+        
+        for i=-1:2
+            for j=-1:2
+                % coordinates of neighbor vertex
+                xv = floor(xg) + i;
+                yv = floor(yg) + j;
+                
+                % linear index of translation components
+                indX = sub2ind([this.gridSize], xv, yv);
+                indY = sub2ind([this.gridSize], xv, yv) + dimXY;
+                
+                % translation vector of the current vertex
+                dxv = this.params(indX)';
+                dyv = this.params(indY)';
+                
+                % pre-compute derivative parts
+                bx  = beta3(xg - xv);
+                by  = beta3(yg - yv);
+                bxd = beta3d(xg - xv);
+                byd = beta3d(yg - yv);
+
+                % update jacobian matrix elements
+                dxx = dxx + bxd .* by   .* dxv;
+                dxy = dxy + bx  .* byd  .* dxv;
+                dyx = dyx + bxd .* by   .* dyv;
+                dyy = dyy + bx  .* byd  .* dyv;
+            end
+        end
+
+        % concatenate results into jacobian matrix
+        jac = zeros(2, 2, size(point, 1));
+        jac(1, 1, isInside) = dxx;
+        jac(1, 2, isInside) = dxy;
+        jac(2, 1, isInside) = dyx;
+        jac(2, 2, isInside) = dyy;
     end
     
     function getParametricJacobian(this, x, varargin) %#ok<INUSD,MANU>

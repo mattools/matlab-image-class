@@ -25,12 +25,25 @@ end
 %% Constructor
 methods
     function this = BSplineTransform3D(varargin)
-        % Ajouter le code du constructeur ici
+        % Create a new BSplineTransform3D
+        %
+        % T = BSplineTransform3D(GRIDSIZE)
+        % T = BSplineTransform3D(GRIDSIZE, SPACING, ORIGIN)
+        % all parameters are 1-by-3 row vector.
+        %
+        
         if nargin==1
             var = varargin{1};
             if isscalar(var)
                 nd = var;
                 this.gridSize       = ones(1, nd);
+                this.gridSpacing    = ones(1, nd);
+                this.gridOrigin     = zeros(1, nd);
+                initializeParameters();
+                
+            elseif length(var)==3
+                this.gridSize       = var;
+                nd = length(var);
                 this.gridSpacing    = ones(1, nd);
                 this.gridOrigin     = zeros(1, nd);
                 initializeParameters();
@@ -44,6 +57,7 @@ methods
         end
 
         function initializeParameters()
+            % helper function that initialize the parameter vector
             dim = this.gridSize();
             np  = prod(dim)*length(dim);
             this.params = zeros(1, np);
@@ -167,24 +181,12 @@ methods
         
         % needs validation in the 3D case
         
-        % Draw the transformed grid
-        lx = (0:this.gridSize(1) - 1) * this.gridSpacing(1) + this.gridOrigin(1);
-        ly = (0:this.gridSize(2) - 1) * this.gridSpacing(2) + this.gridOrigin(2);
-        lz = (0:this.gridSize(3) - 1) * this.gridSpacing(3) + this.gridOrigin(3);
-        
-        % create base mesh
-        [x y z] = meshgrid(lx, ly, lz);
-        
-        % add grid shifts
-        x = permute(x, [2 1 3]) + reshape(this.params(1:end/3), this.gridSize);
-        y = permute(y, [2 1 3]) + reshape(this.params(end/3+1:end*2/3), this.gridSize);
-        z = permute(z, [2 1 3]) + reshape(this.params(end*2/3+1:end), this.gridSize);
-        
-        inds = reshape((1:numel(x)), this.gridSize);
-        
         % create vertex array
-        v = [x(:) y(:) z(:)];
+        v = getGridVertices(this);
         
+        nv = size(v, 1);
+        inds = reshape(1:nv, this.gridSize);
+                
         % edges in direction x
         ne1 = this.gridSize(1) * (this.gridSize(2) - 1) * this.gridSize(3);
         v1 = reshape(inds(:, 1:end-1, :), [ne1 1]);
@@ -208,6 +210,26 @@ methods
 
         drawGraph(v, e);
     end
+    
+    function vertices = getGridVertices(this)
+        % get coordinates of grid vertices
+        
+        % Draw the transformed grid
+        lx = (0:this.gridSize(1) - 1) * this.gridSpacing(1) + this.gridOrigin(1);
+        ly = (0:this.gridSize(2) - 1) * this.gridSpacing(2) + this.gridOrigin(2);
+        lz = (0:this.gridSize(3) - 1) * this.gridSpacing(3) + this.gridOrigin(3);
+        
+        % create base mesh
+        [x y z] = meshgrid(lx, ly, lz);
+        
+        % add grid shifts
+        x = permute(x, [2 1 3]) + reshape(this.params(1:end/3), this.gridSize);
+        y = permute(y, [2 1 3]) + reshape(this.params(end/3+1:end*2/3), this.gridSize);
+        z = permute(z, [2 1 3]) + reshape(this.params(end*2/3+1:end), this.gridSize);
+       
+        % create vertex array
+        vertices = [x(:) y(:) z(:)];
+     end
     
     function transformVector(this, varargin) %#ok<MANU>
         error('oolip:UnimplementedMethod', ...
