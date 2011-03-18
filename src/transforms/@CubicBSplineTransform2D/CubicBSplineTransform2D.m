@@ -1,5 +1,5 @@
 classdef CubicBSplineTransform2D < ParametricTransform
-%CUBICBSPLINETRANSFORM2D  One-line description here, please.
+%CUBICBSPLINETRANSFORM2D Cubic Spline Transform model in 2D
 %
 %   output = CubicBSplineTransform2D(input)
 %
@@ -81,7 +81,8 @@ methods
         yg = yg(isInside);
         
         % compute indices in linear indexing
-        dimXY = prod(this.gridSize);
+        dimGrid = this.gridSize;
+        dimXY = dimGrid(1) * dimGrid(2);
 
         % coordinates within the unit tile
         xu = xg - floor(xg);
@@ -99,9 +100,13 @@ methods
         
         % iteration on each tile of the grid
         for i=-1:2
+            % coordinates of neighbor vertex
+            xv = floor(xg) + i;
+            
+            fun_i = baseFuns{i+2};
+            eval_i = fun_i(xu);
+            
             for j=-1:2
-                % coordinates of neighbor vertex
-                xv = floor(xg) + i;
                 yv = floor(yg) + j;
                 
                 % linear index of translation components
@@ -112,11 +117,10 @@ methods
                 dxv = this.params(indX)';
                 dyv = this.params(indY)';
                 
-                fun_i = baseFuns{i+2};
                 fun_j = baseFuns{j+2};
                 
                 % update total translation component
-                b = fun_i(xu) .* fun_j(yu);
+                b = eval_i .* fun_j(yu);
                 dx = dx + b.*dxv; 
                 dy = dy + b.*dyv; 
             end
@@ -337,7 +341,9 @@ methods
         xu = reshape(xg - floor(xg), [1 1 nValid]);
         yu = reshape(yg - floor(yg), [1 1 nValid]);       
         
-        dimXY = prod(this.gridSize);
+        dimGrid = this.gridSize;
+        dimX    = dimGrid(1);
+        dimXY   = dimX * dimGrid(2);
         
         baseFuns = {...
             @BSplines.beta3_0, ...
@@ -345,25 +351,32 @@ methods
             @BSplines.beta3_2, ...
             @BSplines.beta3_3};
         
+        
+        % pre-compute values of b-splines functions
+        evals_i = zeros(nValid, 4);
+        evals_j = zeros(nValid, 4);
+        for i = 1:4
+            fun_i = baseFuns{i};
+            evals_i(:,i) = fun_i(xu);
+            evals_j(:,i) = fun_i(yu);
+        end
+        
         % iteration on each tile of the grid
         for i=-1:2
             xv = floor(xg) + i;
-            fun_i = baseFuns{i+2};
             
             for j=-1:2
                 % coordinates of neighbor vertex
                 yv = floor(yg) + j;
                 
                 % linear index of translation components
-                indX = sub2ind([this.gridSize], xv, yv);
-                indY = sub2ind([this.gridSize], xv, yv) + dimXY;
-                
-                fun_j = baseFuns{j+2};
-                
+                indX = (yv - 1) * dimX + xv;
+                indY = indX + dimXY;
+                                
                 % update total translation component
-                b = fun_i(xu) .* fun_j(yu);
+                b = evals_i(:,i+2) .* evals_j(:,j+2);
                 
-                % update jacobian matrix
+                % update jacobian matrix (of size nd * np * nPts)
                 iValid = ones(nValid, 1);
                 jac(sub2ind(size(jac), 1*iValid, indX, inds)) = b;
                 jac(sub2ind(size(jac), 2*iValid, indY, inds)) = b;
