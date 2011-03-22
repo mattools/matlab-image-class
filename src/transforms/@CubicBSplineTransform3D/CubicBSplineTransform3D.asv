@@ -1,10 +1,10 @@
-classdef CubicBSplineTransform2D < ParametricTransform
-%CUBICBSPLINETRANSFORM2D Cubic Spline Transform model in 2D
+classdef CubicBSplineTransform3D < ParametricTransform
+%CUBICBSPLINETRANSFORM3D Cubic Spline Transform model in 3D
 %
-%   output = CubicBSplineTransform2D(input)
+%   output = CubicBSplineTransform3D(input)
 %
 %   Example
-%   CubicBSplineTransform2D
+%   CubicBSplineTransform3D
 %
 %   See also
 %
@@ -29,7 +29,7 @@ end
 
 %% Constructor
 methods
-    function this = CubicBSplineTransform2D(varargin)
+    function this = CubicBSplineTransform3D(varargin)
         % Ajouter le code du constructeur ici
         if nargin==1
             var = varargin{1};
@@ -50,7 +50,7 @@ methods
 
         function initializeParameters()
             dim = this.gridSize();
-            np  = prod(dim)*length(dim);
+            np  = prod(dim) * length(dim);
             this.params = zeros(1, np);
         end
     end % constructor 
@@ -66,31 +66,36 @@ methods
         % compute centered coords.
         x = point(:, 1);
         y = point(:, 2);
+        z = point(:, 3);
         
         % compute position wrt to the grid vertices
         xg = (x - this.gridOrigin(1)) / this.gridSpacing(1) + 1;
         yg = (y - this.gridOrigin(2)) / this.gridSpacing(2) + 1;
+        zg = (z - this.gridOrigin(3)) / this.gridSpacing(3) + 1;
         
         % compute indices of points located within interpolation area
         isInsideX   = xg >= 2 & xg < this.gridSize(1)-1;
         isInsideY   = yg >= 2 & yg < this.gridSize(2)-1;
-        isInside    = isInsideX & isInsideY;
+        isInsideZ   = zg >= 2 & zg < this.gridSize(3)-1;
+        isInside    = isInsideX & isInsideY & isInsideZ;
         
         % select valid points
         xg = xg(isInside);
         yg = yg(isInside);
+        zg = zg(isInside);
         
         % compute indices in linear indexing
-        dimGrid = this.gridSize;
-        dimXY = dimGrid(1) * dimGrid(2);
+        dimXYZ  = prod(this.gridSize);
 
         % coordinates within the unit tile
         xu = xg - floor(xg);
         yu = yg - floor(yg);
+        zu = zg - floor(zg);
        
        % initialize zeros translation vector
         dx = zeros(length(xg), 1);
         dy = zeros(length(xg), 1);
+        dz = zeros(length(xg), 1);
         
         baseFuns = {...
             @BSplines.beta3_0, ...
@@ -99,30 +104,41 @@ methods
             @BSplines.beta3_3};
         
         % iteration on each tile of the grid
-        for i=-1:2
+        for i = -1:2
             % coordinates of neighbor vertex
             xv = floor(xg) + i;
             
             fun_i = baseFuns{i+2};
             eval_i = fun_i(xu);
             
-            for j=-1:2
+            for j = -1:2
                 yv = floor(yg) + j;
                 
-                % linear index of translation components
-                indX = sub2ind([this.gridSize], xv, yv);
-                indY = sub2ind([this.gridSize], xv, yv) + dimXY;
-                
-                % translation vector of the current vertex
-                dxv = this.params(indX)';
-                dyv = this.params(indY)';
-                
                 fun_j = baseFuns{j+2};
+                eval_j = fun_j(yu);
                 
-                % update total translation component
-                b = eval_i .* fun_j(yu);
-                dx = dx + b.*dxv; 
-                dy = dy + b.*dyv; 
+                for k = -1:2
+                    zv = floor(zg) + k;
+                
+                    fun_k = baseFuns{k+2};                    
+                    b = eval_i .* eval_j .* fun_k(zu);
+
+                    % linear index of translation components
+                    indX = sub2ind([this.gridSize], xv, yv, zv);
+                    indY = sub2ind([this.gridSize], xv, yv, zv) + dimXYZ;
+                    indZ = sub2ind([this.gridSize], xv, yv, zv) + 2 * dimXYZ;
+
+                    % translation vector of the current vertex
+                    dxv = this.params(indX)';
+                    dyv = this.params(indY)';
+                    dzv = this.params(indZ)';
+
+                    % update total translation component
+                    dx = dx + b.*dxv;
+                    dy = dy + b.*dyv;
+                    dz = dz + b.*dzv;
+
+                end                
             end
         end
         
@@ -130,27 +146,38 @@ methods
         point2 = point;
         point2(isInside, 1) = point(isInside, 1) + dx;
         point2(isInside, 2) = point(isInside, 2) + dy;
+        point2(isInside, 3) = point(isInside, 3) + dy;
                 
     end
     
-    function ux = getUx(this, x, y)
-        ind = sub2ind([this.gridSize 2], x, y, 1);
+    function ux = getUx(this, x, y, z)
+        ind = sub2ind([this.gridSize 3], x, y, z, 1);
         ux = this.params(ind);
     end
     
-    function setUx(this, x, y, ux)
-        ind = sub2ind([this.gridSize 2], x, y, 1);
+    function setUx(this, x, y, z, ux)
+        ind = sub2ind([this.gridSize 3], x, y, z, 1);
         this.params(ind) = ux;
     end
     
-    function uy = getUy(this, x, y)
-        ind = sub2ind([this.gridSize 2], x, y, 2);
+    function uy = getUy(this, x, y, z)
+        ind = sub2ind([this.gridSize 3], x, y, z, 2);
         uy = this.params(ind);
     end
     
-    function setUy(this, x, y, uy)
-        ind = sub2ind([this.gridSize 2], x, y, 2);
+    function setUy(this, x, y, z, uy)
+        ind = sub2ind([this.gridSize 3], x, y, z, 2);
         this.params(ind) = uy;
+    end
+    
+    function uz = getUz(this, x, y, z)
+        ind = sub2ind([this.gridSize 3], x, y, z, 3);
+        uz = this.params(ind);
+    end
+    
+    function setUz(this, x, y, z, uz)
+        ind = sub2ind([this.gridSize 3], x, y, z, 3);
+        this.params(ind) = uz;
     end
     
     function drawGrid(this)
@@ -161,16 +188,24 @@ methods
         nv = size(v, 1);
         inds = reshape(1:nv, this.gridSize);
         
+        % grid size
+        dim = this.gridSize();
+        
         % edges in direction x
-        ne1 = (this.gridSize(2) - 1) * this.gridSize(1);
+        ne1 = (dim(2) - 1) * dim(1) * dim(3);
         e1 = [reshape(inds(:, 1:end-1), [ne1 1]) reshape(inds(:, 2:end), [ne1 1])];
         
         % edges in direction y
-        ne2 = this.gridSize(2) * (this.gridSize(1) - 1);
+        ne2 = dim(2) * (dim(1) - 1) * dim(3);
+        %ne2 = this.gridSize(2) * (this.gridSize(1) - 1);
         e2 = [reshape(inds(1:end-1, :), [ne2 1]) reshape(inds(2:end, :), [ne2 1])];
         
+        % edges in direction z
+        ne3 = dim(2) * dim(1) * (dim(3) - 1);
+        e3 = [reshape(inds(:, 1:end-1), [ne3 1]) reshape(inds(:, 2:end), [ne3 1])];
+
         % create edge array
-        e = cat(1, e1, e2);
+        e = cat(1, e1, e2, e3);
 
         drawGraph(v, e);
     end
@@ -181,16 +216,21 @@ methods
         % base coordinates of grid vertices
         lx = (0:this.gridSize(1) - 1) * this.gridSpacing(1) + this.gridOrigin(1);
         ly = (0:this.gridSize(2) - 1) * this.gridSpacing(2) + this.gridOrigin(2);
+        lz = (0:this.gridSize(3) - 1) * this.gridSpacing(3) + this.gridOrigin(3);
         
         % create base mesh
-        [x y] = meshgrid(lx, ly);
+        [x y z] = meshgrid(lx, ly, lz);
+              
+        % number of vertices 
+        nv = numel(x);
         
         % add grid shifts
-        x = x' + reshape(this.params(1:end/2), this.gridSize);
-        y = y' + reshape(this.params(end/2+1:end), this.gridSize);
+        x = x' + reshape(this.params(1:nv), this.gridSize);
+        y = y' + reshape(this.params(nv+(1:nv)), this.gridSize);
+        z = z' + reshape(this.params(2*nv(1:nv)), this.gridSize);
         
         % create vertex array
-        vertices = [x(:) y(:)];
+        vertices = [x(:) y(:) z(:)];
     end
     
     function transformVector(this, varargin) %#ok<MANU>
@@ -225,22 +265,27 @@ methods
         % extract coordinates
         x = point(:, 1);
         y = point(:, 2);
+        z = point(:, 3);
         
         % compute position wrt to the grid vertices
         deltaX = this.gridSpacing(1);
         deltaY = this.gridSpacing(2);
+        deltaZ = this.gridSpacing(3);
         xg = (x - this.gridOrigin(1)) / deltaX + 1;
         yg = (y - this.gridOrigin(2)) / deltaY + 1;
+        zg = (z - this.gridOrigin(3)) / deltaZ + 1;
         
         % compute indices of values within interpolation area
         isInsideX = xg >= 2 & xg < this.gridSize(1)-1;
         isInsideY = yg >= 2 & yg < this.gridSize(2)-1;
-        isInside = isInsideX & isInsideY;
+        isInsideZ = zg >= 2 & zg < this.gridSize(3)-1;
+        isInside = isInsideX & isInsideY & isInsideZ;
         inds = isInside;
 
         % keep only valid positions
         xg = xg(isInside);
         yg = yg(isInside);
+        zg = zg(isInside);
         
         % initialize zeros translation vector
         nValid = length(xg);
@@ -248,15 +293,17 @@ methods
         % coordinates within the unit tile
         xu = reshape(xg - floor(xg), [1 1 nValid]);
         yu = reshape(yg - floor(yg), [1 1 nValid]);       
+        zu = reshape(zg - floor(zg), [1 1 nValid]);
 
         % compute indices in linear indexing
-        dimXY = prod(this.gridSize);
+        dimXYZ  = prod(this.gridSize);
         
         % allocate memory for storing result, and initialize to identity
         % matrix
-        jac = zeros(2, 2, size(point, 1));
+        jac = zeros(3, 3, size(point, 1));
         jac(1, 1, :) = 1;
         jac(2, 2, :) = 1;
+        jac(3, 3, :) = 1;
         
         
         %% Iteration on neighbor tiles 
@@ -270,26 +317,46 @@ methods
             bxd = derivFuns{i+2}(xu);
             
             for j=-1:2
+                
                 % y-coordinate of neighbor vertex
-                yv = floor(yg) + j;
-                
-                % linear index of translation components
-                indX = sub2ind([this.gridSize], xv, yv);
-                indY = sub2ind([this.gridSize], xv, yv) + dimXY;
-                
-                % translation vector of the current vertex
-                dxv = reshape(this.params(indX), [1 1 length(inds)]);
-                dyv = reshape(this.params(indY), [1 1 length(inds)]);
+                yv  = floor(yg) + i;
                 
                 % compute y-coefficients of bezier function and derivative
                 by  = baseFuns{j+2}(yu);
                 byd = derivFuns{j+2}(yu);
-
-                % update jacobian matrix elements
-                jac(1, 1, inds) = jac(1, 1, inds) + bxd .* by  .* dxv / deltaX;
-                jac(1, 2, inds) = jac(1, 2, inds) + bx  .* byd .* dxv / deltaY;
-                jac(2, 1, inds) = jac(2, 1, inds) + bxd .* by  .* dyv / deltaX;
-                jac(2, 2, inds) = jac(2, 2, inds) + bx  .* byd .* dyv / deltaY;
+                
+                for k = -1:2
+                    
+                    % z-coordinate of neighbor vertex
+                    zv  = floor(zg) + i;
+                    
+                    % compute z-coefficients of bezier function and derivative
+                    bz  = baseFuns{k+2}(zu);
+                    bzd = derivFuns{k+2}(zu);
+                    
+                    % linear index of translation components
+                    indX = sub2ind([this.gridSize], xv, yv, zv);
+                    indY = sub2ind([this.gridSize], xv, yv, zv) + dimXYZ;
+                    indZ = sub2ind([this.gridSize], xv, yv, zv) + 2 * dimXYZ;
+                
+                    % translation vector of the current vertex
+                    dxv = reshape(this.params(indX), [1 1 length(inds)]);
+                    dyv = reshape(this.params(indY), [1 1 length(inds)]);
+                    dzv = reshape(this.params(indZ), [1 1 length(inds)]);
+                    
+                    
+                    % update jacobian matrix elements
+                    jac(1, 1, inds) = jac(1, 1, inds) + bxd .* by  .* bz  .* dxv / deltaX;
+                    jac(1, 2, inds) = jac(1, 2, inds) + bx  .* byd .* bz  .* dxv / deltaY;
+                    jac(1, 3, inds) = jac(1, 3, inds) + bx  .* by  .* bzd .* dxv / deltaZ;
+                    jac(2, 1, inds) = jac(2, 1, inds) + bxd .* by  .* bz  .* dyv / deltaX;
+                    jac(2, 2, inds) = jac(2, 2, inds) + bx  .* byd .* bz  .* dyv / deltaY;
+                    jac(2, 3, inds) = jac(2, 3, inds) + bx  .* by  .* bzd .* dyv / deltaZ;
+                    jac(3, 1, inds) = jac(3, 1, inds) + bxd .* by  .* bz  .* dzv / deltaX;
+                    jac(3, 2, inds) = jac(3, 2, inds) + bx  .* byd .* bz  .* dzv / deltaY;
+                    jac(3, 3, inds) = jac(3, 3, inds) + bx  .* by  .* bzd .* dzv / deltaZ;
+                    
+                end
             end
         end
 
@@ -303,26 +370,32 @@ methods
         % extract coordinate of input point
         if isempty(varargin)
             y = x(:,2);
+            z = x(:,3);
             x = x(:,1);
         else
             y = varargin{1};
+            z = varargin{2};
         end
         
         % compute position wrt to the grid vertices
         deltaX = this.gridSpacing(1);
         deltaY = this.gridSpacing(2);
+        deltaZ = this.gridSpacing(3);
         xg = (x - this.gridOrigin(1)) / deltaX + 1;
         yg = (y - this.gridOrigin(2)) / deltaY + 1;
+        zg = (z - this.gridOrigin(2)) / deltaZ + 1;
         
         % compute indices of values within interpolation area
         isInsideX = xg >= 2 & xg < this.gridSize(1)-1;
         isInsideY = yg >= 2 & yg < this.gridSize(2)-1;
-        isInside = isInsideX & isInsideY;
+        isInsideZ = zg >= 2 & zg < this.gridSize(3)-1;
+        isInside = isInsideX & isInsideY & isInsideZ;
         inds = find(isInside);
         
         % keep only valid positions
         xg = xg(isInside);
         yg = yg(isInside);
+        zg = zg(isInside);
         
         % initialize zeros translation vector
         nValid = length(xg);
@@ -332,18 +405,20 @@ methods
         np = length(this.params);
         jac = zeros(nd, np, length(x));
 
-        % if point is outside, return zeros matrix
-        if ~isInside
+        % if all points are outside, return zeros matrix
+        if sum(isInside) == 0
             return;
         end
         
         % coordinates within the unit tile
         xu = reshape(xg - floor(xg), [1 1 nValid]);
         yu = reshape(yg - floor(yg), [1 1 nValid]);       
+        zu = reshape(zg - floor(zg), [1 1 nValid]);       
         
         dimGrid = this.gridSize;
         dimX    = dimGrid(1);
         dimXY   = dimX * dimGrid(2);
+        dimXYZ  = dimXY * dimGrid(3);
         
         baseFuns = {...
             @BSplines.beta3_0, ...
@@ -355,41 +430,46 @@ methods
         % pre-compute values of b-splines functions
         evals_i = zeros(nValid, 4);
         evals_j = zeros(nValid, 4);
+        evals_k = zeros(nValid, 4);
         for i = 1:4
-            fun_i = baseFuns{i};
-            evals_i(:,i) = fun_i(xu);
-            evals_j(:,i) = fun_i(yu);
+            fun = baseFuns{i};
+            evals_i(:,i) = fun(xu);
+            evals_j(:,i) = fun(yu);
+            evals_k(:,i) = fun(zu);
         end
         
         % iteration on each tile of the grid
-        for i=-1:2
+        for i = -1:2
             xv = floor(xg) + i;
             
-            for j=-1:2
-                % coordinates of neighbor vertex
+            for j = -1:2
                 yv = floor(yg) + j;
                 
-                % linear index of translation components
-                indX = (yv - 1) * dimX + xv;
-                indY = indX + dimXY;
-                                
-                % update total translation component
-                b = evals_i(:,i+2) .* evals_j(:,j+2);
+                % pre-compute weight for all vertices in same plane
+                evals_ij = evals_i(:, i+2) .* evals_j(:, j+2);
                 
-                % update jacobian matrix (of size nd * np * nPts)
-                jacInds = (indX - 1 + (inds - 1) * np) * 2 + 1;
-                jac(jacInds) = b;
-                jacInds = (indY - 1 + (inds - 1) * np) * 2 + 1;
-                jac(jacInds + 1) = b;
-%                 % equivalent to:
-%                 iValid = ones(nValid, 1);
-%                 jac(sub2ind(size(jac), 1*iValid, indX, inds)) = b;
-%                 jac(sub2ind(size(jac), 2*iValid, indY, inds)) = b;
+                for k = -1:2
+                    zv = floor(zg) + k;
+                    
+                    % linear index of translation components
+                    indX = (zv - 1) * dimXY + (yv - 1) * dimX + xv;
+                    indY = indX + dimXYZ;
+                    indZ = indX + 2 * dimXYZ;
+                                
+                    % compute bezier weight of current vertex
+                    b = evals_ij .* evals_k(:, k+2);
+                
+                    % update jacobian matrix (of size nd * np * nPts)
+                    jacInds = (indX - 1 + (inds - 1) * np) * 3 + 1;
+                    jac(jacInds) = b;
+                    jacInds = (indY - 1 + (inds - 1) * np) * 3 + 1;
+                    jac(jacInds + 1) = b;
+                    jacInds = (indZ - 1 + (inds - 1) * np) * 3 + 1;
+                    jac(jacInds + 1) = b;
+                end
             end
         end
-        
     end
-    
    
 end % general methods
 

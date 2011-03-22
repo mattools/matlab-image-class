@@ -97,7 +97,7 @@ indices = round(points2(inds, :))+1;
 for i=1:length(inds)
     iInd = inds(i);
     
-    % calcule jacobien pour points valides (repere image fixe)
+    % compute jacobian for valid points (in fixed image reference system)
     jac = transfo.getParametricJacobian(this.points(iInd, :));
     
     % local gradient in moving image
@@ -134,14 +134,14 @@ isInside = inside1 & inside2;
 diff = values2(isInside) - values1(isInside);
 
 % average over all points
-np = length(isInside);
-res = sum(diff.^2)/np;
+np  = length(isInside);
+res = sum(diff.^2) / np;
 
 %fprintf('Initial SSD: %f\n', res);
 
 % convert to indices
-inds = find(isInside);
-nbInds = length(inds);
+inds    = find(isInside);
+nbInds  = length(inds);
 
 transfo = this.transform;
 nParams = length(transfo.getParameters());
@@ -159,16 +159,16 @@ gradImg = this.gradientImage.data;
 for i=1:length(inds)
     iInd = inds(i);
     
-    % calcule jacobien pour points valides (repere image fixe)
+    % compute jacobian for valid points (in fixed image reference system)
     p0 = this.points(iInd, :);
     jac = getParametricJacobian(transfo, p0);
     
     % local gradient in moving image
     ind1 = indices(i,1);
     ind2 = indices(i,2);
-
+    
     grad = [gradImg(ind1, ind2, 1) gradImg(ind1, ind2, 2)];
-
+    
     % local contribution to metric gradient
     g(iInd,:) = grad*jac;
 end
@@ -297,7 +297,7 @@ g = zeros(nbInds, nParams);
 for i=1:nbInds
     iInd = inds(i);
     
-    % calcule jacobien pour points valides (repere image fixe)
+    % compute jacobian for valid points (in fixed image reference system)
     p0 = this.points(iInd, :);
     jac = getParametricJacobian(transfo, p0);
     
@@ -357,7 +357,7 @@ points2 = transfo.transformPoint(this.points);
 index = round(points2(inds, [2 1]))+1;
 
 for i=1:length(inds)
-    % calcule jacobien pour points valides (repere image fixe)
+    % compute jacobian for valid points (in fixed image reference system)
     jac = transfo.getParametricJacobian(this.points(inds(i),:));
     
     % local gradient in moving image
@@ -411,7 +411,7 @@ points2 = transfo.transformPoint(this.points);
 index = round(points2(inds, [2 1 3]))+1;
 
 for i=1:length(inds)
-    % calcule jacobien pour points valides (repere image fixe)
+    % compute jacobian for valid points (in fixed image reference system)
     jac = transfo.getParametricJacobian(this.points(inds(i),:));
     
     % local gradient in moving image
