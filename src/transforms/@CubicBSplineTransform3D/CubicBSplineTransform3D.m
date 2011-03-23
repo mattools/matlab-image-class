@@ -61,7 +61,7 @@ end % construction function
 methods
 
     function [point2 isInside] = transformPoint(this, point)
-        % Compute corodinates of transformed point
+        % Compute coordinates of transformed point
         
         % compute centered coords.
         x = point(:, 1);
@@ -78,13 +78,17 @@ methods
         isInsideY   = yg >= 2 & yg < this.gridSize(2)-1;
         isInsideZ   = zg >= 2 & zg < this.gridSize(3)-1;
         isInside    = isInsideX & isInsideY & isInsideZ;
-        
+
         % select valid points
         xg = xg(isInside);
         yg = yg(isInside);
         zg = zg(isInside);
         
+        nValid = length(xg);
+
         % compute indices in linear indexing
+        dimX    = this.gridSize(1);
+        dimXY   = this.gridSize(1) * this.gridSize(2);
         dimXYZ  = prod(this.gridSize);
 
         % coordinates within the unit tile
@@ -103,40 +107,47 @@ methods
             @BSplines.beta3_2, ...
             @BSplines.beta3_3};
         
+        % pre-compute values of b-splines functions
+        evals_i = zeros(nValid, 4);
+        evals_j = zeros(nValid, 4);
+        evals_k = zeros(nValid, 4);
+        for i = 1:4
+            fun = baseFuns{i};
+            evals_i(:,i) = fun(xu);
+            evals_j(:,i) = fun(yu);
+            evals_k(:,i) = fun(zu);
+        end
+        
+        
         % iteration on each tile of the grid
         for i = -1:2
-            % coordinates of neighbor vertex
             xv = floor(xg) + i;
-            
-            fun_i = baseFuns{i+2};
-            eval_i = fun_i(xu);
             
             for j = -1:2
                 yv = floor(yg) + j;
                 
-                fun_j = baseFuns{j+2};
-                eval_j = fun_j(yu);
+                % pre-compute weight for all vertices in same plane
+                evals_ij = evals_i(:, i+2) .* evals_j(:, j+2);
                 
                 for k = -1:2
                     zv = floor(zg) + k;
                 
-                    fun_k = baseFuns{k+2};                    
-                    b = eval_i .* eval_j .* fun_k(zu);
+                    b = evals_ij .* evals_k(:, k+2);
 
                     % linear index of translation components
-                    indX = sub2ind([this.gridSize], xv, yv, zv);
-                    indY = sub2ind([this.gridSize], xv, yv, zv) + dimXYZ;
-                    indZ = sub2ind([this.gridSize], xv, yv, zv) + 2 * dimXYZ;
+                    indX = (zv - 1) * dimXY + (yv - 1) * dimX + xv;
+                    indY = indX + dimXYZ;
+                    indZ = indX + 2 * dimXYZ;
 
                     % translation vector of the current vertex
-                    dxv = this.params(indX)';
-                    dyv = this.params(indY)';
-                    dzv = this.params(indZ)';
+%                     dxv = this.params(indX);
+%                     dyv = this.params(indY);
+%                     dzv = this.params(indZ);
 
                     % update total translation component
-                    dx = dx + b.*dxv;
-                    dy = dy + b.*dyv;
-                    dz = dz + b.*dzv;
+                    dx = dx + b .* this.params(indX)';
+                    dy = dy + b .* this.params(indY)';
+                    dz = dz + b .* this.params(indZ)';
 
                 end                
             end
