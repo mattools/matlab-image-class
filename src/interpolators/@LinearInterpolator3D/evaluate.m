@@ -25,7 +25,7 @@ coord = this.image.pointToContinuousIndex(point);
 
 % Create default result image
 defaultValue = NaN;
-val = ones(dim)*defaultValue;
+val = ones(dim) * defaultValue;
 
 % number of positions to process
 N = size(coord, 1);
@@ -38,8 +38,8 @@ zt = coord(:, 3);
 % select points located inside interpolation area
 % (smaller than image physical size)
 siz = this.image.getSize();
-isBefore    = sum(coord<1, 2)>0;
-isAfter     = sum(coord>=(siz(ones(N,1), :)), 2)>0;
+isBefore    = sum(coord < 1, 2) > 0;
+isAfter     = sum(coord >= (siz(ones(N,1), :)), 2) > 0;
 isInside    = ~(isBefore | isAfter);
 isInside    = reshape(isInside, dim);
 
@@ -48,7 +48,7 @@ xt = xt(isInside);
 yt = yt(isInside);
 zt = zt(isInside);
 
-% indices of pixels before and after in each direction
+% indices of pixels before in each direction
 i1 = floor(xt);
 j1 = floor(yt);
 k1 = floor(zt);
@@ -58,15 +58,38 @@ dx = (xt-i1);
 dy = (yt-j1);
 dz = (zt-k1);
 
-% % values of the 4 pixels around each point
-val111 = double(this.image.getPixels(i1, j1, k1)).*(1-dx).*(1-dy).*(1-dz);
-val211 = double(this.image.getPixels(i1, j1+1, k1)).*(1-dx).*dy.*(1-dz);
-val121 = double(this.image.getPixels(i1+1, j1, k1)).*dx.*(1-dy).*(1-dz);
-val221 = double(this.image.getPixels(i1+1, j1+1, k1)).*dx.*dy.*(1-dz);
-val112 = double(this.image.getPixels(i1, j1, k1+1)).*(1-dx).*(1-dy).*dz;
-val212 = double(this.image.getPixels(i1, j1+1, k1+1)).*(1-dx).*dy.*dz;
-val122 = double(this.image.getPixels(i1+1, j1, k1+1)).*dx.*(1-dy).*dz;
-val222 = double(this.image.getPixels(i1+1, j1+1, k1+1)).*dx.*dy.*dz;
+dxi = 1 - dx;
+dyi = 1 - dy;
+dzi = 1 - dz;
+
+% image sizes
+siz     = this.image.getSize();
+dimX    = siz(1);
+dimXY   = siz(1) * siz(2);
+
+inds    = (k1 - 1) * dimXY + (j1 - 1) * dimX + i1;
+
+% values of the 4 pixels around each point
+val111 = double(this.image.data(inds))          .*dxi   .* dyi  .* dzi;
+val121 = double(this.image.data(inds + 1))      .*dx    .* dyi  .* dzi;
+val211 = double(this.image.data(inds + dimX))   .*dxi   .* dy   .* dzi;
+val221 = double(this.image.data(inds + dimX+1)) .*dx    .* dy   .* dzi;
+inds = inds + dimXY;
+val112 = double(this.image.data(inds))          .* dxi  .* dyi  .* dz;
+val122 = double(this.image.data(inds + 1))      .* dx   .* dyi  .* dz;
+val212 = double(this.image.data(inds + dimX))   .* dxi  .* dy   .* dz;
+val222 = double(this.image.data(inds + dimX+1)) .* dx   .* dy   .* dz;
+
+
+% Equivalent to:
+% val111 = double(this.image.getPixels(i1, j1, k1)).*(1-dx).*(1-dy).*(1-dz);
+% val211 = double(this.image.getPixels(i1, j1+1, k1)).*(1-dx).*dy.*(1-dz);
+% val121 = double(this.image.getPixels(i1+1, j1, k1)).*dx.*(1-dy).*(1-dz);
+% val221 = double(this.image.getPixels(i1+1, j1+1, k1)).*dx.*dy.*(1-dz);
+% val112 = double(this.image.getPixels(i1, j1, k1+1)).*(1-dx).*(1-dy).*dz;
+% val212 = double(this.image.getPixels(i1, j1+1, k1+1)).*(1-dx).*dy.*dz;
+% val122 = double(this.image.getPixels(i1+1, j1, k1+1)).*dx.*(1-dy).*dz;
+% val222 = double(this.image.getPixels(i1+1, j1+1, k1+1)).*dx.*dy.*dz;
 
 % compute result values
 val(isInside) = ...

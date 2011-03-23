@@ -82,12 +82,12 @@ res = sum(diff.^2)/np;
 %fprintf('Initial SSD: %f\n', res);
 
 % convert to indices
-inds = find(isInside);
-nbInds = length(inds);
+inds    = find(isInside);
+nInds   = length(inds);
 
 transfo = this.transform;
 nParams = length(transfo.getParameters());
-g = zeros(nbInds, nParams);
+gd = zeros(nInds, nParams);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
@@ -105,11 +105,11 @@ for i=1:length(inds)
     grad = this.gradientImage.getPixel(subs{:});
     
     % local contribution to metric gradient
-    g(iInd,:) = grad*jac;
+    gd(i, :) = grad*jac;
 end
 
 % compute gradient vectors weighted by local differences
-gd = g(inds,:).*diff(:, ones(1, nParams));
+gd = gd .* diff(:, ones(1, nParams));
 
 % mean of valid gradient vectors
 grad = mean(gd, 1);
@@ -135,17 +135,17 @@ diff = values2(isInside) - values1(isInside);
 
 % average over all points
 np  = length(isInside);
-res = sum(diff.^2) / np;
+res = sum(diff .^ 2) / np;
 
 %fprintf('Initial SSD: %f\n', res);
 
 % convert to indices
 inds    = find(isInside);
-nbInds  = length(inds);
+nInds   = length(inds);
 
 transfo = this.transform;
 nParams = length(transfo.getParameters());
-g = zeros(nbInds, nParams);
+gd = zeros(nInds, nParams);
 
 % compute transformed coordinates
 points2 = transfo.transformPoint(this.points);
@@ -156,7 +156,7 @@ indices = round(points2(inds, :)) + 1;
 
 gradImg = this.gradientImage.data;
 
-for i=1:length(inds)
+for i = 1:nInds
     iInd = inds(i);
     
     % compute jacobian for valid points (in fixed image reference system)
@@ -170,11 +170,11 @@ for i=1:length(inds)
     grad = [gradImg(ind1, ind2, 1) gradImg(ind1, ind2, 2)];
     
     % local contribution to metric gradient
-    g(iInd,:) = grad*jac;
+    gd(i, :) = grad*jac;
 end
 
 % compute gradient vectors weighted by local differences
-gd = g(inds,:).*diff(:, ones(1, nParams));
+gd = gd .* diff(:, ones(1, nParams));
 
 % mean of valid gradient vectors
 grad = mean(gd, 1);
@@ -208,12 +208,12 @@ res = sum(diff.^2)/np;
 %fprintf('Initial SSD: %f\n', res);
 
 % convert to indices
-inds = find(isInside);
-nbInds = length(inds);
+inds    = find(isInside);
+nInds   = length(inds);
 
 transfo = this.transform;
 nParams = length(transfo.getParameters());
-g = zeros(nbInds, nParams);
+gd = zeros(nInds, nParams);
 
 % compute transformed coordinates
 points2 = transfo.transformPoint(this.points);
@@ -224,7 +224,7 @@ indices = round(points2(inds, :)) + 1;
 
 gradImg = this.gradientImage.data;
 
-for i=1:length(inds)
+for i = 1:length(inds)
     iInd = inds(i);
     
     % calcule jacobien pour points valides (repere image fixe)
@@ -236,15 +236,18 @@ for i=1:length(inds)
     ind2 = indices(i,2);
     ind3 = indices(i,3);
 
-    grad = [gradImg(ind1, ind2, ind3, 1) gradImg(ind1, ind2, ind3, 2) ...
-        gradImg(ind1, ind2, ind3, 3)];
+    grad = [...
+        gradImg(ind1, ind2, ind3, 1) ...
+        gradImg(ind1, ind2, ind3, 2) ...
+        gradImg(ind1, ind2, ind3, 3) ];
 
     % local contribution to metric gradient
-    g(iInd,:) = grad*jac;
+    tmp = grad * jac;
+    gd(i, :) = tmp;
 end
 
 % compute gradient vectors weighted by local differences
-gd = g(inds,:).*diff(:, ones(1, nParams));
+gd = gd .* diff(:, ones(1, nParams));
 
 % mean of valid gradient vectors
 grad = mean(gd, 1);
@@ -291,18 +294,18 @@ points2 = transfo.transformPoint(this.points);
 
 % convert to indices
 inds    = find(gradInside);
-nbInds  = length(inds);
-g = zeros(nbInds, nParams);
+nInds   = length(inds);
+gd      = zeros(nInds, nParams);
 
-for i=1:nbInds
+for i = 1:nInds
     iInd = inds(i);
     
     % compute jacobian for valid points (in fixed image reference system)
-    p0 = this.points(iInd, :);
+    p0  = this.points(iInd, :);
     jac = getParametricJacobian(transfo, p0);
     
     % % local contribution to metric gradient
-    g(iInd, :) = gradVals(iInd, :)*jac;
+    gd(i, :) = gradVals(iInd, :)*jac;
 end
 
 % re-compute differences, by considering position that can be used for
@@ -310,7 +313,7 @@ end
 diff = values2(gradInside) - values1(gradInside);
 
 % compute gradient vectors weighted by local differences
-gd = g(inds,:).*diff(:, ones(1, nParams));
+gd = gd .* diff(:, ones(1, nParams));
 
 % remove some NAN values that could occur for an obscure reason
 gd = gd(~isnan(gd(:,1)), :);
@@ -343,12 +346,12 @@ res = sum(diff.^2)/np;
 
 
 % convert to indices
-inds = find(isInside);
-nbInds = length(inds);
+inds    = find(isInside);
+nInds   = length(inds);
 
 %nPoints = size(points, 1);
 nParams = length(transfo.getParameters());
-g = zeros(nbInds, nParams);
+gd = zeros(nInds, nParams);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
@@ -356,21 +359,21 @@ g = zeros(nbInds, nParams);
 points2 = transfo.transformPoint(this.points);
 index = round(points2(inds, [2 1]))+1;
 
-for i=1:length(inds)
+for i = 1:nInds
     % compute jacobian for valid points (in fixed image reference system)
-    jac = transfo.getParametricJacobian(this.points(inds(i),:));
+    jac = transfo.getParametricJacobian(this.points(inds(i), :));
     
     % local gradient in moving image
     i1 = index(i, 1);
     i2 = index(i, 2);
-    grad = [gx(i1,i2) gy(i1,i2)];
+    grad = [gx(i1, i2) gy(i1, i2)];
     
     % local contribution to metric gradient
-    g(inds(i),:) = grad*jac;
+    gd(i, :) = grad * jac;
 end
 
 % calcul du vecteur gradient pondere par difference locale
-gd = g(inds,:).*diff(:, ones(1, nParams));
+gd = gd .* diff(:, ones(1, nParams));
 
 % somme des vecteurs gradient valides
 grad = mean(gd, 1);
@@ -392,17 +395,16 @@ isInside = inside1 & inside2;
 diff = values2(isInside)-values1(isInside);
 
 % average over all points
-np = length(isInside);
+np  = length(isInside);
 res = sum(diff.^2)/np;
 
 
 % convert to indices
-inds = find(isInside);
-nbInds = length(inds);
+inds    = find(isInside);
+nInds   = length(inds);
 
-%nPoints = size(points, 1);
 nParams = length(transfo.getParameters());
-g = zeros(nbInds, nParams);
+gd      = zeros(nInds, nParams);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
@@ -410,7 +412,7 @@ g = zeros(nbInds, nParams);
 points2 = transfo.transformPoint(this.points);
 index = round(points2(inds, [2 1 3]))+1;
 
-for i=1:length(inds)
+for i = 1:nInds
     % compute jacobian for valid points (in fixed image reference system)
     jac = transfo.getParametricJacobian(this.points(inds(i),:));
     
@@ -421,11 +423,11 @@ for i=1:length(inds)
     grad = [gx(i1,i2,i3) gy(i1,i2,i3) gz(i1,i2,i3)];
     
     % local contribution to metric gradient
-    g(inds(i),:) = grad*jac;
+    gd(i, :) = grad * jac;
 end
 
 % calcul du vecteur gradient pondere par difference locale
-gd = g(inds,:).*diff(:, ones(1, nParams));
+gd = gd .* diff(:, ones(1, nParams));
 
 % somme des vecteurs gradient valides
 grad = mean(gd, 1);
