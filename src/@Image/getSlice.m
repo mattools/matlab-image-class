@@ -4,7 +4,9 @@ function slice = getSlice(this, dir, index)
 %   SLICE = this.getSlice(DIR, INDEX)
 %   DIR is 1, 2 or 3 for x, y or z direction respectively, and INDEX is the
 %   slice index, 1-indexed, between 1 and getSize(img, DIR).
-%   The result SLICE is a matlab array.
+%
+%   The result SLICE is a 3D Image, with the dimension DIR having only one
+%   element. Use the "squeeze" method to convert to a 2D image.
 %
 %   Example
 %   % extract a slice approximately in the middle of the brain

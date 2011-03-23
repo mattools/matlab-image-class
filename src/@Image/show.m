@@ -1,4 +1,4 @@
-function show(this, varargin)
+function varargout = show(this, varargin)
 % Shows image on current axis
 % Image is displayed in its physical extent, based on image origin
 % and spacing.
@@ -30,7 +30,7 @@ xdata = this.getXData();
 ydata = this.getYData();
 
 % display image with approriate spatial reference
-imshow(data, 'XData', xdata, 'YData', ydata, options{:});
+h = imshow(data, 'XData', xdata, 'YData', ydata, options{:});
 
 % check extent of image
 extent = this.getPhysicalExtent();
@@ -40,6 +40,11 @@ yl = ylim;
 yl = [min(yl(1), extent(3)) max(yl(2), extent(4))];
 xlim(xl); ylim(yl);
 
+
+% eventually returns handle to image object
+if nargout > 0
+    varargout = {h};
+end
 
 function options = updateDisplayRangeOptions(data, options)
 

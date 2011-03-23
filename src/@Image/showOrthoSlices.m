@@ -1,5 +1,5 @@
-function showOrthoSlices(this, varargin)
-%SHOWORTHOSLICES  Show three orthogonal slices
+function varargout = showOrthoSlices(this, varargin)
+%SHOWORTHOSLICES Show three orthogonal slices in 3D
 %
 %   this.showOrthoSlices(POS)
 %   POS is 1*3 row vector containing position of slices intersection point,
@@ -32,9 +32,13 @@ end
 
 % show each slice
 hold on;
-this.showXSlice(pos(1));
-this.showYSlice(pos(2));
-this.showZSlice(pos(3));
+hyz = this.showXSlice(pos(1));
+hxz = this.showYSlice(pos(2));
+hxy = this.showZSlice(pos(3));
 
 % use equal spacing by default
 axis equal;
+
+if nargout > 2
+    varargout = {hxy, hyz, hxz};
+end
