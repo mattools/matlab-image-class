@@ -17,10 +17,12 @@ function [res grad isInside] = computeValueAndGradient(this, varargin)
 %
 
 
-nd = this.img1.getDimension();
+nd = getDimension(this.img1);
 
 useClassFields = ~isempty(this.transform) && ~isempty(this.gradientImage);
 
+% The first part of the file consists in analyzing input, and to call the
+% most appropriate subfunction
 if useClassFields
     
     % If the gradient image is an image function, it is assumed to be a 
@@ -64,10 +66,10 @@ end
 function [res grad isInside] = computeValueAndGradientLocal(this)
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = evaluate(this.img1, this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = evaluate(this.img2, this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;
@@ -86,23 +88,23 @@ inds    = find(isInside);
 nInds   = length(inds);
 
 transfo = this.transform;
-nParams = length(transfo.getParameters());
+nParams = length(getParameterLength(transfo));
 gd = zeros(nInds, nParams);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
-points2 = transfo.transformPoint(this.points);
+points2 = transformPoint(transfo, this.points);
 indices = round(points2(inds, :))+1;
 
 for i=1:length(inds)
     iInd = inds(i);
     
     % compute jacobian for valid points (in fixed image reference system)
-    jac = transfo.getParametricJacobian(this.points(iInd, :));
+    jac = getParametricJacobian(transfo, this.points(iInd, :));
     
     % local gradient in moving image
     subs = num2cell(indices(i, :));
-    grad = this.gradientImage.getPixel(subs{:});
+    grad = getPixel(this.gradientImage, subs{:});
     
     % local contribution to metric gradient
     gd(i, :) = grad*jac;
@@ -122,10 +124,10 @@ function [res grad isInside] = computeValueAndGradientLocal2d(this)
 %Assumes gradient image is 2D
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = evaluate(this.img1, this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = evaluate(this.img2, this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;
@@ -144,11 +146,11 @@ inds    = find(isInside);
 nInds   = length(inds);
 
 transfo = this.transform;
-nParams = length(transfo.getParameters());
-gd = zeros(nInds, nParams);
+nParams = getParameterLength(transfo);
+gd      = zeros(nInds, nParams);
 
 % compute transformed coordinates
-points2 = transfo.transformPoint(this.points);
+points2 = transformPoint(transfo, this.points);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
@@ -186,10 +188,10 @@ function [res grad isInside] = computeValueAndGradientLocal3d(this)
 
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = evaluate(this.img1, this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = evaluate(this.img2, this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;
@@ -202,7 +204,7 @@ end
 diff = values2(isInside) - values1(isInside);
 
 % average over all points
-np = length(isInside);
+np  = length(isInside);
 res = sum(diff.^2)/np;
 
 %fprintf('Initial SSD: %f\n', res);
@@ -212,11 +214,11 @@ inds    = find(isInside);
 nInds   = length(inds);
 
 transfo = this.transform;
-nParams = length(transfo.getParameters());
+nParams = getParameterLength(transfo);
 gd = zeros(nInds, nParams);
 
 % compute transformed coordinates
-points2 = transfo.transformPoint(this.points);
+points2 = transformPoint(transfo, this.points);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
@@ -260,10 +262,10 @@ function [res grad isInside] = computeValueAndGradientFromGradientFunction(this)
 % left to this function
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = evaluate(this.img1, this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = evaluate(this.img2, this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;
@@ -283,14 +285,14 @@ res = sum(diff .^ 2) / np;
 
 
 transfo = this.transform;
-nParams = length(transfo.getParameters());
+nParams = getParameterLength(transfo);
 
 % compute transformed coordinates
-points2 = transfo.transformPoint(this.points);
+points2 = transformPoint(transfo, this.points);
 
 % evaluate gradient, and re-compute points within image frame, as gradient
 % evaluator can have different behaviour at image borders.
-[gradVals gradInside] = this.gradientImage.evaluate(points2);
+[gradVals gradInside] = evaluate(this.gradientImage, points2);
 
 % convert to indices
 inds    = find(gradInside);
@@ -327,10 +329,10 @@ function [res grad isInside] = computeValueAndGradient2d(this, transfo, gx, gy)
 % Old function to compute metric and gradient of a 2D image using 2 args
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = evaluate(this.img1, this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = evaluate(this.img2, this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;
@@ -340,7 +342,7 @@ diff = values2(isInside) - values1(isInside);
 
 % average over all points
 np = length(isInside);
-res = sum(diff.^2)/np;
+res = sum(diff .^ 2) / np;
 
 %fprintf('Initial SSD: %f\n', res);
 
@@ -350,7 +352,7 @@ inds    = find(isInside);
 nInds   = length(inds);
 
 %nPoints = size(points, 1);
-nParams = length(transfo.getParameters());
+nParams = getParameterLength(transfo);
 gd = zeros(nInds, nParams);
 
 % convert from physical coordinates to index coordinates
@@ -361,7 +363,7 @@ index = round(points2(inds, [2 1]))+1;
 
 for i = 1:nInds
     % compute jacobian for valid points (in fixed image reference system)
-    jac = transfo.getParametricJacobian(this.points(inds(i), :));
+    jac = getParametricJacobian(transfo, this.points(inds(i), :));
     
     % local gradient in moving image
     i1 = index(i, 1);
@@ -383,38 +385,38 @@ function [res grad isInside] = computeValueAndGradient3d(this, transfo, gx, gy, 
 % Old function to compute metric and gradient of a 3D image using 3 args
 
 % compute values in image 1
-[values1 inside1] = this.img1.evaluate(this.points);
+[values1 inside1] = evaluate(this.img1, this.points);
 
 % compute values in image 2
-[values2 inside2] = this.img2.evaluate(this.points);
+[values2 inside2] = evaluate(this.img2, this.points);
 
 % keep only valid values
 isInside = inside1 & inside2;
 
 % compute result
-diff = values2(isInside)-values1(isInside);
+diff = values2(isInside) - values1(isInside);
 
 % average over all points
 np  = length(isInside);
-res = sum(diff.^2)/np;
+res = sum(diff .^ 2) / np;
 
 
 % convert to indices
 inds    = find(isInside);
 nInds   = length(inds);
 
-nParams = length(transfo.getParameters());
+nParams = getParameterLength(transfo);
 gd      = zeros(nInds, nParams);
 
 % convert from physical coordinates to index coordinates
 % (assumes spacing is 1 and origin is 0)
 % also converts from (x,y) to (i,j)
-points2 = transfo.transformPoint(this.points);
+points2 = transformPoint(transfo, this.points);
 index = round(points2(inds, [2 1 3]))+1;
 
 for i = 1:nInds
     % compute jacobian for valid points (in fixed image reference system)
-    jac = transfo.getParametricJacobian(this.points(inds(i),:));
+    jac = getParametricJacobian(transfo, this.points(inds(i),:));
     
     % local gradient in moving image
     i1 = index(i, 1);
