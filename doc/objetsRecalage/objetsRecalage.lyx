@@ -1,4 +1,4 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.9 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -166,8 +166,85 @@ Cela fait donc 5 dimensions à gérer, dont 3 dimensions spatiales.
 \end_layout
 
 \begin_layout Standard
-On trouve quelques méthodes statiques pour créer les images en utilisant
- la classe appropriée :
+La classe est utilisable pour des cas classiques (images en niveaux de gris
+ en 2D et 3D, images de gradient).
+ Il reste cependant encore beaucoup de méthodes non implémentées ou incomplètes,
+ elle reste donc à utiliser avec prudence (2010.11.24).
+\end_layout
+
+\begin_layout Section
+Création
+\end_layout
+
+\begin_layout Standard
+Pour la création des images, l'idée est de passer par des constructeurs
+ statiques.
+ Cela permettra à terme de fournir des classes images qui stockent les données
+ de manière optimisée.
+\end_layout
+
+\begin_layout Standard
+On peut créer un nouvel objet grâce à la méthode 
+\series bold
+create
+\series default
+ :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+data = imread('cameraman.tif'); % charge un tableau de donnees
+\end_layout
+
+\begin_layout Plain Layout
+
+img = Image.create(data);       % convertit en objet image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La méthode statique 
+\series bold
+read
+\series default
+ permet de charger les images de manière générique :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+img = Image.read('cameraman.tif');
+\end_layout
+
+\begin_layout Plain Layout
+
+rgb = Image.read('peppers.png');
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Visualisation
+\end_layout
+
+\begin_layout Standard
+Pour afficher une image 2D, on a une méthode show :
 \end_layout
 
 \begin_layout Standard
@@ -191,10 +268,15 @@ img.show();
 \end_layout
 
 \begin_layout Standard
-La classe est utilisable pour des cas classiques (images en niveaux de gris
- en 2D et 3D, images de gradient).
- Il reste cependant encore beaucoup de méthodes non implémentées ou incomplètes,
- elle reste donc à utiliser avec prudence (2010.11.24).
+Pour représenter une image 3D, on a deux méthodes :
+\end_layout
+
+\begin_layout Description
+showOrthoSlices affiche 3 coupes orthogonales dans un même repère
+\end_layout
+
+\begin_layout Description
+showOrthoPlanes affiche 3 coupes orthogonales chacune dans un axe
 \end_layout
 
 \begin_layout Chapter
@@ -295,12 +377,12 @@ img = Image2D.read('cameraman.tif');
 
 \begin_layout Plain Layout
 
-inter = ImageInterpolator.create(img, 'linear');
+interpolator = ImageInterpolator.create(img, 'linear');
 \end_layout
 
 \begin_layout Plain Layout
 
-class(inter)
+class(interpolator)
 \end_layout
 
 \begin_layout Plain Layout
@@ -354,7 +436,7 @@ LinearInterpolator2D
 \end_layout
 
 \begin_layout Standard
-Interpolation linéaire pour des images 2D, testé sur des images scalaires.
+Interpolation linéaire pour des images 2D, marche sur des images scalaires.
 \end_layout
 
 \begin_layout Subsection
@@ -362,7 +444,7 @@ LinearInterpolator3D
 \end_layout
 
 \begin_layout Standard
-Interpolation linéaire pour des images 3D, testé sur des images scalaires.
+Interpolation linéaire pour des images 3D, marche sur des images scalaires.
 \end_layout
 
 \begin_layout Subsection
@@ -445,7 +527,7 @@ NearestNeighborInterpolator2D
 
 \begin_layout Standard
 Interpolation au plus proche voisin pour des images scalaires 2D.
- Obsolète.
+ Obsolète, remplacée par NearestNeighborInterpolator.
 \end_layout
 
 \begin_layout Subsection
@@ -454,7 +536,7 @@ NearestNeighborInterpolator3D
 
 \begin_layout Standard
 Interpolation au plus proche voisin pour des images scalaires 3D.
- Obsolète.
+ Obsolète, remplacée par NearestNeighborInterpolator.
 \end_layout
 
 \begin_layout Chapter
@@ -1001,7 +1083,7 @@ une rotation autour de l'angle
 \end_layout
 
 \begin_layout Standard
-Les angles de rotation sont stockés en degré et convertis en radian pour
+Les angles de rotation sont stockés en degrés et convertis en radian pour
  les calculs.
  Le centre de la rotation est modifiable, mais ne fait pas partie des paramètres
  optimisables.
@@ -1110,6 +1192,35 @@ Transform
 \end_inset
 
 , et être définies pour les mêmes dimensions.
+\end_layout
+
+\begin_layout Subsection
+ComposedTransformModel
+\end_layout
+
+\begin_layout Standard
+La même que précédemment, mais elle hérite en plus de ParametricTransform.
+ Les méthodes de manipulation des paramètres ont été surchargées pour tavailler
+ sur les paramètres de la dernière transformation.
+\end_layout
+
+\begin_layout Subsection
+TransformGradientResampler
+\end_layout
+
+\begin_layout Standard
+Cette classe est initialisée avec une image.
+ Quand on appelle la méthode 
+\begin_inset Quotes fld
+\end_inset
+
+resample
+\begin_inset Quotes frd
+\end_inset
+
+ sur une transformation, on obtient une nouvelle image en niveaux de gris
+ de la même taille que l'image d'initialisation, et qui contient pour chaque
+ pixel ou voxel la valeur locale du déterminant du jacobien de la transformation.
 \end_layout
 
 \begin_layout Chapter
@@ -1321,7 +1432,7 @@ evaluate(params) évalue la fonction de coût en fonction du vecteur de paramèt
 \end_layout
 
 \begin_layout Standard
-On utilise via un optiliseur de la manière suivante :
+On l'utilise via un optimiseur de la manière suivante :
 \end_layout
 
 \begin_layout Standard
@@ -1745,6 +1856,26 @@ Inconvénients nécessite encore beaucoup d'évaluation de la fonction de coût,
 \end_layout
 
 \begin_layout Subsection
+NelderMeadSimplexOptimizer
+\end_layout
+
+\begin_layout Standard
+Implémentation de l'algorithme du simplexe basée sur le livre Numerical
+ Recipes (3ème édition).
+ Permet de spécifier le delta initial dans chaque direction.
+\end_layout
+
+\begin_layout Standard
+Rappel : on utilise un tableau de taille 
+\begin_inset Formula $(n+1)*n$
+\end_inset
+
+ pour stocker les coordonnées des sommets du simplexe.
+ La méthode est donc plus appropriée pour des problèmes présentant un petit
+ nombre de paramètres.
+\end_layout
+
+\begin_layout Subsection
 MatlabSimplexOptimizer
 \end_layout
 
@@ -1766,30 +1897,9 @@ fminsearch
 Un défaut de la fonction fminsearch est qu'on ne peut pas spécifier la taille
  initiale du simplexe, ce qui fait que la recherche se fait dans un domaine
  trop étroit.
-\end_layout
-
-\begin_layout Standard
-A l'usage, il semble que l'on se retrouve assez vite dans des minima locaux.
-\end_layout
-
-\begin_layout Subsection
-NelderMeadSimplexOptimizer
-\end_layout
-
-\begin_layout Standard
-Implémentation de l'algorithme du simplexe basée sur le livre Numerical
- Recipes (3ème édition).
- Permet de spécifier le delta initial dans chaque direction.
-\end_layout
-
-\begin_layout Standard
-Rappel : on utilise un tableau de taille 
-\begin_inset Formula $(n+1)*n$
-\end_inset
-
- pour stocker les coordonnées des sommets du simplexe.
- La méthode est donc plus appropriée pour des problèmes présentant un petit
- nombre de paramètres.
+ A l'usage, on se retrouve assez vite dans des minima locaux.
+ Il vaut donc mieux lui préférer la classe NelderMeadSimplexOptimizer, qui
+ permet de spécifier la taille, voire la position du simplexe initial.
 \end_layout
 
 \begin_layout Section

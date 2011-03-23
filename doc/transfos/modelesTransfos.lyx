@@ -1,4 +1,4 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.9 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -395,12 +395,12 @@ Une translation en dimension arbitaire, définie par un vecteur de translation.
 \end_layout
 
 \begin_layout Standard
-La matrice associée est donnée par :
-\begin_inset Formula \begin{eqnarray*}
+En deux dimensions, la matrice associée est donnée par :
+\begin_inset Formula \begin{eqnarray}
 \mathbf{M} & = & \left[\begin{array}{ccc}
 1 & 0 & \theta_{1}\\
 0 & 1 & \theta_{2}\\
-0 & 0 & 1\end{array}\right]\end{eqnarray*}
+0 & 0 & 1\end{array}\right]\end{eqnarray}
 
 \end_inset
 
@@ -408,16 +408,16 @@ La matrice associée est donnée par :
 \end_layout
 
 \begin_layout Standard
-en deux dimensions, ou par 
+En trois dimensions, la matrice devient :
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \mathbf{M} & = & \left[\begin{array}{cccc}
 1 & 0 & 0 & \theta_{1}\\
 0 & 1 & 0 & \theta_{2}\\
 0 & 0 & 1 & \theta_{3}\\
-0 & 0 & 0 & 1\end{array}\right]\end{eqnarray*}
+0 & 0 & 0 & 1\end{array}\right]\end{eqnarray}
 
 \end_inset
 
@@ -425,19 +425,15 @@ en deux dimensions, ou par
 \end_layout
 
 \begin_layout Standard
-en trois dimensions.
+La matrice jacobienne en fonction des paramètres est donnée par :
 \end_layout
 
 \begin_layout Standard
-La matrice jacobienne en fonction des paramètres est donnée par 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \mathbf{J}_{\mathbf{\theta}}(\mathbf{x}) & = & \left[\begin{array}{ccc}
 1 & 0 & 0\\
 0 & 1 & 0\\
-0 & 0 & 1\end{array}\right]\end{eqnarray*}
+0 & 0 & 1\end{array}\right]\end{eqnarray}
 
 \end_inset
 
@@ -459,11 +455,11 @@ Il s'agit d'une transformation définie par une rotation autour d'un centre
 
 \begin_layout Standard
 La matrice de transformation est donnée par :
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \mathbf{M} & = & \left[\begin{array}{ccc}
 \cos\theta & -\sin\theta & c_{x}(1-\cos\theta)+c_{y}\sin\theta+u_{x}\\
 \sin\theta & \cos\theta & c_{y}(1-\cos\theta)-c_{x}\sin\theta+u_{y}\\
-0 & 0 & 1\end{array}\right]\end{eqnarray*}
+0 & 0 & 1\end{array}\right]\end{eqnarray}
 
 \end_inset
 
@@ -496,10 +492,10 @@ La matrice jacobienne des dérivées par rapport aux paramètres est donnée
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \mathbf{J}_{\mathbf{\theta}}(\mathbf{x}) & = & \left[\begin{array}{ccc}
 -(x-c_{x})\sin\theta-(y-c_{y})\cos\theta & 1 & 0\\
-(x-c_{x})\cos\theta-(y-c_{y})\sin\theta & 0 & 1\end{array}\right]\end{eqnarray*}
+(x-c_{x})\cos\theta-(y-c_{y})\sin\theta & 0 & 1\end{array}\right]\end{eqnarray}
 
 \end_inset
 
@@ -568,12 +564,12 @@ Pour une rotation autour de l'origine, on obtient la matrice de transformation
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
 \mathbf{R}_{XYZ,\mathbf{o}} & = & \left[\begin{array}{cccc}
 c_{y}c_{z} & s_{x}s_{y}c_{z}-c_{x}s_{z} & c_{x}s_{y}c_{z}+s_{x}s_{z} & 0\\
 c_{y}s_{z} & s_{x}s_{y}s_{z}+c_{x}c_{z} & c_{x}s_{y}s_{z}-s_{x}c_{z} & 0\\
 -s_{y} & s_{x}c_{z} & c_{x}c_{y} & 0\\
-0 & 0 & 0 & 1\end{array}\right]\end{eqnarray*}
+0 & 0 & 0 & 1\end{array}\right]\end{eqnarray}
 
 \end_inset
 
@@ -599,8 +595,21 @@ La transformation autour d'un centre arbitraire s'obtient numériquement,
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \begin{eqnarray*}
-\mathbf{R}_{XYZ,\mathbf{c}} & = & \mathbf{T}_{\mathbf{c}}\mathbf{R}_{XYZ,o}\mathbf{T}_{-\mathbf{c}}\end{eqnarray*}
+\begin_inset Formula \begin{eqnarray}
+\mathbf{R}_{XYZ,\mathbf{c}} & = & \mathbf{T}_{\mathbf{c}}\mathbf{R}_{XYZ,o}\mathbf{T}_{-\mathbf{c}}\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En rajoutant la translation finale, on obtient :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \begin{eqnarray}
+\mathbf{M} & = & \mathbf{T}_{\left[\theta_{4}\theta_{5}\theta_{6}\right]}\mathbf{T}_{\mathbf{c}}\mathbf{R}_{XYZ,o}\mathbf{T}_{-\mathbf{c}}\end{eqnarray}
 
 \end_inset
 
@@ -610,6 +619,41 @@ La transformation autour d'un centre arbitraire s'obtient numériquement,
 \begin_layout Standard
 Pour la matrice Jacobienne, les calculs sont un peu laborieux, mais on retombe
  sur la version codée dans ITK.
+\end_layout
+
+\begin_layout Subsection
+CenteredAffineTransformModel3D
+\end_layout
+
+\begin_layout Standard
+Représente une transformation affine paramérable.
+ Les paramètres sont les 12 coefficients de la matrice de transformation
+ (d'abord les coefficients de la première ligne, puis la deuxième...).
+ La matrice est donc :
+\begin_inset Formula \begin{eqnarray}
+\mathbf{M} & = & \left[\begin{array}{cccc}
+a & b & c & d\\
+e & f & g & h\\
+i & j & k & l\\
+0 & 0 & 0 & 1\end{array}\right]\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La matrice jacobienne des dérivées par rapport aux paramètres a la forme
+ suivante :
+\begin_inset Formula \begin{eqnarray}
+\mathbf{J}_{\mathbf{\theta}}(\mathbf{x}) & = & \left[\begin{array}{cccccccccccc}
+x & y & z & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & x & y & z & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & x & y & z & 1\end{array}\right]\end{eqnarray}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section

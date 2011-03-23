@@ -1,6 +1,6 @@
 contenu du repertoire doc de oolip
 
-* classeImage : description de la classe image
+* classeImage : description de la classe image, d'un point de vue "developpeur"
 
 * imageObj : reflexion preliminaires a la creation de la classe image, 
     obsolete
