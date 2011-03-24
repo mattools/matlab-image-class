@@ -56,7 +56,7 @@ methods
         mat2 = that.getAffineMatrix;
         
         % check sizes are equal
-        if sum(size(mat1)~=size(mat2))>0
+        if sum(size(mat1) ~= size(mat2)) > 0
             error('The two transforms must have matrices the same size');
         end
         

@@ -68,7 +68,7 @@ methods
         
         % setup parameter names
         this.paramNames = {...
-            'Phi (°)', 'Theta (°)', 'Psi (°)', ...
+            'Rot X (°)', 'Rot Y (°)', 'Rot Z (°)', ...
             'X shift', 'Y shift', 'Z shift'};
                 
     end % constructor declaration
@@ -93,9 +93,10 @@ methods
         % Compute affine matrix associated with this transform
         
         % extract angles and convert to radians
-        phi     = this.params(1)*pi/180;
-        theta   = this.params(2)*pi/180;
-        psi     = this.params(3)*pi/180;
+        deg2rad = pi / 180;
+        phi     = this.params(1) * deg2rad;
+        theta   = this.params(2) * deg2rad;
+        psi     = this.params(3) * deg2rad;
 
         % compute elementary rotation matrices
         Rx = createRotationOx(phi);
@@ -103,10 +104,10 @@ methods
         Rz = createRotationOz(psi);
         
         % compute compound rotation matrix around center
-        mat = recenterTransform3d(Rz*Ry*Rx, this.center);
+        mat = recenterTransform3d(Rz * Ry * Rx, this.center);
         
         % add translation
-        mat = createTranslation3d(this.params(4:6))*mat;
+        mat = createTranslation3d(this.params(4:6)) * mat;
         
     end
   
@@ -123,15 +124,15 @@ methods
             z = varargin{2};
         end
         
-        % extract angles, and convert to radians
-        phi     = this.params(1)*pi/180;
-        theta   = this.params(2)*pi/180;
-        psi     = this.params(3)*pi/180;
+        % extract angles in degrees
+        phi     = this.params(1);
+        theta   = this.params(2);
+        psi     = this.params(3);
 
-        % pre-computations of trigonometric functions
-        cx = cos(phi);      sx = sin(phi);
-        cy = cos(theta);    sy = sin(theta);
-        cz = cos(psi);      sz = sin(psi);
+        % pre-computations of trigonometric functions (in degrees)
+        cx = cosd(phi);      sx = sind(phi);
+        cy = cosd(theta);    sy = sind(theta);
+        cz = cosd(psi);      sz = sind(psi);
 
         % jacobians are computed with respect to transformation center
         x = x - this.center(1);

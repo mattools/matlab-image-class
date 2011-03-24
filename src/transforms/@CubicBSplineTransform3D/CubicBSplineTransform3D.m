@@ -84,6 +84,7 @@ methods
         yg = yg(isInside);
         zg = zg(isInside);
         
+        % number of valid points
         nValid = length(xg);
 
         % compute indices in linear indexing
@@ -96,7 +97,7 @@ methods
         yu = yg - floor(yg);
         zu = zg - floor(zg);
        
-       % initialize zeros translation vector
+        % initialize zeros translation vector
         dx = zeros(length(xg), 1);
         dy = zeros(length(xg), 1);
         dz = zeros(length(xg), 1);
@@ -138,11 +139,6 @@ methods
                     indX = (zv - 1) * dimXY + (yv - 1) * dimX + xv;
                     indY = indX + dimXYZ;
                     indZ = indX + 2 * dimXYZ;
-
-                    % translation vector of the current vertex
-%                     dxv = this.params(indX);
-%                     dyv = this.params(indY);
-%                     dzv = this.params(indZ);
 
                     % update total translation component
                     dx = dx + b .* this.params(indX)';
@@ -306,7 +302,10 @@ methods
         zu = reshape(zg - floor(zg), [1 1 nValid]);
 
         % compute indices in linear indexing
-        dimXYZ  = prod(this.gridSize);
+        dimGrid = this.gridSize;
+        dimX    = dimGrid(1);
+        dimXY   = dimX * dimGrid(2);
+        dimXYZ  = dimXY * dimGrid(3);
         
         % allocate memory for storing result, and initialize to identity
         % matrix
@@ -315,40 +314,45 @@ methods
         jac(2, 2, :) = 1;
         jac(3, 3, :) = 1;
         
-        
+        % pre-compute values of b-splines functions
+        bx  = zeros(nValid, 4);
+        by  = zeros(nValid, 4);
+        bz  = zeros(nValid, 4);
+        bxd = zeros(nValid, 4);
+        byd = zeros(nValid, 4);
+        bzd = zeros(nValid, 4);
+        for i = 1:4
+            fun = baseFuns{i};
+            bx(:,i) = fun(xu);
+            by(:,i) = fun(yu);
+            bz(:,i) = fun(zu);
+            fun = derivFuns{i};
+            bxd(:,i) = fun(xu);
+            byd(:,i) = fun(yu);
+            bzd(:,i) = fun(zu);
+        end
+
         %% Iteration on neighbor tiles 
         
-        for i=-1:2
+        for i = 1:4
             % x-coordinate of neighbor vertex
-            xv  = floor(xg) + i;
+            xv  = floor(xg) + i - 2;
             
-            % compute x-coefficients of bezier function and derivative
-            bx  = baseFuns{i+2}(xu);
-            bxd = derivFuns{i+2}(xu);
-            
-            for j=-1:2
+            for j = 1:4
                 
                 % y-coordinate of neighbor vertex
-                yv  = floor(yg) + i;
-                
-                % compute y-coefficients of bezier function and derivative
-                by  = baseFuns{j+2}(yu);
-                byd = derivFuns{j+2}(yu);
-                
-                for k = -1:2
+                yv  = floor(yg) + j - 2;
+
+                for k = 1:4
                     
                     % z-coordinate of neighbor vertex
-                    zv  = floor(zg) + i;
-                    
-                    % compute z-coefficients of bezier function and derivative
-                    bz  = baseFuns{k+2}(zu);
-                    bzd = derivFuns{k+2}(zu);
+                    zv  = floor(zg) + k - 2;
                     
                     % linear index of translation components
-                    indX = sub2ind([this.gridSize], xv, yv, zv);
-                    indY = sub2ind([this.gridSize], xv, yv, zv) + dimXYZ;
-                    indZ = sub2ind([this.gridSize], xv, yv, zv) + 2 * dimXYZ;
-                
+                    indX = (zv - 1) * dimXY + (yv - 1) * dimX + xv;
+                    indY = indX + dimXYZ;
+                    indZ = indX + 2 * dimXYZ;
+
                     % translation vector of the current vertex
                     dxv = reshape(this.params(indX), [1 1 length(inds)]);
                     dyv = reshape(this.params(indY), [1 1 length(inds)]);
@@ -356,15 +360,15 @@ methods
                     
                     
                     % update jacobian matrix elements
-                    jac(1, 1, inds) = jac(1, 1, inds) + bxd .* by  .* bz  .* dxv / deltaX;
-                    jac(1, 2, inds) = jac(1, 2, inds) + bx  .* byd .* bz  .* dxv / deltaY;
-                    jac(1, 3, inds) = jac(1, 3, inds) + bx  .* by  .* bzd .* dxv / deltaZ;
-                    jac(2, 1, inds) = jac(2, 1, inds) + bxd .* by  .* bz  .* dyv / deltaX;
-                    jac(2, 2, inds) = jac(2, 2, inds) + bx  .* byd .* bz  .* dyv / deltaY;
-                    jac(2, 3, inds) = jac(2, 3, inds) + bx  .* by  .* bzd .* dyv / deltaZ;
-                    jac(3, 1, inds) = jac(3, 1, inds) + bxd .* by  .* bz  .* dzv / deltaX;
-                    jac(3, 2, inds) = jac(3, 2, inds) + bx  .* byd .* bz  .* dzv / deltaY;
-                    jac(3, 3, inds) = jac(3, 3, inds) + bx  .* by  .* bzd .* dzv / deltaZ;
+                    jac(1, 1, inds) = jac(1, 1, inds) + bxd(:,i) .* by(:,j)  .* bz(:,k)  .* dxv / deltaX;
+                    jac(1, 2, inds) = jac(1, 2, inds) + bx(:,i)  .* byd(:,j) .* bz(:,k)  .* dxv / deltaY;
+                    jac(1, 3, inds) = jac(1, 3, inds) + bx(:,i)  .* by(:,j)  .* bzd(:,k) .* dxv / deltaZ;
+                    jac(2, 1, inds) = jac(2, 1, inds) + bxd(:,i) .* by(:,j)  .* bz(:,k)  .* dyv / deltaX;
+                    jac(2, 2, inds) = jac(2, 2, inds) + bx(:,i)  .* byd(:,j) .* bz(:,k)  .* dyv / deltaY;
+                    jac(2, 3, inds) = jac(2, 3, inds) + bx(:,i)  .* by(:,j)  .* bzd(:,k) .* dyv / deltaZ;
+                    jac(3, 1, inds) = jac(3, 1, inds) + bxd(:,i) .* by(:,j)  .* bz(:,k)  .* dzv / deltaX;
+                    jac(3, 2, inds) = jac(3, 2, inds) + bx(:,i)  .* byd(:,j) .* bz(:,k)  .* dzv / deltaY;
+                    jac(3, 3, inds) = jac(3, 3, inds) + bx(:,i)  .* by(:,j)  .* bzd(:,k) .* dzv / deltaZ;
                     
                 end
             end

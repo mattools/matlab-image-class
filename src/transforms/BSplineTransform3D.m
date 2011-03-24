@@ -32,6 +32,9 @@ methods
         % all parameters are 1-by-3 row vector.
         %
         
+        warning('oolip:deprecated', ...
+            'BSplineTransform3D is deprecated, use CubicBSplineTransform3D instead');
+        
         if nargin==1
             var = varargin{1};
             if isscalar(var)

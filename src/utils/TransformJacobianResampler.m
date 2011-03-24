@@ -161,9 +161,21 @@ methods
             vals = zeros(size(x), this.outputType);
         
             % compute result values
-            for i=1:numel(x)
-                jac = transform.getJacobian([x(i) y(i) z(i)]);
-                vals(i) = det(jac(:,:,i));
+            try
+                % try first with full call
+                jac = transform.getJacobian([x(:) y(:) z(:)]);
+                for i=1:numel(x)
+                    vals(i) = det(jac(:,:,i));
+                end
+                
+            catch 
+                % if memory limit is reached, performs element by element
+                warning([mfilename ':MemoryLimit'], ...
+                    'Memory limit reached - switched to elementwise computation');
+                for i=1:numel(x)
+                    jac = transform.getJacobian([x(i) y(i) z(i)]);
+                    vals(i) = det(jac);
+                end
             end
             
         else
