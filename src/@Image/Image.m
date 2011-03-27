@@ -1,8 +1,15 @@
 classdef Image < handle
 %Image class that handles up to 3 spatial dimensions, channels, and time
 %   
+%   For a detailed description, type 'doc @Image'. For help on a specific
+%   method, type 'help Image/methodName'.
+%
 %   Example
-%   
+%     img = Image.read('cameraman.tif');
+%     img.show();
+%     figure; img.histogram;
+%     figure; show(img > 50);
+%
 %   See also
 %   
 % ------
@@ -15,43 +22,47 @@ classdef Image < handle
 %% Declaration of class properties
 properties
     % Inner data of image
-    data        = [];
+    data            = [];
     
     % Size of data buffer(in x,y,z,c,t order), should always have length=5
-    dataSize    = [1 1 1 1 1];
+    dataSize        = [1 1 1 1 1];
     
     % number of spatial dimensions of the image, between 0 and 3.
-    dimension   = 1;
+    dimension       = 1;
     
     % The type of image (grayscale, color, complex...)
-    % It is represented as one of the strings:
+    % It is represented by one of the following strings:
     % 'binary', data buffer contains one channel of logical values
-    % 'grayscale' (the default), data buffer contains 1 channel
+    % 'grayscale' (the default), data buffer contains 1 channel (int)
+    % 'intensity', data buffer contains 1 channel coded as single or double
     % 'color', data buffer contains 3 channels
     % 'label', data buffer contains 1 channel
     % 'vector', data buffer contains several channels
     % 'complex', data buffer contains 2 channels
     % 'unknown'
-    type        = 'grayscale';
+    type            = 'grayscale';
         
     % Image name, empty by default
-    name        = '';
+    name            = '';
     
     % boolean flag indicating whether the image is calibrated or not
-    calibrated  = false;
+    calibrated      = false;
     
     % spatial origin of image
     % corresponding to position of pixel (1,1) or voxel (1,1,1)
-    origin      = [0 0];
+    origin          = [0 0];
     
     % the amount of space between two pixels or voxels
-    spacing     = [1 1];
+    spacing         = [1 1];
     
     % the name of the spatial unit
-    unitName    = '';
+    unitName        = '';
     
     % the name of each of the axes
-    axisNames   = {};
+    axisNames       = {};
+    
+    % the name of the channels
+    channelNames    = {};
     
 end
 
@@ -152,6 +163,8 @@ methods (Access = protected)
                     this.unitName = value;
                 case 'axisnames'
                     this.axisNames = value;
+                case 'channelnames'
+                    this.channelNames = value;
                 otherwise
                     error(['Unknown parameter name: ' varName]);
             end
