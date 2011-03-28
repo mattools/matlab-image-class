@@ -9,15 +9,12 @@ classdef Image < handle
 %     img.show();
 %     figure; img.histogram;
 %     figure; show(img > 50);
-%
-%   See also
 %   
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2009-04-20,    using Matlab 7.7.0.471 (R2008b)
 % Copyright 2009 INRA - Cepia Software Platform.
-% Licensed under the terms of the LGPL, see the file "license.txt"
 
 %% Declaration of class properties
 properties
@@ -173,6 +170,14 @@ methods (Access = protected)
             varargin(1:2) = [];
         end
        
+        % additional setup
+        if strcmp(this.type, 'color') && isempty(this.channelNames)
+            this.channelNames = {'Red', 'Green', 'Blue'};
+        end
+        if strcmp(this.type, 'complex') && isempty(this.channelNames)
+            this.channelNames = {'Real', 'Imaginary'};
+        end
+    
     end
 end % constructor       
 
@@ -244,13 +249,13 @@ methods
         % Converts point in physical coordinate into image index
 
         % repeat points avoiding repmat
-        nI = ones(size(point, 1),1);
-        index = round((point - this.origin(nI, :))./this.spacing(nI, :))+1;
+        nI = ones(size(point, 1), 1);
+        index = round((point - this.origin(nI, :)) ./ this.spacing(nI, :)) + 1;
 
-        if nargout>1
+        if nargout > 1
             isInside = true(size(nI));
-            isInside(find(sum(index<=0,2))) = false; %#ok<*FNDSB>
-            isInside(find(sum(index>this.dataSize(nI,:),2))) = false;
+            isInside(find(sum(index <= 0, 2))) = false; %#ok<*FNDSB>
+            isInside(find(sum(index >  this.dataSize(nI,:), 2))) = false;
         end
     end
     
@@ -258,23 +263,21 @@ methods
         % Converts point in physical coordinate into unrounded image index
         
         % TODO: change name ? physicalToImageCoord ?
-%         nI = ones(size(point, 1),1); % repeat points avoiding repmat
-%         index = (point - origin(nI, :))./spacing(nI, :) + 1;
-        for i=1:length(this.spacing)
-            point(:,i) = (point(:,i)- this.origin(i))/this.spacing(i) + 1;
+        for i = 1:length(this.spacing)
+            point(:,i) = (point(:,i)- this.origin(i)) / this.spacing(i) + 1;
         end
         
         if nargout>1
             % check if resulting points are inside the image
             isInside = true(size(nI));
-            isInside(find(sum(point<=0, 2))) = false;
-            isInside(find(sum(point>this.dataSize(nI,:), 2))) = false;
+            isInside(find(sum(point <= 0, 2))) = false;
+            isInside(find(sum(point >  this.dataSize(nI,:), 2))) = false;
         end
     end
     
     function point = indexToPoint(this, index)
         % Converts image index into point in physical coordinate
-        point = (index-1).*this.spacing + this.origin;
+        point = (index - 1) .* this.spacing + this.origin;
     end
     
 end % methods

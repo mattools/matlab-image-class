@@ -1,4 +1,4 @@
-function rgb = createRGB(varargin)
+function rgb = createRGB(red, green, blue)
 %CREATERGB  Create a RGB color image
 %
 %   RGB = createRGB(DATA)
@@ -29,100 +29,79 @@ function rgb = createRGB(varargin)
 % note: function is adapted from an earlier script, so it could be greatly
 % improved when initialising data array
 
-if nargin == 1
-    % create RGB image from one Matlab array
-    data = permute(varargin{1}, [2 1 4 3 5]);
-    if size(data, 3)>1
-        nd = 3;
-    else
-        nd = 2;
-    end
-    
-    rgb = Image(nd, 'data', data, 'type', 'color');
-    return;
+
+% create empty variable names if necessary
+if nargin < 2
+    green = [];
 end
-
-
-% rename inputs
-r = varargin{1};
-g = varargin{2};
-b = [];
-if nargin > 2
-    b = varargin{3};
+if nargin < 3
+    blue = [];
 end
 
 % choose one of the 3 inputs as reference
-refImage = r;
-if isempty(refImage)
-    refImage = g;
-    if isempty(refImage)
-        refImage = b;
-        if isempty(refImage)
-            error('Can not manage three empty arrays');
-        end
-    end
+if ~isempty(red)
+    refImage = red;
+elseif ~isempty(green)
+    refImage = green;
+elseif ~isempty(blue)
+    refImage = blue;
+else
+    error('Can not manage three empty arrays');
 end
 
 % get reference size, and number of spatial dimensions
 if isa(refImage, 'Image')
-    % get size in ijk ordering
+    % get size in xyz ordering
     dim = getSize(refImage);
-    dim = dim([2 1 3:end]);
 else
+    % get size in ijk order, and convert to xyz
     dim = size(refImage);
+    dim = dim([2 1 3:end]);
 end
 nd = length(dim);
 
-% eventually convert images to buffers
-if isa(r, 'Image')
-    r = getBuffer(r);
+% Extract final data buffer of each channel, either by extracting image
+% data, or by permuting dimension of matlab arrays
+if isa(red, 'Image')
+    red = getDataBuffer(red);
+else
+    red = permute(red, [2 1 3]);
 end
-if isa(g, 'Image')
-    g = getBuffer(g);
+if isa(green, 'Image')
+    green = getDataBuffer(green);
+else
+    green = permute(green, [2 1 3]);
 end
-if isa(b, 'Image')
-    b = getBuffer(b);
+if isa(blue, 'Image')
+    blue = getDataBuffer(blue);
+else
+    blue = permute(blue, [2 1 3]);
 end
 
 % Dimension of result image
 if nd == 2
     dim = [dim 1];
 end
-newDim = [dim(1:2) 3 dim(3)];
+newDim = [dim(1:3) 3];
 
 % compute data type of image
-newType = class(refImage);
 if isa(refImage, 'Image')
     newType = getDataType(refImage);
+else
+    newType = class(refImage);
+end
+
+if strcmp(newType, 'logical')
+    newType = 'uint8';
 end
 
 % create empty result image
-if strcmp(newType, 'logical')
-    rgb = false(newDim);
-else
-    rgb = zeros(newDim, newType);
-end
+rgb = zeros(newDim, newType);
 
-
-% different processing for 2D or 3D images
-if nd == 2
-    % fill result with data
-    if ~isempty(r), rgb(:,:,1) = r; end
-    if ~isempty(g), rgb(:,:,2) = g; end
-    if ~isempty(b), rgb(:,:,3) = b; end
-    
-elseif nd == 3    
-    % fill result with data
-    if ~isempty(r), rgb(:,:,1,:) = r; end 
-    if ~isempty(g), rgb(:,:,2,:) = g; end
-    if ~isempty(b), rgb(:,:,3,:) = b; end
-    
-else
-    error('unprocessed image dimension');
-end
-
-% convert from matlab indexing to xyzct indexing
-rgb = permute(rgb, [2 1 4 3 5]);
+% fill result with data
+if ~isempty(red),   rgb(:,:,:,1) = red;   end
+if ~isempty(green), rgb(:,:,:,2) = green; end
+if ~isempty(blue),  rgb(:,:,:,3) = blue;  end
 
 % create new image object
 rgb = Image(nd, 'data', rgb, 'type', 'color');

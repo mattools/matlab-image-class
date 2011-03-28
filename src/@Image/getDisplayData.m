@@ -29,6 +29,12 @@ elseif nc == 3
     % extract appropriate slice, and transpose.
     data = permute(squeeze(this.data(:, :, 1, :, 1)), [2 1 3]);
     
+    % if data type is signed integer, convert to uint8
+    if isinteger(data) && ~isa(data, 'uint8')
+        data = double(data);
+        data = uint8(data * 255 / max(data(:)));
+    end
+    
 else
     % For vector images, create a new intensity image from norm
     
