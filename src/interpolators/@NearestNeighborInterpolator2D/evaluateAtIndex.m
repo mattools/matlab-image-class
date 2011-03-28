@@ -4,7 +4,7 @@ function [val isInside] = evaluateAtIndex(this, varargin)
 % eventually convert inputs to a single nPoints-by-ndims array
 [index dim] = ImageFunction.mergeCoordinates(varargin{:});
 
-val = ones(dim)*NaN;
+val = ones(dim) * this.fillValue;
 
 % extract x and y
 xt = index(:, 1);

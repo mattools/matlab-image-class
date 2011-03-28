@@ -1,11 +1,5 @@
 classdef ImageInterpolator2D < ImageInterpolator
 %INTERPOLATOR2D Abstract class that groups image interpolators
-%   output = ImageInterpolator2D(input)
-%
-%   Example
-%   ImageInterpolator2D
-%
-%   See also
 %
 %
 % ------
@@ -13,9 +7,6 @@ classdef ImageInterpolator2D < ImageInterpolator
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2010-04-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
-
-properties
-end
 
 %% Static methods
 methods(Static)

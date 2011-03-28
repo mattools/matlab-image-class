@@ -125,14 +125,15 @@ methods
         end
         
         % extract angles in degrees
-        phi     = this.params(1);
-        theta   = this.params(2);
-        psi     = this.params(3);
+        k = pi / 180;
+        phi     = this.params(1) * k;
+        theta   = this.params(2) * k;
+        psi     = this.params(3) * k;
 
         % pre-computations of trigonometric functions (in degrees)
-        cx = cosd(phi);      sx = sind(phi);
-        cy = cosd(theta);    sy = sind(theta);
-        cz = cosd(psi);      sz = sind(psi);
+        cx = cos(phi);      sx = sin(phi);
+        cy = cos(theta);    sy = sin(theta);
+        cz = cos(psi);      sz = sin(psi);
 
         % jacobians are computed with respect to transformation center
         x = x - this.center(1);

@@ -40,16 +40,11 @@ fval = sum(res);
 function res = computeMeanSquaredDifferences(img1, img2, points)
 
 % compute values in image 1
-[values1 inside1] = img1.evaluate(points);
+values1 = img1.evaluate(points);
 
 % compute values in image 2
-[values2 inside2] = img2.evaluate(points);
+values2 = img2.evaluate(points);
 
-% consider zero outside of images
-% TODO: use user-specified default value
-outsideValue = 0;
-values1(~inside1) = outsideValue;
-values2(~inside2) = outsideValue;
 
 % compute squared differences
 diff = (values2 - values1).^2;

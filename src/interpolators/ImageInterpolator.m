@@ -1,13 +1,21 @@
 classdef ImageInterpolator < ImageFunction
 %IMAGEINTERPOLATOR Abstract class that groups image interpolators
-%   output = ImageInterpolator(input)
+%
+%   This class is both an abstract class for deriving more specialized
+%   interpolators, and a static factory for building the most appropriate
+%   interpolator for a given image.
 %
 %   Example
-%   ImageInterpolator
+%     img = Image.read('cameraman.tif');
+%     interp = ImageInterpolator.create(img, 'linear');
+%     interp.setFillValue(127);
+%     interp.evaluate(-1, -1)
+%     ans =
+%         127
 %
-%   See also
-%
-%
+%   See Also
+%   NearestNeighborInterpolator, LinearInterpolator2D, LinearInterpolator3D
+%   
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
@@ -18,8 +26,10 @@ properties
     % inner image that will be interpolated
     image;
     
-    % default value, used when interpolation position is outside image
-    outsideValue = NaN;
+    % The value used when intepolation is made outside the image extent.
+    % Initialized to 0, but should be set to a more appropriate value in
+    % the case of vector images.
+    fillValue = 0;
 end
 
 %% Static methods
@@ -66,8 +76,8 @@ methods(Static)
                 error('Argument must be a character string');
             end
             switch lower(paramName)
-                case 'outsidevalue'
-                    interp.outsideValue = varargin{2};
+                case 'fillvalue'
+                    interp.fillValue = varargin{2};
                 otherwise
                     error(['Unknown parameter: ' paramName]);
             end
@@ -99,14 +109,14 @@ methods
         img = this.img;
     end
     
-    function val = getOutsideValue(this)
+    function val = getFillValue(this)
         % Return the value returnd when points are outside image bounds
-        val = this.outsideValue;
+        val = this.fillValue;
     end
     
-    function setOutsideValue(this, val)
+    function setFillValue(this, val)
         % Change the value returnd when points are outside image bounds
-        this.outsideValue = val;
+        this.fillValue = val;
     end
     
 

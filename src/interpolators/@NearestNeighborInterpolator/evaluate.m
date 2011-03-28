@@ -44,7 +44,7 @@ resNDim = length(dim0);
 
 % Create default result image
 val = zeros([dim0 elSize]);
-val(:) = this.outsideValue;
+val(:) = this.fillValue;
 
 % extract x and y
 xt = coord(:, 1);

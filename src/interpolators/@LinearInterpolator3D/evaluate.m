@@ -24,8 +24,7 @@ function [val isInside] = evaluate(this, varargin)
 coord = this.image.pointToContinuousIndex(point);
 
 % Create default result image
-defaultValue = NaN;
-val = ones(dim) * defaultValue;
+val = ones(dim) * this.fillValue;
 
 % number of positions to process
 N = size(coord, 1);

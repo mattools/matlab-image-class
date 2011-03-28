@@ -23,9 +23,6 @@ function [val isInside] = evaluate(this, varargin)
 % Evaluates image value for a given position
 coord = this.image.pointToContinuousIndex(point);
 
-% value for pixels outside interpolation frame
-defaultValue = NaN;
-
 % size of elements: number of channels by number of frames
 elSize = this.image.getElementSize();
 
@@ -38,7 +35,7 @@ nd = length(dim);
 
 % Create default result image
 dim2 = [dim0 elSize];
-val = ones(dim2)*defaultValue;
+val = ones(dim2) * this.fillValue;
 
 % extract x and y
 xt = coord(:, 1);
@@ -60,6 +57,7 @@ j1 = round(yt);
 if prod(elSize) == 1
     % case of scalar image, no movie
     val(isInside,:,:) = double(this.image.getPixels(i1, j1));
+    
 else
     % compute interpolated values
     res = double(this.image.getPixels(i1, j1));

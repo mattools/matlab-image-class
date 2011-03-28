@@ -8,7 +8,7 @@ function [val isInside] = evaluateAtIndex(this, varargin)
 N = size(index, 1);
 
 % initialize result with default value
-val = ones(dim)*NaN;
+val = ones(dim) * this.fillValue;
 
 % extract x and y
 xt = index(:, 1);

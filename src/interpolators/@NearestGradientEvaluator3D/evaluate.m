@@ -53,8 +53,7 @@ coord = this.refImage.pointToContinuousIndex(point);
 N = size(coord, 1);
 
 % Create default result image
-defaultValue = NaN;
-grad = ones([N 3])*defaultValue;
+grad = ones([N 3]) * this.fillValue;
 
 % extract x and y
 xt = coord(:, 1);

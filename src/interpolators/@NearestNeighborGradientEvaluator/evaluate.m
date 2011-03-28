@@ -54,7 +54,7 @@ N = size(coord, 1);
 
 % Create default result image
 dim2 = [dim0 nd];
-grad = ones(dim2)*this.defaultValue;
+grad = ones(dim2) * this.fillValue;
 
 % % Create default result image
 % defaultValue = NaN;

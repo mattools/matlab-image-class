@@ -15,11 +15,6 @@ function [res isInside] = computeValue(this)
 % keep only valid values
 isInside = inside1 & inside2;
 
-% use defualt value for points outside image frame
-% TODO: change specification
-values1(~inside1) = 0;
-values2(~inside2) = 0;
-
 % compute result
 diff = (values2 - values1).^2;
 

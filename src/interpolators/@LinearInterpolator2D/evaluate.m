@@ -24,29 +24,29 @@ function [val isInside] = evaluate(this, varargin)
 coord = this.image.pointToContinuousIndex(point);
 
 % Create default result image
-defaultValue = NaN;
-val = ones(dim)*defaultValue;
+val = ones(dim) * this.fillValue;
 
 % extract x and y
-xt = coord(:, 1);
-yt = coord(:, 2);
+xt  = coord(:, 1);
+yt  = coord(:, 2);
 
 % select points located inside interpolation area
 % (smaller than image physical size)
 siz = this.image.getSize();
 isInside = ~(xt < 1 | yt < 1 | xt >= siz(1) | yt >= siz(2));
-xt = xt(isInside);
-yt = yt(isInside);
+xt  = xt(isInside);
+yt  = yt(isInside);
 isInside = reshape(isInside, dim);
 
 % indices of pixels before and after in each direction
-i1 = floor(xt);
-j1 = floor(yt);
+i1  = floor(xt);
+j1  = floor(yt);
 
 % compute distances to lower-left pixel
-dx = (xt-i1);
-dy = (yt-j1);
+dx  = xt - i1;
+dy  = yt - j1;
 
+% pre-compute distance to next pixel
 dxi = 1 - dx;
 dyi = 1 - dy;
 

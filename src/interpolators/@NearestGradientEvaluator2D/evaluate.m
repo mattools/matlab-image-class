@@ -55,8 +55,7 @@ coord = this.refImage.pointToContinuousIndex(point);
 N = size(coord, 1);
 
 % Create default result image
-defaultValue = NaN;
-grad = ones([N 2])*defaultValue;
+grad = ones([N 2]) * fillValue;
 
 % extract x and y
 xt = coord(:, 1);
@@ -65,8 +64,8 @@ yt = coord(:, 2);
 % select points located inside interpolation area
 % (smaller than image physical size)
 siz = this.refImage.getSize();
-isBefore    = sum(coord<1.5, 2)>0;
-isAfter     = sum(coord>=(siz(ones(N,1), :))-.5, 2)>0;
+isBefore    = sum(coord <  1.5, 2) > 0;
+isAfter     = sum(coord >= (siz(ones(N,1), :)) - .5, 2) > 0;
 isInside    = ~(isBefore | isAfter);
 
 xt = xt(isInside);
