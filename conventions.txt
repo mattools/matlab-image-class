@@ -1,4 +1,4 @@
-Conventions utilisees pour la bibliotheque "ImageObj"
+Conventions utilisees pour la bibliotheque "ImageClass"
 
 Points et vecteurs representes par des tableaux N*2
 

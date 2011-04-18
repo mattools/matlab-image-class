@@ -23,15 +23,6 @@ class Image
     + cast : remplacer 'convertType' par cast (2010.12.13)
         -> pas sur, peut-etre preferable garder cast pour transformer en type primitifs
         
-- Split class Image into a specific library ? (2010.11.04)
-    + remove some functions (think about a way to have additional methods
-        in a separate directory)
-        o resample
-        o subsample
-        o (backward)transform
-    + can re-organize unit tests
-    + can start a GUI-based prog like ImageM. (ImAGem ? ImaGEM ?)
-
 - image creation
     specify how to use (static constructor or constructor),
     with all psb (2D, 3D, vector, color, movie)
