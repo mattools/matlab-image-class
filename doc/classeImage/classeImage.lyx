@@ -1,21 +1,29 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass scrartcl
 \use_default_options true
+\maintain_unincluded_children false
 \language french
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family sfdefault
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \float_placement h
 \paperfontsize default
 \spacing single
@@ -33,21 +41,31 @@
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine natbib_authoryear
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth 3
 \tocdepth 2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language french
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -142,6 +160,20 @@ quand on clone une image, doit-on cloner aussi le tampon -> a priori oui...
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+vocabulaire : comment appeler les images de vecteurs ? images spectrales
+ ?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 La plateforme Matlab est très performante pour traiter les images, mais
  manque parfois de souplesse pour manipuler les données.
  En particulier :
@@ -159,7 +191,12 @@ pour les images couleur, la couleur est gérée comme une dimension, ce qui
 \end_layout
 
 \begin_layout Itemize
-pas de gestion de la résolution ou des meta-informations des images
+pas de gestion de la résolution des images, ce qui vite pénible en 3D où
+ la résolution est souvent différente pour l'axe z
+\end_layout
+
+\begin_layout Itemize
+pas de gestion des meta-données
 \end_layout
 
 \begin_layout Itemize
@@ -183,12 +220,26 @@ Image
 
  qui a pour but de simplifier la manipulation des images matricielles sous
  Matlab.
- Il s'agit d'une classe 
+ Les objets qui instancient cette classe sont manipulés par référence, au
+ contraire des tableaux ou structure de données, ce qui permet de limiter
+ la consommation mémoire.
 \end_layout
 
 \begin_layout Standard
 La section suivante commence par faire l'inventaire des images rencontrées
  couramment.
+ La section suivante présente la structure de la classe, c'est à dire les
+ champs de classes.
+ Les sections suivante présentent les fonctions permettant la création,
+ et la manipulation des objets de type 
+\begin_inset Quotes fld
+\end_inset
+
+Image
+\begin_inset Quotes frd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -197,7 +248,10 @@ Nature des images
 
 \begin_layout Standard
 On se restreint pour le moment aux images matricielles.
- 
+ Chaque image est donc représentée par un tableau rectangulaire de plusieurs
+ dimensions.
+ Les dimensions du tableau pouvant représenter des dimensions spatiales,
+ ou autres (longueur d'onde, temps...).
 \end_layout
 
 \begin_layout Standard
@@ -351,14 +405,15 @@ Information de visualisation
 \begin_layout Standard
 En gros, comment représenter les pixels de l'image.
  Il s'agit d'une application qui à une valeur de l'image (NDG, double, complexe...)
- associe une valeur d'affichage (NDG ou RGB).Cela comprend :
+ associe une valeur d'affichage (en niveaux de gris ou en couleurs RGB).
+ La transcription dépend du type d'image.
 \end_layout
 
-\begin_layout Itemize
-pour une image en NDG :
+\begin_layout Standard
+Pour une image en niveaux de gris, plusieurs paramètres peuvent être pris
+ en compte :
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 une valeur de gamma
 \end_layout
@@ -372,15 +427,16 @@ une fonctions linéaire (brillance + contraste, cf.
 la palette de couleur utilisée, si l'image est indexée
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
-pour une image d'intensité affichée en niveaux de gris, la dynamique d'affichage
- (min et max)
+\begin_layout Standard
+Pour une image d'intensité affichée en niveaux de gris, on doit en général
+ spécifier la dynamique d'affichage (min et max), ce qui permet de recalibrer
+ l'affichage pour des valeurs entre 0 et 255.
 \end_layout
 
-\begin_layout Itemize
-pour une image multivariée (spectre, complexe, couleur...), une fonction qui
- détermine la couleur d'affichage en fonction d'un vecteur.
+\begin_layout Standard
+Pour une image multivariée (spectre, complexe, couleur...), on peut passer
+ par une fonction qui détermine la couleur d'affichage en fonction d'un
+ vecteur.
  Par exemple, on peut afficher le module d'un nombre complexe.
 \end_layout
 
@@ -487,17 +543,42 @@ dataSize La dimension totale de l'image.
 \end_layout
 
 \begin_layout Description
-elementSize la taille du tableau représentant chqaue pixel ou voxel.
+elementSize la taille du tableau représentant chaque pixel ou voxel.
  Vaut 1 dans le cas d'une image scalaire, N dans le cas d'une image vectorielle,
  avec N étant le nombre de composantes du vecteur.
  On peut aussi imaginer des images où chaque pixel est une matrice (ex :
  matrice d'orientations), mais l'occupation mémoire peut augmenter rapidement.
 \end_layout
 
+\begin_layout Subsection
+Informations sur l'image
+\end_layout
+
 \begin_layout Description
 type le type d'image, c'est à dire la manière d'interpréter le ou les canaux
  de l'image.
- Peut être binaire, label, couleur, niveaux de gris...
+ Peut prendre une des valeurs suivantes : 'binary', 'grayscale', 'intensity',
+ 'label', 'color', 'vector', 'complex', 'unknown'.
+\end_layout
+
+\begin_layout Description
+channelNames le nom de chaque canal (utile surtout pour les images multi-canaux).
+ Peut être vide, ou un tableau de chaînes.
+ Ex : {'intensity'}, {'distance'}, {'red', 'green', 'blue'}, {'real', 'imaginary
+'}...
+\end_layout
+
+\begin_layout Description
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+espace de couleur dans le cas d'une image couleur
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -604,6 +685,13 @@ infos une structure de données contenant le nom de l'image, son fichier
 
 \begin_layout Section
 Création des images
+\end_layout
+
+\begin_layout Standard
+La bibliothèque permet de créer des images à partir d'un tableau contenant
+ les données, de charger l'image contenue dans un fichier, ou de créer des
+ images en combinant des images déjà en mémoire.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -735,6 +823,32 @@ Renvoie la dimension dans laquelle est inclue l'image.
 Accès et modification des valeurs de l'image
 \end_layout
 
+\begin_layout Subsubsection
+Utilisation de l'indexage direct
+\end_layout
+
+\begin_layout Standard
+Les fonctions subsref et sunsasgn ont été surchargées, ce qui permet un
+ accés direct (en lecture et en écriture) aux valeurs de l'image.
+\end_layout
+
+\begin_layout Standard
+Permet : 
+\end_layout
+
+\begin_layout Itemize
+renvoyer la valeur d'un pixel à une position donnée
+\end_layout
+
+\begin_layout Itemize
+crop image en spécifiant une plage.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Utilisation de fonctions d'accès
+\end_layout
+
 \begin_layout Description
 pixel
 \end_layout
@@ -754,23 +868,6 @@ Extrait une sous-image, soit de même dimension, soit de dimension réduite.
 \end_layout
 
 \begin_layout Subsubsection
-Utilisation de subsref ?
-\end_layout
-
-\begin_layout Standard
-Permet : 
-\end_layout
-
-\begin_layout Itemize
-renvoyer la valeur d'un pixel à une position donnée
-\end_layout
-
-\begin_layout Itemize
-crop image en spécifiant une plage.
- 
-\end_layout
-
-\begin_layout Subsubsection
 Statistiques de base
 \end_layout
 
@@ -778,19 +875,6 @@ Statistiques de base
 Ces fonctions renvoient des valeurs calculées sur l'ensemble des pixels
  de l'image.
  Elle s'appliquent à des images scalaires, ou vectorielles.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Idéalement, il devrait s'agir de l'ensemble des pixels dans la région d'intérêt
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Description
@@ -1009,8 +1093,10 @@ Un pixel sera affiché dans un rectangle de coordonnées :
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula \[
-\prod_{i=0,...,d}\left[x_{i}+o_{i}-\frac{w_{i}}{2};x_{i}+o_{i}+\frac{w_{i}}{2}\right]\]
+\begin_inset Formula 
+\[
+\prod_{i=0,...,d}\left[x_{i}+o_{i}-\frac{w_{i}}{2};x_{i}+o_{i}+\frac{w_{i}}{2}\right]
+\]
 
 \end_inset
 
@@ -1055,7 +1141,7 @@ On peut stocker les infos nécessaire pour l'interprétation et l'affichage
 
 \begin_layout Description
 lut/dynamic Pour l'affichage.
- Stocké sous forme de tableau 
+ Stocké sous forme d'un tableau de taille 
 \begin_inset Formula $2^{G}\times3$
 \end_inset
 
@@ -1127,7 +1213,7 @@ nd
 \end_inset
 
 , qui contient le nombre de dimensions spatiales.
- Ainsi, si nd vaut par exemple 3, alors la dimension de l'image sera de
+ Ainsi, si par exemple nd vaut 3, alors la dimension de l'image sera de
  3 même si elle se limite à un point, qui correspond à un simple voxel.
 \end_layout
 

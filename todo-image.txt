@@ -1,128 +1,84 @@
 TODO-list for project OOLIP
 ---------------------------
 
-TODO recalage:
 
-- ajouter regularisation des fonctions
-
-- passer en coordonnees physiques (essayer avec BF)
-
-- refaire quelques traitements de demos en utilisant class Image (2010.06.26)
+- 2010.06.26 refaire quelques traitements de demos en utilisant class Image
     + segmentation par LPE
     + squeletisation
 
     
 class Image
-===========    
-- small convenient functions (2010.11.26)
-    + imRescale (find a better name) 
+===========
+
+- 2010.11.26 small convenient functions
+    + imRescale (find a better name)
+        -> adjustDynamic ?
     + concatenation (cat, horzcat, vertcat)
     + operateur min et max: un ou deux arguments
         -> un argument: renvoie le max dans l'image
         -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
-    + cast : remplacer 'convertType' par cast (2010.12.13)
+    + 2010.12.13 cast : remplacer 'convertType' par cast
         -> pas sur, peut-etre preferable garder cast pour transformer en type primitifs
-        
+        -> fonction 'castType' ? 
+            
 - image creation
     specify how to use (static constructor or constructor),
     with all psb (2D, 3D, vector, color, movie)
     and implement
 
-- inclure info sur dynamique des niveaux de gris (2010.12.03)
-    + grayRange pour dynamique des niveaux de gris de l'image (min et max des elements)
+- 2010.12.03 inclure info sur dynamique des niveaux de gris
+    + ou minValue et maxValue -> permet stocker min/max de chaque canal
     + displayRange pour dynamique utilisee pour l'affichage
+    Autre options :
+    + grayRange pour dynamique des niveaux de gris de l'image (min et max des elements)
+    + ou valueMin et valueMax -> permet stocker min/max de chaque canal
+    + ou grayMin et grayMax
+    + ou encore intensityRange ?
     
 - Think about other image implementations:
-    - ImageView: use data from another image, but cropped (2010.06.24)
+    - 2010.06.24 ImageView: use data from another image, but cropped
 	   
-- stocker le nom des canaux ?
-    + channelNames
+- 2010.10.22 manage image anatomical orientation
+  
+- 2010.10.12 use 'imageSize' field, that correspond to number of pixels for physical
+    dimensions
 
-- manage image anatomical orientation (2010.10.22)
-
-- enhance filtering of some functions (2010.07.13)
-    + open, close, dilate, erode
-    + filter
-    
-- use 'imageSize' field, that correspond to number of pixels for physical
-    dimensions (2010.10.12)
-    
+- Add functions with Matlab equivalent:
+    + 2011.03.27 find -> renvoie position des pixels "vrais"
+        * renvoie indices, ou sub-indices X, Y (Z)
         
+- Add functions from Matlab IPT:
+    + 2011.03.27 imposeMinima
+    + 2011.03.27 imposeMaxima
+    + 2011.03.27 extendedMinima
+    + 2011.03.27 extentedMaxima
+    + 2011.04.19 regionalMinima
+    + 2011.04.19 regionalMaxima
+    + 2011.03.27 watershed
+    + 2011.03.27 label2rgb
+    + 2011.04.19 bottomHat
+    + 2011.04.19 topHat
+    + 
+    
+- add functions from Imael library:
+    + 2011.03.27 boundary
+    + 2011.03.27 overlay
+    + 2011.02.18 clearBorders for binary images (use imclearborders)
+        * or call it 'removeBorderRegions'
+        
+- 2011.02.27 réfléchir à la manière de gérer les conversions d'espaces couleurs
+    ainsi que de niveaux de gris.
+    + une fonction "convert", avec un argument pour le type de destination
+        * double
+        * gray
+        * rgb
+        * hsv
+        * lab
+
 - clone function ?                                                              +
     - ou alors un constructeur avec une image et un nouveau tableau de donnees
-    - ou alors une fonction duplicate, avec psb de changer certaines infos
-        (calibration spatiale, buffer...) (2010.06.29)
+    - 2010.06.29 ou alors une fonction duplicate, avec psb de changer certaines
+        infos (calibration spatiale, buffer...)
 
-- Add support for Region of Interest (2010.07.13)   
+- 2010.07.13 Add support for Region of Interest
 
-
-Interpolators 
-=============
-    
-- passer LinearInterpolator en generique 2D/3D (2010.06.17)
-
-- add management of gradient image by interpolator classes (2010.11.24)
-
-- implementer un gradientEvaluator qui calcule le gradient pour les points
-    demandes. (2010.10.10)
-
-- implementer la methode resample (2010.06.17)
-    - en entree un resampler, ou deux tableaux de points, ou une image
-    - appliquer a ImageFunction
-    - appliquer a Image (passer par un interpolateur)
-
-- implementer re echantillonnage d'une image 3D par une coupe (2010.10.10)
-    resampleSlicer(IMGFUN, PLANE, UDATA, VDATA);
-    sliceResampler(IMGFUN, PLANE, UDATA, VDATA);
-
-
-    
-Parametric transforms
-=====================
-
-- Idealement, ce serait mieux que la composition de deux transfos affine
-    renvoie une transfo qui herite elle-meme de AffineTransform (2010.06.17)
-
-- stocker des parametres de 'scaling' par defaut pour les transformations
-    classiques (2010.10.12)
-    + definir une 'valeur moyenne' typique, ou alors le parameterScaling 
-    + definir une 'variabilite' par defaut
-    
-
-Metriques 
-=========
-
-- mieux gerer les points qui tombent en dehors des fenetres.
-    avant: on calcule moyenne sur les points dans les 2 fenetres
-    maintenant : on affecte une valeur par defaut
-    a faire:
-        + ajouter setter pour valeur par defaut (dans interpolateur)
-        + gerer les points en dehors pour calculer les gradients
-        
-- comments gerer les points d'echantillonnage ? Pour le moment, ils sont
-    stockes dans la classe, mais il serait plus juste de les transmettre
-    en parametres ?
-    Dans ce cas, utiliser une classe pecifique pour eviter les copies de
-    memoire
-
-Optimisateurs
-=============
-
-- gerer plusieurs types de condition d'arret (2010.12.03)
-    + max_iter
-    + precision en x
-    + precision en f
-
-    
-Divers
-======
-
-- echantillonneurs varies :
-    + plus denses au centre de l'image       
-        
-- implementer une classe ImageFilter (ImageToImageFilter ?) (2010.06.17)
-    - methode abstraite "applyTo(Img):Img"
-
-- think about a way to measure parameters
-    + use consistent interface for returning params
-    + use Table object ?
