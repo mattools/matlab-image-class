@@ -42,28 +42,6 @@ assertEqual(11, img.getPixel(3, 3));
 assertEqual(9, img.getPixel(1, 3));
 
 
-
-function test_backwardTransform
-
-img = Image.read('cameraman.tif');
-
-% define identity matrix
-transfo = eye(3);
-
-img2 = img.backwardTransform(transfo);
-
-buf1 = img.getDataBuffer();
-buf2 = img2.getDataBuffer();
-
-% remove lower right border that was not evaluated due to rounding effect
-buf1 = buf1(1:end-1, 1:end-1);
-buf2 = buf2(1:end-1, 1:end-1);
-diff = imabsdiff(buf1, buf2);
-
-assertEqual(0, sum(diff(:)));
-
-
-
 function test_getXYZ
 
 maxX = 10;

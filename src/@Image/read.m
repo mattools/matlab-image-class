@@ -57,7 +57,7 @@ else
     data = imread(fileName);
     
     vector = false;
-    if size(data, 3)==3
+    if size(data, 3) == 3
         vector = true;
     end
     img = Image.create(data, 'vector', vector);

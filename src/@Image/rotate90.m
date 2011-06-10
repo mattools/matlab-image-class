@@ -43,7 +43,7 @@ nd = getDimension(this);
 if nd == 2
     % number of rotations
     n = 1;
-    if nargin>1
+    if nargin > 1
         n = axis;
     end
     
@@ -79,7 +79,7 @@ flipDimArray = { ...
     1, [1 2], 2, [] ; ...   % z-axis rotation
     };
 
-if n>0
+if n > 0
     permDims = permDimArray{axis, n};
     flipDims = flipDimArray{axis, n};
 else
@@ -94,7 +94,7 @@ permDims = [permDims 4 5];
 newData = permute(this.data, permDims);
 
 % depending on rotation, some dimensions must be fliped
-for i=1:length(flipDims)
+for i = 1:length(flipDims)
     newData = flipdim(newData, flipDims(i));
 end
 
@@ -102,7 +102,7 @@ end
 res = Image(nd, 'data', newData, 'parent', this);
 
 % also permute spacing and origin of image
-res.origin  = this.origin(permDims(1:3));
-res.spacing = this.spacing(permDims(1:3));
+res.origin  = this.origin(permDims(1:nd));
+res.spacing = this.spacing(permDims(1:nd));
 
     

@@ -262,9 +262,8 @@ methods
     function [point isInside] = pointToContinuousIndex(this, point)
         % Converts point in physical coordinate into unrounded image index
         
-        % TODO: change name ? physicalToImageCoord ?
         for i = 1:length(this.spacing)
-            point(:,i) = (point(:,i)- this.origin(i)) / this.spacing(i) + 1;
+            point(:,i) = (point(:,i) - this.origin(i)) / this.spacing(i) + 1;
         end
         
         if nargout>1
@@ -277,7 +276,9 @@ methods
     
     function point = indexToPoint(this, index)
         % Converts image index into point in physical coordinate
-        point = (index - 1) .* this.spacing + this.origin;
+        
+        nI = ones(size(index, 1), 1);
+        point = (index - 1) .* this.spacing(nI, :) + this.origin(nI, :);
     end
     
 end % methods

@@ -18,28 +18,13 @@ function test_suite = test_geometric_filters(varargin) %#ok<STOUT>
 initTestSuite;
 
 
-function test_crop
+function test_crop %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 
 img2 = img.crop([51 200 51 150]);
 
 assertElementsAlmostEqual([150 100], img2.getSize());
-
-
-function test_resample
-
-img = Image.read('cameraman.tif');
-
-k = 4;
-img2 = img.resample(k);
-expectedSize = img.getSize() * k;
-assertElementsAlmostEqual(expectedSize, img2.getSize());
-
-k = 3;
-img2 = img.resample(k);
-expectedSize = img.getSize() * k;
-assertElementsAlmostEqual(expectedSize, img2.getSize());
 
 
 function test_subsample

@@ -62,8 +62,8 @@ function test_createColor
 
 dat = imread('peppers.png');
 dim = size(dat);
-img = Image.createRGB(dat);
+img = Image.create(dat, 'vector', true);
 
-assertEqual(2, getDimension(img));
-assertEqual(dim([2 1]), getSize(img));
+assertEqual(2, getDimension(img), 'Wrong dimension for color image');
+assertEqual(dim([2 1]), getSize(img), 'Wrong size for color image');
 
