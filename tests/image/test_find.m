@@ -35,6 +35,46 @@ expY = [1 1 2 2 3]';
 assertEqual(expX, x);
 assertEqual(expY, y);
 
+
+function test_2d_subVal
+
+img = Image.create([0 3 4;2 3 0;1 0 0]);
+expX = [2 3 1 2 1]';
+expY = [1 1 2 2 3]';
+expV = [3 4 2 3 1]';
+
+[x y v] = find(img);
+assertEqual(expX, x);
+assertEqual(expY, y);
+assertEqual(expV, v);
+
+
+function test_2d_subVal_first
+
+img = Image.create([0 3 4;2 3 0;1 0 0]);
+expX = 2;
+expY = 1;
+expV = 3;
+
+[x y v] = find(img, 1, 'first');
+assertEqual(expX, x);
+assertEqual(expY, y);
+assertEqual(expV, v);
+
+
+function test_2d_subVal_last
+
+img = Image.create([0 3 4;2 3 0;5 0 0]);
+expX = 1;
+expY = 3;
+expV = 5;
+
+[x y v] = find(img, 1, 'last');
+assertEqual(expX, x);
+assertEqual(expY, y);
+assertEqual(expV, v);
+
+
 function test_3d_linear
 
 img = Image.create(ones([2 2 2]));
@@ -60,6 +100,18 @@ assertEqual([1 2 1 2 1 2 1 2]', x);
 assertEqual([1 1 2 2 1 1 2 2]', y);
 assertEqual([1 1 1 1 2 2 2 2]', z);
 assertEqual([1 1 1 1 1 1 1 1]', v);
+
+
+function test_3d_subVal_first
+
+img = Image.create(reshape(1:60, [4 3 5]));
+
+[x y z v] = find(img, 1, 'first');
+assertEqual(1, x);
+assertEqual(1, y);
+assertEqual(1, z);
+assertEqual(1, v);
+
 
 function test_3d_subVal_last
 

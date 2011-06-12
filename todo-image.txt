@@ -42,10 +42,6 @@ class Image
   
 - 2010.10.12 use 'imageSize' field, that correspond to number of pixels for physical
     dimensions
-
-- Add functions with Matlab equivalent:
-    + 2011.03.27 find -> renvoie position des pixels "vrais"
-        * renvoie indices, ou sub-indices X, Y (Z)
         
 - Add functions from Matlab IPT:
     + 2011.03.27 imposeMinima
