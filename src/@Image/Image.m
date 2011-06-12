@@ -120,12 +120,23 @@ methods (Access = protected)
                     % if argument is scalar, this is the image dimension
                     this.dataSize = ones(1, 5);
                     nd = varargin{1};
+                    
                 else
                     % initialize data buffer and image size
                     setInnerData(this, varargin{1});
-                    nd = ndims(varargin{1});
+                    dims = size(varargin{1});
+                    dims(end+1:5) = 1;
+                    nd = 3;
+                    if dims(3) == 1
+                        nd = 2;
+                        if dims(2) == 1
+                            nd = 1;
+                        end
+                    end
+                      
                 end
                 varargin(1) = [];
+                
             else
                 error('First argument need to be numeric: either dim or data');
             end

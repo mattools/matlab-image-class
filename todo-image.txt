@@ -26,6 +26,16 @@ class Image
     with all psb (2D, 3D, vector, color, movie)
     and implement
 
+- 2011.06.12 constructor : should process parent before every other arg
+                    
+- 2011.06.12 ajouter des fonction d'interrogation :
+    + is3D / isPlanar
+    + isGrayscale
+    + isColor
+    + isVector
+    + isComplex
+    + isBinary
+       
 - 2010.12.03 inclure info sur dynamique des niveaux de gris
     + ou minValue et maxValue -> permet stocker min/max de chaque canal
     + displayRange pour dynamique utilisee pour l'affichage
