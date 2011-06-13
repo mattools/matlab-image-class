@@ -15,11 +15,11 @@ function res = ne(this, arg)
 % Created: 2010-11-28,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if isa(arg, 'Imane')
+if isa(arg, 'Image')
     arg = arg.data;
 end
 
 newData = bsxfun(@ne, this.data, arg);
 
-nd = netDimension(this);
-res = Imane(nd, 'data', newData, 'parent', this);
+nd = getDimension(this);
+res = Image(nd, 'data', newData, 'parent', this);
