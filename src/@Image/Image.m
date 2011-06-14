@@ -105,7 +105,12 @@ methods (Access = protected)
             
             img = varargin{1};
             varargin(1) = [];
-            this.data       = img.data;
+            if islogical(img.data)
+                this.data   = false(size(img.data));
+            else
+                this.data   = zeros(size(img.data), class(img.data));
+            end
+            this.data(:)    = img.data(:);
             this.dataSize   = img.dataSize;
 
             % update private fields
@@ -114,7 +119,7 @@ methods (Access = protected)
         else
             % Generic constructor: parse arguments and init image
             
-            % first argument is either the data buffer, or the image dim
+            % first argument is either data buffer, or image dimension
             if isnumeric(varargin{1}) || islogical(varargin{1})
                 if isscalar(varargin{1})
                     % if argument is scalar, this is the image dimension
@@ -126,6 +131,8 @@ methods (Access = protected)
                     setInnerData(this, varargin{1});
                     dims = size(varargin{1});
                     dims(end+1:5) = 1;
+                    
+                    % determines image dimension
                     nd = 3;
                     if dims(3) == 1
                         nd = 2;

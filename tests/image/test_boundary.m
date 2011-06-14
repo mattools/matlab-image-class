@@ -24,6 +24,14 @@ bnd = boundary(img);
 assertTrue(isa(bnd, 'Image'));
 assertEqual(size(img), size(bnd));
 
+function test_rect
+
+img = Image.read('circles.png');
+img = crop(img, [1 200 1 255]);
+bnd = boundary(img);
+assertTrue(isa(bnd, 'Image'));
+assertEqual(size(img), size(bnd));
+
 function test_Inner
 
 img = Image.read('circles.png');

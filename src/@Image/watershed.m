@@ -50,7 +50,7 @@ end
 while ~isempty(varargin)
     var = varargin{1};
     
-    if isnumeric(var) && iscalar(var)
+    if isnumeric(var) && isscalar(var)
         conn = var;
         varargin(1) = [];
         continue;

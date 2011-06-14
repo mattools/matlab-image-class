@@ -27,11 +27,18 @@ function img = create(varargin)
 
 % check inputs
 if isempty(varargin)
-    error('should specify at least one input argument');
+    error('Should specify at least one input argument');
+end
+
+var1 = varargin{1};
+
+% test for copy constructor
+if isa(var1, 'Image')
+    img = Image.create(var1.data, 'parent', var1);
+    return;
 end
 
 % extract basic data for creating image
-var1 = varargin{1};
 data = [];
 if isnumeric(var1) || islogical(var1)
     if size(var1, 1) == 1
@@ -47,7 +54,7 @@ if isnumeric(var1) || islogical(var1)
         end
         
         % create empty data buffer
-        if ~strcmp(type, 'logical')
+        if ~strcmp(type, 'logical') && ~strcmp(type, 'binary')
             data = zeros(imageSize, type);
         else
             data = false(imageSize);

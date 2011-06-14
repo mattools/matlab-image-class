@@ -97,4 +97,4 @@ end
 %% Process
 
 % erode the structure and compare with original
-bnd = Image.create(op(this.data, se) ~= this.data);
+bnd = Image(op(this.data, se) ~= this.data, 'parent', this);
