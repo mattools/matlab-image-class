@@ -1,18 +1,18 @@
 function varargout = gradient(this, varargin)
-%GRADIENT Compute gradient of planar image
+%GRADIENT Compute gradient of intensity image
 %
-%   GIMG = IMG.gradient()
-%   Compute the graident of the image IMG. The result is a vector image,
+%   GIMG = gradient(IMG)
+%   Compute the gradient of the image IMG. The result is a vector image,
 %   containing in each channel the gradient for a direction.
 %
 %   Example
 %     % compute and display gradient of cameraman
 %     img = Image.read('cameraman.tif');
-%     grad = img.gradient;
-%     grad.show;
+%     grad = gradient(img);
+%     show(grad);
 %
 %   See also
-%   imfilter, fspecial
+%   Image/filter, fspecial
 %
 % ------
 % Author: David Legland
@@ -34,7 +34,7 @@ end
 outputType = 'double';
 
 % Process input arguments
-for i=1:length(varargin)-1
+for i = 1:length(varargin)-1
     if strcmp(varargin{i}, 'filter')
         % another kernel for computing gradient was proposed
         sx = varargin{i+1};
@@ -73,7 +73,7 @@ end
 
 % Depending on number of output arguments, returns either a vector image,
 % or each component of the gradient vector.
-if nargout==1
+if nargout == 1
     % compute gradient module
     if nd == 2
         res = Image(2, 'data', cat(4, gx, gy), ...
