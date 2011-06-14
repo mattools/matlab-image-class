@@ -6,11 +6,10 @@ TODO-list for project OOLIP
     + squeletisation
         -> "skeletonize" 
         
-- add list of Matlab IPT functions and their ImageClass equivalent
-
-    
 class Image
 ===========
+
+- 2011.06.14 re-implement 'numel'
  
 - 2010.11.26 small convenient functions
     + imRescale (find a better name)
