@@ -22,9 +22,9 @@ if strcmp(type, '.')
     % if some output arguments are asked, use specific processing
     if nargout>0
         varargout = cell(1);
-        varargout{1} = builtin('subsasgn', this, subs);    
+        varargout{1} = builtin('subsasgn', this, subs, value);    
     else
-        builtin('subsasgn', this, subs);
+        builtin('subsasgn', this, subs, value);
     end
     
 elseif strcmp(type, '()')
@@ -56,11 +56,11 @@ elseif strcmp(type, '()')
         
     else
         error('Image:subsasgn', ...
-            'too many indices');
+            'Too many indices');
     end
 else
     error('Image:subsasgn', ...
-        'can not manage such reference');
+        'Can not manage such reference');
 end
 
 if nargout>0

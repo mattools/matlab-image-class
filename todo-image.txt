@@ -63,7 +63,7 @@ class Image
     + 2011.04.19 regionalMaxima
     + 2011.03.27 label2rgb
     + 2011.06.13 fillHoles
-    + 2011.06.13 montage
+    + 2011.06.13 montage (for 3D)
     
 - add functions from Imael library:
     + 2011.02.18 clearBorders for binary images (use imclearborders)
