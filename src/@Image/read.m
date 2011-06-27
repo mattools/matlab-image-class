@@ -14,7 +14,7 @@ function img = read(fileName, varargin)
 %   img = Image.read('brainMRI.hdr');
 %
 %   See also
-%   imread
+%   imread, Image.write
 %
 % ------
 % Author: David Legland
@@ -63,6 +63,8 @@ else
     img = Image.create(data, 'vector', vector);
 end
 
+img.name = [name ext];
+
 
 function img = readMetaImage(fileName)
 % read image in MetaImage format
@@ -82,6 +84,3 @@ end
 if isfield(info, 'ElementSpacing')
     img.setSpacing(info.ElementSpacing);
 end
-
-[path name] = fileparts(fileName); %#ok<ASGLU>
-img.name = name;
