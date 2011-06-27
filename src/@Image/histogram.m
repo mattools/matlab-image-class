@@ -78,7 +78,7 @@ N = 256;
 roi = [];
 
 % check if image is vector
-vectorImage = size(this.data, 4)>1;
+vectorImage = size(this.data, 4) > 1;
 
 % physical dimension of image
 imgSize = getSize(this);
@@ -169,7 +169,7 @@ else
     h = zeros(length(x), nc);
     
     % Compute histogram of each channel
-    for i=1:nc
+    for i = 1:nc
         h(:, i) = computeDataHistogram(this.data(:,:,:,i), x, roi);
     end
 end
@@ -178,7 +178,7 @@ end
 %% Process output arguments
 
 % In case of no output argument, display the histogram
-if nargout==0
+if nargout == 0
     % display histogram in current axis
     if ~vectorImage
         % Display grayscale histogram
@@ -210,15 +210,27 @@ if nargout==0
     % setup histogram bounds
     xlim([minimg maximg]);
     
+    % set title and figure name
+    if ~isempty(this.name)
+        str = sprintf('Histogram of %s', this.name);
+    else
+        str = 'Image histogram';
+    end
+    title(str);
+    set(gcf, 'name', str);
+    
 elseif nargout==1
     % return histogram
     varargout = {h};
+    
 elseif nargout==2
     % return histogram and x placement
     varargout = {h, x};
+    
 elseif nargout==3
     % return red, green and blue histograms as separate outputs
     varargout = {h(:,1), h(:,2), h(:,3)};
+    
 elseif nargout==4
     % return red, green and blue histograms as separate outputs as well as
     % the bin centers
@@ -233,7 +245,7 @@ function h = computeDataHistogram(img, x, roi)
 % interest
 
 if isempty(roi)
-    % histogram of whole image
+    % histogram of the whole image
     h = hist(double(img(:)), x)';
 else
     % histogram constrained to ROI
