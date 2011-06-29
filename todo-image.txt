@@ -4,8 +4,11 @@ TODO-list for project OOLIP
 
 - 2010.06.26 refaire quelques traitements de demos en utilisant class Image
     + squeletisation
-        -> "skeletonize" 
-        
+
+- 2011.06.02 convention pour les noms de fonctions : virer getXXX quand il n'y
+    a pas de setXXX associé ?
+
+
 class Image
 ===========
 
@@ -58,12 +61,11 @@ class Image
     + 2011.03.27 imposeMinima
     + 2011.03.27 imposeMaxima
     + 2011.03.27 extendedMinima
-    + 2011.03.27 extentedMaxima
+    + 2011.03.27 extendedMaxima
     + 2011.04.19 regionalMinima
     + 2011.04.19 regionalMaxima
     + 2011.03.27 label2rgb
     + 2011.06.13 fillHoles
-    + 2011.06.13 montage (for 3D)
     
 - add functions from Imael library:
     + 2011.02.18 clearBorders for binary images (use imclearborders)

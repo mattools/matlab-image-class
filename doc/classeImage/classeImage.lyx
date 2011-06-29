@@ -1001,19 +1001,65 @@ Modification de la géométrie par rotation, symétries...
 \end_layout
 
 \begin_layout Description
-flip
-\end_layout
-
-\begin_layout Standard
-Renverse une des dimensions
+flip Renverse une des dimensions
 \end_layout
 
 \begin_layout Description
-rotate90
+rotate90 Rotation de 90 degrés autour d'un des axes
+\end_layout
+
+\begin_layout Subsubsection
+Filtrage linéaire
 \end_layout
 
 \begin_layout Standard
-Rotation de 90 degrés autour d'un des axes
+Plusieurs filtres linéaires ont été repris pour être plus intuitifs.
+\end_layout
+
+\begin_layout Description
+filter applique un filtre linéaire (appelle imfilter)
+\end_layout
+
+\begin_layout Description
+gradient calcule le gradient de l'image, et renvoit une image vecteur.
+\end_layout
+
+\begin_layout Subsubsection
+Filtrage morphologique
+\end_layout
+
+\begin_layout Standard
+Quelques filtres morphologiques ont été encapsulés.
+\end_layout
+
+\begin_layout Description
+dilate applique une dilatation morphologique (appelle imdilate)
+\end_layout
+
+\begin_layout Description
+erode applique une érosion morphologique (appelle imerode)
+\end_layout
+
+\begin_layout Description
+open applique une ouverture morphologique (appelle imopen)
+\end_layout
+
+\begin_layout Description
+close applique une fermeture morphologique (appelle imclose)
+\end_layout
+
+\begin_layout Description
+tophat applique filtrage en chapeau haut de forme (appelle imtophat)
+\end_layout
+
+\begin_layout Description
+bottomHat applique filtrage en chapeau bas de forme (appelle imbottomhat)
+\end_layout
+
+\begin_layout Description
+watershed calcule une ligne de partage des eaux.
+ Plusieurs options peuvent être spécifiées : connexité, marqueurs, dynamique
+ pour calculer les marqueurs.
 \end_layout
 
 \begin_layout Subsection
@@ -1208,13 +1254,21 @@ Une solution envisageable est de stocker le nombre de dimensions dans une
 \begin_inset Quotes fld
 \end_inset
 
+dimension
+\begin_inset Quotes frd
+\end_inset
+
+ ou 
+\begin_inset Quotes fld
+\end_inset
+
 nd
 \begin_inset Quotes frd
 \end_inset
 
 , qui contient le nombre de dimensions spatiales.
- Ainsi, si par exemple nd vaut 3, alors la dimension de l'image sera de
- 3 même si elle se limite à un point, qui correspond à un simple voxel.
+ Ainsi, si par exemple dimension vaut 3, alors la dimension de l'image sera
+ de 3 même si elle se limite à un point, qui correspond à un simple voxel.
 \end_layout
 
 \begin_layout Subsection
