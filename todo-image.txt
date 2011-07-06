@@ -5,9 +5,6 @@ TODO-list for project OOLIP
 - 2010.06.26 refaire quelques traitements de demos en utilisant class Image
     + squeletisation
 
-- 2011.06.02 convention pour les noms de fonctions : virer getXXX quand il n'y
-    a pas de setXXX associé ?
-
 
 class Image
 ===========

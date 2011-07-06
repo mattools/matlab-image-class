@@ -52,7 +52,7 @@ end
 % get reference size, and number of spatial dimensions
 if isa(refImage, 'Image')
     % get size in xyz ordering
-    dim = getSize(refImage);
+    dim = size(refImage);
 else
     % get size in ijk order, and convert to xyz
     dim = size(refImage);

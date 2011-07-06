@@ -27,7 +27,7 @@ function showOrthoPlanes(this, varargin)
 
 % if no position is specified, use the center of image
 if isempty(varargin)
-    siz = this.getSize();
+    siz = size(this);
     pos = floor(siz/2);
 else
     pos = varargin{1};

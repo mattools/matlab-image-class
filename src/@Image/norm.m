@@ -28,10 +28,10 @@ norm = zeros(siz2);
 % iterate on channels
 nc = siz(4);
 for i = 1:nc
-    norm = norm + this.data(:,:,:,i,:).^2;
+    norm = norm + double(this.data(:,:,:,i,:)).^2;
 end
 norm = sqrt(norm);
 
 % create result image
-nd = this.dimension();
+nd = ndims(this);
 norm = Image(nd, 'data', norm, 'parent', this, 'type', 'grayscale');

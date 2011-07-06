@@ -21,7 +21,7 @@ function varargout = gradient(this, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % number of spatial dimensions
-nd = this.getDimension();
+nd = ndims(this);
 
 % default filter for gradient: normalized sobel (2D or 3D)
 if nd == 2
