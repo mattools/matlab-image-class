@@ -4,10 +4,12 @@ function HSV = rgb2hsv(this)
 %   output = rgb2hsv(input)
 %
 %   Example
-%   rgb2hsv
+%      img = Image.read('peppers.png');
+%      hsv = rgb2hsv(img);
+%      figure; show(hsv); 
 %
 %   See also
-%
+%   createRGB
 %
 % ------
 % Author: David Legland
@@ -15,21 +17,25 @@ function HSV = rgb2hsv(this)
 % Created: 2010-12-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if this.dataSize(4)~=3
+if this.dataSize(4) ~= 3
     error('rgb2hsv can be applied only to RGB images');
 end
 
-nd = this.getDimension();
-if nd==2 && this.dataSize(5)==1
+nd = ndims(this);
+if nd == 2 && this.dataSize(5) == 1
+    % case of planar images: simple call to matlab function
     data = permute(rgb2hsv(squeeze(this.data)), [1 2 4 3]);
-    HSV = Image(2, 'data', data, 'parent', this);
     
 else
+    % case of 3D and/or movie images: iterate over dimensions 3 and 5
     data = zeros(this.dataSize);
-    for z=1:this.dataSize(3)
-        for t=1:this.dataSize(5)
+    for z = 1:this.dataSize(3)
+        for t = 1:this.dataSize(5)
             data(:,:,z,:,t) = squeeze(rgb2hsv(this.data(:,:,z,:,t)));
         end
     end
-    HSV = Image(nd, 'data', data, 'parent', this);
+    
 end
+
+% create result image
+HSV = Image(nd, 'data', data, 'parent', this);

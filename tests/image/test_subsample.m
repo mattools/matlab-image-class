@@ -1,10 +1,10 @@
-function test_suite = test_geometric_filters(varargin) %#ok<STOUT>
-%TEST_GEOMETRIC_FILTERS Test some geometric filters like flip, rotate...
+function test_suite = test_subsample(varargin) %#ok<STOUT>
+%TEST_SUBSAMPLE Test file for subsample function
 %
-%   output = test_geometric_filters(input)
+%   output = test_subsample(input)
 %
 %   Example
-%   test_geometric_filters
+%   test_subsample
 %
 %   See also
 %
@@ -17,17 +17,7 @@ function test_suite = test_geometric_filters(varargin) %#ok<STOUT>
 
 initTestSuite;
 
-
-function test_crop %#ok<*DEFNU>
-
-img = Image.read('cameraman.tif');
-
-img2 = img.crop([51 200 51 150]);
-
-assertElementsAlmostEqual([150 100], size(img2));
-
-
-function test_subsample
+function test_2d  %#ok<*DEFNU>
 
 buffer = [...
     1 2 3 4 5 6; ...

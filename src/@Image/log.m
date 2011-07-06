@@ -17,5 +17,5 @@ function res = log(this)
 
 newData = log(double(this.data));
 
-nd = getDimension(this);
+nd = ndims(this);
 res = Image(nd, 'data', newData, 'parent', this);
