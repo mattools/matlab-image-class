@@ -1,15 +1,13 @@
-function s = getPhysicalSize(this)
-%GETPHYSICALSIZE  Return the physical size of an image, in user unit
+function s = physicalSize(this)
+%PHYSICALSIZE  Return the physical size of an image, in user unit
 %
-%   siz = img.getPhysicalSize();
+%   siz = img.physicalSize();
 %
 %   Example
 %   img = Image2D.read('cameraman.tif');
-%   img.getPhysicalSize()
+%   img.physicalSize()
 %   ans =
 %       256 256
-%
-%   Deprecated, use 'physicalSize' instead.
 %
 %   See also
 %   getDimension
@@ -19,9 +17,6 @@ function s = getPhysicalSize(this)
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
-
-warning('Image:deprecated', ...
-    '''getPhysicalSize'' is deprecated, use ''physicalSize'' instead');
 
 nd = ndims(this);
 

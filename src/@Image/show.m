@@ -4,7 +4,7 @@ function varargout = show(this, varargin)
 % and spacing.
 %
 
-if this.dimension~=2
+if this.dimension ~= 2
     % compute number of image dimension
     nd = sum(this.dataSize(1:3)>1);
     if nd==2
@@ -33,7 +33,7 @@ ydata = this.getYData();
 h = imshow(data, 'XData', xdata, 'YData', ydata, options{:});
 
 % check extent of image
-extent = this.getPhysicalExtent();
+extent = physicalExtent(this);
 xl = xlim;
 xl = [min(xl(1), extent(1)) max(xl(2), extent(2))];
 yl = ylim;

@@ -23,7 +23,7 @@ img = Image.read('cameraman.tif');
 h = histogram(img);
 
 assertEqual(256, length(h));
-assertEqual(getElementNumber(img), sum(h));
+assertEqual(elementNumber(img), sum(h));
 
 
 function test_cameraman_nbins
@@ -67,20 +67,20 @@ buffer = double(buffer)/255;
 img2 = Image.create(buffer);
 h = histogram(img2, [0 1]);
 
-assertEqual(getElementNumber(img2), sum(h));
+assertEqual(elementNumber(img2), sum(h));
 assertEqual(h0, h);
 
 
 function test_cameraman_roi
 
 img = Image.read('cameraman.tif');
-mask = img<80;
+mask = img < 80;
 h1 = histogram(img, mask);
 h2 = histogram(img, ~mask);
 
 assertEqual(256, length(h1));
 assertEqual(256, length(h2));
-assertEqual(getElementNumber(img), sum(h1)+sum(h2));
+assertEqual(elementNumber(img), sum(h1)+sum(h2));
 
 
 function test_peppers
@@ -89,7 +89,7 @@ img = Image.read('peppers.png');
 h = histogram(img);
 
 assertEqual([256 3], size(h));
-assertEqual(getElementNumber(img), sum(h(:,1)));
+assertEqual(elementNumber(img), sum(h(:,1)));
 
 
 function test_peppers_display
@@ -112,14 +112,14 @@ close;
 % 
 % assertEqual(256, size(h1, 1));
 % assertEqual(256, size(h2, 1));
-% assertEqual(getElementNumber(img), sum(h1(:))+sum(h2(:)));
+% assertEqual(elementNumber(img), sum(h1(:))+sum(h2(:)));
 
 
 function test_brainMRI
 
 X = Image.read('brainMRI.hdr');
 h = histogram(X);
-assertEqual(getElementNumber(X), sum(h(:)));
+assertEqual(elementNumber(X), sum(h(:)));
 
 function test_brainMRI_roi_bins
 

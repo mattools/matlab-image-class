@@ -12,8 +12,6 @@ TODO-list for project OOLIP
 class Image
 ===========
 
-- 2011.06.14 re-implement 'numel'
- 
 - 2010.11.26 small convenient functions
     + imRescale (find a better name)
         -> adjustDynamic ?
@@ -30,8 +28,11 @@ class Image
     with all psb (2D, 3D, vector, color, movie)
     and implement
 
-- 2011.06.12 constructor : should process parent before every other arg
-                    
+- 2011.06.12 constructor: should process parent before every other arg
+
+- 2011.07.04 subsref et subsasgn: 
+    linear idexing should return 1xNcxNt arrays
+    
 - 2011.06.12 ajouter des fonction d'interrogation :
     + is3D / isPlanar
     + isGrayscale

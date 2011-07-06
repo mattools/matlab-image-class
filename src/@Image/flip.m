@@ -30,7 +30,7 @@ if nargin==1
 end
 
 % check dim
-if d > getDimension(this)
+if d > ndims(this)
     error('Can not flip a dimension greater than image dimension');
 end
 

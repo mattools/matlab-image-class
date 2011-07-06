@@ -26,11 +26,11 @@ dat = [...
 img = Image.create(uint8(dat));
 
 rot1 = img.rotate90(1);
-assertEqual([3 5], getSize(rot1));
+assertEqual([3 5], size(rot1));
 
 rot2 = img.rotate90(2);
-assertEqual([5 3], getSize(rot2));
+assertEqual([5 3], size(rot2));
 
 rot3 = img.rotate90(3);
-assertEqual([3 5], getSize(rot3));
+assertEqual([3 5], size(rot3));
 

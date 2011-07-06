@@ -21,5 +21,5 @@ end
 
 newData = builtin('not', this.data);
 
-nd = getDimension(this);
+nd = ndims(this);
 res = Image(nd, 'data', newData, 'parent', this);

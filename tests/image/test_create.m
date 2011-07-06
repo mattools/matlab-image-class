@@ -25,14 +25,14 @@ dim = [15 10];
 dat = zeros([dim(2) dim(1)], 'uint8');
 img = Image.create(dat);
 
-assertElementsAlmostEqual(dim, img.getSize());
+assertElementsAlmostEqual(dim, size(img));
 
 % create non-empty test image
 dat = [1 2 3 4;5 6 7 8;9 10 11 12];
 img = Image.create(dat);
 
 % get size
-assertElementsAlmostEqual([4 3], img.getSize());
+assertElementsAlmostEqual([4 3], size(img));
 
 
 function test_createFromArray3D
@@ -42,14 +42,14 @@ dim = [10 15 20];
 dat = zeros(dim([2 1 3]), 'uint8');
 img = Image.create(dat);
 
-assertEqual(dim, img.getSize());
+assertEqual(dim, size(img));
 
 dat = uint8(cat(3, ...
     [1 2 3 4;5 6 7 8;9 10 11 12], ...
     [2 3 4 5;6 7 8 9;10 11 12 13]));
 img = Image.create(dat);
 dim = [4 3 2];
-assertEqual(dim, img.getSize());
+assertEqual(dim, size(img));
 
 % get a pixel
 assertEqual(uint8(7), img.getPixel(2, 2, 2));
@@ -64,6 +64,6 @@ dat = imread('peppers.png');
 dim = size(dat);
 img = Image.create(dat, 'vector', true);
 
-assertEqual(2, getDimension(img), 'Wrong dimension for color image');
-assertEqual(dim([2 1]), getSize(img), 'Wrong size for color image');
+assertEqual(2, ndims(img), 'Wrong dimension for color image');
+assertEqual(dim([2 1]), size(img), 'Wrong size for color image');
 

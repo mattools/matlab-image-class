@@ -39,7 +39,7 @@ function res = rotate90(this, axis, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract input arguments (number of rotations and axis)
-nd = getDimension(this);
+nd = ndims(this);
 if nd == 2
     % number of rotations
     n = 1;

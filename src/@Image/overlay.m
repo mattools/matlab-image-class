@@ -163,7 +163,7 @@ function [r g b] = parseOverlayBands(color)
 %
 
 if isa(color, 'Image')
-    color = color.getBuffer;
+    color = getBuffer(color);
 end
 
 if ischar(color)

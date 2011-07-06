@@ -16,19 +16,19 @@ function res = crop(this, box)
 siz = this.dataSize;
 
 % imaeg dimension
-nd = getDimension(this);
+nd = ndims(this);
 
 % allocate memory
 indices = cell(nd, 1);
 newOrigin = zeros(1, nd);
 
 % pixel coord for original image
-for i=1:nd
+for i = 1:nd
     % compute all pixel positions in current direction
     pos = (0:siz(i)-1)*this.spacing(i) + this.origin(i);
     
     % select cropped pixels
-    inds = find(pos>=box(2*i-1) & pos<=box(2*i));
+    inds = find(pos >= box(2*i-1) & pos <= box(2*i));
     
     % store results
     indices{i} = inds;

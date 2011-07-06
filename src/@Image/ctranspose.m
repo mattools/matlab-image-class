@@ -5,10 +5,12 @@ function res = ctranspose(this)
 %   TRANSP = IMG'
 %
 %   Example
-%   ctranspose
+%   img = Image.read('cameraman.tif');
+%   img2 = img';
+%   show(img2);
 %
 %   See also
-%
+%   size
 %
 % ------
 % Author: David Legland
@@ -17,8 +19,8 @@ function res = ctranspose(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % check dimension
-nd = getDimension(this);
-if nd>2
+nd = ndims(this);
+if nd > 2
     error('ctranspose is not defined for Images with dimension greater than 2');
 end
 

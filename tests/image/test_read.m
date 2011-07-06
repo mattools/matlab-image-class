@@ -22,12 +22,12 @@ function test_read_tif %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 
-assertEqual([256 256], img.getSize());
+assertEqual([256 256], size(img));
 
 
 function test_read_color2d 
 
 img = Image.read('peppers.png');
 
-assertEqual(2, img.getDimension());
+assertEqual(2, ndims(img));
 

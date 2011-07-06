@@ -1,35 +1,33 @@
-function count = getElementNumber(this)
+function count = elementNumber(this)
 %GETELEMENTNUMBER  Count the total number of elements (pixels or voxels)
 %
-%   COUNT = getElementNumber(IMG)
-%   COUNT = IMG.getElementNumber(IMG)
+%   COUNT = elementNumber(IMG)
+%   COUNT = IMG.elementNumber(IMG)
 %
 %   Example
 %     % number of pixels of a grayscale image
 %     img = Image.read('cameraman.tif');
-%     img.getElementNumber
+%     elementNumber(img)
 %     ans =
 %         65536
 %     % equal to 256*256
 %
 %     % number of pixels of a color image
 %     img = Image.read('peppers.png');
-%     img.getElementNumber
+%     elementNumber(img)
 %     ans = 
 %         196608
 %     % equal to 512*384
 %
 %     % number of elements of a 3D grayscale image
 %     img = Image.read('brainMRI.hdr');
-%     img.getElementNumber
+%     elementNumber(img)
 %     ans =
 %         442368
 %     % equal to 128*128*27
 %
-%   Deprecated, use 'elementNumber' instead.
-%
 %   See also
-%   histogram
+%   histogram, elementSize
 %
 % ------
 % Author: David Legland
@@ -37,8 +35,4 @@ function count = getElementNumber(this)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-warning('Image:deprecated', ...
-    '''getElementNumber'' is deprecated, use ''elementNumber'' instead');
-
-dim = getSize(this);
-count = prod(dim);
+count = prod(this.dataSize(1:3));

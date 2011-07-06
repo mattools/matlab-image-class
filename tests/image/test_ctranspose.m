@@ -20,15 +20,15 @@ initTestSuite;
 function test_grayscale %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
-dim = img.getSize();
+dim = size(img);
 img2 = img'; 
-dim2 = img2.getSize();
+dim2 = size(img2);
 assertEqual(dim, dim2([2 1]));
 
 function test_color
 
 img = Image.read('peppers.png');
-dim = img.getSize();
+dim = size(img);
 img2 = img'; 
-dim2 = img2.getSize();
+dim2 = size(img2);
 assertEqual(dim, dim2([2 1]));

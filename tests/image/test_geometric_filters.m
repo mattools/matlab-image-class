@@ -24,7 +24,7 @@ img = Image.read('cameraman.tif');
 
 img2 = img.crop([51 200 51 150]);
 
-assertElementsAlmostEqual([150 100], img2.getSize());
+assertElementsAlmostEqual([150 100], size(img2));
 
 
 function test_subsample
@@ -37,8 +37,8 @@ buffer = [...
 img = Image.create(buffer);
 
 img2 = img.subsample(2);
-assertEqual([3 2], img2.getSize());
+assertEqual([3 2], size(img2));
 
 img2 = img.subsample(3);
-assertEqual([2 2], img2.getSize());
+assertEqual([2 2], size(img2));
 

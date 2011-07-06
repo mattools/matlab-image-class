@@ -17,5 +17,5 @@ function res = sign(this)
 
 newData = sign(this.data);
 
-nd = getDimension(this);
+nd = ndims(this);
 res = Image(nd, 'data', newData, 'parent', this);

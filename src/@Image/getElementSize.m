@@ -6,6 +6,8 @@ function dim = getElementSize(this, varargin)
 %   Example
 %   getElementSize
 %
+%   Deprecated, use 'elementSize' instead.
+%
 %   See also
 %   getSize, getDataSize, getChannelNumber
 %
@@ -14,6 +16,9 @@ function dim = getElementSize(this, varargin)
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2010-12-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
+
+warning('Image:deprecated', ...
+    '''getElementSize'' is deprecated, use ''elementSize'' instead');
 
 if isempty(varargin)
     dim = this.dataSize(4:5);

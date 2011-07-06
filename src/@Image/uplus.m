@@ -17,5 +17,5 @@ function res = uplus(this)
 
 newData = builtin(@uplus, this.data);
 
-nd = getDimension(this);
+nd = ndims(this);
 res = Image(nd, 'data', newData, 'parent', this);

@@ -5,8 +5,10 @@ function channel = getChannel(this, index)
 %   INDEX is 1-indexed.
 %   CHANNEL is a scalar image the same dimension as the input image
 %
+%   Deprecated, use 'channel' instead.
+%
 %   Example
-%   getChannel
+%   channel
 %
 %   See also
 %
@@ -17,6 +19,8 @@ function channel = getChannel(this, index)
 % Created: 2010-07-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+warning('Image:deprecated', ...
+    '''getChannel'' is deprecated, use ''channel'' instead');
 
 % create a new Image from data
 nd = getDimension(this);

@@ -81,7 +81,7 @@ roi = [];
 vectorImage = size(this.data, 4) > 1;
 
 % physical dimension of image
-imgSize = getSize(this);
+imgSize = size(this);
 
 % compute intensity bounds, based either on type or on image data
 if isinteger(this.data)
@@ -157,7 +157,7 @@ end
 %% Main processing 
 
 % number of channels (equal to 1 in the case of grayscale image)
-nc = getChannelNumber(this);
+nc = channelNumber(this);
 
 % compute image histogram
 if ~vectorImage

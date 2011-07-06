@@ -21,5 +21,5 @@ end
 
 newData = bsxfun(@ne, this.data, arg);
 
-nd = getDimension(this);
+nd = ndims(this);
 res = Image(nd, 'data', newData, 'parent', this);

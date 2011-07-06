@@ -21,19 +21,19 @@ function test_gray1 %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 
-img2 = img.flip(1);
-assertElementsAlmostEqual([256 256], img2.getSize());
+img2 = flip(img, 1);
+assertElementsAlmostEqual([256 256], size(img2));
 
 function test_gray2 %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
-img2 = img.flip(2);
-assertElementsAlmostEqual([256 256], img2.getSize());
+img2 = flip(img, 2);
+assertElementsAlmostEqual([256 256], size(img2));
 
 function test_color1
 
 img = Image.read('peppers.png');
-dim = img.getSize();
+dim = size(img);
 
-img2 = img.flip(1);
-assertElementsAlmostEqual(dim, img2.getSize());
+img2 = flip(img, 1);
+assertElementsAlmostEqual(dim, size(img2));

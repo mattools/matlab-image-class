@@ -6,6 +6,8 @@ function nc = getChannelNumber(this)
 %   Example
 %   getChannelNumber
 %
+%   Deprecated, use 'channelNumber' instead.
+%
 %   See also
 %   getSize, getElementSize
 %
@@ -14,5 +16,8 @@ function nc = getChannelNumber(this)
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
+
+warning('Image:deprecated', ...
+    '''getChannelNumber'' is deprecated, use ''channelNumber'' instead');
 
 nc = size(this.data, 4);

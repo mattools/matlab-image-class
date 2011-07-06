@@ -6,6 +6,8 @@ function norm = getNorm(this)
 %   Example
 %   getNorm
 %
+%   Deprecated, use 'norm' instead.
+%
 %   See also
 %
 %
@@ -14,6 +16,9 @@ function norm = getNorm(this)
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2010-07-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
+
+warning('Image:deprecated', ...
+    '''getNorm'' is deprecated, use ''norm'' instead');
 
 % use vector norm
 siz = this.dataSize;

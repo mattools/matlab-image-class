@@ -15,8 +15,8 @@ function res = squeeze(this)
 % Created: 2010-12-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-keepDims = find(this.dataSize(1:3)~=1);
-removeDims = find(this.dataSize(1:3)==1);
+keepDims = find(this.dataSize(1:3) ~= 1);
+removeDims = find(this.dataSize(1:3) == 1);
 
 nd = length(keepDims);
 
