@@ -1,7 +1,7 @@
 function varargout = isosurface(this, isovalue, varargin)
 %ISOSURFACE Isosurface generation of a 3D image
 %
-%   output = isosurface(input)
+%   isosurface(IMG, ISOVALUE)
 %
 %   Example
 %   isosurface
@@ -21,11 +21,12 @@ z = this.getZ();
 
 v = permute(this.data(:,:,:,1,1), [2 1 3]);
 
-if nargout==0
+if nargout == 0
     % display isosurface
     isosurface(x, y, z, v, isovalue, varargin{:});
     
 else
+    % compute isosurface, and return result in varargout
     varargout = cell(1, nargout);
-    varargout{:} = isosurface(x, y, z, v, isovalue, varargin{:});
+    [varargout{:}] = isosurface(x, y, z, v, isovalue, varargin{:});
 end

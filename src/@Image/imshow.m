@@ -5,6 +5,7 @@ function imshow(this, varargin)
 % preferable to use the "show" function directly.
 %
 
-warning('oolip:deprecated', 'Please use the "show" function directly');
+warning('oolip:deprecated', ...
+    'function ''imshow'' is provided for compatibility, please use the "show" function directly');
 
 show(this, varargin{:});
