@@ -28,7 +28,7 @@ class Image
 - 2011.06.12 constructor: should process parent before every other arg
 
 - 2011.07.04 subsref et subsasgn: 
-    linear idexing should return 1xNcxNt arrays
+    linear indexing should return 1xNcxNt arrays
     
 - 2011.06.12 ajouter des fonction d'interrogation :
     + is3D / isPlanar

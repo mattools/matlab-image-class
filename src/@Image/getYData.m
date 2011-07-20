@@ -8,6 +8,8 @@ function ly = getYData(this)
 %   Example
 %   getYData
 %
+%   Deprecated, use 'yData' instead.
+%
 %   See also
 %   getXData, getZData
 %
@@ -18,6 +20,8 @@ function ly = getYData(this)
 % Created: 2010-06-30,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+warning('Image:deprecated', ...
+    '''getYData'' is deprecated, use ''yData'' instead');
 
 % extract number of voxels in each dimension
 dim = this.dataSize;

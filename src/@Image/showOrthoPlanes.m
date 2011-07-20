@@ -6,11 +6,11 @@ function showOrthoPlanes(this, varargin)
 %   in image index coordinate between 0 and size(img)-1.
 %
 %   Example
-%     data = analyze75read(analyze75info('brainMRI.hdr'));
-%     img = Image3D(data);
+%   % Display Orthogonal planes of a brain image
+%     img = Image.read('brainMRI.hdr');
 %     figure(1); clf; hold on;
-%     img.showOrthoPlanes([60 80 13]);
-%     axis(img.getPhysicalExtent());       % setup axis limits
+%     showOrthoPlanes(img, [60 80 13]);
+%     axis(physicalExtent(img));       % setup axis limits
 %     axis equal;                          % to have equal sizes
 %
 %   See also
@@ -42,9 +42,9 @@ sliceZY = squeeze(this.getSlice(1, pos(1)))';
 sliceXZ = squeeze(this.getSlice(2, pos(2)));
 
 % get spatial calibration
-xdata = this.getXData();
-ydata = this.getYData();
-zdata = this.getZData();
+xdata = xData(this);
+ydata = yData(this);
+zdata = zData(this);
 
 % coordinate of reference point
 xPos = xdata(pos(1));
@@ -322,9 +322,9 @@ sliceZY = squeeze(img.getSlice(1, pos(1)));
 sliceXZ = squeeze(img.getSlice(2, pos(2)));
 
 % get spatial calibration
-xdata = img.getXData();
-ydata = img.getYData();
-zdata = img.getZData();
+xdata = xData(img);
+ydata = yData(img);
+zdata = zData(img);
 
 % coordinate of reference point
 xpos = xdata(pos(1));

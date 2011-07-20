@@ -8,6 +8,8 @@ function lz = getZData(this)
 %   Example
 %   getZData
 %
+%   Deprecated, use 'zData' instead.
+%
 %   See also
 %   getXData, getYData
 %
@@ -17,6 +19,9 @@ function lz = getZData(this)
 % Created: 2010-06-30,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+
+warning('Image:deprecated', ...
+    '''getZData'' is deprecated, use ''zData'' instead');
 
 % extract number of voxels in each dimension
 dim = this.dataSize;

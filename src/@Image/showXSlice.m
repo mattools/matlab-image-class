@@ -7,15 +7,15 @@ function varargout = showXSlice(this, sliceIndex)
 %   between 0 and img.getSize(1)-1.
 %
 %   Example
-%   % Display orthoslices of a humain head
-%   I = analyze75read(analyze75info('brainMRI.hdr'));
-%   img = Image3D(I);
-%   figure(1); clf; hold on;
-%   img.showZSlice(13);
-%   img.showXSlice(60);
-%   img.showYSlice(80);
-%   axis(img.getPhysicalExtent());
-%   xlabel('x'); ylabel('y'); zlabel('z');
+%   % Display 3 orthoslices of a humain head
+%     img = Image.read('brainMRI.hdr');
+%     figure(1); clf; hold on;
+%     showZSlice(img, 13);
+%     showXSlice(img, 60);
+%     showYSlice(img, 80);
+%     axis(physicalExtent(img));
+%     view(3);
+%     xlabel('x'); ylabel('y'); zlabel('z');
 %
 %   See also
 %   showYSlice, showZSlice, getSlice
@@ -30,7 +30,7 @@ function varargout = showXSlice(this, sliceIndex)
 %% Extract image info
 
 % compute voxel positions
-lx = this.getXData();
+lx = xData(this);
 
 dim = this.dataSize;
 vy = ((0:dim(2))-.5)*this.spacing(2) - this.origin(2);

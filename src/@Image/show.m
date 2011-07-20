@@ -1,16 +1,18 @@
 function varargout = show(this, varargin)
 % Shows image on current axis
-% Image is displayed in its physical extent, based on image origin
-% and spacing.
+% Image is displayed in its physical extent, based on image origin and
+% spacing. 
 %
 
+% Check image dimension: should be 2, or can be squeezed to 2.
 if this.dimension ~= 2
     % compute number of image dimension
     nd = sum(this.dataSize(1:3)>1);
-    if nd==2
+    if nd == 2
         img = this.squeeze();
         img.show(varargin{:});
         return;
+        
     else
         error('Method "show" can be applied only to 2D images');
     end
@@ -26,8 +28,8 @@ if isfloat(data)
 end
 
 % compute physical extents
-xdata = this.getXData();
-ydata = this.getYData();
+xdata = xData(this);
+ydata = yData(this);
 
 % display image with approriate spatial reference
 h = imshow(data, 'XData', xdata, 'YData', ydata, options{:});
@@ -61,7 +63,7 @@ if valMin<0
 end
 
 % in case of an image with the same value everywhere, use [0 1]
-if abs(valMin-valMax)<1e-12
+if abs(valMin-valMax) < 1e-12
     valMin = 0;
     valMax = 1;
 end
@@ -71,7 +73,7 @@ valRange = [valMin valMax];
 if ~isempty(options)
     opt1 = options{1};
     if isnumeric(opt1)
-        if size(opt1, 1)==1 || isempty(opt1)
+        if size(opt1, 1) == 1 || isempty(opt1)
             valRange = opt1;
             options(1) = [];
         end

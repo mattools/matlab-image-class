@@ -6,12 +6,11 @@ function varargout = showOrthoSlices(this, varargin)
 %   in image index coordinate between 0 and size(img)-1.
 %
 %   Example
-%     data = analyze75read(analyze75info('brainMRI.hdr'));
-%     img = Image3D(data);
+%     img = Image.read('brainMRI.hdr');
 %     figure(1); clf; hold on;
-%     img.showOrthoSlices([60 80 13]);
-%     axis(img.getPhysicalExtent());       % setup axis limits
-%     axis equal;                          % to have equal sizes
+%     showOrthoSlices(img, [60 80 13]);
+%     axis(physicalExtent(img));       % setup axis limits
+%     axis equal;                      % to have equal sizes
 %
 %   See also
 %   showXSlice, showYSlice, showZSlice, getSlice
@@ -32,9 +31,9 @@ end
 
 % show each slice
 hold on;
-hyz = this.showXSlice(pos(1));
-hxz = this.showYSlice(pos(2));
-hxy = this.showZSlice(pos(3));
+hyz = showXSlice(this, pos(1));
+hxz = showYSlice(this, pos(2));
+hxy = showZSlice(this, pos(3));
 
 % use equal spacing by default
 axis equal;
