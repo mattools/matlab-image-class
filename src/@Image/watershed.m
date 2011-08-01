@@ -19,7 +19,7 @@ function res = watershed(this, varargin)
 %   Example
 %     % Segment rice grains from gradient image
 %     img = Image.read('rice.png');
-%     gradn = getNorm(gradient(img));
+%     gradn = norm(gradient(img));
 %     gf = filter(gradn, ones(3, 3)/9);
 %     wat = watershed(gf, 'dynamic', 5);
 %     show(wat==0)

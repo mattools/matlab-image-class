@@ -24,11 +24,11 @@ warning('Image:deprecated', ...
 siz = this.dataSize;
 siz2 = [siz(1:3) 1 siz(5)];
 norm = zeros(siz2);
-nc = this.getChannelNumber();
+nc = this.channelNumber();
 for i=1:nc
     norm = norm + this.data(:,:,:,i,:).^2;
 end
 norm = sqrt(norm);
 
-nd = this.getDimension();
+nd = ndims(this);
 norm = Image(nd, 'data', norm, 'parent', this, 'type', 'grayscale');

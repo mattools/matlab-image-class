@@ -96,7 +96,7 @@ today
 \end_layout
 
 \begin_layout Abstract
-Cette note décrit une classe 
+Ce document décrit une classe 
 \begin_inset Quotes fld
 \end_inset
 
@@ -105,8 +105,8 @@ Image
 \end_inset
 
  qui a pour but de faciliter la manipulation des images sous Matlab.
- En particulier, les informations de type, de dimension spatiale sont plus
- facilement accessibles.
+ En particulier, les informations de type, de dimension spatiale sont stockées
+ dans la classe.
  Il est aussi possible de stocker des informations de calibration spatiale
  à l'image, ce qui facilite l'affichage des images acquises avec des résolutions
  différentes.
@@ -1032,6 +1032,37 @@ Filtrage morphologique
 Quelques filtres morphologiques ont été encapsulés.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+voir si on change pas les noms en 
+\begin_inset Quotes fld
+\end_inset
+
+openFilter
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+closeFilter
+\begin_inset Quotes frd
+\end_inset
+
+...
+ Cela permet (1) de bien marquer que ce sont des filtres, et (2) d'éviter
+ la confusion avec des méthodes de gestion de fichiers.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Description
 dilate applique une dilatation morphologique (appelle imdilate)
 \end_layout
@@ -1049,7 +1080,7 @@ close applique une fermeture morphologique (appelle imclose)
 \end_layout
 
 \begin_layout Description
-tophat applique filtrage en chapeau haut de forme (appelle imtophat)
+topHat applique filtrage en chapeau haut de forme (appelle imtophat)
 \end_layout
 
 \begin_layout Description
@@ -1068,67 +1099,12 @@ Affichage
 
 \begin_layout Standard
 On veut pouvoir afficher une image avec différents niveaux de zoom.
- Choix entre 2 possibilités.
-\end_layout
-
-\begin_layout Subsubsection
-Pixels entre les bornes
-\end_layout
-
-\begin_layout Standard
-Pour chaque pixel, on affiche un rectangle de la couleur du pixel entre
- les coordonnées 
-\begin_inset Formula $(i,j)$
-\end_inset
-
- et 
-\begin_inset Formula $(i+1,j+1)$
-\end_inset
-
-.
- Méthode classique de représentation des images sur écran matriciel.
-\end_layout
-
-\begin_layout Standard
-L'avantage est que le coin supérieur de l'image est situé aux coordonnées
- 
-\begin_inset Formula $(0,0)$
-\end_inset
-
-, et que l'image occupe à l'écran un rectangle dont la position se calcule
- facilement : 
-\begin_inset Formula $[0;M_{i}]\cdot zoom$
-\end_inset
-
-, où 
-\begin_inset Formula $M_{i}$
-\end_inset
-
- est le nombre de pixels dans la dimension 
-\begin_inset Formula $i$
-\end_inset
-
-.
+ Le centre de chaque pixel est positionné aux coordonnées physiques du pixel.
  
 \end_layout
 
 \begin_layout Standard
-Pour convertir les coordonnées écran en coordonnées pixel, il suffit de
- tronquer, après avoir divisé par le facteur de zoom.
-\end_layout
-
-\begin_layout Subsubsection
-Pixel centré sur les bornes
-\end_layout
-
-\begin_layout Standard
-L'idée est de positionner le centre de chaque pixel aux coordonnées physiques
- du pixel.
- C'est ce qui est utilisé dans ITK.
-\end_layout
-
-\begin_layout Standard
-L'avantage est que l'on a une meilleure correspondance entre les coordonnées
+L'avantage est que l'on a une correspondance assez directe entre les coordonnées
  physiques et le centre des pixels, ce qui est préférable si on veut mixer
  différentes images ou alors des images avec des objets vectoriels (résultats
  de segmentation par exemple).
@@ -1166,14 +1142,6 @@ Pour convertir les coordonnées écran en coordonnées pixel, l'opération sembl
  un peu plus compliquée que dans le cas d'un pixel dans les mailles de la
  grille, mais reste abordable.
  De plus, sous Matlab on peut déléguer à la gestion des axes.
-\end_layout
-
-\begin_layout Subsubsection
-Conclusion
-\end_layout
-
-\begin_layout Standard
-Il vaut mieux choisir des pixels centrés sur la grille.
 \end_layout
 
 \begin_layout Section
