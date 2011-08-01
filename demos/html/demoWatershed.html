@@ -1,0 +1,182 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>demoWatershed</title><meta name="generator" content="MATLAB 7.9"><meta name="date" content="2011-07-31"><meta name="m-file" content="demoWatershed"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Ref image</a></li><li><a href="#4">Apply some filtering</a></li><li><a href="#5">Impose minima</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> demoWatershed(varargin)
+</pre><pre class="codeinput"><span class="comment">%DEMOWATERSHED  Segment rice grains from gradient image</span>
+<span class="comment">%</span>
+<span class="comment">%   output = demoWatershed(input)</span>
+<span class="comment">%</span>
+<span class="comment">%   Example</span>
+<span class="comment">%   demoWatershed</span>
+<span class="comment">%</span>
+<span class="comment">%   See also</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% ------</span>
+<span class="comment">% Author: David Legland</span>
+<span class="comment">% e-mail: david.legland@grignon.inra.fr</span>
+<span class="comment">% Created: 2011-07-31,    using Matlab 7.9.0.529 (R2009b)</span>
+<span class="comment">% Copyright 2011 INRA - Cepia Software Platform.</span>
+</pre><h2>Ref image<a name="3"></a></h2><pre class="codeinput"><span class="comment">% Read image</span>
+img = Image.read(<span class="string">'rice.png'</span>);
+
+<span class="comment">% display image</span>
+figure;
+show(img);
+title(<span class="string">'Base image'</span>);
+</pre><img vspace="5" hspace="5" src="demoWatershed_01.png" alt=""> <h2>Apply some filtering<a name="4"></a></h2><pre class="codeinput"><span class="comment">% gradient image</span>
+grad = gradient(img);
+
+<span class="comment">% norm of the gradient</span>
+gradn = norm(grad);
+
+<span class="comment">% smooth the gradient norm</span>
+h = ones(3, 3)/9;
+gf = filter(gradn, h);
+
+<span class="comment">% display filtered image</span>
+figure;
+show(gf);
+title(<span class="string">'Gradient norm'</span>);
+</pre><img vspace="5" hspace="5" src="demoWatershed_02.png" alt=""> <h2>Impose minima<a name="5"></a></h2><pre class="codeinput"><span class="comment">% compute watershed, by imposing minima</span>
+wat = watershed(gf, <span class="string">'dynamic'</span>, 5);
+
+<span class="comment">% display binary wateshed</span>
+figure;
+show(wat&gt;0)
+title(<span class="string">'Watershed'</span>);
+
+<span class="comment">% Display overlay over base image</span>
+ovr = overlay(img, wat==0);
+figure;
+show(ovr);
+title(<span class="string">'Overlay over image'</span>);
+</pre><img vspace="5" hspace="5" src="demoWatershed_03.png" alt=""> <img vspace="5" hspace="5" src="demoWatershed_04.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.9<br></p></div><!--
+##### SOURCE BEGIN #####
+function demoWatershed(varargin)
+%DEMOWATERSHED  Segment rice grains from gradient image
+%
+%   output = demoWatershed(input)
+%
+%   Example
+%   demoWatershed
+%
+%   See also
+%
+%
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+% Author: David Legland
+% e-mail: david.legland@grignon.inra.fr
+% Created: 2011-07-31,    using Matlab 7.9.0.529 (R2009b)
+% Copyright 2011 INRA - Cepia Software Platform.
+
+%% Ref image
+
+% Read image
+img = Image.read('rice.png');
+
+% display image
+figure; 
+show(img);
+title('Base image');
+
+
+%% Apply some filtering
+
+% gradient image
+grad = gradient(img);
+
+% norm of the gradient
+gradn = norm(grad);
+
+% smooth the gradient norm
+h = ones(3, 3)/9;
+gf = filter(gradn, h);
+
+% display filtered image
+figure;
+show(gf);
+title('Gradient norm');
+
+
+%% Impose minima
+
+% compute watershed, by imposing minima
+wat = watershed(gf, 'dynamic', 5);
+
+% display binary wateshed
+figure;
+show(wat>0)
+title('Watershed');
+
+% Display overlay over base image
+ovr = overlay(img, wat==0);
+figure;
+show(ovr);
+title('Overlay over image');
+
+
+##### SOURCE END #####
+--></body></html>
