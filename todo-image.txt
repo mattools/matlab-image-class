@@ -56,8 +56,6 @@ class Image
     dimensions
         
 - Add functions from Matlab IPT:
-    + 2011.03.27 imposeMinima
-    + 2011.03.27 imposeMaxima
     + 2011.03.27 extendedMinima
     + 2011.03.27 extendedMaxima
     + 2011.04.19 regionalMinima

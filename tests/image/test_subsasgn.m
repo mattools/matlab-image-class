@@ -34,21 +34,21 @@ assertEqual(99, img(2));
 img(end) = 99;
 assertEqual(99, img(end));
 
-% get one row (y = cte)
+% set one row (y = cte)
 new = 8:2:18;
 img(:,2) = new;
 assertEqual(new, img(:, 2));
 
-% get last row (y = cte)
+% set last row (y = cte)
 img(:,end) = new;
 assertEqual(new, img(:, end));
 
-% get one column (x = cte)
+% set one column (x = cte)
 new = (12:3:21)';
 img(1,:) = new;
 assertEqual(new, img(1,:));
 
-% get last column (x = cte)
+% set last column (x = cte)
 img(end,:) = new;
 assertEqual(new, img(end,:));
 
@@ -71,21 +71,21 @@ assertEqual(99, img(2));
 img(end) = 99;
 assertEqual(99, img(end));
 
-% get one row (y = cte)
+% set one row (y = cte)
 new = 8:2:18;
 img(:, 2, 1) = new;
 assertEqual(new, img(:, 2, 1));
 
-% get last row (y = cte)
+% set last row (y = cte)
 img(:, end, 1) = new;
 assertEqual(new, img(:, end, 1));
 
-% get one column (x = cte)
+% set one column (x = cte)
 new = (12:3:21)';
 img(2, :, 1) = new;
 assertEqual(new, img(2, :, 1));
 
-% get last column (x = cte)
+% set last column (x = cte)
 img(end, :, 1) = new;
 assertEqual(new, img(end, :, 1));
 

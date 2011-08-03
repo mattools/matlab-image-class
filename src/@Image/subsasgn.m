@@ -32,19 +32,30 @@ elseif strcmp(type, '()')
     
     % different processing if 1 or 2 indices are used
     ns = length(s1.subs);
-    if ns==1
+    if ns == 1
         % one index: use linearised image
+
+        % check that indices are within image bound
+        this.data(s1.subs{:});
+
         this.data(s1.subs{1}) = value;
 
-    elseif ns==2
+    elseif ns == 2
         % two indices: parse x and y indices
 
+        % check that indices are within image bound
+        this.data(s1.subs{:});
+        
         % extract corresponding data, and transpose to comply with matlab
         % representation
         this.data(s1.subs{:}) = value';
-    elseif ns==3
+        
+    elseif ns == 3
         % two indices: parse x y and z indices, and permute result
 
+        % check that indices are within image bound
+        this.data(s1.subs{:});
+        
         % parse x, y, z indices
         ind1 = s1.subs{1};
         ind2 = s1.subs{2};
