@@ -89,3 +89,19 @@ assertEqual(new, img(2, :, 1));
 img(end, :, 1) = new;
 assertEqual(new, img(end, :, 1));
 
+function test_subsasgn_outside
+% If we try to assign a pixel outside, should throw an error
+
+lx = 0:1:5;
+ly = 0:10:30;
+[x y] = meshgrid(lx, ly);
+dat = x+y;
+img = Image.create(dat);
+
+ok = false;
+try
+    img(10, 20) = 0; %#ok<NASGU>
+catch %#ok<CTCH>
+    ok = true;
+end
+assertTrue(ok);
