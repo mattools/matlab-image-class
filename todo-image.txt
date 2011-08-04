@@ -12,7 +12,6 @@ class Image
 - 2010.11.26 small convenient functions
     + imRescale (find a better name)
         -> adjustDynamic ?
-    + concatenation (cat, horzcat, vertcat)
     + operateur min et max: un ou deux arguments
         -> un argument: renvoie le max dans l'image
         -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
@@ -25,7 +24,7 @@ class Image
     with all psb (2D, 3D, vector, color, movie)
     and implement
 
-- 2011.06.12 constructor: should process parent before every other arg
+- 2011.06.12 constructor: should process parent before every any arg
 
 - 2011.07.04 subsref et subsasgn: 
     linear indexing should return 1xNcxNt arrays
@@ -51,15 +50,8 @@ class Image
     - 2010.06.24 ImageView: use data from another image, but cropped
 	   
 - 2010.10.22 manage image anatomical orientation
-  
-- 2010.10.12 use 'imageSize' field, that correspond to number of pixels for physical
-    dimensions
-        
+       
 - Add functions from Matlab IPT:
-    + 2011.03.27 extendedMinima
-    + 2011.03.27 extendedMaxima
-    + 2011.04.19 regionalMinima
-    + 2011.04.19 regionalMaxima
     + 2011.03.27 label2rgb
     + 2011.06.13 fillHoles
     
@@ -80,6 +72,8 @@ class Image
     - ou alors un constructeur avec une image et un nouveau tableau de donnees
     - 2010.06.29 ou alors une fonction duplicate, avec psb de changer certaines
         infos (calibration spatiale, buffer...)
-
+    - call it "copy" ? (2011.08.04)
+    
+    
 - 2010.07.13 Add support for Region of Interest
 

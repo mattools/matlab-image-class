@@ -17,6 +17,8 @@ function res = plus(this, arg)
 
 if isa(arg, 'Image')
     arg = arg.data;
+else
+    arg = permute(arg, [2 1 3:5]);
 end
 
 newData = bsxfun(@plus, this.data, cast(arg, class(this.data)));
