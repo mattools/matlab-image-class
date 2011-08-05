@@ -1,10 +1,8 @@
 TODO-list for project OOLIP
 ---------------------------
 
-
 - 2010.06.26 refaire quelques traitements de demos en utilisant class Image
     + squeletisation
-
 
 class Image
 ===========
@@ -52,7 +50,6 @@ class Image
 - 2010.10.22 manage image anatomical orientation
        
 - Add functions from Matlab IPT:
-    + 2011.03.27 label2rgb
     + 2011.06.13 fillHoles
     
 - add functions from Imael library:

@@ -1,8 +1,5 @@
-Conventions utilisees pour la bibliotheque "ImageClass"
+Conventions used for the "Image" class
 
-Points et vecteurs representes par des tableaux N*2
 
-angles en degres. 
-    - plus faciles a se representer mentalement
-    - plus faciles a sauvegarder
-    - variations comparables aux variations de translations
+* getter function are written without 'get' prefix. 
+    Ex: "size(img)"
