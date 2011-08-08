@@ -1,4 +1,4 @@
-function res = or(this, arg)
+function res = or(this, that)
 %OR Overload the or operator for Image objects
 %
 %   output = or(input)
@@ -15,19 +15,14 @@ function res = or(this, arg)
 % Created: 2010-11-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if ~islogical(this.data)
-    error('Requires a binary image to work');
-end
+% extract data
+[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+    inputname(1), inputname(2));
 
-if isa(arg, 'Image')
-    arg = arg.data;
-end
+% compute new data
+newData = builtin('or', data1, data2);
 
-if ~islogical(arg)
-    error('Requires a binary argument to work');
-end
-
-newData = builtin('or', this.data, arg);
-
+% create result image
+newName = strcat(name1, '|', name2);
 nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);
