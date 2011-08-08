@@ -1,4 +1,4 @@
-function res = le(this, arg)
+function res = le(this, that)
 %LE Overload the le operator for Image objects
 %
 %   output = le(input)
@@ -15,11 +15,15 @@ function res = le(this, arg)
 % Created: 2010-11-28,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if isa(arg, 'Imale')
-    arg = arg.data;
-end
+% extract data
+[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+    inputname(1), inputname(2));
 
-newData = bsxfun(@le, this.data, arg);
+% compute new data
+newData = bsxfun(@le, ...
+    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
 
+% create result image
+newName = strcat(name1, '<=', name2);
 nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this, 'type', 'binary');
+res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);

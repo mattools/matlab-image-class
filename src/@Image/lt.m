@@ -1,4 +1,4 @@
-function res = lt(this, arg)
+function res = lt(this, that)
 %LT Overload the lt operator for Image objects
 %
 %   output = lt(input)
@@ -15,11 +15,15 @@ function res = lt(this, arg)
 % Created: 2010-11-28,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if isa(arg, 'Imalt')
-    arg = arg.data;
-end
+% extract data
+[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+    inputname(1), inputname(2));
 
-newData = bsxfun(@lt, this.data, arg);
+% compute new data
+newData = bsxfun(@lt, ...
+    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
 
+% create result image
+newName = strcat(name1, '<', name2);
 nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this, 'type', 'binary');
+res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);
