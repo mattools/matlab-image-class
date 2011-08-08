@@ -2,7 +2,7 @@ function res = skeleton(this, varargin)
 %SKELETON Skeleton of a binary planar image
 %
 %   SKEL = skeleton(BIN)
-%   Computes the skeleton of the binary image BIN. The result is abinary
+%   Computes the skeleton of the binary image BIN. The result is a binary
 %   image the same size as BIN.
 %
 %   SKEL = skeleton(BIN, 'method', METHOD)

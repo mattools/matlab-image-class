@@ -1,5 +1,5 @@
-function res = plus(this, arg)
-%PLUS Overload the plus operator for image object
+function res = plus(this, that)
+%PLUS Overload the plus operator for image objects
 %
 %   output = plus(input)
 %
@@ -15,13 +15,15 @@ function res = plus(this, arg)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if isa(arg, 'Image')
-    arg = arg.data;
-else
-    arg = permute(arg, [2 1 3:5]);
-end
+% extract data
+[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+    inputname(1), inputname(2));
 
-newData = bsxfun(@plus, this.data, cast(arg, class(this.data)));
+% compute new data
+newData = bsxfun(@plus, ...
+    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
 
+% create result image
+newName = strcat(name1, '+', name2);
 nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);

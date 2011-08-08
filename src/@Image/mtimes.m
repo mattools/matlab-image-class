@@ -1,5 +1,5 @@
-function res = mtimes(this, arg)
-%mtimes Overload the mtimes operator for image object
+function res = mtimes(this, that)
+%MTIMES Overload the mtimes operator for image objects
 %
 %   output = mtimes(input)
 %
@@ -15,11 +15,15 @@ function res = mtimes(this, arg)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-if isa(arg, 'Image')
-    arg = arg.data;
-end
+% extract data
+[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+    inputname(1), inputname(2));
 
-newData = bsxfun(@times, this.data, cast(arg, class(this.data)));
+% compute new data
+newData = bsxfun(@times, ...
+    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
 
+% create result image
+newName = strcat(name1, '+', name2);
 nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);

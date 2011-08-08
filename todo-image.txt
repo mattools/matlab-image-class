@@ -52,10 +52,18 @@ class Image
 - Add functions from Matlab IPT:
     + 2011.06.13 fillHoles
     
+- 2011.08.07 add new concatenation functions:
+    + catChannels <=> cat(4, ...)
+    + catFrames <=> cat(5, ...)
+    
 - add functions from Imael library:
     + 2011.02.18 clearBorders for binary images (use imclearborders)
         * or call it 'removeBorderRegions'
-        
+
+- image arithmetic:
+    * use imadd, imsubtract... when possible...
+    
+
 - 2011.02.27 réfléchir à la manière de gérer les conversions d'espaces couleurs
     ainsi que de niveaux de gris.
     + une fonction "convert", avec un argument pour le type de destination
