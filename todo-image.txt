@@ -7,6 +7,8 @@ TODO-list for project OOLIP
 class Image
 ===========
 
+- 2011.09.01 add support for 3D slice draging in showOrthoSLices
+
 - 2010.11.26 small convenient functions
     + imRescale (find a better name)
         -> adjustDynamic ?
@@ -36,8 +38,8 @@ class Image
     + isBinary
        
 - 2010.12.03 inclure info sur dynamique des niveaux de gris
-    + minValue et maxValue -> permet stocker min/max de chaque canal
-    + displayRange pour dynamique utilisee pour l'affichage
+    + minValue et maxValue -> permet stocker min/max de chaque canal (1-by-Nc)
+    + "displayRange" pour dynamique utilisee pour l'affichage
     Autre options :
     + grayRange pour dynamique des niveaux de gris de l'image (min et max des elements)
     + ou valueMin et valueMax -> permet stocker min/max de chaque canal

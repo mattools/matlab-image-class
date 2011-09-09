@@ -7,13 +7,16 @@ function channel = channel(this, index)
 %   dimension as the input image.
 %
 %   Example
-%   img = Image.read('peppers.png');
-%   red = channel(img, 1);
-%   green = channel(img, 2);
-%   
+%     % read a color image, extyract channels, and creates a new image with
+%     % channels in difference order
+%     img = Image.read('peppers.png');
+%     red = channel(img, 1);
+%     green = channel(img, 2);
+%     blue = channel(img, 3);
+%     show(Image.createRGB(green, blue, red));
 %
 %   See also
-%   channelNumber
+%   channelNumber, size
 %
 %
 % ------
@@ -22,6 +25,12 @@ function channel = channel(this, index)
 % Created: 2010-07-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+nc = size(this, 4);
+if index > nc
+    pattern = 'Can not get channel number %d of a image with %d channels';
+    error('Image:channel:IndexOutsideBounds', ...
+        pattern, index, nc);
+end
 
 % create a new Image from data
 nd = ndims(this);

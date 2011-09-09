@@ -15,7 +15,7 @@ function res = crop(this, box)
 % size of image
 siz = this.dataSize;
 
-% imaeg dimension
+% image dimension
 nd = ndims(this);
 
 % allocate memory
