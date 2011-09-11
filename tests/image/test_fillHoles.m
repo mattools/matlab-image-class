@@ -1,10 +1,10 @@
-function test_suite = test_clearBorders(varargin) %#ok<STOUT>
-%TEST_CLEARBORDERS  Test case for the file clearBorders
+function test_suite = test_fillHoles(varargin) %#ok<STOUT>
+%TEST_FILLHOLES  Test case for the file fillHoles
 %
-%   Test case for the file clearBorders
-
+%   Test case for the file fillHoles
+%
 %   Example
-%   test_clearBorders
+%   test_fillHoles
 %
 %   See also
 %
