@@ -51,9 +51,6 @@ class Image
 	   
 - 2010.10.22 manage image anatomical orientation
        
-- Add functions from Matlab IPT:
-    + 2011.06.13 fillHoles
-    
 - 2011.08.07 add new concatenation functions:
     + catChannels <=> cat(4, ...)
     + catFrames <=> cat(5, ...)
@@ -84,4 +81,3 @@ class Image
     
 - 2010.07.13 Add support for Region of Interest
 
-c
