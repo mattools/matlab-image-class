@@ -38,6 +38,16 @@ assertElementsAlmostEqual(exp.data, res.data);
 res = 2 + img1;
 assertElementsAlmostEqual(exp.data, res.data);
 
+function test_Images3d
 
+img1 = Image.create(uint8(200*ones([2 3 4])));
+
+img2 = Image.create(uint8(zeros([2 3 4])));
+img2(2, 2, 2) = 100;
+
+res = img1 + img2;
+exp = Image.create(uint8(200*ones([2 3 4])));
+exp(2, 2, 2) = 255;
+assertEqual(0, sum(absdiff(exp, res)));
 
 

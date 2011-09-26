@@ -9,15 +9,16 @@ class Image
 
 - 2011.09.01 add support for 3D slice draging in showOrthoSLices
 
-- 2010.11.26 small convenient functions
-    + imRescale (find a better name)
-        -> adjustDynamic ?
-    + operateur min et max: un ou deux arguments
-        -> un argument: renvoie le max dans l'image
-        -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
-    + 2010.12.13 cast : remplacer 'convertType' par cast
-        -> pas sur, peut-etre preferable garder cast pour transformer en type primitifs
-        -> fonction 'castType' ? 
+- 2010.11.26 imRescale (find a better name)
+    -> adjustDynamic ?
+        
+- 2010.11.26 operateur min et max: un ou deux arguments
+    -> un argument: renvoie le max dans l'image
+    -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
+        
+- 2010.12.13 cast : remplacer 'convertType' par cast
+    -> pas sur, peut-etre preferable garder cast pour transformer en type primitifs
+    -> fonction 'castType' ? 
             
 - image creation
     specify how to use (static constructor or constructor),
@@ -31,11 +32,14 @@ class Image
     
 - 2011.06.12 ajouter des fonction d'interrogation :
     + is3D / isPlanar
-    + isGrayscale
-    + isColor
+    
+    + isScalar
+      + isGrayscale
+      + isBinary
+      + isIntensity (?)
     + isVector
-    + isComplex
-    + isBinary
+      + isColor
+      + isComplex
        
 - 2010.12.03 inclure info sur dynamique des niveaux de gris
     + minValue et maxValue -> permet stocker min/max de chaque canal (1-by-Nc)
