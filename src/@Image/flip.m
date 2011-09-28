@@ -25,14 +25,15 @@ function res = flip(this, d)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % ensure dimension is given
-if nargin==1
+if nargin == 1
     d = 1;
 end
 
 % check dim
-if d > ndims(this)
+nd = ndims(this);
+if d > nd
     error('Can not flip a dimension greater than image dimension');
 end
 
 % create empty result image
-res = Image(2, 'data', flipdim(this.data, d), 'parent', this);
+res = Image(nd, 'data', flipdim(this.data, d), 'parent', this);
