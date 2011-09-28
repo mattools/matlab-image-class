@@ -45,17 +45,16 @@ function varargout = histogram(this, varargin)
 %
 %   Examples
 %   % Histogram of a grayscale image (similar to imhist)
-%     img = imread('cameraman.tif');
+%     img = Image.read('cameraman.tif');
 %     histogram(img);
 %
 %   % RGB Histogram of a color image
-%     img = imread('peppers.png');
+%     img = Image.read('peppers.png');
 %     histogram(img);
 %
 %   % Compute histogram of a 3D image, only for pixel with non null values
 %   % (requires image processing toolbox)
-%     info = analyze75info('brainMRI.hdr');
-%     X = analyze75read(info);
+%     X = Image.read('brainMRI.hdr');
 %     histogram(X, X>0, 0:88)
 %
 %   See also
@@ -71,11 +70,24 @@ function varargout = histogram(this, varargin)
 
 %% Initialise default parameters
 
+% axis to display on, on case nargout==0
+ax = [];
+
 % default number of histogram bins
 N = 256;
 
 % default roi is empty
 roi = [];
+
+% If axis handle is specified, use it.
+if ishandle(this)
+    ax = this;
+    this = varargin{1};
+    varargin(1) = [];
+end
+
+
+%% basic data info
 
 % check if image is vector
 vectorImage = size(this.data, 4) > 1;
@@ -179,16 +191,20 @@ end
 
 % In case of no output argument, display the histogram
 if nargout == 0
+    if isempty(ax)
+        ax = gca;
+    end
+    
     % display histogram in current axis
     if ~vectorImage
         % Display grayscale histogram
-        bar(gca, x, h, 'hist');
+        bar(ax, x, h, 'hist');
         % use jet color to avoid gray display
         colormap jet;
         
-    elseif nc==3
+    elseif nc == 3
         % display each color histogram as stairs, to see the 3 curves
-        hh = stairs(gca, x, h);
+        hh = stairs(ax, x, h);
         
         % setup curve colors
         set(hh(1), 'color', [1 0 0]); % red
@@ -199,7 +215,7 @@ if nargout == 0
         % if nc is different from 3, assumes this is a spectral image, and
         % display each histogram using the HSV colormap
         map = hsv(nc);
-        hh = stairs(gca, x, h);
+        hh = stairs(ax, x, h);
         
         % setup curve colors
         for i = 1:nc
@@ -208,7 +224,8 @@ if nargout == 0
     end
     
     % setup histogram bounds
-    xlim([minimg maximg]);
+    w = x(2) - x(1);
+    set(ax, 'xlim', [x(1)-w x(end)+w]);
     
     % set title and figure name
     if ~isempty(this.name)
@@ -219,19 +236,19 @@ if nargout == 0
     title(str);
     set(gcf, 'name', str);
     
-elseif nargout==1
+elseif nargout == 1
     % return histogram
     varargout = {h};
     
-elseif nargout==2
+elseif nargout == 2
     % return histogram and x placement
     varargout = {h, x};
     
-elseif nargout==3
+elseif nargout == 3
     % return red, green and blue histograms as separate outputs
     varargout = {h(:,1), h(:,2), h(:,3)};
     
-elseif nargout==4
+elseif nargout == 4
     % return red, green and blue histograms as separate outputs as well as
     % the bin centers
     varargout = {h(:,1), h(:,2), h(:,3), x};
@@ -246,8 +263,8 @@ function h = computeDataHistogram(img, x, roi)
 
 if isempty(roi)
     % histogram of the whole image
-    h = hist(double(img(:)), x)';
+    h = hist(img(:), x)';
 else
     % histogram constrained to ROI
-    h = hist(double(img(roi)), x)';
+    h = hist(img(roi), x)';
 end    
