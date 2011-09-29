@@ -9,9 +9,12 @@ function axis = parseAxisIndex(axis)
 %   
 %
 %   Example
-%   ind = Image.parseAxisIndex('x')
+%   ind = parseAxisIndex('x')
 %   ind = 
 %         1
+%   ind = parseAxisIndex(3)
+%   ind = 
+%         3
 %
 %   See also
 %
@@ -22,12 +25,9 @@ function axis = parseAxisIndex(axis)
 % Created: 2010-10-20,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-warning('Image:deprecated', ...
-    'This static method is deprecated. Use privat method instead');
-
 if isnumeric(axis)
     % check index bounds
-    if axis<1 || axis>3
+    if axis < 1 || axis > 3
         error('Axis index should be comprised between 1 and 3');
     end
     

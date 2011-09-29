@@ -150,7 +150,7 @@ set(hSliceXZ, 'ButtonDownFcn', @startDragCrossLine);
 axes('parent', hf, 'units', 'normalized', 'visible', 'off', ...
     'position', [width1 0 width2 height2], ...
     'ydir', 'reverse', 'zdir', 'reverse');
-[hSlice3dXY hSlice3dYZ hSlice3dXZ] = this.showOrthoSlices(pos);
+[hSlice3dXY hSlice3dYZ hSlice3dXZ] = showOrthoSlices(this, pos);
 
 % show orthogonal lines
 hLine3dX = line([xdata(1) xdata(end)], [yPos yPos], [zPos zPos], 'color', 'r');

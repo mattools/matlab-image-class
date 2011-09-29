@@ -26,7 +26,7 @@ function slice = getSlice(this, dir, index)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % parse axis, and check bounds
-dir = Image.parseAxisIndex(dir);
+dir = parseAxisIndex(dir);
 
 % ndims = length(size(this.data));
 switch dir
