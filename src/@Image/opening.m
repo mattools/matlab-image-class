@@ -1,5 +1,5 @@
-function res = open(this, varargin)
-%OPEN Computes morphological opening of image
+function res = opening(this, varargin)
+%OPENING Morphological opening of an image
 
 % process data buffer, using Matlab Image processing Toolbox
 data = imopen(this.getBuffer(), varargin{:});

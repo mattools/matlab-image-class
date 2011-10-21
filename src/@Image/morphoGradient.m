@@ -10,13 +10,13 @@ function res = morphoGradient(this, se)
 %   This function is mainly a shortcut to apply all operations in one call.
 %
 %   Example
-%   img = Image.read('cameraman.tif');
-%   se = ones(3, 3);
-%   mgrad = morphoGradient(img, se);
-%   show(mgrad);
+%     img = Image.read('cameraman.tif');
+%     se = ones(3, 3);
+%     mgrad = morphoGradient(img, se);
+%     show(mgrad);
 %
 %   See also
-%   dilate, erode, subtract
+%   dilation, erosion, subtract
 %
 %
 % ------
