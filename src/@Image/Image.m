@@ -47,7 +47,7 @@ properties
     
     % spatial origin of image
     % corresponding to position of pixel (1,1) or voxel (1,1,1)
-    origin          = [0 0];
+    origin          = [1 1];
     
     % the amount of space between two pixels or voxels
     spacing         = [1 1];
@@ -96,7 +96,7 @@ methods (Access = protected)
     function this = Image(varargin)
         %IMAGE Constructor for Image object.
         
-        if nargin==0
+        if nargin == 0
             % empty constructor
             % (nothing to do !)
             
@@ -150,12 +150,12 @@ methods (Access = protected)
             
             % update other data depending on image dimension
             this.dimension = nd;
-            this.origin  = zeros(1, nd);
+            this.origin  = ones(1, nd);
             this.spacing = ones(1, nd);
         end
         
         % assumes there are pairs of param-values
-        while length(varargin)>1
+        while length(varargin) > 1
             varName = lower(varargin{1});
             value = varargin{2};
             
@@ -263,6 +263,11 @@ methods
         this.calibrated = true;
     end
        
+    function setUnitName(this, newName)
+        this.unitName = newName;
+        this.calibrated = true;
+    end
+    
     function [index isInside] = pointToIndex(this, point)
         % Converts point in physical coordinate into image index
 

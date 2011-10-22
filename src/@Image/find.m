@@ -19,11 +19,18 @@ function varargout = find(this, varargin)
 %
 %
 %   Example
+%     % find linear indices in an image
 %     find(Image.create([0 1 0;1 1 0]))
 %     ans = 
 %         2
 %         4
 %         5
+%
+%     % Find pixel positions in binary image, and display in superposition
+%     img = Image.read('circles.png');
+%     figure; show(img);
+%     [x y] = find(img);
+%     hold on; plot(x, y, '.');
 %
 %   See also
 %
