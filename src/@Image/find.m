@@ -37,10 +37,12 @@ function varargout = find(this, varargin)
 nd = this.dimension;
 
 if nd <= 2
+    % Process 2D image
     varargout = cell(1, max(nargout, 1));
     [varargout{:}] = find(this.data, varargin{:});
 
 elseif nd == 3
+    % Process 3D image -> need to take care of nargout
     inds = find(this.data, varargin{:});
     
     if nargout <= 1

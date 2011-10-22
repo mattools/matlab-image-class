@@ -16,7 +16,7 @@ function res = morphoGradient(this, se)
 %     show(mgrad);
 %
 %   See also
-%   dilation, erosion, subtract
+%   dilation, erosion, morphoLaplacian, subtract
 %
 %
 % ------
