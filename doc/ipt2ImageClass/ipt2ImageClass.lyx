@@ -377,7 +377,7 @@ imdilate
 \begin_inset Text
 
 \begin_layout Plain Layout
-dilate
+dilation
 \end_layout
 
 \end_inset
@@ -406,7 +406,7 @@ imerode
 \begin_inset Text
 
 \begin_layout Plain Layout
-erode
+erosion
 \end_layout
 
 \end_inset
@@ -435,7 +435,7 @@ imclose
 \begin_inset Text
 
 \begin_layout Plain Layout
-close
+closing
 \end_layout
 
 \end_inset
@@ -464,7 +464,7 @@ imopen
 \begin_inset Text
 
 \begin_layout Plain Layout
-open
+opening
 \end_layout
 
 \end_inset
@@ -502,7 +502,7 @@ topHat
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+renommer en whiteTopHat ?
 \end_layout
 
 \end_inset
@@ -531,7 +531,7 @@ bottomHat
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+renommer en blackTopHat ?
 \end_layout
 
 \end_inset
