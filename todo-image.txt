@@ -1,17 +1,21 @@
 TODO-list for project OOLIP
 ---------------------------
 
-- 2010.06.26 refaire quelques traitements de demos en utilisant class Image
-    + squeletisation
-
 class Image
 ===========
 
-- 2011.09.01 add support for 3D slice draging in showOrthoSLices
+- 2011.11.08 implement regionproperties, or equivalent
+
+- 2011.10.22 use [1 1] as default origin, to keep compatibility with Matlab
 
 - 2010.11.26 imRescale (find a better name)
     -> adjustDynamic ?
-        
+    -> utiliser une fonction 'helper' computeDisplayExtent
+
+- 2011.10.09 add function 'coutours', that returns a set of polygons
+    + see bwboundary
+    + see also findContour
+                
 - 2010.11.26 operateur min et max: un ou deux arguments
     -> un argument: renvoie le max dans l'image
     -> deux arguments: renvoie nouvelle image avec calcul du min ou du max
@@ -25,31 +29,25 @@ class Image
     with all psb (2D, 3D, vector, color, movie)
     and implement
 
-- 2011.06.12 constructor: should process parent before every any arg
+- 2011.06.12 constructor: should process parent before any other arg
 
 - 2011.07.04 subsref et subsasgn: 
     linear indexing should return 1xNcxNt arrays
     
 - 2011.06.12 ajouter des fonction d'interrogation :
     + is3D / isPlanar
-    
-    + isScalar
-      + isGrayscale
-      + isBinary
-      + isIntensity (?)
-    + isVector
-      + isColor
-      + isComplex
-       
+      
 - 2010.12.03 inclure info sur dynamique des niveaux de gris
     + minValue et maxValue -> permet stocker min/max de chaque canal (1-by-Nc)
     + "displayRange" pour dynamique utilisee pour l'affichage
-    Autre options :
+    Autres options :
     + grayRange pour dynamique des niveaux de gris de l'image (min et max des elements)
     + ou valueMin et valueMax -> permet stocker min/max de chaque canal
     + ou grayMin et grayMax
     + ou encore intensityRange ?
     
+- 2011.09.01 add support for 3D slice draging in showOrthoSLices
+
 - Think about other image implementations:
     - 2010.06.24 ImageView: use data from another image, but cropped
 	   
@@ -59,14 +57,14 @@ class Image
     + catChannels <=> cat(4, ...)
     + catFrames <=> cat(5, ...)
     
-- add functions from Imael library:
-    + 2011.02.18 clearBorders for binary images (use imclearborders)
-        * or call it 'removeBorderRegions'
-
 - image arithmetic:
     * use imadd, imsubtract... when possible...
     
-
+- 2011.10.07 selection de particules sur la taille, ou autre param...
+    + keepLargestRegion(BIN or LBL)
+    + filterRegions(LBL, PARAM, OP, VALUE)
+    + areaOpening(LBL/BIN, THRESH [, CONN])
+    
 - 2011.02.27 réfléchir à la manière de gérer les conversions d'espaces couleurs
     ainsi que de niveaux de gris.
     + une fonction "convert", avec un argument pour le type de destination

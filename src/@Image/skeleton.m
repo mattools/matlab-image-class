@@ -25,6 +25,8 @@ function res = skeleton(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 
+%% Parse input arguments
+
 % Error checks
 if this.dimension ~= 2
     error('Image:WrongDimension', 'Input image should have dimension 2');
@@ -36,6 +38,12 @@ end
 
 % default arguments
 method = 'thin';
+
+% if only one argument is given, it is assumed to be the method name
+if length(varargin) == 1
+    method = varargin{1};
+    varargin(1) = [];
+end
 
 % extract input arguments
 while length(varargin) > 1
@@ -49,6 +57,9 @@ while length(varargin) > 1
 
     varargin(1:2) = [];
 end
+
+
+%% Processing
 
 % compute skeleton
 binData = bwmorph(this.data, method, inf);

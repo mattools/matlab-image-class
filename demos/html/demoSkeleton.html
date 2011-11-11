@@ -1,0 +1,153 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>demoSkeleton</title><meta name="generator" content="MATLAB 7.9"><meta name="date" content="2011-11-11"><meta name="m-file" content="demoSkeleton"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Input image</a></li><li><a href="#4">Skeleton with 'thin'</a></li><li><a href="#5">Skeleton with 'skel'</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> demoSkeleton(varargin)
+</pre><pre class="codeinput"><span class="comment">%DEMOSKELETON Demo on how to use skeleton function on Image object</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%   Example</span>
+<span class="comment">%   demoSkeleton</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% ------</span>
+<span class="comment">% Author: David Legland</span>
+<span class="comment">% e-mail: david.legland@grignon.inra.fr</span>
+<span class="comment">% Created: 2011-11-11,    using Matlab 7.9.0.529 (R2009b)</span>
+<span class="comment">% Copyright  2011 INRA - Cepia Software Platform.</span>
+</pre><h2>Input image<a name="3"></a></h2><pre class="codeinput"><span class="comment">% read input image</span>
+bin = Image.read(<span class="string">'circles.png'</span>);
+
+<span class="comment">% display</span>
+show(bin);
+</pre><img vspace="5" hspace="5" src="demoSkeleton_01.png" alt=""> <h2>Skeleton with 'thin'<a name="4"></a></h2><pre class="codeinput"><span class="comment">% compute skeleton (same as "skeleton(bin, 'method', 'thin');")</span>
+skel = skeleton(bin);
+figure;
+show(skel);
+
+<span class="comment">% compute and display overlay</span>
+ovr = overlay(bin, skel);
+figure;
+show(ovr);
+</pre><img vspace="5" hspace="5" src="demoSkeleton_02.png" alt=""> <img vspace="5" hspace="5" src="demoSkeleton_03.png" alt=""> <h2>Skeleton with 'skel'<a name="5"></a></h2><pre class="codeinput"><span class="comment">% compute skeleton</span>
+skel2 = skeleton(bin, <span class="string">'method'</span>, <span class="string">'skel'</span>);
+figure;
+show(skel2);
+
+<span class="comment">% compute and display overlay</span>
+ovr2 = overlay(bin, skel2);
+figure;
+show(ovr2);
+</pre><img vspace="5" hspace="5" src="demoSkeleton_04.png" alt=""> <img vspace="5" hspace="5" src="demoSkeleton_05.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.9<br></p></div><!--
+##### SOURCE BEGIN #####
+function demoSkeleton(varargin)
+%DEMOSKELETON Demo on how to use skeleton function on Image object
+%
+%   
+%   Example
+%   demoSkeleton
+%
+%   
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+% Author: David Legland
+% e-mail: david.legland@grignon.inra.fr
+% Created: 2011-11-11,    using Matlab 7.9.0.529 (R2009b)
+% Copyright  2011 INRA - Cepia Software Platform.
+
+%% Input image
+
+% read input image
+bin = Image.read('circles.png');
+
+% display
+show(bin);
+
+
+%% Skeleton with 'thin'
+
+% compute skeleton (same as "skeleton(bin, 'method', 'thin');")
+skel = skeleton(bin);
+figure;
+show(skel);
+
+% compute and display overlay 
+ovr = overlay(bin, skel);
+figure;
+show(ovr);
+
+
+%% Skeleton with 'skel'
+
+% compute skeleton
+skel2 = skeleton(bin, 'method', 'skel');
+figure;
+show(skel2);
+
+% compute and display overlay
+ovr2 = overlay(bin, skel2);
+figure;
+show(ovr2);
+
+##### SOURCE END #####
+--></body></html>

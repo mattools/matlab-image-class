@@ -29,11 +29,11 @@ else
     pos = varargin{1};
 end
 
-% show each slice
+% display three orthogonal slices
 hold on;
-hyz = showXSlice(this, pos(1));
-hxz = showYSlice(this, pos(2));
-hxy = showZSlice(this, pos(3));
+hyz = showSlice3d(this, 1, pos(1));
+hxz = showSlice3d(this, 2, pos(2));
+hxy = showSlice3d(this, 3, pos(3));
 
 % use equal spacing by default
 axis equal;
