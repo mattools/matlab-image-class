@@ -1,5 +1,10 @@
 function res = erosion(this, varargin)
 %EROSION Morphological erosion of an image
+%
+%   See Also
+%     dilation, opening, closing, morphoGradient
+%
+
 
 % process data buffer, using Matlab Image processing Toolbox
 data = imerode(this.getBuffer(), varargin{:});

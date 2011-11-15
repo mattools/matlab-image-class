@@ -229,7 +229,7 @@ gradient
 \begin_inset Text
 
 \begin_layout Plain Layout
-Renvoie un objet de type Image multi-canal
+Renvoie un objet de type Image avec un canal par direction
 \end_layout
 
 \end_inset
@@ -493,7 +493,7 @@ imtophat
 \begin_inset Text
 
 \begin_layout Plain Layout
-topHat
+whiteTopHat
 \end_layout
 
 \end_inset
@@ -502,7 +502,7 @@ topHat
 \begin_inset Text
 
 \begin_layout Plain Layout
-renommer en whiteTopHat ?
+
 \end_layout
 
 \end_inset
@@ -522,7 +522,7 @@ imbottomhat
 \begin_inset Text
 
 \begin_layout Plain Layout
-bottomHat
+blackTopHat
 \end_layout
 
 \end_inset
@@ -531,7 +531,7 @@ bottomHat
 \begin_inset Text
 
 \begin_layout Plain Layout
-renommer en blackTopHat ?
+
 \end_layout
 
 \end_inset

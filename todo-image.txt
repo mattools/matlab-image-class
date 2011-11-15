@@ -4,10 +4,9 @@ TODO-list for project OOLIP
 class Image
 ===========
 
-- 2011.11.08 implement regionproperties, or equivalent
-
-- 2011.10.22 use [1 1] as default origin, to keep compatibility with Matlab
-
+- 2011.11.08 implement regionProperties, or equivalent
+    - renvoie une DataTable ?
+    
 - 2010.11.26 imRescale (find a better name)
     -> adjustDynamic ?
     -> utiliser une fonction 'helper' computeDisplayExtent
@@ -23,7 +22,11 @@ class Image
 - 2010.12.13 cast : remplacer 'convertType' par cast
     -> pas sur, peut-etre preferable garder cast pour transformer en type primitifs
     -> fonction 'castType' ? 
-            
+    + 2011.11.13 : cast naturel ou forcé : convertit le tableau de donnees, et
+        renvoie un objet Image.
+        cast vers type primitif via "buffer" ou "data"
+        
+        
 - image creation
     specify how to use (static constructor or constructor),
     with all psb (2D, 3D, vector, color, movie)
@@ -36,7 +39,14 @@ class Image
     
 - 2011.06.12 ajouter des fonction d'interrogation :
     + is3D / isPlanar
-      
+    + 2011.11.13 : isPlanarImage, is3DImage
+    
+- 2011.11.11 voir si les fonctions pourraient etre renommees :
+    + isGrayscale -> isGrayscaleImage 
+    + isVector -> isVectorImage 
+    + ...
+    (meilleure gestion des conflits de nom)
+          
 - 2010.12.03 inclure info sur dynamique des niveaux de gris
     + minValue et maxValue -> permet stocker min/max de chaque canal (1-by-Nc)
     + "displayRange" pour dynamique utilisee pour l'affichage
@@ -50,8 +60,6 @@ class Image
 
 - Think about other image implementations:
     - 2010.06.24 ImageView: use data from another image, but cropped
-	   
-- 2010.10.22 manage image anatomical orientation
        
 - 2011.08.07 add new concatenation functions:
     + catChannels <=> cat(4, ...)
@@ -60,10 +68,11 @@ class Image
 - image arithmetic:
     * use imadd, imsubtract... when possible...
     
+- 2010.10.22 manage image anatomical orientation
+    
 - 2011.10.07 selection de particules sur la taille, ou autre param...
     + keepLargestRegion(BIN or LBL)
     + filterRegions(LBL, PARAM, OP, VALUE)
-    + areaOpening(LBL/BIN, THRESH [, CONN])
     
 - 2011.02.27 réfléchir à la manière de gérer les conversions d'espaces couleurs
     ainsi que de niveaux de gris.
