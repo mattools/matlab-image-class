@@ -53,7 +53,7 @@ img = Image.create(uint8(dat));
 xImg = img.getX();
 yImg = img.getY();
 zImg = img.getZ();
-[x y z] = meshgrid(0:maxX-1, 0:maxY-1, 0:maxZ-1);
+[x y z] = meshgrid(1:maxX, 1:maxY, 1:maxZ);
 assertElementsAlmostEqual(x, xImg);
 assertElementsAlmostEqual(y, yImg);
 assertElementsAlmostEqual(z, zImg);
@@ -65,7 +65,7 @@ dat = ones(10, 15);
 img = Image.create(dat);
 xImg = img.getX();
 yImg = img.getY();
-[x y] = meshgrid(0:14, 0:9);
+[x y] = meshgrid(1:15, 1:10);
 assertElementsAlmostEqual(x, xImg);
 assertElementsAlmostEqual(y, yImg);
 

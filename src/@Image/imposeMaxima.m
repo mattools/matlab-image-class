@@ -43,7 +43,8 @@ if isa(marker, 'Image')
     marker = marker.data;
 end
 
-data = imimposemax(this.data, marker, conn);
+% use imposemin on complement image, and complement the result
+data = imcomplement(imimposemin(imcomplement(this.data), marker, conn));
 
 % create result image
 res = Image(this.dimension, 'data', data, 'parent', this, 'type', this.type);

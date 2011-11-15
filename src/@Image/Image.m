@@ -289,11 +289,12 @@ methods
             point(:,i) = (point(:,i) - this.origin(i)) / this.spacing(i) + 1;
         end
         
-        if nargout>1
+        if nargout > 1
             % check if resulting points are inside the image
-            isInside = true(size(nI));
+            n = size(point, 1);
+            isInside = true(size(n));
             isInside(find(sum(point <= 0, 2))) = false;
-            isInside(find(sum(point >  this.dataSize(nI,:), 2))) = false;
+            isInside(find(sum(point >  this.dataSize(n,:), 2))) = false;
         end
     end
     

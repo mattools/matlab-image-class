@@ -1,4 +1,4 @@
-function frame = getFrame(varargin)
+function frame = getFrame(this, index)
 %GETFRAME  Return a specific frame of a movie Image
 %
 %   FRAME = IMG.getFrame(INDEX)

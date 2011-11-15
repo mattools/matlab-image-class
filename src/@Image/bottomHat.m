@@ -15,7 +15,7 @@ function res = bottomHat(this, varargin)
 warning('Image:deprecated', ...
     'method "bottomHat" is deprecated, use "blackTopHat" instead');
 
-dat = imbottomhat(this.data, varargin{1});
+dat = imbothat(this.data, varargin{1});
 
 % create result image
 res = Image(this.dimension, 'data', dat, 'parent', this);

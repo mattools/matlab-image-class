@@ -34,14 +34,18 @@ if nd == 2
          
 elseif nd == 3
     N = double(max(this.data(:)));
+    dim = size(this.data);
+    dim = dim(1:3);
+    
+    map = varargin{1};
     
     % extract each channel
-    r = zeros(size(img), 'uint8');
-    g = zeros(size(img), 'uint8');
-    b = zeros(size(img), 'uint8');
+    r = zeros(dim, 'uint8');
+    g = zeros(dim, 'uint8');
+    b = zeros(dim, 'uint8');
     
     for label = 1:N
-        inds = find(img==label);
+        inds = find(this.data==label);
         r(inds) = 255 * map(label, 1);
         g(inds) = 255 * map(label, 2);
         b(inds) = 255 * map(label, 3);

@@ -1,4 +1,4 @@
-function s = getSize(this)
+function s = getSize(this, dim)
 %GETSIZE Return the size of an image, in pixels
 %
 %   siz = img.getSize()

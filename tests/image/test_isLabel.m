@@ -27,7 +27,7 @@ assertFalse(res);
 function test_rice
 % Test on a binary image
 img = Image.read('rice.png');
-img2 = topHat(img, ones(20, 20));
+img2 = whiteTopHat(img, ones(20, 20));
 lbl = labeling(img2 > 50);
 res = isLabel(lbl);
 

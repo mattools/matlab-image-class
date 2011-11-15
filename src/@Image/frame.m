@@ -1,4 +1,4 @@
-function frame = frame(varargin)
+function frame = frame(this, index)
 %FRAME  Return a specific frame of a movie Image
 %
 %   FRAME = frame(IMG, INDEX)
