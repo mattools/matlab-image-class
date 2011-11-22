@@ -1,39 +1,35 @@
-function b = isIntensity(this)
-%isIntensity Checks if an image is intensity (signed scalar)
+function b = isIntensityImage(this)
+%ISINTENSITYIMAGE Checks if an image is intensity (signed scalar)
 %
-%   Note: deprecated ! use "isIntensityImage" instead.
-%
-%   B = isIntensity(IMG)
+%   B = isIntensityImage(IMG)
 %   Returns true if an image is intensity. The difference between intensity
 %   and grayscale images is that intensity images are signed. 
 %
 %
 %   Example
 %     img = Image.read('cameraman.tif');
-%     isIntensity(img)
+%     isIntensityImage(img)
 %     ans =
 %         0
 %     grad = norm(gradient(img));
-%     isIntensity(grad)
+%     isIntensityImage(grad)
 %     ans =
 %         1
 %
 %     img = Image.read('peppers.png');
-%     isIntensity(img)
+%     isIntensityImage(img)
 %     ans =
 %         0
 %
 %
 %   See also
-%     isGrayscale, isScalar, isLabel, isColor, isVector
+%     isGrayscaleImage, isScalarImage, isLabelImage, isColorImage,
+%     isVectorImage
 %
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2011-09-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
-
-warning('Image:deprecated', ...
-    'method "isIntensity" is deprecated, use "isIntensityImage" instead');
 
 b = strcmp(this.type, 'intensity');

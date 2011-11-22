@@ -1,10 +1,10 @@
-function test_suite = test_isColor(varargin) %#ok<STOUT>
-%TEST_ISCOLOR  Test case for the file isColor
+function test_suite = test_isIntensityImage(varargin) %#ok<STOUT>
+%TEST_ISINTENSITYIMAGE  Test case for the file isIntensity
 %
-%   Test case for the file isColor
+%   Test case for the file isIntensityImage
 
 %   Example
-%   test_isColor
+%   test_isIntensityImage
 %
 %   See also
 %
@@ -20,19 +20,22 @@ initTestSuite;
 function test_grayscale %#ok<*DEFNU>
 % Test on a grayscale image
 img = Image.read('cameraman.tif');
-res = isColor(img);
+res = isIntensityImage(img);
 assertFalse(res);
       
 
-function test_binary
+function test_rice
 % Test on a binary image
-img = Image.read('circles.png');
-res = isColor(img);
-assertFalse(res);
+
+img = Image.read('rice.png');
+grad = norm(gradient(img));
+res = isIntensityImage(grad);
+
+assertTrue(res);
 
 
 function test_color
 % Test on a color image
 img = Image.read('peppers.png');
-res = isColor(img);
-assertTrue(res);
+res = isIntensityImage(img);
+assertFalse(res);

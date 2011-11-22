@@ -1,10 +1,10 @@
-function test_suite = test_isGrayscale(varargin) %#ok<STOUT>
-%TEST_ISGRAYSCALE  Test case for the file isGrayscale
+function test_suite = test_isColorImage(varargin) %#ok<STOUT>
+%TEST_ISCOLORIMAGE  Test case for the file isColorImage
 %
-%   Test case for the file isGrayscale
+%   Test case for the file isColorImage
 
 %   Example
-%   test_isGrayscale
+%   test_isColorImage
 %
 %   See also
 %
@@ -20,19 +20,19 @@ initTestSuite;
 function test_grayscale %#ok<*DEFNU>
 % Test on a grayscale image
 img = Image.read('cameraman.tif');
-res = isGrayscale(img);
-assertTrue(res);
+res = isColorImage(img);
+assertFalse(res);
       
 
 function test_binary
 % Test on a binary image
 img = Image.read('circles.png');
-res = isGrayscale(img);
-assertTrue(res);
+res = isColorImage(img);
+assertFalse(res);
 
 
 function test_color
 % Test on a color image
 img = Image.read('peppers.png');
-res = isGrayscale(img);
-assertFalse(res);
+res = isColorImage(img);
+assertTrue(res);

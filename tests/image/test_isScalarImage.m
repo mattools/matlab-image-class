@@ -1,10 +1,10 @@
-function test_suite = test_isScalar(varargin) %#ok<STOUT>
-%TEST_ISSCALAR  Test case for the file isScalar
+function test_suite = test_isScalarImage(varargin) %#ok<STOUT>
+%TEST_ISSCALARImage  Test case for the file isScalarImage
 %
-%   Test case for the file isScalar
+%   Test case for the file isScalarImage
 
 %   Example
-%   test_isScalar
+%   test_isScalarImage
 %
 %   See also
 %
@@ -20,19 +20,19 @@ initTestSuite;
 function test_grayscale %#ok<*DEFNU>
 % Test on a grayscale image
 img = Image.read('cameraman.tif');
-res = isScalar(img);
+res = isScalarImage(img);
 assertTrue(res);
       
 
 function test_binary
 % Test on a binary image
 img = Image.read('circles.png');
-res = isScalar(img);
+res = isScalarImage(img);
 assertTrue(res);
 
 
 function test_color
 % Test on a color image
 img = Image.read('peppers.png');
-res = isScalar(img);
+res = isScalarImage(img);
 assertFalse(res);

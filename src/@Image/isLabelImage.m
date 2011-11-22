@@ -1,7 +1,5 @@
-function b = isLabel(this)
-%ISLABEL Checks if an image is a label image
-%
-%   Note: deprecated ! use "isLabelImage" instead.
+function b = isLabelImage(this)
+%ISLABELIMAGE Checks if an image is a label image
 %
 %   B = isLabel(IMG)
 %
@@ -14,15 +12,12 @@ function b = isLabel(this)
 %         1
 %
 %   See also
-%     isGrayscale, isScalar, isBinary
+%     isGrayscaleImage, isScalarImage, isBinaryImage
 %
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
-
-warning('Image:deprecated', ...
-    'method "isLabel" is deprecated, use "isLabelImage" instead');
 
 b = strcmp(this.type, 'label');

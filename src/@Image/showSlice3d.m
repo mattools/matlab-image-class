@@ -397,7 +397,7 @@ if ~strcmp(class(data), 'uint8')
     data = uint8((double(data) - displayRange(1)) * 255 / extent);
 end
 
-if isScalar(slice)
+if isScalarImage(slice)
     % convert gray-scale slice to RGB slice
     % eventually apply a LUT
     if ~isempty(lut)

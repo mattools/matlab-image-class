@@ -1,10 +1,10 @@
-function test_suite = test_isLabel(varargin) %#ok<STOUT>
-%TEST_ISLABEL  Test case for the file isLabel
+function test_suite = test_isBinaryImage(varargin) %#ok<STOUT>
+%TEST_ISBINARYIMAGE  Test case for the file isBinaryImage
 %
-%   Test case for the file isLabel
+%   Test case for the file isBinaryImage
 
 %   Example
-%   test_isLabel
+%   test_isBinaryImage
 %
 %   See also
 %
@@ -20,22 +20,19 @@ initTestSuite;
 function test_grayscale %#ok<*DEFNU>
 % Test on a grayscale image
 img = Image.read('cameraman.tif');
-res = isLabel(img);
+res = isBinaryImage(img);
 assertFalse(res);
       
 
-function test_rice
+function test_binary
 % Test on a binary image
-img = Image.read('rice.png');
-img2 = whiteTopHat(img, ones(20, 20));
-lbl = labeling(img2 > 50);
-res = isLabel(lbl);
-
+img = Image.read('circles.png');
+res = isBinaryImage(img);
 assertTrue(res);
 
 
 function test_color
 % Test on a color image
 img = Image.read('peppers.png');
-res = isLabel(img);
+res = isBinaryImage(img);
 assertFalse(res);
