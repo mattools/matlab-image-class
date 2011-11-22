@@ -7,7 +7,7 @@ function res = cat(dim, this, varargin)
 %   cat
 %
 %   See also
-%   vertcat, horzcat, repmat
+%   vertcat, horzcat, repmat, catChannels
 %
 % ------
 % Author: David Legland

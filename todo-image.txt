@@ -34,10 +34,6 @@ New features / functions
 
 - Think about other image implementations:
     - 2010.06.24 ImageView: use data from another image, but cropped
-       
-- 2011.08.07 add new concatenation functions:
-    + catChannels <=> cat(4, ...)
-    + catFrames <=> cat(5, ...)
     
 - 2010.10.22 manage image anatomical orientation
     
@@ -84,13 +80,7 @@ Improvements
 
 - 2011.07.04 subsref et subsasgn: 
     linear indexing should return 1xNcxNt arrays
-    
-- 2011.11.11 voir si les fonctions pourraient etre renommees :
-    + isGrayscale -> isGrayscaleImage 
-    + isVector -> isVectorImage 
-    + ...
-    (meilleure gestion des conflits de nom)
-          
+           
 - image arithmetic:
     * use imadd, imsubtract... when possible...
 
@@ -98,3 +88,4 @@ Documentation
 ====        
 
 - 2011.11.22 trouver demos / exemples avec images complexe
+    * Fourier ?
