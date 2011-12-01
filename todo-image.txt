@@ -4,21 +4,8 @@ TODO-list for project OOLIP
 New features / functions
 ===========
 
-- 2011.11.08 implement regionProperties, or equivalent
-    - renvoie une DataTable ?
-    
-- 2010.11.26 imRescale (find a better name)
-    -> adjustDynamic ?
-    -> utiliser une fonction 'helper' computeDisplayExtent
+- 2011.11.25 grayscaleExtent ?
 
-- 2011.10.09 add function 'coutours', that returns a set of polygons
-    + see bwboundary
-    + see also findContour
-
-- 2011.06.12 ajouter des fonction d'interrogation :
-    + is3D / isPlanar
-    + 2011.11.13 : isPlanarImage, is3DImage
-    
 - 2010.12.03 inclure info sur dynamique des niveaux de gris
     + minValue et maxValue -> permet stocker min/max de chaque canal (1-by-Nc)
     + "displayRange" pour dynamique utilisee pour l'affichage
@@ -27,6 +14,17 @@ New features / functions
     + ou valueMin et valueMax -> permet stocker min/max de chaque canal
     + ou grayMin et grayMax
     + ou encore intensityRange ?
+    
+- 2011.11.08 implement regionProperties, or equivalent
+    - renvoie une DataTable ?
+    
+- 2011.10.09 add function 'coutours', that returns a set of polygons
+    + see bwboundary
+    + see also findContour
+
+- 2011.06.12 ajouter des fonction d'interrogation :
+    + is3D / isPlanar
+    + 2011.11.13 : isPlanarImage, is3DImage
     
 - 2011.11.22 add function evaluate, with several methods (linear, nearest-neighbor, cubic)
 
@@ -40,6 +38,7 @@ New features / functions
 - 2011.10.07 selection de particules sur la taille, ou autre param...
     + keepLargestRegion(BIN or LBL)
     + filterRegions(LBL, PARAM, OP, VALUE)
+    + ou parametricOpening ?
     
 - 2011.02.27 réfléchir à la manière de gérer les conversions d'espaces couleurs
     ainsi que de niveaux de gris.
@@ -56,6 +55,21 @@ New features / functions
         infos (calibration spatiale, buffer...)
     - call it "copy" ? (2011.08.04)
     
+Image creation
+====
+
+- image creation
+    specify how to use (static constructor or constructor),
+    with all psb (2D, 3D, vector, color, movie)
+    and implement
+
+- 2011.11.25 Image.createComplex
+
+- 2011.06.12 constructor: should process parent before any other arg
+- 2011.11.25 pbm with functions that change type: the resulting type is the parent type...
+    idea:
+    * parent check only spatial calib
+    
     
 Improvements
 =====
@@ -71,18 +85,17 @@ Improvements
         renvoie un objet Image.
         cast vers type primitif via "buffer" ou "data"     
         
-- image creation
-    specify how to use (static constructor or constructor),
-    with all psb (2D, 3D, vector, color, movie)
-    and implement
-
-- 2011.06.12 constructor: should process parent before any other arg
-
 - 2011.07.04 subsref et subsasgn: 
     linear indexing should return 1xNcxNt arrays
            
 - image arithmetic:
     * use imadd, imsubtract... when possible...
+
+Functions renaming
+====        
+    
+- 2011.12.01 geodesicReconstruction -> reconstruction ?
+
 
 Documentation
 ====        

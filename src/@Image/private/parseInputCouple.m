@@ -1,10 +1,25 @@
 function [data1 data2 parent name1 name2] = parseInputCouple(this, that, inp1, inp2)
-%PARSEINPUTCOUPLE  One-line description here, please.
+%PARSEINPUTCOUPLE Extract numeric data from image inputs
 %
 %   [DATA1 DATA2 PARENT NAME1 NAME2] = parseInputCouple(THIS, THAT)
+%   This function is used to parse inputs of functions that accept two
+%   arguments, that can be either image or numeric array, in any order.
+%   This function aims at extracting numeric data, and a pointer to an
+%   Image object.
+%
+%   THIS and THAT can be either Image classes or numeric arrays. At least
+%   one of these must be of class Image.
+%   The function returns:
+%   DATA1 is either the data array THIS, or the field "data" if THIS is an
+%   instance of Image class
+%   DATA2 is either the data array THAT, or the field "data" if THAT is an
+%   instance of Image class
+%   PARENT is a reference to THIS if it is an Image instance, or to THAT
+%   otherwise.
+%   
 %
 %   Example
-%   parseInputCouple
+%     [data1 data2 this] = parseInputCouple(this, that);
 %
 %   See also
 %
