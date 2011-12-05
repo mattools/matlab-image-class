@@ -190,10 +190,10 @@ methods (Access = protected)
        
         % additional setup
         if strcmp(this.type, 'color') && isempty(this.channelNames)
-            this.channelNames = {'Red', 'Green', 'Blue'};
+            this.channelNames = {'red', 'green', 'blue'};
         end
         if strcmp(this.type, 'complex') && isempty(this.channelNames)
-            this.channelNames = {'Real', 'Imaginary'};
+            this.channelNames = {'real', 'imaginary'};
         end
     
     end

@@ -16,7 +16,7 @@ function channel = channel(this, index)
 %     show(Image.createRGB(green, blue, red));
 %
 %   See also
-%   channelNumber, size
+%     channelNumber, catChannels, splitChannels
 %
 %
 % ------
@@ -25,14 +25,23 @@ function channel = channel(this, index)
 % Created: 2010-07-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+% check index bounds
 nc = size(this, 4);
 if index > nc
-    pattern = 'Can not get channel number %d of a image with %d channels';
+    pattern = 'Can not get channel %d of an image with %d channels';
     error('Image:channel:IndexOutsideBounds', ...
         pattern, index, nc);
 end
 
+% compute the name of the new image
+if ~isempty(this.channelNames)
+    channelName = this.channelNames{index};
+else
+    channelName = sprintf('channel%d', index);
+end
+name = sprintf('%s-%s', this.name, channelName);
+
 % create a new Image from data
 nd = ndims(this);
 channel = Image(nd, 'data', this.data(:,:,:,index,:), ...
-    'parent', this, 'type', 'grayscale');
+    'parent', this, 'type', 'grayscale', 'name', name);

@@ -10,7 +10,7 @@ function res = catFrames(this, varargin)
 %     show(res);
 %
 %   See also
-%     cat
+%     splitFrames, cat, catChannels
 %
 % ------
 % Author: David Legland

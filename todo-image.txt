@@ -27,6 +27,11 @@ New features / functions
     + 2011.11.13 : isPlanarImage, is3DImage
     
 - 2011.11.22 add function evaluate, with several methods (linear, nearest-neighbor, cubic)
+    + use interp2 or interp3
+    
+- 2011.12.02 translate improfile
+    + 'profile' ?
+    + 'lineProfile' ?    
 
 - 2011.09.01 add support for 3D slice draging in showOrthoSLices
 
@@ -91,11 +96,9 @@ Improvements
 - image arithmetic:
     * use imadd, imsubtract... when possible...
 
-Functions renaming
-====        
-    
-- 2011.12.01 geodesicReconstruction -> reconstruction ?
+- 2011.12.01 reading mhd image in double returns grayscale image, should be a double
 
+    
 
 Documentation
 ====        
