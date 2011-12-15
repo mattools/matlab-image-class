@@ -80,15 +80,18 @@ end % static methods
 methods (Static, Access = protected)
     info = metaImageInfo(fileName)
     img = metaImageRead(info)
-end % static methods
-
-%% Private static methods
-methods(Static, Access=private)
+    
     img = readstack(fileName, varargin)
 
     axis = parseAxisIndex(axis)
     % convert index or string to index    
     
+end % static methods
+
+%% Private methods
+methods(Access = protected)
+    
+    se = defaultStructuringElement(this, varargin)
 end
 
 %% Constructor declaration

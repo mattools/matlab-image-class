@@ -6,6 +6,11 @@ function res = erosion(this, varargin)
 %
 
 
+% default structuring element
+if nargin == 1
+    varargin = {defaultStructuringElement(this)};
+end
+
 % process data buffer, using Matlab Image processing Toolbox
 data = imerode(this.getBuffer(), varargin{:});
 

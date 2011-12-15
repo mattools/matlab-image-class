@@ -34,7 +34,7 @@ function res = morphoLaplacian(this, se)
 
 % default structuring element
 if nargin == 1
-    se = ones(3 * ones(1, this.dimension));
+    se = defaultStructuringElement(this);
 end
 
 % compute laplacian of the data, using double for output

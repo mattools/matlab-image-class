@@ -4,6 +4,11 @@ function res = closing(this, varargin)
 %   See Also
 %     opening, erosion, dilation, blackTopHat
 
+% default structuring element
+if nargin == 1
+    varargin = {defaultStructuringElement(this)};
+end
+
 % process data buffer, using Matlab Image processing Toolbox
 data = imclose(this.getBuffer(), varargin{:});
 

@@ -5,6 +5,11 @@ function res = dilation(this, varargin)
 %     erosion, opening, closing, morphoGradient
 %
 
+% default structuring element
+if nargin == 1
+    varargin = {defaultStructuringElement(this)};
+end
+
 % process data buffer, using Matlab Image processing Toolbox
 data = imdilate(this.getBuffer(), varargin{:});
 

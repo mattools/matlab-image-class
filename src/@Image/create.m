@@ -2,22 +2,24 @@ function img = create(varargin)
 %CREATE Static constructor of new images
 %
 %   Syntax
-%   IMG = Image.create(SIZE, TYPE);
+%   IMG = Image.create(SIZE, DATACLASS);
 %   IMG = Image.create(SIZE);
 %   IMG = Image.create(DATA);
 %   IMG = Image.create(DATA, PARAM, VALUE...);
 %
 %   Description
-%   IMG = Image.create(SIZE, TYPE);
+%   IMG = Image.create(SIZE, DATACLASS);
 %   Create a new image with size given by SIZE, and data type specified by
-%   TYPE. SIZE is a row vector with as many elements as the image
+%   DATACLASS. SIZE is a row vector with as many elements as the image
 %   dimension.
 %
 %   Example
-%   create
+%     img = Image.create([200 200], 'uint8');
+%     show(img);
+%
 %
 %   See also
-%   Image/read
+%   read
 %
 % ------
 % Author: David Legland
@@ -54,10 +56,12 @@ if isnumeric(var1) || islogical(var1)
         end
         
         % create empty data buffer
-        if ~strcmp(type, 'logical') && ~strcmp(type, 'binary')
-            data = zeros(imageSize, type);
-        else
+        if strcmp(type, 'logical') || strcmp(type, 'binary')
+            % case of binary image
             data = false(imageSize);
+        else
+            % case of grayscale image
+            data = zeros(imageSize, type);
         end
         
     else

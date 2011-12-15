@@ -33,11 +33,15 @@ function res = morphoGradient(this, se)
 
 % default structuring element
 if nargin == 1
-    se = ones(3 * ones(1, this.dimension));
+    se = defaultStructuringElement(this);
 end
 
 % compute gradient, by keeping image data type
-res = imsubtract(imdilate(this.data, se), imerode(this.data, se));
+if ~islogical(this.data)
+    res = imsubtract(imdilate(this.data, se), imerode(this.data, se));
+else
+    res = imdilate(this.data, se) & ~imerode(this.data, se);
+end
 
 % create result image
 res = Image.create('data', res, 'parent', this);
