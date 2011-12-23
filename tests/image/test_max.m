@@ -30,6 +30,24 @@ assertEqual(exp, res);
 assertTrue(isa(res, 'uint8'));
 
 
+function test_2d_color 
+
+img = Image.read('peppers.png');
+
+res = max(img);
+assertEqual([1 3], size(res));
+
+
+function test_2d_color_2
+
+img = Image.read('peppers.png');
+
+res = max(img, 50);
+assertTrue(isa(res, 'Image'));
+
+assertEqual([50 50 50], min(res));
+
+
 function test_3d
 
 dat = uint8(cat(3, [10 20 30;40 50 60], [30 40 50;60 70 80]));
