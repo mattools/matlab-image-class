@@ -44,4 +44,4 @@ else
 end
 
 % create result image
-res = Image.create('data', res, 'parent', this);
+res = Image('data', res, 'parent', this);

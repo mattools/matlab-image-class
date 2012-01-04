@@ -17,5 +17,4 @@ function frame = getFrame(this, index)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % create a new Image from data
-nd = getDimension(this);
-frame = Image(nd, 'data', this.data(:,:,:,:,index), 'parent', this);
+frame = Image('data', this.data(:,:,:,:,index), 'parent', this);

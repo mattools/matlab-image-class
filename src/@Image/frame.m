@@ -26,5 +26,4 @@ end
 
 
 % create a new Image from data
-nd = ndims(this);
-frame = Image(nd, 'data', this.data(:,:,:,:,index), 'parent', this);
+frame = Image('data', this.data(:,:,:,:,index), 'parent', this);

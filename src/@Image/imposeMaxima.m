@@ -47,4 +47,4 @@ end
 data = imcomplement(imimposemin(imcomplement(this.data), marker, conn));
 
 % create result image
-res = Image(this.dimension, 'data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', this, 'type', this.type);

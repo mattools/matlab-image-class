@@ -45,5 +45,4 @@ se = permute(se, [2 1 3]) ./ sum(se(:));
 data = imfilter(this.data, se, padopt);
 
 % create result image
-res = Image(this.dimension, 'data', data, ...
-    'parent', this);
+res = Image('data', data, 'parent', this);

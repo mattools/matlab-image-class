@@ -24,5 +24,4 @@ newData = builtin('or', data1, data2);
 
 % create result image
 newName = strcat(name1, '|', name2);
-nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);
+res = Image('data', newData, 'parent', parent, 'name', newName);

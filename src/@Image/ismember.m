@@ -19,7 +19,5 @@ function res = ismember(this, values)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 dat = ismember(this.data, values);
-
-nd = ndims(this);
-res = Image.create(nd, 'data', dat, 'parent', this, 'type', 'binary');
+res = Image('data', dat, 'parent', this, 'type', 'binary');
 

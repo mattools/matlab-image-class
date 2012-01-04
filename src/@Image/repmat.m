@@ -56,4 +56,4 @@ end
 data = repmat(this.data, siz);
 
 % create result image
-res = Image(newDim, 'data', data);
+res = Image('data', data);

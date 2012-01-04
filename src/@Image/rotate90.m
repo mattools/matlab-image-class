@@ -99,7 +99,7 @@ for i = 1:length(flipDims)
 end
 
 % create the new result image
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);
 
 % also permute spacing and origin of image
 res.origin  = this.origin(permDims(1:nd));

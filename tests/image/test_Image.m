@@ -18,14 +18,23 @@ function test_suite = test_Image(varargin) %#ok<STOUT>
 initTestSuite;
 
 
+function test_ImageFromData
+
+% create test image
+dat = [1 2 3 4;5 6 7 8;9 10 11 12];
+img = Image('data', dat');
+
+assertEqual([4 3], size(img));
+
+
 function testIsa  %#ok<*DEFNU>
 
 % test for 2D image
-img = Image.create(uint8([10 20 30;40 50 60]));
+img = Image(uint8([10 20 30;40 50 60]));
 assertTrue(isa(img, 'Image'));
 
 % test for 3D image
-img = Image.create(uint8(cat(3, [10 20 30;40 50 60], [30 40 50;60 70 80])));
+img = Image(uint8(cat(3, [10 20 30;40 50 60], [30 40 50;60 70 80])));
 assertTrue(isa(img, 'Image'));
 
 
@@ -33,7 +42,7 @@ function test_getPixel
 
 % create test image
 dat = [1 2 3 4;5 6 7 8;9 10 11 12];
-img = Image.create(dat);
+img = Image('data', dat');
 
 % get a pixel
 assertEqual(11, img.getPixel(3, 3));
@@ -49,7 +58,7 @@ maxY = 15;
 maxZ = 20;
 
 dat = ones([maxY maxX maxZ]);
-img = Image.create(uint8(dat));
+img = Image(uint8(dat));
 xImg = img.getX();
 yImg = img.getY();
 zImg = img.getZ();

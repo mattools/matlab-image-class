@@ -104,4 +104,4 @@ if ~isempty(green), rgb(:,:,:,2) = green; end
 if ~isempty(blue),  rgb(:,:,:,3) = blue;  end
 
 % create new image object
-rgb = Image(nd, 'data', rgb, 'type', 'color');
+rgb = Image('data', rgb, 'type', 'color');

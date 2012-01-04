@@ -38,4 +38,4 @@ else
 end
 
 % create result image
-HSV = Image(nd, 'data', data, 'parent', this);
+HSV = Image('data', data, 'parent', this);

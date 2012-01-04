@@ -17,5 +17,4 @@ function res = sign(this)
 
 newData = sign(this.data);
 
-nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);

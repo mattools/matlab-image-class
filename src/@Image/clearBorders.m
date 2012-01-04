@@ -31,4 +31,4 @@ end
 newData = imclearborder(this.data, conn);
 
 % create resulting image
-res = Image.create(ndims(this), 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);

@@ -42,6 +42,5 @@ end
 name = sprintf('%s-%s', this.name, channelName);
 
 % create a new Image from data
-nd = ndims(this);
-channel = Image(nd, 'data', this.data(:,:,:,index,:), ...
+channel = Image('data', this.data(:,:,:,index,:), ...
     'parent', this, 'type', 'grayscale', 'name', name);

@@ -39,12 +39,12 @@ dim = size(this.data);
 
 % compute indices of pixels within original buffer
 subsArray = cell(1, ndim);
-for i=1:ndim
+for i = 1:ndim
     subsArray{i} = origin(i):k(i):dim(i);
 end
 
 % create new image with subsampled buffer
-res = Image.create('data', this.data(subsArray{:}), 'parent', this);
+res = Image('data', this.data(subsArray{:}), 'parent', this);
 
 
 %% Post-processing

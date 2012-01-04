@@ -158,7 +158,7 @@ end
 
 %% create result image
 
-res = Image(this.dimension, 'data', res, 'parent', this);
+res = Image('data', res, 'parent', this);
 
 
 function res = immean(img, filtre, varargin)

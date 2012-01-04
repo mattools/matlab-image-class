@@ -15,4 +15,4 @@ function res = invert(this)
 % Created: 2011-06-12,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-res = Image(imcomplement(this.data), 'parent', this);
+res = Image('data', imcomplement(this.data), 'parent', this);

@@ -22,9 +22,4 @@ for i = 1:length(varargin)
     data = cat(dim, data, var.data);
 end
 
-newDim = this.dimension;
-if dim == 3
-    newDim = 3;
-end
-
-res = Image(newDim, 'data', data);
+res = Image('data', data);

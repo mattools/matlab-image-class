@@ -16,6 +16,4 @@ function res = uplus(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 newData = builtin('uplus', this.data);
-
-nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);

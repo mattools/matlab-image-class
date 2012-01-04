@@ -16,4 +16,4 @@ function res = clone(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % create new image object for storing result
-res = Image(ndims(this), 'data', this.data, 'parent', this);
+res = Image('data', this.data, 'parent', this);

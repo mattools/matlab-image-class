@@ -36,4 +36,4 @@ end
 newData = imfill(this.data, conn, 'holes');
 
 % create resulting image
-res = Image.create(ndims(this), 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);

@@ -19,4 +19,4 @@ function res = geodesicReconstruction(marker, mask, varargin)
 data = imreconstruct(marker, mask, varargin{:});
 
 % create result image
-res = Image(this.dimension, 'data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', this, 'type', this.type);

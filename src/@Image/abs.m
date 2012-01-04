@@ -17,5 +17,4 @@ function res = abs(this)
 
 newData = abs(this.data);
 
-nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);

@@ -19,4 +19,4 @@ function res = fftshift(this)
 data = fftshift(this.data);
 
 % create new image object for storing result
-res = Image.create(data, 'parent', this);
+res = Image('data', data, 'parent', this);

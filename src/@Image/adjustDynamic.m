@@ -94,7 +94,7 @@ res = (this.data - mini) * a + outMin;
 res = cast(res, outputClass);
 
 % create resulting Image
-res = Image(this.dimension, 'data', res, 'parent', this);
+res = Image('data', res, 'parent', this);
 
 
 function [mini maxi] = computeExtremeValues(data) %#ok<DEFNU>

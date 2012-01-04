@@ -13,4 +13,4 @@ end
 data = imopen(this.getBuffer(), varargin{:});
 
 % create new image object for storing result
-res = Image.create(data, 'parent', this);
+res = Image(data, 'parent', this);

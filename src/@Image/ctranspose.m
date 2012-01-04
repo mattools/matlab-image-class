@@ -27,4 +27,4 @@ end
 % permute data array
 dat = permute(this.data, [2 1 3:5]);
 
-res = Image(nd, 'data', dat, 'parent', this);
+res = Image('data', dat, 'parent', this);

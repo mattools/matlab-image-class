@@ -57,7 +57,4 @@ elseif nd == 3
 end
 
 % create new image
-nd = ndims(this);
-rgb = Image(nd, 'data', data, ...
-    'parent', this, ...
-    'type', 'color');
+rgb = Image('data', data, 'parent', this, 'type', 'color');

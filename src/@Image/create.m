@@ -36,6 +36,8 @@ var1 = varargin{1};
 
 % test for copy constructor
 if isa(var1, 'Image')
+    warning('Image:deprecated', ...
+        'deprecated syntax, use public constructor instead');
     img = Image.create(var1.data, 'parent', var1);
     return;
 end

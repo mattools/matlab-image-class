@@ -33,5 +33,4 @@ end
 norm = sqrt(norm);
 
 % create result image
-nd = ndims(this);
-norm = Image(nd, 'data', norm, 'parent', this, 'type', 'intensity');
+norm = Image('data', norm, 'parent', this, 'type', 'intensity');

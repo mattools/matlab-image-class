@@ -65,4 +65,4 @@ end
 binData = bwmorph(this.data, method, inf);
 
 % create result image
-res = Image(this.dimension, 'data', binData, 'parent', this');
+res = Image('data', binData, 'parent', this');

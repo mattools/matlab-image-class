@@ -21,4 +21,4 @@ function res = fft(this)
 data = fftn(this.data);
 
 % create new image object for storing result
-res = Image.create(data, 'parent', this, 'type', 'complex');
+res = Image('data', data, 'parent', this, 'type', 'complex');

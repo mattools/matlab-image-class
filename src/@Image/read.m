@@ -40,7 +40,7 @@ if strmatch(format, 'analyze')
     % read image in Mayo's Analyze Format
     info = analyze75info(fileName);
     data = analyze75read(info);
-    img = Image.create(data);
+    img = Image(data);
     
 elseif strmatch(format, 'metaimage')
     % read image in MetaImage format
@@ -50,7 +50,7 @@ elseif strmatch(format, 'dicom')
     % read image in DICOM format
     info = dicominfo(fileName);
     data = dicomread(info);
-    img = Image.create(data);
+    img = Image(data);
     
 else
     % otherwise, assumes format can be managed by Matlab Image Processing
@@ -60,7 +60,7 @@ else
     if size(data, 3) == 3
         vector = true;
     end
-    img = Image.create(data, 'vector', vector);
+    img = Image(data, 'vector', vector);
 end
 
 img.name = [name ext];

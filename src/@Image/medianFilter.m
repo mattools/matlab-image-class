@@ -49,5 +49,4 @@ order = ceil(sum(se(:)) / 2);
 data = ordfilt2(this.data, order, se, padopt);
 
 % create result image
-res = Image(this.dimension, 'data', data, ...
-    'parent', this);
+res = Image('data', data, 'parent', this);

@@ -100,4 +100,4 @@ elseif lmax < 2^32
 end
 
 % create result image
-res = Image(this.dimension, 'data', wat, 'parent', this, 'type', 'label');
+res = Image('data', wat, 'parent', this, 'type', 'label');

@@ -30,4 +30,4 @@ function res = whiteTopHat(this, varargin)
 dat = imtophat(this.data, varargin{1});
 
 % create result image
-res = Image(this.dimension, 'data', dat, 'parent', this);
+res = Image('data', dat, 'parent', this);

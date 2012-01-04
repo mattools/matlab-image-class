@@ -95,10 +95,25 @@ methods(Access = protected)
 end
 
 %% Constructor declaration
-methods (Access = protected)
+methods
     function this = Image(varargin)
         %IMAGE Constructor for Image object.
-        
+        %
+        %   Syntax
+        %   IMG = Image(MAT);
+        %   Creates a new image from a Matlab array. Image size, type and
+        %   dimension are determined automatically from array size and
+        %   type.
+        %
+        %   IMG = Image('data', DATA);
+        %   Creates a new image by specifying the inner data array of the
+        %   image. Useful to creates an image based on the data of another
+        %   image.
+        %   
+        %   IMG = Image(..., PARAM, VALUE);
+        %   Specify additional parameters for initializing image.
+        %
+       
         if nargin == 0
             % empty constructor
             % (nothing to do !)
@@ -119,42 +134,28 @@ methods (Access = protected)
             % update private fields
             this.copyFields(img);
 
-        else
-            % Generic constructor: parse arguments and init image
-            
+        elseif isnumeric(varargin{1}) || islogical(varargin{1})
             % first argument is either data buffer, or image dimension
-            if isnumeric(varargin{1}) || islogical(varargin{1})
-                if isscalar(varargin{1})
-                    % if argument is scalar, this is the image dimension
-                    this.dataSize = ones(1, 5);
-                    nd = varargin{1};
-                    
-                else
-                    % initialize data buffer and image size
-                    setInnerData(this, varargin{1});
-                    dims = size(varargin{1});
-                    dims(end+1:5) = 1;
-                    
-                    % determines image dimension
-                    nd = 3;
-                    if dims(3) == 1
-                        nd = 2;
-                        if dims(2) == 1
-                            nd = 1;
-                        end
-                    end
-                      
-                end
-                varargin(1) = [];
+            
+            if isscalar(varargin{1})
+                % if argument is scalar, this is the image dimension
+                this.dataSize = ones(1, 5);
+                nd = varargin{1};
+                this.dimension = nd;
                 
             else
-                error('First argument need to be numeric: either dim or data');
+                % initialize data buffer from matlab array
+                imageSize = size(varargin{1});
+                nd = length(imageSize);
+                setInnerData(this, permute(varargin{1}, [2 1 3:nd]));
+                initDimension(this);
+                
             end
+            varargin(1) = [];
             
             % update other data depending on image dimension
-            this.dimension = nd;
-            this.origin  = ones(1, nd);
-            this.spacing = ones(1, nd);
+            initCalibration(this);
+        
         end
         
         % assumes there are pairs of param-values
@@ -164,7 +165,10 @@ methods (Access = protected)
             
             switch varName
                 case 'data'
-                    this.setInnerData(value);
+                    setInnerData(this, value);
+                    initDimension(this);
+                    initCalibration(this);
+                    
                 case 'parent'
                     this.copyFields(value);
                 case 'name'
@@ -173,6 +177,14 @@ methods (Access = protected)
                     this.dimension = value;
                 case 'type'
                     this.type = value;
+                case 'vector'
+                    % if vector image is forced, permute dims 3 and 4
+                    if value
+                        setInnerData(this, permute(this.data, [1 2 4 3 5]));
+                        initDimension(this);
+                        initCalibration(this);
+                    end
+                    
                 case 'origin'
                     this.setOrigin(value);
                 case 'spacing'
@@ -226,6 +238,10 @@ methods (Access = protected)
         siz = size(this.data);
         this.dataSize(1:length(siz)) = siz;
         
+        initImageType(this);
+    end
+    
+    function initImageType(this)
         % determines a priori type of image
         if islogical(this.data)
             this.type = 'binary';
@@ -238,6 +254,28 @@ methods (Access = protected)
         end
     end
 
+    function initDimension(this)
+        % Automatically determines dimension of image from data array
+        
+        % compute image dim, 
+        dims = this.dataSize;
+        
+        nd = 3;
+        if dims(3) == 1
+            nd = 2;
+            if dims(2) == 1
+                nd = 1;
+            end
+        end        
+        this.dimension = nd;
+    end
+    
+    function initCalibration(this)
+        % initialize spatial calibration of image from its dimension.
+        nd = this.dimension;
+        this.origin  = ones(1, nd);
+        this.spacing = ones(1, nd);
+    end
 end % protected methods
 
 

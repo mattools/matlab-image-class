@@ -36,7 +36,7 @@ for i = 1:nd
 end
 
 % create new image with cropped buffer
-res = Image(nd, 'data', this.data(indices{:}), 'parent', this);
+res = Image('data', this.data(indices{:}), 'parent', this);
 
 % change origin of new image
 res.origin = newOrigin;

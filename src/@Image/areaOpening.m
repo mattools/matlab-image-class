@@ -65,4 +65,4 @@ data = ismember(data, inds);
 
 % create new image
 nd = this.dimension;
-res = Image.create(nd, 'data', data, 'parent', this, 'type', 'binary');
+res = Image.create('data', data, 'parent', this, 'type', 'binary');

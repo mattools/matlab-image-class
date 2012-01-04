@@ -18,4 +18,4 @@ warning('Image:deprecated', ...
 dat = imbothat(this.data, varargin{1});
 
 % create result image
-res = Image(this.dimension, 'data', dat, 'parent', this);
+res = Image('data', dat, 'parent', this);

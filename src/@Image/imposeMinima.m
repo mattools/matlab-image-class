@@ -46,4 +46,4 @@ end
 data = imimposemin(this.data, marker, conn);
 
 % create result image
-res = Image(this.dimension, 'data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', this, 'type', this.type);

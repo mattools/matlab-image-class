@@ -25,7 +25,7 @@ nd = ndims(this);
 
 % default filter for gradient: normalized sobel (2D or 3D)
 if nd == 2
-    sx = fspecial('sobel')/8;
+    sx = fspecial('sobel') / 8;
 else
     sx = Image.create3dGradientKernels();
 end
@@ -76,10 +76,10 @@ end
 if nargout == 1
     % compute gradient module
     if nd == 2
-        res = Image(2, 'data', cat(4, gx, gy), ...
+        res = Image('data', cat(4, gx, gy), ...
             'parent', this, 'type', 'vector');
     elseif nd == 3
-        res = Image(3, 'data', cat(4, gx, gy, gz), ...
+        res = Image('data', cat(4, gx, gy, gz), ...
             'parent', this, 'type', 'vector');
     end
     varargout{1} = res;

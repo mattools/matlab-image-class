@@ -19,4 +19,4 @@ function res = ifftshift(this)
 data = ifftshift(this.data);
 
 % create new image object for storing result
-res = Image.create(data, 'parent', this);
+res = Image('data', data, 'parent', this);

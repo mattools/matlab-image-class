@@ -42,4 +42,4 @@ res = imadd(imdilate(this.data, se), imerode(this.data, se), 'double') / 2;
 res = imsubtract(res, double(this.data));
 
 % create the result image
-res = Image.create('data', res, 'parent', this);
+res = Image('data', res, 'parent', this);

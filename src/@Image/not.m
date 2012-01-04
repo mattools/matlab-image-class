@@ -21,5 +21,4 @@ end
 
 newData = builtin('not', this.data);
 
-nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this);

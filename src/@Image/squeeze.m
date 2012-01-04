@@ -18,7 +18,5 @@ function res = squeeze(this)
 keepDims = find(this.dataSize(1:3) ~= 1);
 removeDims = find(this.dataSize(1:3) == 1);
 
-nd = length(keepDims);
-
-res = Image(nd, 'data', permute(this.data, [keepDims removeDims 4 5]));
+res = Image('data', permute(this.data, [keepDims removeDims 4 5]));
 res.type = this.type;

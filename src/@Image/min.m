@@ -34,5 +34,4 @@ newData = min(cast(data1, class0), cast(data2, class0));
 
 % create result image
 newName = strcat('min(', name1, ',', name2, ')');
-nd = ndims(this);
-res = Image(nd, 'data', newData, 'parent', parent, 'name', newName);
+res = Image('data', newData, 'parent', parent, 'name', newName);

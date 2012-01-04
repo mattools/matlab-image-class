@@ -36,4 +36,4 @@ if d > nd
 end
 
 % create empty result image
-res = Image(nd, 'data', flipdim(this.data, d), 'parent', this);
+res = Image('data', flipdim(this.data, d), 'parent', this);
