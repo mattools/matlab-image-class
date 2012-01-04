@@ -13,8 +13,9 @@ function res = medianFilter(this, se, varargin)
 %   also specify padding option. PADOPT can be one of:
 %     'zeros'
 %     'ones'
-%     'symmetric'
-%   see ordfilt2 for details. Default is 'zeros'. 
+%     'symmetric' 
+%   see ordfilt2 for details. Default is 'symmetric' (contrary to the
+%   default for ordfilt2).
 %
 %   See also:
 %   meanFilter, ordfilt2
@@ -36,7 +37,7 @@ if strcmp(class(se), 'strel')
 end
 
 % get Padopt option
-padopt = 'zeros';
+padopt = 'symmetric';
 if ~isempty(varargin)
     padopt = varargin{1};
 end
