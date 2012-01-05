@@ -1,4 +1,4 @@
-function channel = channel(this, index)
+function channel = channel(this, index, varargin)
 %CHANNEL Return a specific channel of a Vector Image
 %
 %   CHANNEL = channel(IMG, INDEX)
@@ -6,9 +6,15 @@ function channel = channel(this, index)
 %   INDEX is 1-indexed. CHANNEL is a scalar image with the same spatial
 %   dimension as the input image.
 %
+%   CHANNEL = channel(IMG, INDS)
+%   Where INDS is a row vector of indices between 1 and the number of
+%   channels in image. Returns a new vector image with the specified
+%   channels.
+%
+%
 %   Example
-%     % read a color image, extyract channels, and creates a new image with
-%     % channels in difference order
+%   % read a color image, extract channels, and creates a new image with
+%   % channels in difference order
 %     img = Image.read('peppers.png');
 %     red = channel(img, 1);
 %     green = channel(img, 2);
@@ -39,8 +45,17 @@ if ~isempty(this.channelNames)
 else
     channelName = sprintf('channel%d', index);
 end
-name = sprintf('%s-%s', this.name, channelName);
+newName = sprintf('%s-%s', this.name, channelName);
 
-% create a new Image from data
+% determines the new type (vector if several channels are given)
+if length(index) == 1
+    newType = 'grayscale';
+elseif length(index) == 3
+    newType = 'color';
+else
+    newType = 'vector';
+end
+
+% create a new Image
 channel = Image('data', this.data(:,:,:,index,:), ...
-    'parent', this, 'type', 'grayscale', 'name', name);
+    'parent', this, 'type', newType, 'name', newName, varargin{:});
