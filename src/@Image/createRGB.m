@@ -30,10 +30,36 @@ function rgb = createRGB(red, green, blue)
 % improved when initialising data array
 
 
-% create empty variable names if necessary
-if nargin < 2
-    green = [];
+%% Special case of function called with a single argument
+
+if nargin == 1
+    % only a single data array is provided. extract red, green and blue
+    % from first input.
+    if isa(red, 'Image')
+        % input is an image with at least 3 channels
+        rgb = channel(red, [1 2 3]);
+        rgb.type = 'color';
+        
+    else
+        if ndims(red) == 3
+            % input is a planar color array
+            green   = permute(red(:, :, 2), [2 1 4 3]);
+            blue    = permute(red(:, :, 3), [2 1 4 3]);
+            red     = permute(red(:, :, 1), [2 1 4 3]);
+        else
+            % input is a 3D color array
+            green   = permute(red(:, :, 2), [2 1 4 3]);
+            blue    = permute(red(:, :, 3), [2 1 4 3]);
+            red     = permute(red(:, :, 1), [2 1 4 3]);
+        end
+        
+        % create new color image
+        rgb = Image('data', cat(4, red, green, blue), 'type', 'color');
+    end
+    return;
 end
+
+% create empty variable names if necessary
 if nargin < 3
     blue = [];
 end
@@ -65,17 +91,17 @@ nd = length(dim);
 if isa(red, 'Image')
     red = getDataBuffer(red);
 else
-    red = permute(red, [2 1 3]);
+    red = permute(red, [2 1 3:nd]);
 end
 if isa(green, 'Image')
     green = getDataBuffer(green);
 else
-    green = permute(green, [2 1 3]);
+    green = permute(green, [2 1 3:nd]);
 end
 if isa(blue, 'Image')
     blue = getDataBuffer(blue);
 else
-    blue = permute(blue, [2 1 3]);
+    blue = permute(blue, [2 1 3:nd]);
 end
 
 % Dimension of result image
