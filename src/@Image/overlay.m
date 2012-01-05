@@ -33,14 +33,13 @@ function res = overlay(this, varargin)
 %
 %
 %   Examples
-%     %% the boundary overlay of a binary image
+%   %% the boundary overlay of a binary image
 %     img = Image.read('circles.png');
 %     bnd = boundary(img);
 %     ovr = overlay(img, bnd);
 %     figure; show(ovr);
 %
-%     %% Display two binary overlays on a grayscale image
-%     % (not yet possible)
+%   %% Display two binary overlays on a grayscale image
 %     % Read demo image and binarize it
 %     img = Image.read('coins.png');
 %     bin = closing(img>100, ones(3, 3));
@@ -55,7 +54,7 @@ function res = overlay(this, varargin)
 %     res = overlay(img, bnd, 'y', wat==0, [1 0 1]);
 %     figure; show(res);
 %
-%     %% colorize a part of a grayscale image
+%   %% colorize a part of a grayscale image
 %     % read input grayscale image
 %     img = Image.read('cameraman.tif');
 %     % create a colorized version of the image (yellow = red + green)
@@ -66,7 +65,7 @@ function res = overlay(this, varargin)
 %     % compute and show the overlay
 %     show(overlay(img, mask, yellow));
 % 
-%     %% Compute overlay on a 3D image
+%   %% Compute overlay on a 3D image
 %     img = Image.read('brainMRI.hdr'); % read 3D data
 %     se = ones([3 3 3]);
 %     bin = closing(img > 0, se);       % binarize and remove small holes
@@ -83,6 +82,8 @@ function res = overlay(this, varargin)
 % Created: 2011-06-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
+
+%% If number of options is 1 or 3, use recursion with specific asumptions
 
 if length(varargin) == 1
     % If only one input => this is the mask, the color is assumed to be red
@@ -109,20 +110,18 @@ end
 %% Initializations
 
 % Ensure input image has uint8 type
-if isGrayscaleImage(this) && isa(this.data, 'uint8')
-    img = permute(this.data, [2 1 3 4 5]);    
+if isa(this.data, 'uint8')
+    img = this.data;
 else
     img = adjustDynamic(this);
-    img = permute(img.data, [2 1 3 4 5]);    
-    
-%    img = im2uint8(permute(this.data, [2 1 3 4 5]));    
+    img = img.data;
 end
 
 % initialize each channel of the result image with the original image
-if strcmp(this.type, 'color')
-    red     = squeeze(img(:,:,:,1,:));
-    green   = squeeze(img(:,:,:,2,:));
-    blue    = squeeze(img(:,:,:,3,:));
+if isColorImage(this)
+    red     = img(:,:,:,1,:);
+    green   = img(:,:,:,2,:);
+    blue    = img(:,:,:,3,:);
 else
     red     = img;
     green   = img;
@@ -136,9 +135,12 @@ end
 % As long as we find inputs, mask is extracted and overlaid on result image
 while ~isempty(varargin)
     % First argument is the mask, second argument specifies color
-    mask    = varargin{1};
+    mask = varargin{1};
     if isa(mask, 'Image')
-        mask = permute(mask.data, [2 1 3 4 5]);
+        mask = mask.data;
+    else
+        % convert matlab indexing to Image class indexing
+        mask = permute(mask, [2 1 3 4 5]);
     end
     [r g b]  = parseOverlayBands(varargin{2});
     
@@ -153,9 +155,7 @@ while ~isempty(varargin)
     blue    =  blue .* uint8(mask==0) + mask .* b;
 end
 
-
-% create result image by concatenating all bands
-res = Image.createRGB(red, green, blue);
+res = Image('data', cat(4, red, green, blue), 'type', 'color');
 
 
 function [r g b] = parseOverlayBands(color)
@@ -171,10 +171,12 @@ function [r g b] = parseOverlayBands(color)
 %
 
 if isa(color, 'Image')
-    color = getBuffer(color);
-end
-
-if ischar(color)
+    % if input is an Image object, extract data buffer of each channel
+    r = getDataBuffer(channel(color, 1));
+    g = getDataBuffer(channel(color, 2));
+    b = getDataBuffer(channel(color, 3));
+    
+elseif ischar(color)
     % parse character to  a RGB triplet
     [r g b] = parseColorString(color);
     
@@ -182,7 +184,7 @@ elseif isnumeric(color)
     if size(color, 1) == 1
         % normalize color between 0 and 255
         if max(color) <= 1
-            color = color*255;
+            color = color * 255;
         end
         
         % extract each component
@@ -191,7 +193,7 @@ elseif isnumeric(color)
         b = color(3);
         
     else
-        % otherwise, color is another image
+        % otherwise, color an image given as Matlab array
         [dim isColor is3D] = computeImageInfo(color); %#ok<ASGLU>
         if isColor
             if is3D
@@ -216,7 +218,7 @@ end
 
             
 function varargout = parseColorString(color)
-% PARSECOLOR Parse color character to  a RGB triplet, between 0 and 1
+% PARSECOLORSTRING Parse color character to a RGB triplet, between 0 and 1
 
 % process special colors
 if strcmp(color, 'black')

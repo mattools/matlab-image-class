@@ -28,6 +28,23 @@ ovr = overlay(img, bnd);
 assertTrue(isColorImage(ovr));
 assertEqual(size(ovr), size(img));
 
+function test_multipleOverlay
+img = Image.read('coins.png');
+bin = closing(img>100, ones(3, 3));
+bnd = boundary(bin);
+wat = watershed(distanceMap(bin), 8);
+
+% compute and display overlay as 3 separate bands
+ovr = overlay(img, bnd, [], wat==0);
+assertTrue(isColorImage(ovr));
+assertEqual(size(ovr), size(img));
+
+
+% display result with different colors
+ovr = overlay(img, bnd, 'y', wat==0, [1 0 1]);
+assertTrue(isColorImage(ovr));
+assertEqual(size(ovr), size(img));
+
 
 function test_brainMRI
 % Compute overlay on a 3D image
@@ -56,3 +73,19 @@ assertEqual(size(ovr), size(img));
 [r g b] = splitChannels(ovr); %#ok<ASGLU,NASGU>
 assertTrue(sum(g > 128) < prod(size(img)) / 2) %#ok<PSIZE>
 
+function test_OverlayImage
+
+% read input grayscale image
+img = Image.read('cameraman.tif');
+img = Image(img(:, 1:end-50));
+
+% create a colorized version of the image (yellow = red + green)
+yellow = Image.createRGB(img, img, []);
+% compute binary a mask around the head of the cameraman
+mask = Image.create(size(img), 'binary');
+mask(80:180, 20:120) = true;
+% compute and show the overlay
+ovr = overlay(img, mask, yellow);
+
+assertTrue(isColorImage(ovr));
+assertEqual(size(ovr), size(img));
