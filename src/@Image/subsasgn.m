@@ -20,7 +20,7 @@ if strcmp(type, '.')
     % in case of dot reference, use builtin
     
     % if some output arguments are asked, use specific processing
-    if nargout>0
+    if nargout > 0
         varargout = cell(1);
         varargout{1} = builtin('subsasgn', this, subs, value);    
     else
@@ -51,7 +51,7 @@ elseif strcmp(type, '()')
         this.data(s1.subs{:}) = value';
         
     elseif ns == 3
-        % two indices: parse x y and z indices, and permute result
+        % two indices: parse x y and z indices
 
         % check that indices are within image bound
         this.data(s1.subs{:});

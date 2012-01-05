@@ -32,13 +32,13 @@ dir = parseAxisIndex(dir);
 switch dir
     case 1
         % x-slice: rows Z, cols Y
-        slice = Image(3, 'data', this.data(index,:,:,:,:), 'parent', this);
+        slice = Image('data', this.data(index,:,:,:,:), 'dimension', 3, 'parent', this);
     case 2
         % y-slice: rows Z, cols X
-        slice = Image(3, 'data', this.data(:,index,:,:,:), 'parent', this);
+        slice = Image('data', this.data(:,index,:,:,:), 'dimension', 3, 'parent', this);
     case 3
         % Z-slice: rows Y, cols X
-        slice = Image(3, 'data', this.data(:,:,index,:,:), 'parent', this);
+        slice = Image('data', this.data(:,:,index,:,:), 'dimension', 3, 'parent', this);
     otherwise
         error('should specify direction between 1 and 3');
 end

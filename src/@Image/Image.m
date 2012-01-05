@@ -171,10 +171,14 @@ methods
                     
                 case 'parent'
                     this.copyFields(value);
+                    
                 case 'name'
                     this.name = value;
+                    
                 case 'dimension'
                     this.dimension = value;
+                    initCalibration(this);
+                    
                 case 'type'
                     this.type = value;
                 case 'vector'
@@ -189,12 +193,14 @@ methods
                     this.setOrigin(value);
                 case 'spacing'
                     this.setSpacing(value);
+                    
                 case 'unitname'
                     this.unitName = value;
                 case 'axisnames'
                     this.axisNames = value;
                 case 'channelnames'
                     this.channelNames = value;
+                    
                 otherwise
                     error(['Unknown parameter name: ' varName]);
             end
