@@ -140,3 +140,7 @@ if abs(maxi - mini) < minDiff
         maxi = 1;
     end
 end
+
+% avoid rounding effects
+mini = double(mini);
+maxi = double(maxi);
