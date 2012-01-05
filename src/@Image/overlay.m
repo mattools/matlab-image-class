@@ -43,17 +43,17 @@ function res = overlay(this, varargin)
 %     % (not yet possible)
 %     % Read demo image and binarize it
 %     img = Image.read('coins.png');
-%     bin = close(img>100, ones(3, 3));
+%     bin = closing(img>100, ones(3, 3));
 %     % compute disc boundary
 %     bnd = boundary(bin);
 %     % compute inluence zone o feach disc
 %     wat = watershed(distanceMap(bin), 8);
 %     % compute and display overlay as 3 separate bands
 %     res = overlay(img, bnd, [], wat==0);
-%     figure; imshow(res);
+%     figure; show(res);
 %     % display result with different colors
 %     res = overlay(img, bnd, 'y', wat==0, [1 0 1]);
-%     figure; imshow(res);
+%     figure; show(res);
 %
 %     %% colorize a part of a grayscale image
 %     % read input grayscale image
@@ -69,10 +69,10 @@ function res = overlay(this, varargin)
 %     %% Compute overlay on a 3D image
 %     img = Image.read('brainMRI.hdr'); % read 3D data
 %     se = ones([3 3 3]);
-%     bin = close(img > 0, se);         % binarize, remove small holes
+%     bin = closing(img > 0, se);       % binarize and remove small holes
 %     bnd = boundary(bin);              % compute boundary
 %     ovr = overlay(img*3, bnd, 'm');   % compute overlay
-%     show(getSlice(ovr, 3, 7))         % display each slice
+%     show(squeeze(getSlice(ovr, 3, 7)))  % display each slice
 %
 %   See also
 %   Image/createRGB
@@ -104,11 +104,19 @@ elseif length(varargin) == 3
     end
     return;
 end
-    
+
+
 %% Initializations
 
 % Ensure input image has uint8 type
-img = im2uint8(permute(this.data, [2 1 3 4 5]));
+if isGrayscaleImage(this) && isa(this.data, 'uint8')
+    img = permute(this.data, [2 1 3 4 5]);    
+else
+    img = adjustDynamic(this);
+    img = permute(img.data, [2 1 3 4 5]);    
+    
+%    img = im2uint8(permute(this.data, [2 1 3 4 5]));    
+end
 
 % initialize each channel of the result image with the original image
 if strcmp(this.type, 'color')
@@ -140,9 +148,9 @@ while ~isempty(varargin)
     mask = uint8(mask);
         
     % update each band
-    red     =   red .* uint8(mask==0) + mask.*r;
-    green   = green .* uint8(mask==0) + mask.*g;
-    blue    =  blue .* uint8(mask==0) + mask.*b;
+    red     =   red .* uint8(mask==0) + mask .* r;
+    green   = green .* uint8(mask==0) + mask .* g;
+    blue    =  blue .* uint8(mask==0) + mask .* b;
 end
 
 
@@ -154,10 +162,10 @@ function [r g b] = parseOverlayBands(color)
 % determines r g and b values from argument value
 %
 % argument COLOR can be one of:
-% - a 1*3 row vector containing rgb values between 0 and 1
-% - a string containing color code
-% - a grayscale image
-% - a color image
+% * a 1*3 row vector containing rgb values between 0 and 1
+% * a string containing color code
+% * a grayscale image
+% * a color image
 %
 % The result are the R, G and B values coded as uint8 between 0 and 255
 %
@@ -171,9 +179,9 @@ if ischar(color)
     [r g b] = parseColorString(color);
     
 elseif isnumeric(color)
-    if size(color, 1)==1
+    if size(color, 1) == 1
         % normalize color between 0 and 255
-        if max(color)<=1
+        if max(color) <= 1
             color = color*255;
         end
         
@@ -181,6 +189,7 @@ elseif isnumeric(color)
         r = color(1);
         g = color(2);
         b = color(3);
+        
     else
         % otherwise, color is another image
         [dim isColor is3D] = computeImageInfo(color); %#ok<ASGLU>
@@ -228,17 +237,15 @@ switch color
 end
 
 % convert to uint8
-r = uint8(r*255);
-g = uint8(g*255);
-b = uint8(b*255);
+r = uint8(r * 255);
+g = uint8(g * 255);
+b = uint8(b * 255);
 
 % format output 
 if nargout == 3
-    varargout{1} = r;
-    varargout{2} = g;
-    varargout{3} = b;
+    varargout = {r, g, b};
 else
-    varargout{1} = [r g b];
+    varargout = {[r g b]};
 end
 
 function [dim isColor is3D] = computeImageInfo(img)
@@ -251,15 +258,15 @@ function [dim isColor is3D] = computeImageInfo(img)
 dim0    = size(img);
 
 % detect 3D and color image
-if length(dim0)==2
+if length(dim0) == 2
     % Default case: planar grayscale image
     dim     = dim0(1:2);
     isColor = false;
     is3D    = false;
     
-elseif length(dim0)==3
+elseif length(dim0) == 3
     % either 3D grayscale, or planar color image
-    if dim0(3)==3
+    if dim0(3) == 3
         % third dimension equals 3 ==> color image
         dim     = dim0(1:2);
         isColor = true;
@@ -271,7 +278,7 @@ elseif length(dim0)==3
         is3D    = true;
     end
     
-elseif length(dim0)==4
+elseif length(dim0) == 4
     % 3D color image
     dim     = dim0([1 2 4]);
     isColor = true;
