@@ -1,12 +1,12 @@
 function res = double(this)
-%Convert an image to a matrix
+%DOUBLE Get the same image but with data stored as double
 %   
-%   res = double(img1);
+%   IMGD = double(IMG);
 %
 %   Example
-%   img = Image2D('cameraman.tif');
-%   dat = double(img);
-%   imshow(dat, []);
+%     img = Image.read('cameraman.tif');
+%     img2 = double(img);
+%     show(img2, []);
 %
 %   See also
 %   Image/getBuffer
@@ -18,5 +18,4 @@ function res = double(this)
 % Created: 2010-06-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-dims = this.dataSize;
-res = double(permute(this.data, [2 1 3:length(dims)]));
+res = Image('data', double(this.data), 'parent', this, 'type', 'intensity');

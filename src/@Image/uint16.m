@@ -1,12 +1,12 @@
 function res = uint16(this)
-%Convert an image to a uint16 matrix
+%UINT16 Get the same image but with data stored as uint16
 %   
-%   res = uint16(img1);
+%   IMG16 = uint16(IMG);
 %
 %   Example
-%   img = Image2D('cameraman.tif');
-%   dat = uint16(img);
-%   imshow(dat);
+%     img = Image.read('cameraman.tif');
+%     img2 = uint16(img);
+%     show(img2);
 %
 %   See also
 %   Image/getBuffer
@@ -18,5 +18,4 @@ function res = uint16(this)
 % Created: 2010-06-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-dims = this.dataSize;
-res = uint16(permute(this.data, [2 1 3:length(dims)]));
+res = Image('data', uint16(this.data), 'parent', this);

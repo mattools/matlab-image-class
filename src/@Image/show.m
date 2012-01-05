@@ -7,7 +7,7 @@ function varargout = show(this, varargin)
 % Check image dimension: should be 2, or can be squeezed to 2.
 if this.dimension ~= 2
     % compute number of image dimension
-    nd = sum(this.dataSize(1:3)>1);
+    nd = sum(this.dataSize(1:3) > 1);
     if nd == 2
         img = this.squeeze();
         img.show(varargin{:});
@@ -56,7 +56,7 @@ valMax = double(max(data(:)));
 
 % If image contains both positive and negative values, use 0-centered
 % gray display
-if valMin<0
+if valMin < 0
     absMax = max(abs(valMin), valMax);
     valMin = -absMax;
     valMax = absMax;
