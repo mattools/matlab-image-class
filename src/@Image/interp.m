@@ -10,7 +10,7 @@ function val = interp(this, varargin)
 %   interp
 %
 %   See also
-%
+%   interp2, lineProfile
 %
 % ------
 % Author: David Legland
@@ -43,22 +43,48 @@ end
 
 %% Compute interpolation
 
+nv = size(point, 1);
+nc = channelNumber(this);
+val = zeros(nv, nc);
+
 if nd == 2
     % planar case
     x = xData(this);
     y = yData(this);
-    val = interp2(y, x, double(this.data), ...
-        point(:, 2), point(:, 1), method, fillValue);
     
+    if nc == 1
+        val = interp2(y, x, double(this.data), ...
+            point(:, 2), point(:, 1), method, fillValue);
+    else
+        for i = 1:nc
+            img2 = channel(this, i);
+            val(:, i) = interp2(y, x, double(img2.data), ...
+                point(:, 2), point(:, 1), method, fillValue);
+        end
+    end
 elseif nd == 3
     % 3D Case
     x = xData(this);
     y = yData(this);
     z = zData(this);
-    val = interp3(y, x, z, double(this.data), ...
-        point(:, 2), point(:, 1), point(:, 3), method, fillValue);
+    if nc == 1
+        val = interp3(y, x, z, double(this.data), ...
+            point(:, 2), point(:, 1), point(:, 3), method, fillValue);
+    else
+        for i = 1:nc
+            img2 = channel(this, i);
+            val(:, i) = interp2(y, x, z, double(img2.data), ...
+                point(:, 2), point(:, 1), point(:, 3), method, fillValue);
+        end
+    end
     
 end  
 
-% keep same size for result
+% keep same size for result, but add one dimension for channels
+if dim(end) == 1
+    dim(end) = nc;
+else
+    dim = [dim nc];
+end
+
 val = reshape(val, dim);
