@@ -145,10 +145,7 @@ methods
                 
             else
                 % initialize data buffer from matlab array
-                imageSize = size(varargin{1});
-                nd = length(imageSize);
-                setInnerData(this, permute(varargin{1}, [2 1 3:nd]));
-                initDimension(this);
+                initFromMatlabArray(varargin{1});
                 
             end
             varargin(1) = [];
@@ -217,6 +214,22 @@ methods
             this.channelNames = {'real', 'imaginary'};
         end
     
+        
+        function initFromMatlabArray(mat)
+            imageSize = size(mat);
+            nd = length(imageSize);
+            
+            % check if image is color or grayscale
+            if nd == 3 && imageSize(3) == 3 && sum(imageSize(1:2) > 5) == 2
+                % init color image
+                setInnerData(this, permute(mat, [2 1 4 3 5]));
+            else
+                % init grayscale
+                setInnerData(this, permute(mat, [2 1 3:nd]));
+            end
+            
+            initDimension(this);
+        end
     end
 end % constructor       
 

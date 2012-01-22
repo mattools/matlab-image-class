@@ -56,11 +56,11 @@ else
     % otherwise, assumes format can be managed by Matlab Image Processing
     data = imread(fileName);
     
-    vector = false;
-    if size(data, 3) == 3
-        vector = true;
-    end
-    img = Image(data, 'vector', vector);
+    %     vector = false;
+    %     if size(data, 3) == 3
+    %         vector = true;
+    %     end
+    img = Image(data);
 end
 
 img.name = [name ext];
