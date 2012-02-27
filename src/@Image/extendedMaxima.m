@@ -42,4 +42,4 @@ end
 data = imextendedmax(this.data, dyn, conn);
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', this, 'type', 'binary');
