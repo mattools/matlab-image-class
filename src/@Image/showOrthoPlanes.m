@@ -37,9 +37,9 @@ end
 %% Extract data
 
 % extract each slice
-sliceXY = squeeze(this.getSlice(3, pos(3)));
-sliceZY = squeeze(this.getSlice(1, pos(1)))';
-sliceXZ = squeeze(this.getSlice(2, pos(2)));
+sliceXY = squeeze(slice(this, 3, pos(3)));
+sliceZY = squeeze(slice(this, 1, pos(1)))';
+sliceXZ = squeeze(slice(this, 2, pos(2)));
 
 % get spatial calibration
 xdata = xData(this);
@@ -317,9 +317,9 @@ img = data.img;
 pos = data.pos;
 
 % extract each slice
-sliceXY = squeeze(img.getSlice(3, pos(3)));
-sliceZY = squeeze(img.getSlice(1, pos(1)));
-sliceXZ = squeeze(img.getSlice(2, pos(2)));
+sliceXY = squeeze(slice(img, 3, pos(3)));
+sliceZY = squeeze(slice(img, 1, pos(1)));
+sliceXZ = squeeze(slice(img, 2, pos(2)));
 
 % get spatial calibration
 xdata = xData(img);
@@ -333,15 +333,15 @@ zpos = zdata(pos(3));
 
 
 % update planar image displays
-buf = sliceXY.getBuffer;
+buf = getBuffer(sliceXY);
 set(data.hSliceXY, 'CData', buf);
 set(data.hSlice3dXY, 'CData', buf);
 
-buf = sliceZY.getBuffer;
+buf = getBuffer(sliceZY);
 set(data.hSliceZY, 'CData', permute(buf, [2 1 3]));
 set(data.hSlice3dYZ, 'CData', buf);
 
-buf = sliceXZ.getBuffer;
+buf = getBuffer(sliceXZ);
 set(data.hSliceXZ, 'CData', buf);
 set(data.hSlice3dXZ, 'CData', buf);
 

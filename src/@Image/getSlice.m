@@ -1,4 +1,4 @@
-function slice = getSlice(this, dir, index)
+function res = getSlice(this, varargin)
 %GETSLICE Extract a slice from a 3D image
 %
 %   SLICE = this.getSlice(DIR, INDEX)
@@ -9,15 +9,15 @@ function slice = getSlice(this, dir, index)
 %   element. Use the "squeeze" method to convert to a 2D image.
 %
 %   Example
-%   % extract a slice approximately in the middle of the brain
-%   I = analyze75read(analyze75info('brainMRI.hdr'));
-%   img = Image3D(I);
-%   slice = img.getSlice(3, 13);
-%   slice = slice.squeeze();
-%   slice.show();
+%     % extract a slice approximately in the middle of the brain
+%     I = analyze75read(analyze75info('brainMRI.hdr'));
+%     img = Image3D(I);
+%     zslice = getSlice(img, 3, 13);
+%     zslice = squeeze(zslice);
+%     show(zslice);
 %
 %   See also
-%
+%   slice
 %
 % ------
 % Author: David Legland
@@ -25,21 +25,7 @@ function slice = getSlice(this, dir, index)
 % Created: 2010-06-30,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-% parse axis, and check bounds
-dir = parseAxisIndex(dir);
+warning('Image:deprecated', ...
+    '''getSlice'' is deprecated, use ''slice'' instead');
 
-% ndims = length(size(this.data));
-switch dir
-    case 1
-        % x-slice: rows Z, cols Y
-        slice = Image('data', this.data(index,:,:,:,:), 'dimension', 3, 'parent', this);
-    case 2
-        % y-slice: rows Z, cols X
-        slice = Image('data', this.data(:,index,:,:,:), 'dimension', 3, 'parent', this);
-    case 3
-        % Z-slice: rows Y, cols X
-        slice = Image('data', this.data(:,:,index,:,:), 'dimension', 3, 'parent', this);
-    otherwise
-        error('should specify direction between 1 and 3');
-end
-
+res = slice(this, varargin{:});

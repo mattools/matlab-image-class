@@ -4,7 +4,7 @@ function varargout = showXSlice(this, sliceIndex)
 %   img.showXSlice(INDEX)
 %   showXSlice(IMG, INDEX)
 %   Display the given slice as a 3D planar image. INDEX is the slice index,
-%   between 0 and img.getSize(1)-1.
+%   between 1 and size(img, 1).
 %
 %   Example
 %   % Display 3 orthoslices of a humain head
@@ -18,7 +18,7 @@ function varargout = showXSlice(this, sliceIndex)
 %     xlabel('x'); ylabel('y'); zlabel('z');
 %
 %   See also
-%   showYSlice, showZSlice, getSlice
+%   showYSlice, showZSlice, slice
 %
 % ------
 % Author: David Legland
@@ -33,37 +33,37 @@ function varargout = showXSlice(this, sliceIndex)
 lx = xData(this);
 
 dim = this.dataSize;
-vy = ((0:dim(2))-.5)*this.spacing(2) - this.origin(2);
-vz = ((0:dim(3))-.5)*this.spacing(3) - this.origin(3);
+vy = ((0:dim(2))-.5) * this.spacing(2) - this.origin(2);
+vz = ((0:dim(3))-.5) * this.spacing(3) - this.origin(3);
 
 % global parameters for surface display
-params = {'facecolor','texturemap', 'edgecolor', 'none'};
+params = {'facecolor', 'texturemap', 'edgecolor', 'none'};
 
 % compute position of voxel vertices in 3D space
 [yz_y yz_z] = meshgrid(vy, vz);
-yz_x = ones(size(yz_y))*lx(sliceIndex);
+yz_x = ones(size(yz_y)) * lx(sliceIndex);
 
 % extract slice in x direction
-slice = this.getSlice(1, sliceIndex);
-slice = slice.squeeze().getBuffer();
+sli = slice(this, 1, sliceIndex);
+sli = getBuffer(squeeze(sli));
 
 % eventually converts to uint8, rescaling data between 0 and max value
-if ~strcmp(class(slice), 'uint8')
-    slice = double(slice);
-    slice = uint8(slice*255/max(slice(:)));
+if ~strcmp(class(sli), 'uint8')
+    sli = double(sli);
+    sli = uint8(sli * 255 / max(sli(:)));
 end
 
 % convert grayscale to rgb (needed by 'surface' function)
-if length(size(slice))==2
-    slice = repmat(slice, [1 1 3]);
+if length(size(sli)) == 2
+    sli = repmat(sli, [1 1 3]);
 end
 
 % display voxel values in appropriate reference space
-hs = surface(yz_x, yz_y, yz_z, slice, params{:});
+hs = surface(yz_x, yz_y, yz_z, sli, params{:});
 
 
 %% process output arguments
 
-if nargout>0
-    varargout{1} = hs;
+if nargout > 0
+    varargout = {hs};
 end

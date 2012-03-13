@@ -1,15 +1,15 @@
 function res = crop(this, box)
 %CROP Crop an image within a box
 %
-%   RES = this.crop(BOX);
+%   RES = crop(IMG, BOX);
 %   BOX has syntax [xmin xmax ymin ymax] for 2D images, or 
 %   [xmin xmax ymin ymax zmin zmax] for 3D images. 
 %
 %   Example:
-%   % note 0-indexing
-%   img = Image2D('cameraman.tif');
-%   img2 = img.crop([50 350 0 100]);
-%   img2.show([])
+%     % crop the cameraman image
+%     img = Image.read('cameraman.tif');
+%     cropped = crop(img, [50 350 1 100]);
+%     show(cropped)
 %
 
 % size of image
@@ -25,7 +25,7 @@ newOrigin = zeros(1, nd);
 % pixel coord for original image
 for i = 1:nd
     % compute all pixel positions in current direction
-    pos = (0:siz(i)-1)*this.spacing(i) + this.origin(i);
+    pos = (0:siz(i) - 1) * this.spacing(i) + this.origin(i);
     
     % select cropped pixels
     inds = find(pos >= box(2*i-1) & pos <= box(2*i));
