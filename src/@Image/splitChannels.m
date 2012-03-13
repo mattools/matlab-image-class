@@ -1,16 +1,30 @@
 function varargout = splitChannels(this)
 %SPLITCHANNELS Split the different channels of the image
 %
+%   CHANNELS = splitChannels(IMG)
 %   [CHANNEL1 CHANNEL2 ... ] = splitChannels(IMG)
+%   Splits the channels of the input image into several scalar images.
+%   CHANNELS is a cell array of scalar images.
+%   CHANNEL1, CHANNEL2... are individual scalar images.
+%
 %
 %   Example
+%     % Split a color image into 3 channels
 %     img = Image.read('peppers.png');
 %     [r g b] = splitChannels(img);
 %     img2 = Image.createRGB(b, g, r);
 %     show(img2);
 %
+%     % Split a color image into 3 channels
+%     img = Image.read('peppers.png');
+%     bands = splitChannels(img);
+%     for i = 1:length(bands)
+%       subplot(1, length(bands), i);
+%       show(bands{i});
+%     end
+%
 %   See also
-%     catChannels, createRGB
+%     catChannels, createRGB, isVectorImage
 %
 %
 % ------
@@ -20,8 +34,14 @@ function varargout = splitChannels(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 nc = size(this, 4);
-varargout = cell(1, nc);
+res = cell(1, nc);
 
 for i = 1:nc
-    varargout{i} = channel(this, i);
+    res{i} = channel(this, i);
+end
+
+if nargout <= 1
+    varargout = {res};
+else
+    varargout = res;
 end

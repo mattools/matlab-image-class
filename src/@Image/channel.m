@@ -49,7 +49,12 @@ newName = sprintf('%s-%s', this.name, channelName);
 
 % determines the new type (vector if several channels are given)
 if length(index) == 1
-    newType = 'grayscale';
+    if isfloat(this.data)
+        newType = 'intensity';
+    else
+        newType = 'grayscale';
+    end
+    
 elseif length(index) == 3
     newType = 'color';
 else
