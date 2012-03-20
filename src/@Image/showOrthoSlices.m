@@ -1,7 +1,7 @@
 function varargout = showOrthoSlices(this, varargin)
 %SHOWORTHOSLICES Show three orthogonal slices in 3D
 %
-%   this.showOrthoSlices(POS)
+%   showOrthoSlices(IMG, POS)
 %   POS is 1*3 row vector containing position of slices intersection point,
 %   in image index coordinate between 0 and size(img)-1.
 %
@@ -22,18 +22,36 @@ function varargout = showOrthoSlices(this, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % if no position is specified, use the center of image
-if isempty(varargin)
+if isempty(varargin) || ischar(varargin{1})
     siz = this.dataSize;
     pos = floor(siz/2);
 else
     pos = varargin{1};
+    varargin(1) = [];
 end
 
-% display three orthogonal slices
+% extract user defined options
+options = cell(1, 0);
+while length(varargin) > 1
+    paramName = varargin{1};
+    switch lower(paramName)
+        case 'displayrange'
+            options = [options {'DisplayRange', varargin{2}}]; %#ok<AGROW>
+        case {'lut', 'colormap'}
+            options = [options {'ColorMap', varargin{2}}]; %#ok<AGROW>
+        otherwise
+            error(['Unknown parameter name: ' paramName]);
+    end
+
+    varargin(1:2) = [];
+end
+
+
+% display three mutually orthogonal 3D slices
 hold on;
-hyz = showSlice3d(this, 1, pos(1));
-hxz = showSlice3d(this, 2, pos(2));
-hxy = showSlice3d(this, 3, pos(3));
+hyz = showSlice3d(this, 1, pos(1), options{:});
+hxz = showSlice3d(this, 2, pos(2), options{:});
+hxy = showSlice3d(this, 3, pos(3), options{:});
 
 % use equal spacing by default
 axis equal;

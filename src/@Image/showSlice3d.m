@@ -1,4 +1,4 @@
-function hs = showSlice3d(this, dim, index, varargin)
+function hs = showSlice3d(this, dim, varargin)
 %SHOWSLICE3D Show a moving 3D slice of an image
 %
 %   showSlice3d(IMG, DIR)
@@ -10,6 +10,14 @@ function hs = showSlice3d(this, dim, index, varargin)
 %   3, corresponding to the 'z' direction
 %   INDEX is the index of the slice in the corresponding direction. Default
 %   is the middle of the image in the given direction.
+%
+%   showSlice3d(..., 'ColorMap', MAP)
+%   Specifies a color map for diplaying grayscale images.
+%
+%   showSlice3d(..., 'displayRange', RANGE)
+%   Specifies the range in which image data should be displayed. RANGE is a
+%   1-by-2 row vector containing values of min and max values corresponding
+%   to displayed black and white respectively.
 %
 %   See also
 %   showOrthoSlices, showXSlice, showYSlice, showZSlice, showOrthoPlanes
@@ -31,11 +39,14 @@ function hs = showSlice3d(this, dim, index, varargin)
 siz = size(this);
 
 % use a default position if not specified
-if nargin < 3
+if nargin < 3 || ischar(varargin{1})
     index = ceil(siz / 2);
+else
+    index = varargin{1};
+    varargin(1) = [];
 end
 
-% % check axis direction
+% check axis direction
 dim = parseAxisIndex(dim);
 
 % % extract spatial calibration
@@ -57,8 +68,13 @@ dim = parseAxisIndex(dim);
 %     
 % else
 %     % no spatial calibration: use identity matrix
-    dcm = eye(4);
+%     dcm = eye(4);
 % end
+
+
+% initialize transform matrix from index coords to physical coords
+dcm = diag([this.spacing 1]);
+dcm(1:3, 4) = this.origin;
 
 % default display calibration
 displayRange = [];
@@ -70,8 +86,11 @@ while length(varargin) > 1
     switch lower(param)
         case 'displayrange'
             displayRange = varargin{2};
-        case 'lut'
+        case {'lut', 'colormap'}
             lut = varargin{2};
+            if ischar(lut)
+                lut = feval(lut, 256);
+            end
         otherwise
             error(['Unknown parameter: ' param]);
     end
@@ -83,9 +102,6 @@ end
 
 % extract the slice
 planarSlice = slice(this, dim, index);
-% if dim == 2
-%     planarSlice = planarSlice';
-% end
 
 displayData = computeSliceRGB(planarSlice, displayRange, lut);
 
@@ -340,7 +356,7 @@ else
             [ydata zdata] = meshgrid(vy, vz);
 
             lx = 1:imgSize(2);
-            xdata = ones(meshSize) * lx(index);
+            xdata = ones(size(ydata)) * lx(index);
 
         case 2
             % compute coords of u and v
@@ -349,7 +365,7 @@ else
             [zdata xdata] = meshgrid(vz, vx);
 
             ly = 1:imgSize(1);
-            ydata = ones(meshSize)*ly(index);
+            ydata = ones(size(xdata)) * ly(index);
 
         case 3
             % compute coords of u and v
@@ -358,7 +374,7 @@ else
             [xdata ydata] = meshgrid(vx, vy);
 
             lz = 1:imgSize(3);
-            zdata = ones(meshSize)*lz(index);
+            zdata = ones(size(xdata)) * lz(index);
 
         otherwise
             error('Unknown stack direction');
@@ -402,12 +418,12 @@ if isScalarImage(slice)
     % eventually apply a LUT
     if ~isempty(lut)
         lutMax = max(lut(:));
-        dim = size(slice);
+        dim = size(data);
         rgb = zeros([dim 3], 'uint8');
         
         % compute each channel
         for c = 1:size(lut, 2)
-            res = zeros(size(slice));
+            res = zeros(size(data));
             for i = 0:size(lut)-1
                 res(data==i) = lut(i+1, c);
             end
