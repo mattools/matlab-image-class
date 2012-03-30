@@ -22,7 +22,7 @@ function b = isGrayscale(this)
 %
 %
 %   See also
-%     isBinary, isIntensity, isLabel, isColor, isVector
+%     isGrayscaleImage
 %
 % ------
 % Author: David Legland
@@ -31,6 +31,6 @@ function b = isGrayscale(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 warning('Image:deprecated', ...
-    'method "isGrayscale" is deprecated, use "isColorGrayscale" instead');
+    'method "isGrayscale" is deprecated, use "isGrayscaleImage" instead');
 
 b = strcmp(this.type, 'grayscale') || strcmp(this.type, 'binary');

@@ -189,8 +189,10 @@ end
 
 %% Process output arguments
 
-% In case of no output argument, display the histogram
 if nargout == 0
+    % In case of no output argument, display the histogram
+    
+    % get current axis, or creates new one
     if isempty(ax)
         ax = gca;
     end
@@ -234,7 +236,11 @@ if nargout == 0
         str = 'Image histogram';
     end
     title(str);
-    set(gcf, 'name', str);
+    
+    % if axis is only object in figure, changes figure title
+    if isscalar(get(get(ax, 'Parent'), 'Children'))
+        set(gcf, 'name', str);
+    end
     
 elseif nargout == 1
     % return histogram
