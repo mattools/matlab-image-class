@@ -14,6 +14,10 @@ function res = gaussianFilter(this, kernelSize, sigma, varargin)
 %   In case of color images, the filtering is repeated for each channel of
 %   the image.
 %
+%   Note that there can be slight differences due to rounding effects. To
+%   minimize them, it is possible to use something like:
+%   imgf3 = uint8(imGaussFilter(single(img), 11, 4));
+%
 %   IMGF = gaussianFilter(IMG, SIZE, SIGMA, OPTIONS)
 %   Apply the same kind of options than for imfilter.
 %
@@ -25,15 +29,22 @@ function res = gaussianFilter(this, kernelSize, sigma, varargin)
 %     'circular'
 %   see imfilter for details. Default is 'replicate'. 
 %
-%   Example
+%   Examples
+%     % Gaussian filtering of a grayscale image
 %     img = Image.read('cameraman.tif');
-%     imgf = gaussFilter(img, 11, 4);
+%     imgf = gaussianFilter(img, 11, 4);
 %     % is equivalent, but is in general faster, that:
 %     imgf2 = filter(img, fspecial('gaussian', 11, 4));
 %
-%     Note that there can be slight differences due to rounding effects. To
-%     minimize them, it is possible to use something like:
-%     imgf3 = uint8(imGaussFilter(single(img), 11, 4));
+%     % Using anisotropic filtering
+%     img = Image.read('cameraman.tif');
+%     imgf = gaussianFilter(img, [13 5], [4 2]);
+%     figure; subplot(121); show(img); subplot(122); show(imgf);
+%
+%     % Gaussian filtering of a color image
+%     img = Image.read('peppers.png');
+%     imgf = gaussianFilter(img, [5 5], [2 2]);
+%     show(imgf)
 %
 %
 %   See also:
@@ -51,8 +62,8 @@ function res = gaussianFilter(this, kernelSize, sigma, varargin)
 % case of color images
 if isColorImage(this)
     r = gaussianFilter(channel(this, 1), kernelSize, sigma, varargin{:});
-    g = gaussianFilter(channel(this, 1), kernelSize, sigma, varargin{:});
-    b = gaussianFilter(channel(this, 1), kernelSize, sigma, varargin{:});
+    g = gaussianFilter(channel(this, 2), kernelSize, sigma, varargin{:});
+    b = gaussianFilter(channel(this, 3), kernelSize, sigma, varargin{:});
     res = Image.createRGB(r, g, b);
     return;    
 end
