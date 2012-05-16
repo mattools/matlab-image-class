@@ -96,7 +96,7 @@ today
 \end_layout
 
 \begin_layout Abstract
-Ce document décrit une classe 
+Description d'une classe 
 \begin_inset Quotes fld
 \end_inset
 
@@ -110,6 +110,7 @@ Image
  Il est aussi possible de stocker des informations de calibration spatiale
  à l'image, ce qui facilite l'affichage des images acquises avec des résolutions
  différentes.
+ Ce document décrit la structure interne de la classe et les choix de conception.
 \end_layout
 
 \begin_layout Standard
@@ -525,7 +526,7 @@ Données brutes
 \end_layout
 
 \begin_layout Description
-data Contient le tableau de données de l'image.
+data le tableau de données de l'image.
  Pour éviter les changements d'index de matlab, l'idée est de stocker l'image
  telle que les dimensions correspondent dans l'ordre à x, y, et éventuellement
  z.
@@ -537,21 +538,22 @@ data Contient le tableau de données de l'image.
 \end_layout
 
 \begin_layout Description
-dataSize La dimension totale de l'image.
+dataSize la dimension totale de l'image.
  Il est nécessaire de le stocker pour éviter les problèmes de dimensionnement.
  Il s'agit d'un vecteur ligne de 5 colonnes.
 \end_layout
 
 \begin_layout Description
-elementSize la taille du tableau représentant chaque pixel ou voxel.
- Vaut 1 dans le cas d'une image scalaire, N dans le cas d'une image vectorielle,
- avec N étant le nombre de composantes du vecteur.
- On peut aussi imaginer des images où chaque pixel est une matrice (ex :
- matrice d'orientations), mais l'occupation mémoire peut augmenter rapidement.
+dimension le nombre de dimensions physiques de l'image (permet de faire
+ la différence entre une image 2D et une image 3D avec un seul plan...)
 \end_layout
 
 \begin_layout Subsection
 Informations sur l'image
+\end_layout
+
+\begin_layout Description
+name le nom de l'image, typiquement celui du fichier utilisé pour la charger
 \end_layout
 
 \begin_layout Description
@@ -706,7 +708,7 @@ Pour le moment, ce constructeur est protégé.
 \end_layout
 
 \begin_layout Subsection
-Création à partir d'un tableau 
+Création à partir de tableaux
 \end_layout
 
 \begin_layout Standard
@@ -1185,75 +1187,6 @@ préciser la forme du retour
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Gestion des dimensions
-\end_layout
-
-\begin_layout Standard
-Comment gérer les coupes 2D dans un espace 3D ? C'est techniquement faisable,
- mais il faut préciser la notion de dimension.
-\end_layout
-
-\begin_layout Standard
-Par exemple, une coupe XZ aura comme taille [Nx 1 Nz].
- Si on applique une fonction 
-\begin_inset Quotes fld
-\end_inset
-
-squeeze
-\begin_inset Quotes frd
-\end_inset
-
- ou équivalent, la taille deviendra [Nx Nz 1], et la dimension sera égale
- à 2.
-\end_layout
-
-\begin_layout Standard
-Dans ce cas, comment différencier une image 2D et une coupe XY ? Dans les
- deux cas, la taille est [Nx Ny 1].
- 
-\end_layout
-
-\begin_layout Standard
-Une solution envisageable est de stocker le nombre de dimensions dans une
- variable 
-\begin_inset Quotes fld
-\end_inset
-
-dimension
-\begin_inset Quotes frd
-\end_inset
-
- ou 
-\begin_inset Quotes fld
-\end_inset
-
-nd
-\begin_inset Quotes frd
-\end_inset
-
-, qui contient le nombre de dimensions spatiales.
- Ainsi, si par exemple dimension vaut 3, alors la dimension de l'image sera
- de 3 même si elle se limite à un point, qui correspond à un simple voxel.
-\end_layout
-
-\begin_layout Subsection
-Classe utilitaire Images 
-\end_layout
-
-\begin_layout Standard
-Une classe pour fournir des méthodes statiques telles que le chargement
- d'une image, ou quelques filtres standards.
-\end_layout
-
-\begin_layout Description
-read pour charger une image depuis un fichier
-\end_layout
-
-\begin_layout Description
-write pour sauver les données image dans un ou plusieurs fichiers.
 \end_layout
 
 \end_body
