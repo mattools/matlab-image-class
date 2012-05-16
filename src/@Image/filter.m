@@ -1,15 +1,16 @@
 function res = filter(this, h, varargin)
 %FILTER Applies linear filter on the image
 %
-%   usage
-%   IMGF = IMG.filter(H);
+%   IMGF = filter(IMG, H);
 %   Apply the linear filter H to the image, and stores the result in IMGF.
-%   H can be 
-%   IMG.filter(H, OPTION1, OPTION2...);
+%   This function is manly a wrapper to the "imfilter" function.
+%
+%   IMGF = filter(IMG, H, OPTION1, OPTION2...);
+%   Apply filtering options such as given in imfilter.
 %
 %   
 %   see also
-%   imfilter
+%   meanFilter, gaussianFilter, medianFilter, gradient, imfilter
 %
 
 % choose default options

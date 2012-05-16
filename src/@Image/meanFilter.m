@@ -1,7 +1,7 @@
 function res = meanFilter(this, se, varargin)
 %MEANFILTER Compute mean value in the neighboorhood of each pixel
 %
-%   RES = meanFilter(IMG, SE)
+%   RES = meanFilter(IMG, SE);
 %   Compute the mean filter of image IMG, using structuring element SE.
 %   The goal of this function is to provide the same interface as for
 %   other image filters (imopen, imerode ...), and to allow the use of 
@@ -9,7 +9,7 @@ function res = meanFilter(this, se, varargin)
 %   This function can be used for directional filtering.
 %
 %
-%   RES = meanFilter(IMG, SE, PADOPT) 
+%   RES = meanFilter(IMG, SE, PADOPT); 
 %   also specify padding option. PADOPT can be one of:
 %     X (numeric value)
 %     'symmetric'
@@ -18,7 +18,7 @@ function res = meanFilter(this, se, varargin)
 %   see imfilter for details. Default is 'replicate'. 
 %
 %   See also:
-%   medianFilter, filter, imfilter
+%   medianFilter, gaussianFilter, filter, imfilter
 %
 % ------
 % Author: David Legland
