@@ -12,7 +12,7 @@ function res = areaOpening(this, value, varargin)
 %   Example
 %     % Apply area opening on segmented rice image
 %     img = Image.read('rice.png');
-%     seg = topHat(img, ones(30, 30)) > 50;
+%     seg = whiteTopHat(img, ones(30, 30)) > 50;
 %     seg2 = areaOpening(seg, 100);
 %     figure;
 %     subplot(1, 2, 1); show(seg); title('segmented');
@@ -25,7 +25,7 @@ function res = areaOpening(this, value, varargin)
 %     figure; show(BW2);
 % 
 %   See also
-%   opening, regionprops, bwareaopen
+%   opening, largestRegion, regionprops, bwareaopen
 %
 % ------
 % Author: David Legland
@@ -33,10 +33,10 @@ function res = areaOpening(this, value, varargin)
 % Created: 2011-11-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-if isLabel(this)
+if isLabelImage(this)
     data = this.data;
     
-elseif isBinary(this)
+elseif isBinaryImage(this)
     % if image is binary compute labeling
     
     % first determines connectivity to use
@@ -64,5 +64,4 @@ inds = find(areas >= value);
 data = ismember(data, inds);
 
 % create new image
-nd = this.dimension;
 res = Image.create('data', data, 'parent', this, 'type', 'binary');
