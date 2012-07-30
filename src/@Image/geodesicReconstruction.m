@@ -2,12 +2,16 @@ function res = geodesicReconstruction(marker, mask, varargin)
 %GEODESICRECONSTRUCTION Geodesic reconstruction of marker image under mask image
 %
 %   REC = geodesicReconstruction(MARKER, MASK)
+%   Performs a geodesic reconstruction of image defined by MARKER under the
+%   mask given by MASK. Both MARKER and MASK should be images the same size
+%   and the same type.
+%   Geodesic reconstruction is used as base algorithm for several filters.
 %
 %   Example
 %   geodesicReconstruction
 %
 %   See also
-%
+%   killBorders, fillHoles
 %
 % ------
 % Author: David Legland

@@ -3,12 +3,17 @@ function res = killBorders(this, varargin)
 %
 %   RES = killBorders(IMG)
 %   RES = killBorders(IMG, CONN)
+%   
 %
 %   Example
-%   killBorders
+%     % Select rice grains within image
+%     img = Image.read('rice.png');
+%     bin = whiteTopHat(img, ones(50, 50)) > 50;
+%     bin2 = killBorders(bin);
+%     show(overlay(img, bin2))
 %
 %   See also
-%     geodesicReconstruction
+%     geodesicReconstruction, attributeOpening, areaOpening
 %
 % ------
 % Author: David Legland
