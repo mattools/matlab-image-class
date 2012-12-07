@@ -1023,7 +1023,14 @@ filter applique un filtre linéaire (appelle imfilter)
 \end_layout
 
 \begin_layout Description
+gaussianFilter applique un filtre gaussien, en tirant parti de la séparabilité
+ du filtre
+\end_layout
+
+\begin_layout Description
 gradient calcule le gradient de l'image, et renvoit une image vecteur.
+ Fonctionne en 2D et en 3D.
+ Utilise un noyau de Sobel : [1 2 1;0 0 0;1 2 1].
 \end_layout
 
 \begin_layout Subsubsection
@@ -1032,61 +1039,31 @@ Filtrage morphologique
 
 \begin_layout Standard
 Quelques filtres morphologiques ont été encapsulés.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-voir si on change pas les noms en 
-\begin_inset Quotes fld
-\end_inset
-
-openFilter
-\begin_inset Quotes frd
-\end_inset
-
-, 
-\begin_inset Quotes fld
-\end_inset
-
-closeFilter
-\begin_inset Quotes frd
-\end_inset
-
-...
- Cela permet (1) de bien marquer que ce sont des filtres, et (2) d'éviter
- la confusion avec des méthodes de gestion de fichiers.
-\end_layout
-
-\end_inset
-
-
+ On a essayé de garder le lien avec avec les noms de fonctions matlab.
 \end_layout
 
 \begin_layout Description
-dilate applique une dilatation morphologique (appelle imdilate)
+dilation applique une dilatation morphologique (appelle imdilate)
 \end_layout
 
 \begin_layout Description
-erode applique une érosion morphologique (appelle imerode)
+erosion applique une érosion morphologique (appelle imerode)
 \end_layout
 
 \begin_layout Description
-open applique une ouverture morphologique (appelle imopen)
+opening applique une ouverture morphologique (appelle imopen)
 \end_layout
 
 \begin_layout Description
-close applique une fermeture morphologique (appelle imclose)
+closing applique une fermeture morphologique (appelle imclose)
 \end_layout
 
 \begin_layout Description
-topHat applique filtrage en chapeau haut de forme (appelle imtophat)
+whiteTopHat applique filtrage en chapeau haut de forme (appelle imtophat)
 \end_layout
 
 \begin_layout Description
-bottomHat applique filtrage en chapeau bas de forme (appelle imbottomhat)
+blackTopHat applique filtrage en chapeau bas de forme (appelle imbottomhat)
 \end_layout
 
 \begin_layout Description
@@ -1150,6 +1127,10 @@ Pour convertir les coordonnées écran en coordonnées pixel, l'opération sembl
 Chose à rajouter ou en stand-by
 \end_layout
 
+\begin_layout Subsection
+Nouveaux champs
+\end_layout
+
 \begin_layout Standard
 On peut stocker les infos nécessaire pour l'interprétation et l'affichage
  des valeurs
@@ -1187,6 +1168,15 @@ préciser la forme du retour
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Nouvelles classes
+\end_layout
+
+\begin_layout Description
+RegionList une classe basée sur la structure CC (renvoyée par bwconncomp).
+ 
 \end_layout
 
 \end_body

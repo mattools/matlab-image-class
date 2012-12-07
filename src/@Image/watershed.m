@@ -59,7 +59,7 @@ while ~isempty(varargin)
     if ischar(var) && length(varargin) > 1
         switch lower(var)
             case 'conn'
-                conn = varargin(2);
+                conn = varargin{2};
             case 'marker'
                 marker = varargin{2};
             case 'dynamic'

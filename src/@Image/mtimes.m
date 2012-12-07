@@ -24,5 +24,5 @@ newData = bsxfun(@times, ...
     cast(data1, class(parent.data)), cast(data2, class(parent.data)));
 
 % create result image
-newName = strcat(name1, '+', name2);
+newName = strcat(name1, '*', name2);
 res = Image('data', newData, 'parent', parent, 'name', newName);
