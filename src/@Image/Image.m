@@ -24,7 +24,8 @@ properties
     % Size of data buffer(in x,y,z,c,t order), should always have length=5
     dataSize        = [1 1 1 1 1];
     
-    % number of spatial dimensions of the image, between 0 and 3.
+    % Number of spatial dimensions of the image, between 0 (single value)
+    % and 3 (volume image). Common value is 2 (planar image).
     dimension       = 1;
     
     % The type of image (grayscale, color, complex...)
@@ -113,7 +114,13 @@ methods
         %   IMG = Image(..., PARAM, VALUE);
         %   Specify additional parameters for initializing image.
         %
-       
+        %   Example
+        %     img = Image.read('cameraman.tif');
+        %     img.show();
+        %     figure; img.histogram;
+        %     figure; show(img > 50);
+        %
+        
         if nargin == 0
             % empty constructor
             % (nothing to do !)
@@ -264,6 +271,8 @@ methods (Access = protected)
         % determines a priori type of image
         if islogical(this.data)
             this.type = 'binary';
+        elseif isfloat(this.data)
+            this.type = 'intensity';
         elseif this.dataSize(4) == 3
             this.type = 'color';
         elseif this.dataSize(4) == 2
