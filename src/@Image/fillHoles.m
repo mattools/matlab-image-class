@@ -16,10 +16,10 @@ function res = fillHoles(this, varargin)
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-% error check
-if ~strcmp(this.type, 'binary')
-    error('Input image must be binary');
-end
+% % error check
+% if ~strcmp(this.type, 'binary')
+%     error('Input image must be binary');
+% end
 
 % default connectivity
 conn = 4;

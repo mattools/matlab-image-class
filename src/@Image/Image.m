@@ -1,15 +1,20 @@
 classdef Image < handle
 %Image class that handles up to 3 spatial dimensions, channels, and time
 %   
-%   For a detailed description, type 'doc @Image'. For help on a specific
-%   method, type 'help Image/methodName'.
+%   For a detailed description, type 'doc @Image'. For the complete list of
+%   functions operating on images objects, type 'methods('Image')'.
+%   For help on a specific method, type 'help Image/methodName'.
 %
 %   Example
 %     img = Image.read('cameraman.tif');
-%     img.show();
-%     figure; img.histogram;
+%     show(img);
+%     figure; histogram(img);
 %     figure; show(img > 50);
 %   
+%   See also
+%     show, histogram, lineProfile, sum, mean, filter, gaussianFilter
+%     slice, channel, splitChannels, isColorImage, isGrayscaleImage
+%
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
