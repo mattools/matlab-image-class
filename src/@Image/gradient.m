@@ -12,7 +12,7 @@ function varargout = gradient(this, varargin)
 %     show(grad);
 %
 %   See also
-%   Image/filter, fspecial
+%   Image/filter, fspecial, Image/norm
 %
 % ------
 % Author: David Legland
@@ -20,18 +20,70 @@ function varargout = gradient(this, varargin)
 % Created: 2010-06-16,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
+% default sigma
+sigma = 0;
+
+% default output type
+outputType = 'double';
+
+
+% check if the width of the kernel is specified
+if ~isempty(varargin)
+    var1 = varargin{1};
+    if isnumeric(var1) && isscalar(var1)
+        sigma = var1;
+        varargin(1) = [];
+    end
+end
+
 % number of spatial dimensions
 nd = ndims(this);
 
 % default filter for gradient: normalized sobel (2D or 3D)
-if nd == 2
-    sx = fspecial('sobel') / 8;
+% default filter for gradient: normalised sobel
+if nd <= 2
+    if sigma == 0
+        % Default 2D case: normalised sobel matrix
+        sx = fspecial('sobel')'/8;
+    else
+        % compute kernel based on specified sigma value
+        Nx = ceil((3*sigma));
+        lx = -Nx:Nx;
+        sy = exp(-((lx / sigma) .^2) * .5);
+        sx = -(lx / sigma) .* sy;
+        sx = sy' * sx;
+        sx = sx / sum(sx(sx > 0));
+    end
+    
+elseif nd == 3
+    if sigma == 0
+        % Default 3D case: normalisation of 2 classical sobel matrices
+        base = [1 2 1]' * [1 2 1];
+        base = base / sum(base(:))/2;
+        sx = permute(cat(3, base, zeros(3, 3), -base), [2 3 1]);
+        
+    else
+        % compute kernel based on specified sigma value
+        Nx = ceil((3*sigma));
+        lx = -Nx:Nx;
+        sy = exp(-((lx / sigma) .^2) * .5);
+        sx = -(lx / sigma) .* sy;
+        sz = permute(sy, [3 1 2]);
+
+        n = length(lx);
+        tmp = zeros(n, n , n);
+        for i = 1:n
+            tmp(:,:,i) = sz(i) * sy' * sx;
+        end
+        sx = tmp;
+        sx = sx / sum(sx(sx > 0));
+    end
+    
 else
-    sx = Image.create3dGradientKernels();
+    error('Input image must have 2 or 3 dimensions');
 end
 
-% default output type
-outputType = 'double';
+
 
 % Process input arguments
 for i = 1:length(varargin)-1
