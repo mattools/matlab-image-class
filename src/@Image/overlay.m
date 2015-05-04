@@ -142,7 +142,7 @@ while ~isempty(varargin)
         % convert matlab indexing to Image class indexing
         mask = permute(mask, [2 1 3 4 5]);
     end
-    [r g b]  = parseOverlayBands(varargin{2});
+    [r, g, b]  = parseOverlayBands(varargin{2});
     
     varargin(1:2) = [];
     
@@ -158,7 +158,7 @@ end
 res = Image('data', cat(4, red, green, blue), 'type', 'color');
 
 
-function [r g b] = parseOverlayBands(color)
+function [r, g, b] = parseOverlayBands(color)
 % determines r g and b values from argument value
 %
 % argument COLOR can be one of:
@@ -178,7 +178,7 @@ if isa(color, 'Image')
     
 elseif ischar(color)
     % parse character to  a RGB triplet
-    [r g b] = parseColorString(color);
+    [r, g, b] = parseColorString(color);
     
 elseif isnumeric(color)
     if size(color, 1) == 1
@@ -194,7 +194,7 @@ elseif isnumeric(color)
         
     else
         % otherwise, color an image given as Matlab array
-        [dim isColor is3D] = computeImageInfo(color); %#ok<ASGLU>
+        [dim, isColor, is3D] = computeImageInfo(color); %#ok<ASGLU>
         if isColor
             if is3D
                 r = squeeze(color(:,:,1,:));
@@ -250,7 +250,7 @@ else
     varargout = {[r g b]};
 end
 
-function [dim isColor is3D] = computeImageInfo(img)
+function [dim, isColor, is3D] = computeImageInfo(img)
 % Compute image size, and determines if image is 3D and/or color
 % Returns the dimension of image witghout the color channel, and two binary
 % flags indicating if image is color, and 3D.

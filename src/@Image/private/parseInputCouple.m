@@ -1,4 +1,4 @@
-function [data1 data2 parent name1 name2] = parseInputCouple(this, that, inp1, inp2)
+function [data1, data2, parent, name1, name2] = parseInputCouple(this, that, inp1, inp2)
 %PARSEINPUTCOUPLE Extract numeric data from image inputs
 %
 %   [DATA1 DATA2 PARENT NAME1 NAME2] = parseInputCouple(THIS, THAT)
@@ -23,10 +23,10 @@ function [data1 data2 parent name1 name2] = parseInputCouple(this, that, inp1, i
 %
 %   See also
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@nantes.inra.fr
 % Created: 2011-08-07,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 

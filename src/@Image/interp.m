@@ -22,7 +22,7 @@ function val = interp(this, varargin)
 %% Process input arguments
 
 nd = ndims(this);
-[point dim varargin] = mergeCoordinates(varargin{:});
+[point, dim, varargin] = mergeCoordinates(varargin{:});
 
 method = 'linear';
 fillValue = 0;

@@ -76,7 +76,7 @@ methods (Static)
     
     img = read(fileName, varargin)
     
-    [sx sy sz] = create3dGradientKernels(varargin)
+    [sx, sy, sz] = create3dGradientKernels(varargin)
     % Create kernels for gradient computations
     
 end % static methods
@@ -138,7 +138,7 @@ methods
             if islogical(img.data)
                 this.data   = false(size(img.data));
             else
-                this.data   = zeros(size(img.data), class(img.data));
+                this.data   = zeros(size(img.data), class(img.data)); %#ok<ZEROLIKE>
             end
             this.data(:)    = img.data(:);
             this.dataSize   = img.dataSize;
@@ -342,7 +342,7 @@ methods
         this.calibrated = true;
     end
     
-    function [index isInside] = pointToIndex(this, point)
+    function [index, isInside] = pointToIndex(this, point)
         % Converts point in physical coordinate into image index
 
         % repeat points avoiding repmat
@@ -356,7 +356,7 @@ methods
         end
     end
     
-    function [point isInside] = pointToContinuousIndex(this, point)
+    function [point, isInside] = pointToContinuousIndex(this, point)
         % Converts point in physical coordinate into unrounded image index
         
         for i = 1:length(this.spacing)

@@ -1,4 +1,4 @@
-function [res indMax] = largestRegion(this, varargin)
+function [res, indMax] = largestRegion(this, varargin)
 %IMLARGESTREGION Keep the largest region in a binary or label image
 % 
 %   REG = largestRegion(LBL)
@@ -81,7 +81,7 @@ for i = 1:nLabels
 end
 
 % find index of largest regions
-[dum indMax] = max(areas); %#ok<ASGLU>
+[dum, indMax] = max(areas); %#ok<ASGLU>
 
 % keep as binary
 bin = lbl == indMax;

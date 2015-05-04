@@ -63,6 +63,8 @@ elseif nd == 3
         vals = this.data(inds);
         vars1 = cell(1, nd);
         [vars1{:}] = ind2sub(this.dataSize(1:nd), inds);
-        varargout = [vars1, {vals}];
+        varargout = cell(1, nd+1);
+        varargout(1:nd) = vars1;
+        varargout{end} = vals;
     end
 end

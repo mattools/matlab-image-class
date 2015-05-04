@@ -1,4 +1,4 @@
-function [res num] = createLabels(this, conn)
+function [res, num] = createLabels(this, conn)
 %CREATELABELS Connected components labeling of a binary image
 %
 %   LBL = BIN.createLabels();
@@ -35,9 +35,9 @@ end
 
 % call the label function
 if nd == 2
-    [labels num] = bwlabel(this.data, conn);
+    [labels, num] = bwlabel(this.data, conn);
 else
-    [labels num] = bwlabeln(this.data, conn);
+    [labels, num] = bwlabeln(this.data, conn);
 end
 
 % create new image with result of filtering

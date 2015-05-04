@@ -116,7 +116,7 @@ if strcmp(op2, 'max')
     if islogical(this.data)
         res = false(size(this.data));
     else
-        res = zeros(size(this.data), class(this.data));
+        res = zeros(size(this.data), class(this.data)); %#ok<ZEROLIKE>
     end
     
 elseif strcmp(op2, 'min')
@@ -125,11 +125,11 @@ elseif strcmp(op2, 'min')
         res = true(size(this.data));
         
     elseif isinteger(this.data)
-        res = zeros(size(this.data), class(this.data));
+        res = zeros(size(this.data), class(this.data)); %#ok<ZEROLIKE>
         res(:) = intmax(type);
         
     else
-        res = zeros(size(this.data), class(this.data));
+        res = zeros(size(this.data), class(this.data)); %#ok<ZEROLIKE>
         res(:) = inf;
         
     end
@@ -191,7 +191,7 @@ function res = immean(img, filtre, varargin)
 %   20/02/2004 : add PADOPT option, and documentation.
 
 % transform STREL object into single array
-if strcmp(class(filtre), 'strel')
+if isa(filtre, 'strel')
     filtre = getnhood(filtre);
 end
 
@@ -234,7 +234,7 @@ function res = immedian(img, filtre, varargin)
 
 
 % transform STREL object into single array
-if strcmp(class(filtre), 'strel')
+if isa(filtre, 'strel')
     filtre = getnhood(filtre);
 end
 

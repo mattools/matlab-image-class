@@ -16,7 +16,7 @@ function res = xor(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
     inputname(1), inputname(2));
 
 % compute new data

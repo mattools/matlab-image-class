@@ -28,7 +28,7 @@ function res = meanFilter(this, se, varargin)
 
 
 % transform STREL object into single array
-if strcmp(class(se), 'strel')
+if isa(se, 'strel')
     se = getnhood(se);
 end
 

@@ -150,7 +150,7 @@ set(hSliceXZ, 'ButtonDownFcn', @startDragCrossLine);
 axes('parent', hf, 'units', 'normalized', 'visible', 'off', ...
     'position', [width1 0 width2 height2], ...
     'ydir', 'reverse', 'zdir', 'reverse');
-[hSlice3dXY hSlice3dYZ hSlice3dXZ] = showOrthoSlices(this, pos);
+[hSlice3dXY, hSlice3dYZ, hSlice3dXZ] = showOrthoSlices(this, pos);
 
 % show orthogonal lines
 hLine3dX = line([xdata(1) xdata(end)], [yPos yPos], [zPos zPos], 'color', 'r');
@@ -234,8 +234,8 @@ point = point(1, 1:2);
 % convert indices to physical coordinates
 xdata = dataFig.bases{dir1};
 ydata = dataFig.bases{dir2};
-[mini pos(dir1)] = min((xdata - point(1)).^2); %#ok<ASGLU>
-[mini pos(dir2)] = min((ydata - point(2)).^2); %#ok<ASGLU>
+[mini, pos(dir1)] = min((xdata - point(1)).^2); %#ok<ASGLU>
+[mini, pos(dir2)] = min((ydata - point(2)).^2); %#ok<ASGLU>
 
 
 dataFig.pos = pos;
@@ -298,8 +298,8 @@ dir2 = imgData.dir2;
 % convert indices to physical coordinates
 xdata = data.bases{dir1};
 ydata = data.bases{dir2};
-[mini pos(dir1)] = min((xdata - point(1)).^2); %#ok<ASGLU>
-[mini pos(dir2)] = min((ydata - point(2)).^2); %#ok<ASGLU>
+[mini, pos(dir1)] = min((xdata - point(1)).^2); %#ok<ASGLU>
+[mini, pos(dir2)] = min((ydata - point(2)).^2); %#ok<ASGLU>
 
 % update data for current figure
 data.pos = pos;

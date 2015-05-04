@@ -32,7 +32,7 @@ if this.dimension > 2
 end
 
 % transform STREL object into single array
-if strcmp(class(se), 'strel')
+if isa(se, 'strel')
     se = getnhood(se);
 end
 

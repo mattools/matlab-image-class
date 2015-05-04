@@ -16,7 +16,7 @@ function res = and(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
     inputname(1), inputname(2));
 
 % compute new data
@@ -24,5 +24,4 @@ newData = builtin('and', data1, data2);
 
 % create result image
 newName = strcat(name1, '&', name2);
-nd = ndims(this);
 res = Image('data', newData, 'parent', parent, 'name', newName);

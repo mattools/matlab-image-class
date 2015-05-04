@@ -45,7 +45,7 @@ sliceSize = this.dataSize(1)*this.dataSize(2);
 nc = size(this.data, 4);
 if nc == 1
     % case of grayscale images
-    p = zeros(size(x), class(this.data));
+    p = zeros(size(x), class(this.data)); %#ok<ZEROLIKE>
     p(:) = this.data((z-1)*sliceSize + (y-1)*rowSize + x);
 else
     % number of (spatial) elements
@@ -56,7 +56,7 @@ else
     dim2 = [dim nc];
     
     % allocate memory
-    p = zeros(dim2, class(this.data));
+    p = zeros(dim2, class(this.data)); %#ok<ZEROLIKE>
     
     % iterate over channels to fill result array
     for c = 1:nc

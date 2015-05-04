@@ -1,4 +1,4 @@
-function [bin value] = otsuThreshold(img, varargin)
+function [bin, value] = otsuThreshold(img, varargin)
 %OTSUTHRESHOLD Threshold the image using Otsu method
 %
 %   BIN = otsuThreshold(IMG)
@@ -75,7 +75,7 @@ for t = 1:256
 end
 
 % compute threshold value
-[mini ind] = min(sigmaw); %#ok<ASGLU>
+[mini, ind] = min(sigmaw); %#ok<ASGLU>
 value = ind - 1;
 
 % threshold image

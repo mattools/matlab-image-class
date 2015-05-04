@@ -27,26 +27,26 @@ function img = read(fileName, varargin)
 
 % try to deduce format from extension
 format = ext;
-if strmatch(ext, '.hdr')
+if strcmpi(ext, '.hdr')
     format = 'analyze';
-elseif strmatch(ext, '.dcm')
+elseif strcmpi(ext, '.dcm')
     format = 'dicom';
-elseif strmatch(ext, '.mhd')
+elseif strcmpi(ext, '.mhd')
     format = 'metaimage';
 end
 
 % Process image reading depending on the format
-if strmatch(format, 'analyze')
+if strcmpi(format, 'analyze')
     % read image in Mayo's Analyze Format
     info = analyze75info(fileName);
     data = analyze75read(info);
     img = Image(data);
     
-elseif strmatch(format, 'metaimage')
+elseif strcmpi(format, 'metaimage')
     % read image in MetaImage format
     img = readMetaImage(fileName);
     
-elseif strmatch(format, 'dicom')
+elseif strcmpi(format, 'dicom')
     % read image in DICOM format
     info = dicominfo(fileName);
     data = dicomread(info);

@@ -25,7 +25,7 @@ end
 % compute the minimum image between image and second argument
 
 % extract data
-[data1 data2 parent name1 name2] = parseInputCouple(this, varargin{1}, ....
+[data1, data2, parent, name1, name2] = parseInputCouple(this, varargin{1}, ....
     inputname(1), inputname(2));
 
 % compute new data

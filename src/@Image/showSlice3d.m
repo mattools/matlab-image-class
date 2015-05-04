@@ -116,7 +116,7 @@ switch dim
         % compute coords of u and v
         vy = ((0:siz(2)) + .5);
         vz = ((0:siz(3)) + .5);
-        [ydata zdata] = meshgrid(vy, vz);
+        [ydata, zdata] = meshgrid(vy, vz);
         
         % coord of slice supporting plane
         lx = 1:siz(1);
@@ -128,7 +128,7 @@ switch dim
         % compute coords of u and v
         vx = ((0:siz(1)) + .5);
         vz = ((0:siz(3)) + .5);
-        [xdata zdata] = meshgrid(vx, vz);
+        [xdata, zdata] = meshgrid(vx, vz);
 
         % coord of slice supporting plane
         ly = 1:siz(2);
@@ -140,7 +140,7 @@ switch dim
         % compute coords of u and v
         vx = ((0:siz(1)) + .5);
         vy = ((0:siz(2)) + .5);
-        [xdata ydata] = meshgrid(vx, vy);
+        [xdata, ydata] = meshgrid(vx, vy);
         
         % coord of slice supporting plane
         lz = 1:siz(3);
@@ -353,7 +353,7 @@ else
             % compute coords of u and v
             vy = ((0:imgSize(1)) + .5);
             vz = ((0:imgSize(3)) + .5);
-            [ydata zdata] = meshgrid(vy, vz);
+            [ydata, zdata] = meshgrid(vy, vz);
 
             lx = 1:imgSize(2);
             xdata = ones(size(ydata)) * lx(index);
@@ -362,7 +362,7 @@ else
             % compute coords of u and v
             vx = ((0:imgSize(2)) + .5);
             vz = ((0:imgSize(3)) + .5);
-            [zdata xdata] = meshgrid(vz, vx);
+            [zdata, xdata] = meshgrid(vz, vx);
 
             ly = 1:imgSize(1);
             ydata = ones(size(xdata)) * ly(index);
@@ -371,7 +371,7 @@ else
             % compute coords of u and v
             vx = ((0:imgSize(2)) + .5);
             vy = ((0:imgSize(1)) + .5);
-            [xdata ydata] = meshgrid(vx, vy);
+            [xdata, ydata] = meshgrid(vx, vy);
 
             lz = 1:imgSize(3);
             zdata = ones(size(xdata)) * lz(index);
@@ -405,7 +405,7 @@ function rgb = computeSliceRGB(slice, displayRange, lut)
 data = permute(squeeze(slice.data), [2 1 3]);
 
 % eventually converts to uint8, rescaling data between 0 and max value
-if ~strcmp(class(data), 'uint8')
+if ~isa(data, 'uint8')
     if isempty(displayRange)
         displayRange = [0 max(data(isfinite(data)))];
     end

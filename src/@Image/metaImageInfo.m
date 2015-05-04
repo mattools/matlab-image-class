@@ -34,7 +34,7 @@ path = fileparts(fileName);
 f = fopen(fileName, 'rt');
 
 % extract key and value of current line
-[tag string] = splitLine(fgetl(f));
+[tag, string] = splitLine(fgetl(f));
 
 % check header file contains an image
 if ~strcmp(tag, 'ObjectType') || ~strcmp(string, 'Image')
@@ -58,7 +58,7 @@ while true
     end
 
     % extract key and value of current line
-    [tag string] = splitLine(line);
+    [tag, string] = splitLine(line);
     
     % extract each possible tag
     switch tag
@@ -98,8 +98,8 @@ end
 fclose(f);
 
 
-function [tag string] = splitLine(line)
-[tag remain] = strtok(line, '=');
+function [tag, string] = splitLine(line)
+[tag, remain] = strtok(line, '=');
 tag = strtrim(tag);
 string = strtrim(strtok(remain, '='));
 

@@ -21,7 +21,6 @@ if isa(arg, 'Image')
     arg = arg.data;
 end
 
-newData = imabsdiff(this.data, cast(arg, class(this.data)));
+newData = imabsdiff(this.data, cast(arg, class(this.data))); %#ok<ZEROLIKE>
 
-nd = ndims(this);
 res = Image('data', newData, 'parent', this);

@@ -63,7 +63,7 @@ if ~isempty(varargin)
     % use min and max values given as parameter
     var = varargin{1};
     if length(var) == 1
-        [mini maxi] = computeGrayscaleAdjustement(this.data, var);
+        [mini, maxi] = computeGrayscaleAdjustement(this.data, var);
     else
         mini = var(1);
         maxi = var(2);
@@ -73,7 +73,7 @@ if ~isempty(varargin)
 else
     % use min and max values computed from input image, by saturating 1
     % percent of image elements
-    [mini maxi] = computeGrayscaleAdjustement(this.data, .01);
+    [mini, maxi] = computeGrayscaleAdjustement(this.data, .01);
 end
 
 % check if a class cast is specified
@@ -97,7 +97,7 @@ res = cast(res, outputClass);
 res = Image('data', res, 'parent', this);
 
 
-function [mini maxi] = computeExtremeValues(data) %#ok<DEFNU>
+function [mini, maxi] = computeExtremeValues(data) %#ok<DEFNU>
 % compute min and max (finite) values in image
 
 mini = min(this(isfinite(data)));
@@ -111,7 +111,7 @@ if abs(maxi - mini) < 1e-12
     maxi = 1;
 end
 
-function [mini maxi] = computeGrayscaleAdjustement(data, alpha)
+function [mini, maxi] = computeGrayscaleAdjustement(data, alpha)
 % compute grayscale range that maximize vizualisation
 
 % use default value for alpha if not specified

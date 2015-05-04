@@ -1,4 +1,4 @@
-function [res inds] = attributeOpening(this, att, op, val, varargin)
+function [res, inds] = attributeOpening(this, att, op, val, varargin)
 %ATTRIBUTEOPENING Filter regions on a size or shape criterium
 %
 %   BIN = attributeOpening(IMG, ATT, OP, VAL)

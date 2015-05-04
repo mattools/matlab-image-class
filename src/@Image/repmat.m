@@ -47,11 +47,6 @@ end
 % complete with ones
 siz = [siz ones(1, 5-length(siz))];
 
-newDim = this.dimension;
-if siz(3) > 1
-    newDim = 3;
-end
-
 % compute new data buffer
 data = repmat(this.data, siz);
 

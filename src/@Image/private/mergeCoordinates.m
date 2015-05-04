@@ -1,4 +1,4 @@
-function [coords dim varargin] = mergeCoordinates(varargin)
+function [coords, dim, varargin] = mergeCoordinates(varargin)
 %MERGECOORDINATES Merge all coordinates into a single N-by-ND array
 %
 % [coords dim] = mergeCoordinates(X, Y)

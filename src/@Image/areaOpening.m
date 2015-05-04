@@ -1,4 +1,4 @@
-function [res inds] = areaOpening(this, value, varargin)
+function [res, inds] = areaOpening(this, value, varargin)
 %AREAOPENING Remove small regions or particles in binary or label image
 %
 %   IMG2 = areaOpening(IMG, MINSIZE);

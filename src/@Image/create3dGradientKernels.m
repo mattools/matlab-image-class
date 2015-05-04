@@ -1,4 +1,4 @@
-function [sx sy sz] = create3dGradientKernels(varargin)
+function [sx, sy, sz] = create3dGradientKernels(varargin)
 %CREATE3DGRADIENTKERNELS Create kernels for computing gradient of 3D images 
 %
 %   SX = Image.create3dGradientKernels;

@@ -34,7 +34,7 @@ if f==-1
 end
 
 % determines pixel type
-[pixelType isArrayType] = parseMetaType(info.ElementType);
+[pixelType, isArrayType] = parseMetaType(info.ElementType);
 
 % in the case of array type, need number of channels
 nChannels = 1;
@@ -74,11 +74,11 @@ end
 fclose(f);
 
 
-function [type isArray] = parseMetaType(string)
+function [type, isArray] = parseMetaType(string)
 
 % determines if the data type is an array or a scalar
 isArray = false;
-ind = findstr(string, '_ARRAY');
+ind = strfind(string, '_ARRAY');
 if ~isempty(ind)
     isArray = true;
     string = string(1:ind-1);

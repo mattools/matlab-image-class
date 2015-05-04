@@ -16,12 +16,12 @@ function res = mrdivide(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1 data2 parent name1 name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@rdivide, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.data)), cast(data2, class(parent.data))); %#ok<ZEROLIKE>
 
 % create result image
 newName = strcat(name1, '+', name2);

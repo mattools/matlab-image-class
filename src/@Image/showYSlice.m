@@ -42,7 +42,7 @@ vz = ((0:dim(3))-.5) * this.spacing(3) - this.origin(3);
 params = {'facecolor', 'texturemap', 'edgecolor', 'none'};
 
 % compute position of voxel vertices in 3D space
-[xz_x xz_z] = meshgrid(vx, vz);
+[xz_x, xz_z] = meshgrid(vx, vz);
 xz_y = ones(size(xz_x)) * ly(sliceIndex);
 
 % extract sli in Y direction
@@ -50,7 +50,7 @@ sli = slice(this, 2, sliceIndex);
 sli = getBuffer(squeeze(sli));
 
 % eventually converts to uint8, rescaling data between 0 and max value
-if ~strcmp(class(sli), 'uint8')
+if ~isa(sli, 'uint8')
     sli = double(sli);
     sli = uint8(sli * 255 / max(sli(:)));
 end
