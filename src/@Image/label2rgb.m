@@ -24,7 +24,7 @@ end
 
 % default behaviour is shuffled HSV LUT with white BackGround
 if isempty(varargin)
-    varargin = {jet(max(this.data(:))+1), 'w', 'shuffle'};
+    varargin = {jet(double(max(this.data(:)))+1), 'w', 'shuffle'};
 end
 
 nd = this.dimension;
