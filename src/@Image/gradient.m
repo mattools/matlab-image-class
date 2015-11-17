@@ -13,10 +13,10 @@ function varargout = gradient(this, varargin)
 %
 %   See also
 %   Image/filter, fspecial, Image/norm
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@nantes.inra.fr
 % Created: 2010-06-16,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -25,7 +25,6 @@ sigma = 0;
 
 % default output type
 outputType = 'double';
-
 
 % check if the width of the kernel is specified
 if ~isempty(varargin)
@@ -39,8 +38,7 @@ end
 % number of spatial dimensions
 nd = ndims(this);
 
-% default filter for gradient: normalized sobel (2D or 3D)
-% default filter for gradient: normalised sobel
+% default filter for gradient: normalised sobel (2D or 3D)
 if nd <= 2
     if sigma == 0
         % Default 2D case: normalised sobel matrix
@@ -83,8 +81,6 @@ else
     error('Input image must have 2 or 3 dimensions');
 end
 
-
-
 % Process input arguments
 for i = 1:length(varargin)-1
     if strcmp(varargin{i}, 'filter')
@@ -122,11 +118,10 @@ elseif nd == 3
 end
 
 
-
 % Depending on number of output arguments, returns either a vector image,
 % or each component of the gradient vector.
 if nargout == 1
-    % compute gradient module
+    % Create a new 2D or 3D vector image
     if nd == 2
         res = Image('data', cat(4, gx, gy), ...
             'parent', this, 'type', 'vector');
