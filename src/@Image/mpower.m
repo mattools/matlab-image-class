@@ -19,6 +19,6 @@ if isa(arg, 'Image')
     arg = arg.data;
 end
 
-newData = bsxfun(@power, this.data, cast(arg, class(this.data))); %#ok<ZEROLIKE>
+newData = bsxfun(@power, double(this.data), arg);
 
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this, 'type', 'intensity');

@@ -17,4 +17,4 @@ function res = exp(this)
 
 newData = exp(double(this.data));
 
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this, 'type', 'intensity');

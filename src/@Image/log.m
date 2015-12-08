@@ -17,4 +17,4 @@ function res = log(this)
 
 newData = log(double(this.data));
 
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', this, 'type', 'intensity');
