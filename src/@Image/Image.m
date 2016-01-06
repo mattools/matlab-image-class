@@ -253,6 +253,7 @@ methods (Access = protected)
         % Does not copy the data buffer.
         this.name   = that.name;
         this.type   = that.type;
+        this.dimension = that.dimension;
         
         this.calibrated = that.calibrated;
         this.origin     = that.origin;
