@@ -46,9 +46,14 @@ elseif strcmp(type, '()')
         % check that indices are within image bound
         this.data(s1.subs{:});
         
-        % extract corresponding data, and transpose to comply with matlab
-        % representation
-        this.data(s1.subs{:}) = value';
+        % extract corresponding data, and 
+        if isa(value, 'Image')
+            value = value.data;
+        else
+            % numerical array area transposed to comply with matlab representation
+            value = value';
+        end
+        this.data(s1.subs{:}) = value;
         
     elseif ns == 3
         % two indices: parse x y and z indices
