@@ -4,12 +4,26 @@ function varargout = gradient(this, varargin)
 %   GIMG = gradient(IMG)
 %   Compute the gradient of the image IMG. The result is a vector image,
 %   containing in each channel the gradient for a direction.
+%   Uses normalised sobel kernel by default.
+%
+%   GIMG = gradient(IMG, SIGMA)
+%   Specifies the range of the gradient, and computes the size of the
+%   kernel automatically.
+%
 %
 %   Example
 %     % compute and display gradient of cameraman
 %     img = Image.read('cameraman.tif');
 %     grad = gradient(img);
+%     % display the norm of the gradient
 %     show(grad);
+%
+%     % also display individual channels
+%     gradX = channel(grad, 1); 
+%     gradY = channel(grad, 2); 
+%     figure; 
+%     subplot(1, 2, 1); show(gradX); title('Grad X');
+%     subplot(1, 2, 2); show(gradY); title('Grad Y');
 %
 %   See also
 %   Image/filter, fspecial, Image/norm
@@ -42,14 +56,16 @@ nd = ndims(this);
 if nd <= 2
     if sigma == 0
         % Default 2D case: normalised sobel matrix
-        sx = fspecial('sobel')'/8;
+        sx = fspecial('sobel')/8;
     else
         % compute kernel based on specified sigma value
         Nx = ceil((3*sigma));
-        lx = -Nx:Nx;
+        lx = (-Nx:Nx)';
         sy = exp(-((lx / sigma) .^2) * .5);
         sx = -(lx / sigma) .* sy;
-        sx = sy' * sx;
+        sx = sx * sy';
+        
+        % normalisation to have sum of positive values equal to 1
         sx = sx / sum(sx(sx > 0));
     end
     
@@ -74,6 +90,8 @@ elseif nd == 3
             tmp(:,:,i) = sz(i) * sy' * sx;
         end
         sx = tmp;
+        
+        % normalisation to have sum of positive values equal to 1
         sx = sx / sum(sx(sx > 0));
     end
     
