@@ -1,8 +1,8 @@
-function test_suite = test_size(varargin) %#ok<STOUT>
+function test_suite = test_size(varargin)
 %TEST_SIZE  Test case for the file size
 %
 %   Test case for the file size
-
+%
 %   Example
 %   test_size
 %
@@ -15,7 +15,7 @@ function test_suite = test_size(varargin) %#ok<STOUT>
 % Created: 2011-08-04,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_gray30x20 %#ok<*DEFNU>
 % Test for a grayscale image
@@ -37,13 +37,13 @@ data = uint8(zeros(20, 30));
 img = Image.create(data);
 
 exp = [30 20];
-[nx ny] = size(img);
+[nx, ny] = size(img);
 
 assertEqual(exp(1), nx);
 assertEqual(exp(2), ny);
 
 exp = [30 20 1 1 1];
-[nx ny nz nc nt] = size(img);
+[nx, ny, nz, nc, nt] = size(img);
 assertEqual(exp(1), nx);
 assertEqual(exp(2), ny);
 assertEqual(exp(3), nz);
@@ -69,13 +69,13 @@ function test_color_image_multiOutput
 img = Image.read('peppers.png');
 
 exp = [512 384];
-[nx ny] = size(img);
+[nx, ny] = size(img);
 
 assertEqual(exp(1), nx);
 assertEqual(exp(2), ny);
 
 exp = [512 384 1 3 1];
-[nx ny nz nc nt] = size(img);
+[nx, ny, nz, nc, nt] = size(img);
 assertEqual(exp(1), nx);
 assertEqual(exp(2), ny);
 assertEqual(exp(3), nz);

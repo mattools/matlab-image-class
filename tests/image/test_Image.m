@@ -1,4 +1,4 @@
-function test_suite = test_Image(varargin) %#ok<STOUT>
+function test_suite = test_Image(varargin) 
 % Tests functions for class 'Image' that are not yet in their own files
 %   output = testImArea(input)
 %
@@ -13,10 +13,8 @@ function test_suite = test_Image(varargin) %#ok<STOUT>
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2009-04-22,    using Matlab 7.7.0.471 (R2008b)
 % Copyright 2009 INRA - Cepia Software Platform.
-% Licensed under the terms of the LGPL, see the file "license.txt"
 
-initTestSuite;
-
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_ImageFromData
 

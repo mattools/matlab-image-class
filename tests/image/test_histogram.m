@@ -1,4 +1,4 @@
-function test_suite = test_histogram(varargin) %#ok<STOUT>
+function test_suite = test_histogram(varargin)
 %TEST_histogram  One-line description here, please.
 %
 %   output = test_histogram(input)
@@ -15,7 +15,7 @@ function test_suite = test_histogram(varargin) %#ok<STOUT>
 % Created: 2010-09-10,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_cameraman %#ok<*DEFNU>
 

@@ -1,4 +1,4 @@
-function test_suite = test_geodesicReconstruction(varargin) %#ok<STOUT>
+function test_suite = test_reconstruction(varargin)
 %TEST_GEODESICRECONSTRUCTION  Test case for the file geodesicReconstruction
 %
 %   Test case for the file geodesicReconstruction
@@ -15,7 +15,7 @@ function test_suite = test_geodesicReconstruction(varargin) %#ok<STOUT>
 % Created: 2011-12-01,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_Binary %#ok<*DEFNU>
 % Test call of function without argument
@@ -33,7 +33,7 @@ markerData(2, 2) = true;
 marker = Image.create(markerData);
     
 
-res = geodesicReconstruction(marker, mask);
+res = reconstruction(marker, mask);
 
 assertEqual(0, sum(res ~= mask));
 

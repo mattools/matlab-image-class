@@ -1,4 +1,4 @@
-function test_suite = test_fillHoles(varargin) %#ok<STOUT>
+function test_suite = test_fillHoles(varargin)
 %TEST_FILLHOLES  Test case for the file fillHoles
 %
 %   Test case for the file fillHoles
@@ -15,7 +15,7 @@ function test_suite = test_fillHoles(varargin) %#ok<STOUT>
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_Conn4 %#ok<*DEFNU>
 % Test call of function without argument

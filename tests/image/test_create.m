@@ -1,4 +1,4 @@
-function test_suite = test_create(varargin) %#ok<STOUT>
+function test_suite = test_create(varargin)
 %TEST_CREATE  One-line description here, please.
 %
 %   output = test_create(input)
@@ -15,8 +15,7 @@ function test_suite = test_create(varargin) %#ok<STOUT>
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
-
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_createFromArray %#ok<*DEFNU>
 
