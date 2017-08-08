@@ -1,4 +1,4 @@
-function test_suite = test_sum(varargin) %#ok<STOUT>
+function test_suite = test_sum(varargin)
 %test_sum  One-line description here, please.
 %
 %   output = test_sum(input)
@@ -15,7 +15,7 @@ function test_suite = test_sum(varargin) %#ok<STOUT>
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_2d %#ok<*DEFNU>
 
@@ -24,7 +24,7 @@ exp = 210;
 
 res = sum(img);
 assertEqual([1 1], size(res));
-assertAlmostEqual(exp, res);
+assertElementsAlmostEqual(exp, res, 'absolute', 1e-10);
 
 function test_3d %#ok<*DEFNU>
 
@@ -34,4 +34,4 @@ exp = 540;
 
 res = sum(img);
 assertEqual([1 1], size(res));
-assertAlmostEqual(exp, res);
+assertElementsAlmostEqual(exp, res, 'absolute', 1e-10);

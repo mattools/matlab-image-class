@@ -1,4 +1,4 @@
-function test_suite = test_squeeze(varargin) %#ok<STOUT>
+function test_suite = test_squeeze(varargin)
 %TEST_SQUEEZE  Test case for the file squeeze
 %
 %   Test case for the file squeeze
@@ -15,7 +15,7 @@ function test_suite = test_squeeze(varargin) %#ok<STOUT>
 % Created: 2012-03-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_Simple %#ok<*DEFNU>
 % Test call of function without argument

@@ -1,4 +1,4 @@
-function test_suite = test_find(varargin) %#ok<STOUT>
+function test_suite = test_find(varargin)
 %TEST_FIND  One-line description here, please.
 %
 %   output = test_find(input)
@@ -15,7 +15,7 @@ function test_suite = test_find(varargin) %#ok<STOUT>
 % Created: 2011-06-10,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_2d_linear %#ok<*DEFNU>
 

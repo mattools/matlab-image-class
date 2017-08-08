@@ -1,4 +1,4 @@
-function test_suite = test_getPixels(varargin) %#ok<STOUT>
+function test_suite = test_getPixels(varargin)
 %TEST_GETPIXELS  One-line description here, please.
 %
 %   output = test_getPixels(input)
@@ -15,8 +15,7 @@ function test_suite = test_getPixels(varargin) %#ok<STOUT>
 % Created: 2010-12-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
-
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_getPixels_2d %#ok<*DEFNU>
 

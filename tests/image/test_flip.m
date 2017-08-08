@@ -1,4 +1,4 @@
-function test_suite = test_flip(varargin) %#ok<STOUT>
+function test_suite = test_flip(varargin)
 %TEST_FLIP  One-line description here, please.
 %
 %   output = test_flip(input)
@@ -15,7 +15,7 @@ function test_suite = test_flip(varargin) %#ok<STOUT>
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_gray1 %#ok<*DEFNU>
 

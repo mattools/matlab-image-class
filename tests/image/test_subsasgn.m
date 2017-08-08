@@ -1,4 +1,4 @@
-function test_suite = test_subsasgn(varargin) %#ok<STOUT>
+function test_suite = test_subsasgn(varargin)
 %TEST_SUBSASGN  One-line description here, please.
 %
 %   output = test_subsasgn(input)
@@ -15,14 +15,13 @@ function test_suite = test_subsasgn(varargin) %#ok<STOUT>
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
-
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_subsasgn_2d %#ok<*DEFNU>
 
 lx = 0:1:5;
 ly = 0:10:30;
-[x y] = meshgrid(lx, ly);
+[x, y] = meshgrid(lx, ly);
 dat = x+y;
 img = Image.create(dat);
 
@@ -58,7 +57,7 @@ function test_subsasgn_3d
 lx = 0:1:5;
 ly = 0:10:30;
 lz = 0:100:200;
-[x y z] = meshgrid(lx, ly, lz);
+[x, y, z] = meshgrid(lx, ly, lz);
 dat = x+y+z;
 
 img = Image.create(dat);
@@ -94,7 +93,7 @@ function test_subsasgn_outside
 
 lx = 0:1:5;
 ly = 0:10:30;
-[x y] = meshgrid(lx, ly);
+[x, y] = meshgrid(lx, ly);
 dat = x+y;
 img = Image.create(dat);
 

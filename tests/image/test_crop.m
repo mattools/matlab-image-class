@@ -1,4 +1,4 @@
-function test_suite = test_crop(varargin) %#ok<STOUT>
+function test_suite = test_crop(varargin)
 %test_crop Test file for crop function
 %
 %   output = test_crop(input)
@@ -15,7 +15,7 @@ function test_suite = test_crop(varargin) %#ok<STOUT>
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_2d  %#ok<*DEFNU>
 

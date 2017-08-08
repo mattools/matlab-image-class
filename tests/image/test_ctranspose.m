@@ -1,4 +1,4 @@
-function test_suite = test_ctranspose(varargin) %#ok<STOUT>
+function test_suite = test_ctranspose(varargin)
 %TEST_CTRANSPOSE  One-line description here, please.
 %
 %   output = test_ctranspose(input)
@@ -15,7 +15,7 @@ function test_suite = test_ctranspose(varargin) %#ok<STOUT>
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_grayscale %#ok<*DEFNU>
 

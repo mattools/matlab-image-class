@@ -1,4 +1,4 @@
-function test_suite = test_overlay(varargin) %#ok<STOUT>
+function test_suite = test_overlay(varargin)
 %TEST_OVERLAY  Test case for the file overlay
 %
 %   Test case for the file overlay
@@ -15,7 +15,7 @@ function test_suite = test_overlay(varargin) %#ok<STOUT>
 % Created: 2012-01-05,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_Circles %#ok<*DEFNU>
 % test overlay on a simple binary image

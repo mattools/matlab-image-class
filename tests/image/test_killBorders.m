@@ -1,32 +1,32 @@
-function test_suite = test_clearBorders(varargin) %#ok<STOUT>
-%TEST_CLEARBORDERS  Test case for the file clearBorders
+function test_suite = test_killBorders(varargin)
+%TEST_KILLBORDERS  Test case for the file clearBorders
 %
-%   Test case for the file clearBorders
+%   Test case for the file killBorders
 
 %   Example
-%   test_clearBorders
+%   test_killBorders
 %
 %   See also
 %
 %
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
-function test_Simple %#ok<*DEFNU>
+function test_Simple_C4 %#ok<*DEFNU>
 % Test call of function without argument
 
-dat = [...
+data = [...
     1 1 0 0 0 0 ;...
     1 0 1 0 1 0 ;...
     0 0 0 0 1 0 ;...
     0 1 0 0 0 1 ;...
     0 0 0 1 0 0] > 0;
-img = Image.create(dat);
+img = Image.create(data);
 
 exp4 = Image.create([...
     0 0 0 0 0 0 ;...
@@ -35,9 +35,21 @@ exp4 = Image.create([...
     0 1 0 0 0 0 ;...
     0 0 0 0 0 0]>0);
 
-res = clearBorders(img);
+res = killBorders(img);
 
 assertTrue(sum(res ~= exp4) == 0);
+
+
+function test_Simple_C8 %#ok<*DEFNU>
+% Test call of function without argument
+
+data = [...
+    1 1 0 0 0 0 ;...
+    1 0 1 0 1 0 ;...
+    0 0 0 0 1 0 ;...
+    0 1 0 0 0 1 ;...
+    0 0 0 1 0 0] > 0;
+img = Image.create(data);
 
 exp8 = Image.create([...
     0 0 0 0 0 0 ;...
@@ -46,6 +58,6 @@ exp8 = Image.create([...
     0 1 0 0 0 0 ;...
     0 0 0 0 0 0]>0);
 
-res = clearBorders(img, 8);
+res = killBorders(img, 8);
 
 assertTrue(sum(res ~= exp8) == 0);

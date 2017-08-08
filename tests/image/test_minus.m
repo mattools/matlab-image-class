@@ -1,4 +1,4 @@
-function test_suite = test_minus(varargin) %#ok<STOUT>
+function test_suite = test_minus(varargin)
 %TEST_MINUS  Test case for the file minus
 %
 %   Test case for the file minus
@@ -15,8 +15,7 @@ function test_suite = test_minus(varargin) %#ok<STOUT>
 % Created: 2011-08-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
-
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_TwoImages %#ok<*DEFNU>
 

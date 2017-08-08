@@ -1,5 +1,5 @@
 function res = fillHoles(this, varargin)
-%FILLHOLES  Fill holes in a binary image
+%FILLHOLES  Fill holes in a binary or grascale image
 %
 %   RES = fillHoles(IMG)
 %
@@ -8,18 +8,14 @@ function res = fillHoles(this, varargin)
 %     show(fillHoles(img))
 %
 %   See also
-%     geodesicReconstruction, imfill
+%     reconstruction, killBorders, imfill
 %
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
-
-% % error check
-% if ~strcmp(this.type, 'binary')
-%     error('Input image must be binary');
-% end
 
 % default connectivity
 conn = 4;

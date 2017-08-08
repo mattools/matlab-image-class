@@ -1,4 +1,4 @@
-function test_suite = test_numel(varargin) %#ok<STOUT>
+function test_suite = test_numel(varargin)
 %TEST_NUMEL  One-line description here, please.
 %
 %   output = test_numel(input)
@@ -15,8 +15,7 @@ function test_suite = test_numel(varargin) %#ok<STOUT>
 % Created: 2011-06-14,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_2d_gray %#ok<*DEFNU>
 

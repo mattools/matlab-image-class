@@ -1,4 +1,4 @@
-function test_suite = test_isVectorImage(varargin) %#ok<STOUT>
+function test_suite = test_isVectorImage(varargin)
 %TEST_ISVECTORIMAGE  Test case for the file isVectorImage
 %
 %   Test case for the file isVectorImage
@@ -15,7 +15,7 @@ function test_suite = test_isVectorImage(varargin) %#ok<STOUT>
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-initTestSuite;
+test_suite = buildFunctionHandleTestSuite(localfunctions);
 
 function test_grayscale %#ok<*DEFNU>
 % Test on a grayscale image
