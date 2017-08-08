@@ -1,6 +1,8 @@
 function res = clearBorders(this, varargin)
 %CLEARBORDERS Remove borders of a binary or grayscale image
 %
+%   Note: Deprecated, use the 'killBorder' function instead.
+%
 %   RES = clearBorders(IMG)
 %   RES = clearBorders(IMG, CONN)
 %
@@ -8,13 +10,16 @@ function res = clearBorders(this, varargin)
 %   clearBorders
 %
 %   See also
-%     geodesicReconstruction
+%     reconstruction
 %
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
+
+warning('Image:deprecated', ...
+    'method "clearBorders" is deprecated, use "killBorders" instead');
 
 % default connectivity
 conn = 4;
