@@ -29,7 +29,7 @@ fillValue = 0;
 
 if ~isempty(varargin)
     method = varargin{1};
-    varargin{1} = [];
+    varargin(1) = [];
 end
 
 if ischar(method) && method(1)~='*'
