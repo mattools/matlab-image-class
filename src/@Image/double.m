@@ -9,9 +9,9 @@ function res = double(this)
 %     show(img2, []);
 %
 %   See also
-%   Image/getBuffer
+%     getBuffer, uint8, uint16
 %
-%
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr

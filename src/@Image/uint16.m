@@ -9,9 +9,9 @@ function res = uint16(this)
 %     show(img2);
 %
 %   See also
-%   Image/getBuffer
+%     getBuffer, uint8, double
 %
-%
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
@@ -19,3 +19,6 @@ function res = uint16(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 res = Image('data', uint16(this.data), 'parent', this);
+
+% set type
+res.type = 'grayscale';
