@@ -59,6 +59,9 @@ if nargin == 1
     return;
 end
 
+
+%% Generic case: the three channels are given as argument
+
 % create empty variable names if necessary
 if nargin < 3
     blue = [];
@@ -131,3 +134,8 @@ if ~isempty(blue),  rgb(:,:,:,3) = blue;  end
 
 % create new image object
 rgb = Image('data', rgb, 'type', 'color');
+
+% also propagates spatial calibration
+if isa(refImage, 'Image')
+    copySpatialCalibration(rgb, refImage);
+end
