@@ -76,11 +76,11 @@ img = Image.create(data);
 
 % setup spatial calibration
 if isfield(info, 'Offset')
-    img.setOrigin(info.Offset);
+    img.origin = info.Offset;
 end
 if isfield(info, 'ElementSize')
-    img.setSpacing(info.ElementSpacing);
+    img.spacing = info.ElementSpacing;
 end
 if isfield(info, 'ElementSpacing')
-    img.setSpacing(info.ElementSpacing);
+    img.spacing = info.ElementSpacing;
 end
