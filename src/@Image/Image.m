@@ -74,6 +74,8 @@ end
 methods (Static)
     img = create(varargin)
     img = createRGB(varargin)
+    img = ones(varargin)
+    img = zeros(varargin)
     
     img = read(fileName, varargin)
     
