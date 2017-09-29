@@ -30,7 +30,7 @@ function varargout = gradient(this, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@nantes.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2010-06-16,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -74,7 +74,7 @@ elseif nd == 3
         % Default 3D case: normalisation of 2 classical sobel matrices
         base = [1 2 1]' * [1 2 1];
         base = base / sum(base(:))/2;
-        sx = permute(cat(3, base, zeros(3, 3), -base), [2 3 1]);
+        sx = permute(cat(3, base, zeros(3, 3), -base), [3 2 1]);
         
     else
         % compute kernel based on specified sigma value
