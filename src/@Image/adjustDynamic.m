@@ -34,9 +34,8 @@ function res = adjustDynamic(this, varargin)
 %   See Also:
 %     imadjust, mat2gray
 %
-%
+
 %   ---------
-%
 %   author: David Legland 
 %   INRA - TPV URPOI - BIA IMASTE
 %   created the 21/03/2005.

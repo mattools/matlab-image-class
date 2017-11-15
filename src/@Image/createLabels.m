@@ -1,11 +1,11 @@
 function [res, num] = createLabels(this, conn)
 %CREATELABELS Connected components labeling of a binary image
 %
-%   LBL = BIN.createLabels();
+%   LBL = createLabels(BIN);
 %   where BIN is either a 2D or 3D binary image, returns a label image of
 %   the connected components of image BIN.
 %
-%   LBL = BIN.createLabels(CONN);
+%   LBL = createLabels(BIN, CONN);
 %   Specifies the connectivity to use, can be 4 or 8 for 2D images, 6, 18
 %   or 26 for 3D images.
 %
