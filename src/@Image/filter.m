@@ -10,7 +10,7 @@ function res = filter(this, h, varargin)
 %
 %   
 %   see also
-%   meanFilter, gaussianFilter, medianFilter, gradient, imfilter
+%   boxFilter, gaussianFilter, medianFilter, gradient, imfilter
 %
 
 % choose default options
