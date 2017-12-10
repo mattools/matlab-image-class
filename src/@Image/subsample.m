@@ -7,10 +7,10 @@ function res = subsample(this, k, varargin)
 % K is the sampling factor. It can be either a scalar, or a row vector with
 % as many columns as the number of dimensions of image.
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2009-04-20,    using Matlab 7.7.0.471 (R2008b)
 % Copyright 2009 INRA - Cepia Software Platform.
 

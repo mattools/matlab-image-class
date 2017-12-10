@@ -18,10 +18,10 @@ function rgb = createRGB(red, green, blue)
 %
 %   See also
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2010-11-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -58,6 +58,9 @@ if nargin == 1
     end
     return;
 end
+
+
+%% Generic case: the three channels are given as argument
 
 % create empty variable names if necessary
 if nargin < 3
@@ -131,3 +134,8 @@ if ~isempty(blue),  rgb(:,:,:,3) = blue;  end
 
 % create new image object
 rgb = Image('data', rgb, 'type', 'color');
+
+% also propagates spatial calibration
+if isa(refImage, 'Image')
+    copySpatialCalibration(rgb, refImage);
+end

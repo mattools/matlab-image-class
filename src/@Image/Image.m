@@ -15,9 +15,10 @@ classdef Image < handle
 %     show, histogram, lineProfile, sum, mean, filter, gaussianFilter
 %     slice, channel, splitChannels, isColorImage, isGrayscaleImage
 %
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2009-04-20,    using Matlab 7.7.0.471 (R2008b)
 % Copyright 2009 INRA - Cepia Software Platform.
 
@@ -73,6 +74,8 @@ end
 methods (Static)
     img = create(varargin)
     img = createRGB(varargin)
+    img = ones(varargin)
+    img = zeros(varargin)
     
     img = read(fileName, varargin)
     
@@ -138,7 +141,7 @@ methods
             if islogical(img.data)
                 this.data   = false(size(img.data));
             else
-                this.data   = zeros(size(img.data), class(img.data)); %#ok<ZEROLIKE>
+                this.data   = zeros(size(img.data), class(img.data));
             end
             this.data(:)    = img.data(:);
             this.dataSize   = img.dataSize;
@@ -274,7 +277,7 @@ methods (Access = protected)
     end
     
     function initImageType(this)
-        % determines a priori type of image
+        % Determines a priori the type of image
         if islogical(this.data)
             this.type = 'binary';
         elseif isfloat(this.data)
@@ -305,42 +308,58 @@ methods (Access = protected)
     end
     
     function initCalibration(this)
-        % initialize spatial calibration of image from its dimension.
+        % Initializes spatial calibration of image based on its dimension.
         nd = this.dimension;
         this.origin  = ones(1, nd);
         this.spacing = ones(1, nd);
+        this.calibrated = false;
     end
 end % protected methods
 
 
 %% Spatial calibration methods
 methods
-   
-    function ori = getOrigin(this)
+    function copySpatialCalibration(this, that)
+        %copySpatialCalibration copy spatial calibration
+        %
+        % copySpatialCalibration(THIS, THAT)
+        % Copies the spatial calibration from THAT image to THIS image.
+        
+        this.origin     = that.origin;
+        this.spacing    = that.spacing;
+        this.unitName   = that.unitName;
+        this.calibrated = that.calibrated;
+    end
+    
+    function ori = get.origin(this)
         % Return image origin
         ori = this.origin;
     end
     
-    function setOrigin(this, origin)
+    function set.origin(this, origin)
         % Change image origin
         this.origin = origin;
-        this.calibrated = true;
+        this.calibrated = true; %#ok<MCSUP>
     end
     
-    function ori = getSpacing(this)
+    function ori = get.spacing(this)
         % Return image spacing
         ori = this.spacing;
     end
     
-    function setSpacing(this, spacing)
+    function set.spacing(this, spacing)
         % Change image spacing
         this.spacing = spacing;
-        this.calibrated = true;
+        this.calibrated = true; %#ok<MCSUP>
     end
-       
-    function setUnitName(this, newName)
+
+    function name = get.unitName(this)
+        name = this.unitName;
+    end
+    
+    function set.unitName(this, newName)
         this.unitName = newName;
-        this.calibrated = true;
+        this.calibrated = true; %#ok<MCSUP>
     end
     
     function [index, isInside] = pointToIndex(this, point)

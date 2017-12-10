@@ -30,11 +30,11 @@ function res = rotate90(this, axis, varargin)
 %     subplot(122);show(rotate90(img));
 %
 %   See also
-%
-%
+%   flip
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2010-10-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 

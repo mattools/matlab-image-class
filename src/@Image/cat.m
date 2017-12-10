@@ -1,5 +1,5 @@
 function res = cat(dim, this, varargin)
-%CAT Concate images along specified dimension
+%CAT Concatenate images along specified dimension
 %
 %   RES = cat(DIM, IMG1, IMG2)
 %
@@ -9,9 +9,10 @@ function res = cat(dim, this, varargin)
 %   See also
 %   vertcat, horzcat, repmat, catChannels
 %
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2011-08-04,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 

@@ -8,10 +8,10 @@ function res = le(this, that)
 %
 %   See also
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2010-11-28,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -21,7 +21,7 @@ function res = le(this, that)
 
 % compute new data
 newData = bsxfun(@le, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data))); %#ok<ZEROLIKE>
+    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
 
 % create result image
 newName = strcat(name1, '<=', name2);

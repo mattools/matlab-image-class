@@ -10,10 +10,10 @@ function res = absdiff(this, arg)
 %
 %   See also
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2011-03-24,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -21,6 +21,6 @@ if isa(arg, 'Image')
     arg = arg.data;
 end
 
-newData = imabsdiff(this.data, cast(arg, class(this.data))); %#ok<ZEROLIKE>
+newData = imabsdiff(this.data, cast(arg, class(this.data)));
 
 res = Image('data', newData, 'parent', this);

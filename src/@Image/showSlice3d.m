@@ -26,9 +26,10 @@ function hs = showSlice3d(this, dim, varargin)
 %   Largely inspired by file 'slice3i' from Anders Brun, see FEx:
 %   http://www.mathworks.fr/matlabcentral/fileexchange/25923
 %
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2011-09-28,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
