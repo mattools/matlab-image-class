@@ -5,7 +5,11 @@ function res = resample(this, varargin)
 %   RES = resample(IMG, LX, LY, LZ);
 %
 %   Example
-%   resample
+%     % resample a cropped version and display with red overlay
+%     img = Image.read('circles.png');
+%     img2 = resample(img, 50.5:.5:150, 50.5:.5:150);
+%     ovr = overlay(img2, img2>0, 'r');
+%     figure; show(img); hold on; show(ovr);
 %
 %   See also
 %     resize, interp
@@ -51,7 +55,7 @@ if nd == 2
     res = interp(this, x, y, varargin{:});
 
     % convert to Image class
-    res = Image('data', res, 'parent', this, ...
+    res = Image(res, 'parent', this, ...
         'origin', [lx(1) ly(1)], ...
         'spacing', [lx(2)-lx(1) ly(2)-ly(1)]);
     
@@ -60,7 +64,7 @@ elseif nd == 3
     res = interp(this, x, y, z, varargin{:});
     
     % convert to Image class
-    res = Image('data', res, 'parent', this, ...
+    res = Image(res, 'parent', this, ...
         'origin', [lx(1) ly(1) lz(1)], ...
         'spacing', [lx(2)-lx(1) ly(2)-ly(1) lz(2)-lz(1)]);
 else

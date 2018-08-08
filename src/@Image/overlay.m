@@ -156,7 +156,7 @@ while ~isempty(varargin)
     blue    =  blue .* uint8(mask==0) + mask .* b;
 end
 
-res = Image('data', cat(4, red, green, blue), 'type', 'color');
+res = Image('data', cat(4, red, green, blue), 'parent', this, 'type', 'color');
 
 
 function [r, g, b] = parseOverlayBands(color)
