@@ -7,4 +7,4 @@ look-up table, grayscale extent...).
 
 Many methods are provided for quickly apply image processing operators on image instances.
 
-The `Image` class is at the basis of the development of the `ImageM` application (http://github.com/dlegland/ImageM)
+The `Image` class is at the basis of the development of the `ImageM` application (http://github.com/mattools/ImageM)
