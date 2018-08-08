@@ -10,7 +10,7 @@ function val = interp(this, varargin)
 %   interp
 %
 %   See also
-%   interp2, lineProfile
+%   interp2, lineProfile, resample
 %
 
 % ------

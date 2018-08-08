@@ -28,7 +28,7 @@ function res = resize(this, k)
 %        103    77
 %
 %   See also
-%     size, crop
+%     size, crop, resample
 %
  
 % ------
@@ -38,7 +38,7 @@ function res = resize(this, k)
 % Copyright 2017 INRA - Cepia Software Platform.
 
 % process data buffer, using Matlab Image processing Toolbox
-data = imresize(this.getBuffer(), k);
+data = imresize(this.data, k);
 
 % create new image object for storing result
-res = Image(data, 'parent', this);
+res = Image('data', data, 'parent', this);

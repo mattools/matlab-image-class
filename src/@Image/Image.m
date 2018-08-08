@@ -202,9 +202,9 @@ methods
                     end
                     
                 case 'origin'
-                    this.setOrigin(value);
+                    this.origin = value;
                 case 'spacing'
-                    this.setSpacing(value);
+                    this.spacing = value;
                     
                 case 'unitname'
                     this.unitName = value;
@@ -231,6 +231,9 @@ methods
     
         
         function initFromMatlabArray(mat)
+            % Initialize inner data assuming argument is a Matlab matrix
+
+            % matrix size
             imageSize = size(mat);
             nd = length(imageSize);
             
