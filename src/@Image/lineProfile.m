@@ -64,7 +64,7 @@ else
     pts = [x' y' z'];
 end
 
-% extract corresponding pixel values (nearest-neighbor eval)
+% extract corresponding pixel values
 vals = interp(this, pts, method);
 
 if nargout == 0
@@ -73,10 +73,27 @@ if nargout == 0
 
     % new figure for display
     figure;
-    colors = get(gca, 'colororder');
-    set(gca, 'colororder', colors([3 2 1 4:end], :));
-    plot(dists, vals);
-
+    if size(vals, 2) == 3
+        % display color profile
+        hold on;
+        plot(dists, vals(:,1), 'color', 'r');
+        plot(dists, vals(:,2), 'color', 'g');
+        plot(dists, vals(:,3), 'color', 'b');
+        
+    else
+        % display intensity or multichannels profiles
+        colors = get(gca, 'colororder');
+        set(gca, 'colororder', colors([3 2 1 4:end], :));
+        plot(dists, vals);
+    end
+    
+    name = this.name;
+    if isempty(name)
+        title('Line Profile');
+    else
+        title(sprintf('Line profile of %s', name));
+    end
+    
 elseif nargout > 1
     varargout{1} = vals;
     
