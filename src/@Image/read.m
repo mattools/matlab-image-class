@@ -14,7 +14,7 @@ function img = read(fileName, varargin)
 %   img = Image.read('brainMRI.hdr');
 %
 %   See also
-%   imread, Image.write
+%   imread, readSeries, write
 %
 
 % ------

@@ -78,6 +78,8 @@ methods (Static)
     img = zeros(varargin)
     
     img = read(fileName, varargin)
+
+    img = readSeries(fileName, varargin)
     
     [sx, sy, sz] = create3dGradientKernels(varargin)
     % Create kernels for gradient computations
@@ -141,7 +143,7 @@ methods
             if islogical(img.data)
                 this.data   = false(size(img.data));
             else
-                this.data   = zeros(size(img.data), class(img.data));
+                this.data   = zeros(size(img.data), 'like', img.data);
             end
             this.data(:)    = img.data(:);
             this.dataSize   = img.dataSize;
@@ -259,13 +261,18 @@ methods (Access = protected)
         % Does not copy the data buffer.
         this.name   = that.name;
         this.type   = that.type;
-        this.dimension = that.dimension;
         
+        % copy dimension elements that are common
+        nd = min(this.dimension, that.dimension);
         this.calibrated = that.calibrated;
-        this.origin     = that.origin;
-        this.spacing    = that.spacing;
-        this.unitName   = that.unitName;
-        this.axisNames  = that.axisNames;
+        this.origin(1:nd)     = that.origin(1:nd);
+        this.spacing(1:nd)    = that.spacing(1:nd);
+        if ~isempty(that.unitName)
+            this.unitName(1:nd)   = that.unitName(1:nd);
+        end
+        if ~isempty(that.axisNames)
+            this.axisNames(1:nd)  = that.axisNames(1:nd);
+        end
     end
     
     function setInnerData(this, data)
