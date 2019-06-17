@@ -75,11 +75,14 @@ elseif strcmp(type, '()')
         error('Image:subsasgn', ...
             'Too many indices');
     end
+elseif strcmp(type, '{}')
+    error('Image:subsasgn', ...
+        'Can not manage braces reference');
 else
     error('Image:subsasgn', ...
-        'Can not manage such reference');
+        ['Can not manage such reference: ' type]);
 end
 
-if nargout>0
+if nargout > 0
     varargout{1} = this;
 end
