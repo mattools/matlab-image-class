@@ -259,8 +259,12 @@ methods (Access = protected)
     function copyFields(this, that)
         % Initialize inner fields with the fields of the parameter image
         % Does not copy the data buffer.
+        
         this.name   = that.name;
-        this.type   = that.type;
+        
+        if isCompatibleType(this, that.type)
+            this.type   = that.type;
+        end
         
         % copy dimension elements that are common
         nd = min(this.dimension, that.dimension);
@@ -272,6 +276,22 @@ methods (Access = protected)
         end
         if ~isempty(that.axisNames)
             this.axisNames(1:nd)  = that.axisNames(1:nd);
+        end
+    end
+    
+    function tf = isCompatibleType(this, typeName)
+        tf = true;
+        nc = this.dataSize(4);
+        switch lower(typeName)
+            case 'binary', if nc ~= 1, tf = false; end
+            case 'grayscale', if nc ~= 1, tf = false; end
+            case 'intensity', if nc ~= 1, tf = false; end
+            case 'color', if nc ~= 3, tf = false; end
+            case 'label', if nc ~= 1, tf = false; end
+            case 'vector', if nc == 1, tf = false; end
+            case 'complex', if nc ~= 2, tf = false; end
+            otherwise 
+                warning(['unknown type: ' typeName]);
         end
     end
     
