@@ -70,8 +70,11 @@ elseif strcmp(type, '()')
         varargout{1} = permute(this.data(s1.subs{:}), [2 1 3:5]);
     end
     
+elseif strcmp(type, '{}')
+    error('Image:subsref', ...
+        'can not manage braces reference');
 else
     error('Image:subsref', ...
-        'can not manage such reference');
+        ['can not manage such reference: ' type]);
 end
 
