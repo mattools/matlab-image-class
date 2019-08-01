@@ -2,6 +2,14 @@ function img = read(fileName, varargin)
 %READ Read an image from a file
 %
 %   IMG = Image.read(FILENAME)
+%   Read an image from the specified file name.
+%
+%   IMG = Image.read(FILENAME, 'format', FMT)
+%   Forces the format. Available formats are:
+%   * all the formats recognized by the imread function
+%   * analyze
+%   * dicom
+%   * metaimage
 %
 %   Example
 %   % read a grayscale image
@@ -34,6 +42,17 @@ elseif strcmpi(ext, '.dcm')
     format = 'dicom';
 elseif strcmpi(ext, '.mhd')
     format = 'metaimage';
+end
+
+% parse optional arguments
+while length(varargin) > 1
+    pname = varargin{1};
+    if strcmpi(pname, 'format')
+        format = varargin{2};
+    else
+        warning(['Unknown optional argument: ' pname]);
+    end
+    varargin(1,2) = [];
 end
 
 % Process image reading depending on the format
@@ -72,8 +91,8 @@ function img = readMetaImage(fileName)
 
 % read info file and data
 info = metaImageInfo(fileName);
-data = metaImageRead(info);
-img = Image.create(data);
+data = readMetaImageData(info);
+img = Image.create('data', data);
 
 % setup spatial calibration
 if isfield(info, 'Offset')

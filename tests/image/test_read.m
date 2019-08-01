@@ -1,4 +1,4 @@
-function  test_suite = test_read(varargin) 
+function test_suite = test_read(varargin) 
 %TEST_READ  One-line description here, please.
 %
 %   output = test_read(input)
