@@ -1,9 +1,9 @@
-function [res, indMax] = largestRegion(this, varargin)
-%IMLARGESTREGION Keep the largest region in a binary or label image
+function [res, indMax] = largestRegion(obj, varargin)
+% Keep the largest region in a binary or label image.
 % 
 %   REG = largestRegion(LBL)
 %   Finds the largest region in label image LBL, and returns the binary
-%   image corresponding to this label. Can be used to select automatically
+%   image corresponding to obj label. Can be used to select automatically
 %   the most proeminent region in a segmentation or labelling result.
 %
 %   [REG IND] = largestRegion(LBL)
@@ -43,7 +43,7 @@ function [res, indMax] = largestRegion(this, varargin)
 %     show(overlay(img, bin2));
 %
 %   See also
-%    regionprops, killBorders, areaOpening
+%     regionprops, killBorders, areaOpening
 %
 
 % ------
@@ -52,15 +52,15 @@ function [res, indMax] = largestRegion(this, varargin)
 % Created: 2012-07-27,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
 
-if isLabelImage(this)
-    lbl = this.data;
+if isLabelImage(obj)
+    lbl = obj.Data;
     
-elseif isBinaryImage(this)
+elseif isBinaryImage(obj)
     % if image is binary compute labeling
     
     % first determines connectivity to use
     conn = 4;
-    if this.dimension == 3
+    if obj.Dimension == 3
         conn = 6;
     end
     if ~isempty(varargin)
@@ -68,10 +68,10 @@ elseif isBinaryImage(this)
     end
     
     % appply labeling, get result as 2D or 3D matrix
-    lbl = labelmatrix(bwconncomp(this.data, conn));
+    lbl = labelmatrix(bwconncomp(obj.Data, conn));
     
 else
-    error('Image:areaOpening', 'Requires binary or label image');
+    error('Image:largestRegion', 'Requires binary or label image');
 end
 
 % compute area of each label
@@ -86,4 +86,4 @@ end
 
 % keep as binary
 bin = lbl == indMax;
-res = Image.create('data', bin, 'parent', this, 'type', 'binary');
+res = Image.create('data', bin, 'parent', obj, 'type', 'binary');

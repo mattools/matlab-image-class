@@ -1,5 +1,5 @@
-function res = morphoGradient(this, se)
-%MORPHOGRADIENT Morphological gradient of an intensity image
+function res = morphoGradient(obj, se)
+% Morphological gradient of an intensity image.
 %
 %   RES = morphoGradient(IMG, SE)
 %   Computes the morphological gradient of the image IMG, using the
@@ -22,7 +22,7 @@ function res = morphoGradient(this, se)
 %     show(mgrad);
 %
 %   See also
-%   gradient, dilation, erosion, morphoLaplacian, minus
+%     gradient, dilation, erosion, morphoLaplacian, minus
 %
 
 % ------
@@ -33,15 +33,15 @@ function res = morphoGradient(this, se)
 
 % default structuring element
 if nargin == 1
-    se = defaultStructuringElement(this);
+    se = defaultStructuringElement(obj);
 end
 
 % compute gradient, by keeping image data type
-if ~islogical(this.data)
-    res = imsubtract(imdilate(this.data, se), imerode(this.data, se));
+if ~islogical(obj.Data)
+    res = imsubtract(imdilate(obj.Data, se), imerode(obj.Data, se));
 else
-    res = imdilate(this.data, se) & ~imerode(this.data, se);
+    res = imdilate(obj.Data, se) & ~imerode(obj.Data, se);
 end
 
 % create result image
-res = Image('data', res, 'parent', this);
+res = Image('data', res, 'parent', obj);

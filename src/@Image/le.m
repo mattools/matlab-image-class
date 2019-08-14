@@ -1,5 +1,5 @@
-function res = le(this, that)
-%LE Overload the le operator for Image objects
+function res = le(obj, that)
+% Overload the le operator for Image objects.
 %
 %   output = le(input)
 %
@@ -7,6 +7,7 @@ function res = le(this, that)
 %   le
 %
 %   See also
+%     lt, ge, eq, ne
 %
 
 % ------
@@ -16,12 +17,12 @@ function res = le(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, that, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@le, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
 newName = strcat(name1, '<=', name2);

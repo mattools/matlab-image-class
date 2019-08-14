@@ -1,6 +1,7 @@
 function img = metaImageRead(info)
-%METAIMAGEREAD  Read an image in MetaImage format
-%   output = metaImageRead(input)
+% Read an image in MetaImage format.
+%
+%   IMG = metaImageRead(FILENAME)
 %
 %   Example
 %   info = metaImageInfo('example.hdr');
@@ -9,7 +10,7 @@ function img = metaImageRead(info)
 %   TODO: add support for multiple image files
 %
 %   See also
-%   metaImageInfo, readstack, analyze75info
+%     metaImageInfo, readstack, analyze75info
 %
 
 % ------

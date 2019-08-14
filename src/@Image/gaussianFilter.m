@@ -1,5 +1,5 @@
-function res = gaussianFilter(this, kernelSize, sigma, varargin)
-%GAUSSIANFILTER Gaussian filter of image using separability
+function res = gaussianFilter(obj, kernelSize, sigma, varargin)
+% Gaussian filter of image using separability.
 %
 %   IMGF = gaussianFilter(IMG, SIZE, SIGMA)
 %   IMG is the input image,
@@ -61,10 +61,10 @@ function res = gaussianFilter(this, kernelSize, sigma, varargin)
 %% Process special cases
 
 % case of color images
-if isColorImage(this)
-    r = gaussianFilter(channel(this, 1), kernelSize, sigma, varargin{:});
-    g = gaussianFilter(channel(this, 2), kernelSize, sigma, varargin{:});
-    b = gaussianFilter(channel(this, 3), kernelSize, sigma, varargin{:});
+if isColorImage(obj)
+    r = gaussianFilter(channel(obj, 1), kernelSize, sigma, varargin{:});
+    g = gaussianFilter(channel(obj, 2), kernelSize, sigma, varargin{:});
+    b = gaussianFilter(channel(obj, 3), kernelSize, sigma, varargin{:});
     res = Image.createRGB(r, g, b);
     return;    
 end
@@ -72,7 +72,7 @@ end
 
 %% Process input arguments
 
-nd = this.dimension;
+nd = obj.Dimension;
 
 % process kernel size
 if nargin < 2
@@ -100,7 +100,7 @@ end
 %% Main processing
 
 % init result
-data = this.data;
+data = obj.Data;
 
 % process each direction
 for i = 1:nd
@@ -124,4 +124,4 @@ for i = 1:nd
 end
 
 % create result image
-res = Image('data', data, 'parent', this);
+res = Image('data', data, 'parent', obj);

@@ -1,5 +1,5 @@
-function varargout = size(this, dim)
-%SIZE Return image size
+function varargout = size(obj, dim)
+% Return image size.
 %
 %   S = size(IMG);
 %   Return the size of the image in the spatial dimensions. S is a row
@@ -30,7 +30,7 @@ function varargout = size(this, dim)
 %
 %
 %   See also
-%   Image/ndims
+%     ndims
 %
 
 % ------
@@ -42,15 +42,15 @@ function varargout = size(this, dim)
 if nargout <= 1
     % compute dim
     if nargin == 1
-        s = this.dataSize(1:this.dimension);
+        s = obj.DataSize(1:obj.Dimension);
     else
-        s = this.dataSize(dim);
+        s = obj.DataSize(dim);
     end
     varargout = {s};
 
 else
     
-    s = this.dataSize(1:nargout);
+    s = obj.DataSize(1:nargout);
     varargout = num2cell(s);
 end
 

@@ -1,19 +1,31 @@
-function res = max(this, varargin)
-% Computes the maximal value within image
+function res = max(obj, varargin)
+% Compute the maximal value within image.
+%
+%   M = mean(IMG);
+%
+%   Example
+%     img = Image.read('rice.png');
+%     max(img)
+%     ans =
+%        204
+%
+%   See also
+%     mean, median, min
+%
 
 if isempty(varargin)
     % compute minimal value within image
     
-    if size(this, 4) == 1
+    if size(obj, 4) == 1
         % case of grayscale image
-        res = max(this.data(:));
+        res = max(obj.Data(:));
         
     else
         % case of color or vector images
-        nc = channelNumber(this);
+        nc = channelNumber(obj);
         res = zeros(1, nc);
         for i = 1:nc
-            dat = this.data(:,:,:,i,:);
+            dat = obj.Data(:,:,:,i,:);
             res(i) = max(dat(:));
         end
     end
@@ -25,11 +37,11 @@ end
 % compute the minimum image between image and second argument
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, varargin{1}, ....
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, varargin{1}, ....
     inputname(1), inputname(2));
 
 % compute new data
-class0 = class(parent.data);
+class0 = class(parent.Data);
 newData = max(cast(data1, class0), cast(data2, class0));
 
 % create result image

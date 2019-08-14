@@ -1,5 +1,5 @@
-function lz = zData(this)
-%ZDATA Return the vector of positions in the z direction
+function lz = zData(obj)
+% Return the vector of positions in the z direction.
 %
 %   ZPOS = zData(IMG);
 %   ZPOS is a 1-by-Nz row vector, with Nz being the number of elements in
@@ -9,7 +9,7 @@ function lz = zData(this)
 %   zData
 %
 %   See also
-%   xData, yData
+%     xData, yData
 %
 
 % ------
@@ -20,7 +20,7 @@ function lz = zData(this)
 
 
 % extract number of voxels in each dimension
-dim = this.dataSize;
+dim = obj.DataSize;
 
 % compute voxel positions
-lz = (0:dim(3)-1) * this.spacing(3) + this.origin(3);
+lz = (0:dim(3)-1) * obj.Spacing(3) + obj.Origin(3);

@@ -1,5 +1,5 @@
-function [res, num] = createLabels(this, conn)
-%CREATELABELS Connected components labeling of a binary image
+function [res, num] = createLabels(obj, conn)
+% Connected components labeling of a binary image.
 %
 %   LBL = createLabels(BIN);
 %   where BIN is either a 2D or 3D binary image, returns a label image of
@@ -10,19 +10,20 @@ function [res, num] = createLabels(this, conn)
 %   or 26 for 3D images.
 %
 %   Example
-%   createLabels
+%     createLabels
 %
 %   See also
-%   bwlabel, bwlabeln, bwconncomp
+%     bwlabel, bwlabeln, bwconncomp
+%
 
 % check image data type
-if ~strcmp(this.type, 'binary')
-    error('oolip:WrongArgument', ...
+if ~strcmp(obj.type, 'binary')
+    error('Image:createLabels:WrongArgument', ...
         'Function "createLabels" requires a binary image as input');
 end
 
 % extract image dimension
-nd = ndims(this);
+nd = ndims(obj);
 
 % setup default connectivity
 if nargin < 2
@@ -35,14 +36,14 @@ end
 
 % call the label function
 if nd == 2
-    [labels, num] = bwlabel(this.data, conn);
+    [labels, num] = bwlabel(obj.Data, conn);
 else
-    [labels, num] = bwlabeln(this.data, conn);
+    [labels, num] = bwlabeln(obj.Data, conn);
 end
 
 % create new image with result of filtering
 res = Image(...
     'data', labels, ...
-    'parent', this, 'type', 'label');
+    'parent', obj, 'type', 'label');
     
     

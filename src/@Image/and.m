@@ -1,13 +1,13 @@
 function res = and(this, that)
-%AND Overload the and operator for Image objects
+% Overload the AND operator for Image objects.
 %
-%   output = and(input)
+%   RES = and(IMG1, IMG2)
 %
 %   Example
 %   and
 %
 %   See also
-%
+%     or, xor
 
 % ------
 % Author: David Legland

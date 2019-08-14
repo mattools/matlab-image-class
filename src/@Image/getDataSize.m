@@ -1,8 +1,8 @@
-function siz = getDataSize(this)
-%GETDATASIZE Return the size of the data buffer
+function siz = getDataSize(obj)
+% Return the size of the data buffer.
 %
-%   SIZ = img.getDataSize()
-%   SIZ is a 1-by-5 row vector, containing, in this order:
+%   SIZ = getDataSize(img)
+%   SIZ is a 1-by-5 row vector, containing, in obj order:
 %   SIZ(1) is the number of columns (X dimension)
 %   SIZ(2) is the number of rows (Y dimension)
 %   SIZ(3) is the number of slices (Z dimension)
@@ -16,7 +16,7 @@ function siz = getDataSize(this)
 %       256 256 1 1 1
 %
 %   See also
-%   getDimension, getPhysicalExtent
+%     getDimension, getPhysicalExtent
 %
 
 % ------
@@ -25,4 +25,4 @@ function siz = getDataSize(this)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-siz = this.dataSize;
+siz = obj.DataSize;

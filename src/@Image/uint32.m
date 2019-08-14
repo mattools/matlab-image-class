@@ -1,5 +1,5 @@
-function res = uint32(this)
-%UINT32 Get the same image but with data stored as uint32
+function res = uint32(obj)
+% Get the same image but with data stored as uint32.
 %   
 %   IMG32 = uint32(IMG);
 %
@@ -18,7 +18,7 @@ function res = uint32(this)
 % Created: 2010-06-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-res = Image('data', uint32(this.data), 'parent', this);
+res = Image('data', uint32(obj.Data), 'parent', obj);
 
 % set type
-res.type = 'grayscale';
+res.Type = 'grayscale';

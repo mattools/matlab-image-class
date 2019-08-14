@@ -1,5 +1,5 @@
-function res = or(this, that)
-%OR Overload the or operator for Image objects
+function res = or(obj, value)
+% Overload the or operator for Image objects.
 %
 %   output = or(input)
 %
@@ -16,7 +16,7 @@ function res = or(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, value, ...
     inputname(1), inputname(2));
 
 % compute new data

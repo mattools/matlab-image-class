@@ -1,5 +1,5 @@
-function convertType(this, newType)
-%CONVERTTYPE Convert image data type
+function convertType(obj, newType)
+% Convert image data type.
 %
 %   convertType(IMG, NEWTYPE)
 %   Changes the type of data buffer to the type specified by NEWTYPE.
@@ -7,7 +7,7 @@ function convertType(this, newType)
 %   This function changes the internal state of the Image object.
 %
 %   Example
-%   convertType
+%     convertType
 %
 %   See also
 %
@@ -18,4 +18,4 @@ function convertType(this, newType)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-this.data = cast(this.data, newType);
+obj.Data = cast(obj.Data, newType);

@@ -1,5 +1,5 @@
-function res = mpower(this, arg)
-%MPOWER Overload the mpower operator for image object
+function res = mpower(obj, arg)
+% Overload the mpower operator for image object.
 %
 %   output = mpower(input)
 %
@@ -7,7 +7,8 @@ function res = mpower(this, arg)
 %   mpower
 %
 %   See also
-% 
+%     mrdivide, mtimes 
+%
 
 % ------
 % Author: David Legland
@@ -16,9 +17,9 @@ function res = mpower(this, arg)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 if isa(arg, 'Image')
-    arg = arg.data;
+    arg = arg.Data;
 end
 
-newData = bsxfun(@power, double(this.data), arg);
+newData = bsxfun(@power, double(obj.Data), arg);
 
-res = Image('data', newData, 'parent', this, 'type', 'intensity');
+res = Image('data', newData, 'parent', obj, 'type', 'intensity');

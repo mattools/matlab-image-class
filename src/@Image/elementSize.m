@@ -1,5 +1,5 @@
-function dim = elementSize(this, varargin)
-%ELEMENTSIZE Return channel and frame number of an image element
+function dim = elementSize(obj, varargin)
+% Return channel and frame number of an image element.
 %
 %   DIM = elementSize(IMG)
 %   Returns the dimension of an individual element (pixel or voxel) in the
@@ -19,7 +19,7 @@ function dim = elementSize(this, varargin)
 %        3   1
 %
 %   See also
-%   size, dataSize, channelNumber
+%     size, dataSize, channelNumber
 %
 
 % ------
@@ -29,12 +29,12 @@ function dim = elementSize(this, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 if isempty(varargin)
-    dim = this.dataSize(4:5);
+    dim = obj.DataSize(4:5);
     
 else
     d = varargin{1};
     if d > 2
         error('Second argument must be 1 or 2');
     end
-    dim = this.dataSize(d + 3);
+    dim = obj.DataSize(d + 3);
 end

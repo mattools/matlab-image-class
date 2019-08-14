@@ -1,7 +1,7 @@
-function string = char(this)
-%CHAR Return a character representation of this image object
+function string = char(obj)
+% Return a character representation of obj image object.
 %
-%   output = char(input)
+%   RES = char(IMG)
 %
 %   Example
 %   char
@@ -15,10 +15,10 @@ function string = char(this)
 % Created: 2010-12-09,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-nd = this.getDimension;
+nd = getDimension(obj);
 
 pattern = repmat('%d x ', 1, nd);
 pattern(end-2:end) = [];
 pattern = [ pattern ' %s'];
 
-string = sprintf(pattern, this.getSize(), this.class());
+string = sprintf(pattern, getSize(obj), class(obj));

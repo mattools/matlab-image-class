@@ -1,5 +1,5 @@
-function data = getDisplayData(this)
-%GETDISPLAYDATA Returns a data array that can be used for display
+function data = getDisplayData(obj)
+% Return a data array that can be used for display.
 %
 %   DAT = img.getDisplayData()
 %
@@ -19,16 +19,16 @@ function data = getDisplayData(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % number of channels
-nc = this.dataSize(4);
+nc = obj.DataSize(4);
 
 if nc == 1
     % for grayscale images, simply extract appropriate slice, and transpose
-    data = this.data(:, :, 1, 1, 1)';
+    data = obj.Data(:, :, 1, 1, 1)';
     
 elseif nc == 3
-    % If number of channels is 3, assumes this is a color image
+    % If number of channels is 3, assumes obj is a color image
     % extract appropriate slice, and transpose.
-    data = permute(squeeze(this.data(:, :, 1, :, 1)), [2 1 3]);
+    data = permute(squeeze(obj.Data(:, :, 1, :, 1)), [2 1 3]);
     
     % if data type is signed integer, convert to uint8
     if isinteger(data) && ~isa(data, 'uint8')
@@ -40,13 +40,13 @@ else
     % For vector images, create a new intensity image from norm
     
     % allocate memory for result
-    nx = this.dataSize(1);
-    ny = this.dataSize(2);
+    nx = obj.DataSize(1);
+    ny = obj.DataSize(2);
     data = zeros([nx ny]);
     
     % iterate over channels
-    for i=1:nc
-        channel = double(squeeze(this.data(:,:,1,i,1)));
+    for i = 1:nc
+        channel = double(squeeze(obj.Data(:,:,1,i,1)));
         data = data + channel.^2;
     end
     

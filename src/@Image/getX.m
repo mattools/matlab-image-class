@@ -1,12 +1,13 @@
-function xdata = getX(this)
-%GETX  Returns physical x-coordinate of voxels
+function xdata = getX(obj)
+% Returns physical x-coordinate of voxels.
 %
-%   output = getX(input)
+%   ZDATA = getX(IMG)
 %
 %   Example
 %   getX
 %
 %   See also
+%     getY, getZ
 %
 
 % ------
@@ -15,7 +16,7 @@ function xdata = getX(this)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-siz = this.dataSize(1:3);
-xdata = (0:siz(1)-1)*this.spacing(1) + this.origin(1);
+siz = obj.DataSize(1:3);
+xdata = (0:siz(1)-1)*obj.Spacing(1) + obj.Origin(1);
 xdata = xdata(ones(siz(2), 1), :, ones(siz(3), 1));
 

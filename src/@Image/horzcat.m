@@ -1,14 +1,17 @@
-function res = horzcat(this, varargin)
-%HORZCAT Horizontal concatenation of images
+function res = horzcat(obj, varargin)
+% Horizontal concatenation of images.
 %
 %   RES = horzcat(IMG1, IMG2)
 %   RES = [IMG1 IMG2];
 %
 %   Example
-%   horzcat
+%     % duplicate image in horizontal direction
+%     img = Image.read('cameraman.tif');
+%     res = horzcat(img, img);
+%     show(res);
 %
 %   See also
-%   vertcat, repmat, cat
+%     vertcat, repmat, cat
 %
 
 % ------
@@ -17,8 +20,8 @@ function res = horzcat(this, varargin)
 % Created: 2011-08-04,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-data = this.data;
-name = this.name;
+data = obj.data;
+name = obj.name;
 
 for i = 1:length(varargin)
     var = varargin{i};    
@@ -29,5 +32,5 @@ end
 
 res = Image( ...
     'data', data, ...
-    'parent', this, ...
+    'parent', obj, ...
     'name', name);

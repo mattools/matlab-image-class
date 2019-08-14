@@ -1,5 +1,5 @@
-function b = isBinary(this)
-%ISBINARY Checks if an image is binary (only black and white)
+function b = isBinary(obj)
+% Checks if an image is binary (only black and white).
 %
 %   Note: depredated! replaced by "isBinaryImage"
 %
@@ -17,8 +17,9 @@ function b = isBinary(this)
 %         1
 %
 %   See also
-%     isGrayscale, isVector, isColor
+%     isBinaryImage
 %
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@grignon.inra.fr
@@ -28,4 +29,4 @@ function b = isBinary(this)
 warning('Image:deprecated', ...
     'method "isBinary" is deprecated, use "isBinaryImage" instead');
 
-b = strcmp(this.type, 'binary');
+b = strcmp(obj.Type, 'binary');

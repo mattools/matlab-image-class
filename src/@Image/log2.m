@@ -1,13 +1,14 @@
-function res = log2(this)
-%LOG2 Overload the log2 operator for image object
+function res = log2(obj)
+% Overload the log2 operator for image object.
 %
-%   output = log2(input)
+%   LOGIMG = log2(IMG)
 %
 %   Example
 %   log2
 %
 %   See also
-%   log, log10
+%     log, log10, exp
+%
 
 % ------
 % Author: David Legland
@@ -15,6 +16,6 @@ function res = log2(this)
 % Created: 2010-12-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-newData = log2(double(this.data));
+newData = log2(double(obj.Data));
 
-res = Image('data', newData, 'parent', this, 'type', 'intensity');
+res = Image('data', newData, 'parent', obj, 'type', 'intensity');

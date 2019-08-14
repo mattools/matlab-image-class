@@ -1,5 +1,5 @@
-function res = double(this)
-%DOUBLE Get the same image but with data stored as double
+function res = double(obj)
+%Get the same image but with data stored as double.
 %   
 %   IMGD = double(IMG);
 %
@@ -18,4 +18,4 @@ function res = double(this)
 % Created: 2010-06-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-res = Image('data', double(this.data), 'parent', this, 'type', 'intensity');
+res = Image('data', double(obj.Data), 'parent', obj, 'type', 'intensity');

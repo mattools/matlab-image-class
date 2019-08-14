@@ -1,5 +1,5 @@
 function img = zeros(varargin)
-%ZEROS Creates a new image filled with zeros
+% Creates a new image filled with zeros.
 %
 %   IMG = Image.ZEROS(NX, NY)
 %   IMG = Image.ZEROS(NX, NY, NZ)
@@ -18,6 +18,7 @@ function img = zeros(varargin)
 %
 %   See also
 %     create, ones
+%
  
 % ------
 % Author: David Legland
@@ -37,4 +38,4 @@ end
 
 % create new image
 img = Image.create(dim, type);
-img.data(:) = 0;
+img.Data(:) = 0;

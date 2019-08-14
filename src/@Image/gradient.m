@@ -1,5 +1,5 @@
-function varargout = gradient(this, varargin)
-%GRADIENT Compute gradient of intensity image
+function varargout = gradient(obj, varargin)
+% Compute gradient of intensity image.
 %
 %   GIMG = gradient(IMG)
 %   Compute the gradient of the image IMG. The result is a vector image,
@@ -26,7 +26,8 @@ function varargout = gradient(this, varargin)
 %     subplot(1, 2, 2); show(gradY); title('Grad Y');
 %
 %   See also
-%   Image/filter, fspecial, Image/norm
+%     filter, fspecial, norm
+%
 
 % ------
 % Author: David Legland
@@ -50,7 +51,7 @@ if ~isempty(varargin)
 end
 
 % number of spatial dimensions
-nd = ndims(this);
+nd = ndims(obj);
 
 % default filter for gradient: normalised sobel (2D or 3D)
 if nd <= 2
@@ -121,8 +122,8 @@ varargin = [{'replicate'}, {'conv'}, varargin];
 if nd == 2
     % compute gradients in each main direction
     sy = sx';
-    gx = imfilter(cast(this.data, outputType), sx, varargin{:});
-    gy = imfilter(cast(this.data, outputType), sy, varargin{:});
+    gx = imfilter(cast(obj.Data, outputType), sx, varargin{:});
+    gy = imfilter(cast(obj.Data, outputType), sy, varargin{:});
     
 elseif nd == 3
     % precompute kernels for other directions
@@ -130,9 +131,9 @@ elseif nd == 3
     sz = permute(sx, [2 3 1]);
     
     % compute gradients in each main direction
-    gx = imfilter(cast(this.data, outputType), sx, varargin{:});
-    gy = imfilter(cast(this.data, outputType), sy, varargin{:});
-    gz = imfilter(cast(this.data, outputType), sz, varargin{:});
+    gx = imfilter(cast(obj.Data, outputType), sx, varargin{:});
+    gy = imfilter(cast(obj.Data, outputType), sy, varargin{:});
+    gz = imfilter(cast(obj.Data, outputType), sz, varargin{:});
 end
 
 
@@ -142,18 +143,18 @@ if nargout == 1
     % Create a new 2D or 3D vector image
     if nd == 2
         res = Image('data', cat(4, gx, gy), ...
-            'parent', this, 'type', 'vector');
+            'parent', obj, 'type', 'vector');
     elseif nd == 3
         res = Image('data', cat(4, gx, gy, gz), ...
-            'parent', this, 'type', 'vector');
+            'parent', obj, 'type', 'vector');
     end
     varargout{1} = res;
     
 else
     % return each component of the vector array
-    varargout{1} = Image('data', gx, 'parent', this, 'type', 'vector');
-    varargout{2} = Image('data', gy, 'parent', this, 'type', 'vector');
+    varargout{1} = Image('data', gx, 'parent', obj, 'type', 'intensity');
+    varargout{2} = Image('data', gy, 'parent', obj, 'type', 'intensity');
     if nd == 3
-        varargout{3} = Image('data', gz, 'parent', this, 'type', 'vector');
+        varargout{3} = Image('data', gz, 'parent', obj, 'type', 'intensity');
     end
 end

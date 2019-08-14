@@ -1,10 +1,12 @@
-function res = circshift(this, varargin)
-%CIRCSHIFT Overlaod the circhshift function for Image class
+function res = circshift(obj, varargin)
+% Overload the circhshift function for Image class.
 %
-%   RES = circshift(IMG)
+%   RES = circshift(IMG, SHIFT)
 %
 %   Example
-%   circshift
+%     img = Image.read('cameraman.tif');
+%     res = circshift(img, [100 50]);
+%     show(res)
 %
 %   See also
 %
@@ -16,7 +18,7 @@ function res = circshift(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % process data buffer, using Matlab Image processing Toolbox
-data = circshift(this.data, varrargin);
+data = circshift(obj.Data, varargin{:});
 
 % create new image object for storing result
-res = Image.create('data', data, 'parent', this);
+res = Image.create('data', data, 'parent', obj);

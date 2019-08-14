@@ -1,5 +1,5 @@
-function res = imposeMaxima(this, marker, varargin)
-%IMPOSEMAXIMA Impose maxima on a grayscale or intensity image
+function res = imposeMaxima(obj, marker, varargin)
+% Impose maxima on a grayscale or intensity image.
 %
 %   output = imposeMaxima(input)
 %
@@ -7,7 +7,8 @@ function res = imposeMaxima(this, marker, varargin)
 %   imposeMaxima
 %
 %   See also
-%     imposeMinima
+%     imposeMinima, imimposemin
+%
 
 % ------
 % Author: David Legland
@@ -16,14 +17,14 @@ function res = imposeMaxima(this, marker, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
 % default values
 conn = 4;
 
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -40,11 +41,11 @@ while ~isempty(varargin)
 end
 
 if isa(marker, 'Image')
-    marker = marker.data;
+    marker = marker.Data;
 end
 
 % use imposemin on complement image, and complement the result
-data = imcomplement(imimposemin(imcomplement(this.data), marker, conn));
+data = imcomplement(imimposemin(imcomplement(obj.Data), marker, conn));
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', obj, 'type', obj.Type);

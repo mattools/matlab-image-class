@@ -1,9 +1,9 @@
-function res = meanFilter(this, se, varargin)
-%MEANFILTER Compute mean value in the neighboorhood of each pixel
+function res = meanFilter(obj, se, varargin)
+% Compute mean value in the neighboorhood of each pixel.
 %
 %   RES = meanFilter(IMG, SE);
 %   Compute the mean filter of image IMG, using structuring element SE.
-%   The goal of this function is to provide the same interface as for
+%   The goal of obj function is to provide the same interface as for
 %   other image filters (imopen, imerode ...), and to allow the use of 
 %   mean filter with user-defined structuring element. 
 %   This function can be used for directional filtering.
@@ -18,7 +18,7 @@ function res = meanFilter(this, se, varargin)
 %   see imfilter for details. Default is 'replicate'. 
 %
 %   See also:
-%   medianFilter, gaussianFilter, filter, imfilter
+%     medianFilter, gaussianFilter, filter, imfilter, mean
 %
 
 % ------
@@ -43,7 +43,7 @@ end
 se = permute(se, [2 1 3]) ./ sum(se(:));
 
 % perform filtering
-data = imfilter(this.data, se, padopt);
+data = imfilter(obj.Data, se, padopt);
 
 % create result image
-res = Image('data', data, 'parent', this);
+res = Image('data', data, 'parent', obj);

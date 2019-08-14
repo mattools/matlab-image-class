@@ -1,5 +1,5 @@
-function res = fillHoles(this, varargin)
-%FILLHOLES  Fill holes in a binary or grascale image
+function res = fillHoles(obj, varargin)
+% Fill holes in a binary or grascale image.
 %
 %   RES = fillHoles(IMG)
 %
@@ -19,7 +19,7 @@ function res = fillHoles(this, varargin)
 
 % default connectivity
 conn = 4;
-if ndims(this) == 3
+if ndims(obj) == 3
     conn = 6;
 end
 
@@ -29,7 +29,7 @@ if ~isempty(varargin)
 end
 
 % compute new data
-newData = imfill(this.data, conn, 'holes');
+newData = imfill(obj.Data, conn, 'holes');
 
 % create resulting image
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', obj);

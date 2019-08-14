@@ -1,5 +1,5 @@
-function varargout = showZSlice(this, sliceIndex)
-%SHOWZSLICE Show XY slice of a 3D image
+function varargout = showZSlice(obj, sliceIndex)
+% Show XY slice of a 3D image.
 %
 %   img.showZSlice(INDEX)
 %   showZSlice(IMG, INDEX)
@@ -19,7 +19,7 @@ function varargout = showZSlice(this, sliceIndex)
 %
 %
 %   See also
-%   showXSlice, showYSlice, slice
+%     showXSlice, showYSlice, slice
 %
 
 % ------
@@ -32,11 +32,11 @@ function varargout = showZSlice(this, sliceIndex)
 %% Extract image info
 
 % compute voxel positions
-lz = zData(this);
+lz = zData(obj);
 
-dim = this.dataSize;
-vx = ((0:dim(1))-.5) * this.spacing(1) - this.origin(1);
-vy = ((0:dim(2))-.5) * this.spacing(2) - this.origin(2);
+dim = obj.DataSize;
+vx = ((0:dim(1))-.5) * obj.Spacing(1) - obj.Origin(1);
+vy = ((0:dim(2))-.5) * obj.Spacing(2) - obj.Origin(2);
 
 % global parameters for surface display
 params = {'facecolor', 'texturemap', 'edgecolor', 'none'};
@@ -46,7 +46,7 @@ params = {'facecolor', 'texturemap', 'edgecolor', 'none'};
 xy_z = ones(size(xy_x)) * lz(sliceIndex);
 
 % extract sli in z direction
-sli = slice(this, 3, sliceIndex);
+sli = slice(obj, 3, sliceIndex);
 sli = getBuffer(squeeze(sli));
 
 % eventually converts to uint8, rescaling data between 0 and max value

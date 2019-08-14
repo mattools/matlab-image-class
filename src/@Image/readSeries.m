@@ -1,5 +1,5 @@
 function img = readSeries(fileName, varargin)
-%READSERIES reads a series of 2D images as a 3D image
+% Reads a series of 2D images as a 3D image.
 %
 %   Syntax:
 %   IMG = Image.readSeries(FILEPATH);
@@ -11,7 +11,8 @@ function img = readSeries(fileName, varargin)
 %
 %   See also
 %     read
- 
+%
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@inra.fr
@@ -67,7 +68,7 @@ end
 
 if verbose
     msg = sprintf('read slices from %d to %d', range(1), range(end));
-    disp(msg);
+    disp(msg); %#ok<DSPS>
 end
 
 
@@ -81,16 +82,16 @@ dim = [dim0(1:2) length(range)];
 if channelNumber(img0) > 1
     dim = [dim channelNumber(img0)];
 end
-data = zeros(dim, 'like', img0.data);
+data = zeros(dim, 'like', img0.Data);
 
 % fill in first slice
-data(:,:,1,1) = img0.data;
+data(:,:,1,1) = img0.Data;
 
 %% Read each slice of the image
 
 for iSlice = 2:length(range)
     img = Image.read(fullfile(path, fileList(range(iSlice)).name));
-    data(:,:,iSlice, :) = img.data;
+    data(:,:,iSlice, :) = img.Data;
 end
 
 img = Image('data', data, 'parent', img0);

@@ -1,7 +1,7 @@
-function classname = class(this)
-%CLASS Class name of the Image object, including image type
+function classname = class(obj)
+% Class name of the Image object, including image type.
 %
-%   CLASS_NAME = class(input)
+%   CLASS_NAME = class(IMG)
 %   This function is overloaded to give more information within the
 %   workspace.
 %
@@ -20,4 +20,4 @@ function classname = class(this)
 % Created: 2010-12-09,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-classname = [this.type ' Image'];
+classname = [obj.Type ' Image'];

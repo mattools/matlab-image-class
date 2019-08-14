@@ -1,5 +1,5 @@
-function res = extendedMaxima(this, dyn, varargin)
-%EXTENDEDMAXIMA  Extended maxima of the image
+function res = extendedMaxima(obj, dyn, varargin)
+% Extended maxima of the image.
 %
 %   IMGMAX = extendedMaxima(IMG, DYN)
 %
@@ -7,6 +7,7 @@ function res = extendedMaxima(this, dyn, varargin)
 %   extendedMaxima
 %
 %   See also
+%     extendedMinima, regionalMaxima
 %
 
 % ------
@@ -16,14 +17,14 @@ function res = extendedMaxima(this, dyn, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
 % default values
 conn = 4;
 
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -39,7 +40,7 @@ while ~isempty(varargin)
     end
 end
 
-data = imextendedmax(this.data, dyn, conn);
+data = imextendedmax(obj.Data, dyn, conn);
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', 'binary');
+res = Image('data', data, 'parent', obj, 'type', 'binary');

@@ -1,11 +1,14 @@
-function res = subsample(this, k, varargin)
-%Create a new image by keeping one pixel over k in each direction
+function res = subsample(obj, k, varargin)
+% Create a new image by keeping one pixel over k in each direction.
 %
 % Usage
 % IMG2 = IMG.subsample(K);
 % IMG2 = subsample(IMG, K);
 % K is the sampling factor. It can be either a scalar, or a row vector with
 % as many columns as the number of dimensions of image.
+%
+%   See also
+%     resize, subsref
 %
 
 % ------
@@ -18,7 +21,7 @@ function res = subsample(this, k, varargin)
 %% Initialisations
 
 % image dimension
-ndim = ndims(this);
+ndim = ndims(obj);
 
 % allow either scalar factor, or factor depending on dim
 if isscalar(k)
@@ -35,7 +38,7 @@ end
 %% Subsampling of image buffer
 
 % size of original buffer
-dim = size(this.data);
+dim = size(obj.Data);
 
 % compute indices of pixels within original buffer
 subsArray = cell(1, ndim);
@@ -44,10 +47,12 @@ for i = 1:ndim
 end
 
 % create new image with subsampled buffer
-res = Image('data', this.data(subsArray{:}), 'parent', this);
+res = Image('data', obj.Data(subsArray{:}), 'parent', obj);
 
 
 %% Post-processing
 
-% update calibration
-res.spacing = this.spacing .* k;
+% update spatial calibration
+if isCalibrated(obj)
+    res.Spacing = obj.Spacing .* k;
+end

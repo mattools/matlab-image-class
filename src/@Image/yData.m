@@ -1,5 +1,5 @@
-function ly = yData(this)
-%YDATA  Return the vector of positions in the y direction
+function ly = yData(obj)
+% Return the vector of positions in the y direction.
 %
 %   YPOS = yData(IMG);
 %   YPOS is a 1-by-Ny row vector, with Ny being the number of elements in
@@ -9,7 +9,7 @@ function ly = yData(this)
 %   yData
 %
 %   See also
-%   xData, zData
+%     xData, zData
 %
 
 % ------
@@ -20,7 +20,7 @@ function ly = yData(this)
 
 
 % extract number of voxels in each dimension
-dim = this.dataSize;
+dim = obj.DataSize;
 
 % compute voxel positions
-ly = (0:dim(2)-1) * this.spacing(2) + this.origin(2);
+ly = (0:dim(2)-1) * obj.Spacing(2) + obj.Origin(2);

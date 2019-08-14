@@ -1,16 +1,23 @@
-function res = opening(this, varargin)
-%OPENING Morphological opening of an image
+function res = opening(obj, varargin)
+% Morphological opening of an image.
+%
+%
+%   Example
+%     img = Image.read('rice.png');
+%     imgO = closing(img, ones(5, 5));
+%     show(imgO)
 %
 %   See Also
 %     closing, erosion, dilation, whiteTopHat
+%
 
 % default structuring element
 if nargin == 1
-    varargin = {defaultStructuringElement(this)};
+    varargin = {defaultStructuringElement(obj)};
 end
 
 % process data buffer, using Matlab Image processing Toolbox
-data = imopen(this.getBuffer(), varargin{:});
+data = imopen(getBuffer(obj), varargin{:});
 
 % create new image object for storing result
-res = Image(data, 'parent', this);
+res = Image(data, 'parent', obj);

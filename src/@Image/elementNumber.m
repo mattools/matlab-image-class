@@ -1,5 +1,5 @@
-function count = elementNumber(this)
-%GETELEMENTNUMBER  Count the total number of elements (pixels or voxels)
+function count = elementNumber(obj)
+% Count the total number of elements (pixels or voxels).
 %
 %   COUNT = elementNumber(IMG)
 %   COUNT = IMG.elementNumber(IMG)
@@ -36,4 +36,4 @@ function count = elementNumber(this)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-count = prod(this.dataSize(1:3));
+count = prod(obj.DataSize(1:3));

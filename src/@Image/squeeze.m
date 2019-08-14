@@ -1,12 +1,13 @@
-function res = squeeze(this)
-%SQUEEZE Remove singleton spatial dimensions of an image
+function res = squeeze(obj)
+% Remove singleton spatial dimensions of an image.
 %
-%   output = squeeze(input)
+%   RES = squeeze(IMG)
 %
 %   Example
 %   squeeze
 %
 %   See also
+%     permute, size
 %
 
 % ------
@@ -15,9 +16,9 @@ function res = squeeze(this)
 % Created: 2010-12-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-keepDims = find(this.dataSize(1:3) ~= 1);
-removeDims = find(this.dataSize(1:3) == 1);
+keepDims = find(obj.DataSize(1:3) ~= 1);
+removeDims = find(obj.DataSize(1:3) == 1);
 
-res = Image('data', permute(this.data, [keepDims removeDims 4 5]), ...
-    'parent', this, 'dimension', length(keepDims));
-res.type = this.type;
+res = Image('data', permute(obj.Data, [keepDims removeDims 4 5]), ...
+    'parent', obj, 'dimension', length(keepDims));
+res.Type = obj.Type;

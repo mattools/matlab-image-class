@@ -1,5 +1,5 @@
-function res = crop(this, box)
-%CROP Crop an image within a box
+function res = crop(obj, box)
+% Crop an image with a box.
 %
 %   RES = crop(IMG, BOX);
 %   BOX has syntax [xmin xmax ymin ymax] for 2D images, or 
@@ -21,19 +21,19 @@ function res = crop(this, box)
 %
 
 % size of image
-siz = this.dataSize;
+siz = obj.DataSize;
 
 % image dimension
-nd = ndims(this);
+nd = ndims(obj);
 
 % allocate memory
-indices = cell(ndims(this.data), 1);
+indices = cell(ndims(obj.Data), 1);
 newOrigin = zeros(1, nd);
 
 % convert user corodinates to pixel coordinates
 for i = 1:nd
     % compute all pixel positions in current direction
-    pos = (0:siz(i) - 1) * this.spacing(i) + this.origin(i);
+    pos = (0:siz(i) - 1) * obj.Spacing(i) + obj.Origin(i);
     
     % select cropped pixels
     inds = find(pos >= box(2*i-1) & pos <= box(2*i));
@@ -44,12 +44,12 @@ for i = 1:nd
 end
 
 % remaining dimensions keep all image indices
-for i = (nd+1):ndims(this.data)
+for i = (nd+1):ndims(obj.Data)
     indices{i}= ':';
 end
 
 % create new image with cropped buffer
-res = Image('data', this.data(indices{:}), 'parent', this);
+res = Image('data', obj.Data(indices{:}), 'parent', obj);
 
 % change origin of new image
-res.origin = newOrigin;
+res.Origin = newOrigin;

@@ -1,4 +1,8 @@
-function res = std(this)
-%Computes the standard deviation of pixel values
+function res = std(obj)
+% Standard deviation of image values
+%
+%   See also
+%     mean, var
+%
 
-res = std(double(this.data(:)));
+res = std(double(obj.Data(:)));

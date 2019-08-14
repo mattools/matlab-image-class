@@ -1,5 +1,5 @@
-function res = resize(this, k, varargin)
-%RESIZE Resize an image (2D or 3D)
+function res = resize(obj, k, varargin)
+% Resize an image (2D or 3D).
 %
 %   IMG2 = resize(IMG, K)
 %   Resizes the input image IMG by the factor K, such that the size of the
@@ -49,15 +49,15 @@ function res = resize(this, k, varargin)
 
 % eventually convert vector of scale factors into new dims
 if length(k) > 1 && any(k < 1.0)
-    k = this.dataSize(1:this.dimension) .* k;
+    k = obj.DataSize(1:obj.Dimension) .* k;
 end
 
-% process data buffer, using Matlab Image processing Toolbox
-if this.dimension <= 2
-    data = imresize(this.data, k, varargin{:});
+% process data buffer, using Matlab's Image Processing Toolbox
+if obj.Dimension <= 2
+    data = imresize(obj.Data, k, varargin{:});
 else
-    data = imresize3(this.data, k, varargin{:});
+    data = imresize3(obj.Data, k, varargin{:});
 end
 
 % create new image object for storing result
-res = Image('data', data, 'parent', this);
+res = Image('data', data, 'parent', obj);

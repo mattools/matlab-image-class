@@ -1,5 +1,5 @@
-function res = morphoLaplacian(this, se)
-%MORPHOLAPLACIAN Morphological laplacian of an intensity image
+function res = morphoLaplacian(obj, se)
+% Morphological laplacian of an intensity image.
 %
 %   RES = morphoLaplacian(IMG, SE)
 %   Computes the morphological gradient of the image IMG, using the
@@ -23,7 +23,7 @@ function res = morphoLaplacian(this, se)
 %     show(mlap);
 %
 %   See also
-%   dilation, erosion, morphoGradient
+%     dilation, erosion, morphoGradient
 %
 
 % ------
@@ -34,12 +34,12 @@ function res = morphoLaplacian(this, se)
 
 % default structuring element
 if nargin == 1
-    se = defaultStructuringElement(this);
+    se = defaultStructuringElement(obj);
 end
 
 % compute laplacian of the data, using double for output
-res = imadd(imdilate(this.data, se), imerode(this.data, se), 'double') / 2;
-res = imsubtract(res, double(this.data));
+res = imadd(imdilate(obj.Data, se), imerode(obj.Data, se), 'double') / 2;
+res = imsubtract(res, double(obj.Data));
 
 % create the result image
-res = Image('data', res, 'parent', this);
+res = Image('data', res, 'parent', obj);

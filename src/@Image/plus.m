@@ -1,13 +1,14 @@
-function res = plus(this, that)
-%PLUS Overload the plus operator for image objects
+function res = plus(obj, value)
+% Overload the plus operator for image objects.
 %
-%   output = plus(input)
+%   RES = plus(IMG, VAL)
+%   RES = IMG + VAL
 %
 %   Example
 %   plus
 %
 %   See also
-% 
+%     minus, mtimes, mrdivide
 
 % ------
 % Author: David Legland
@@ -16,12 +17,12 @@ function res = plus(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, value, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@plus, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
 newName = strcat(name1, '+', name2);

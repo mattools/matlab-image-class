@@ -1,5 +1,5 @@
-function res = skeleton(this, varargin)
-%SKELETON Skeleton of a binary planar image
+function res = skeleton(obj, varargin)
+% Skeleton of a binary planar image.
 %
 %   SKEL = skeleton(BIN)
 %   Computes the skeleton of the binary image BIN. The result is a binary
@@ -16,7 +16,7 @@ function res = skeleton(this, varargin)
 %       show(overlay(bin, skel));
 %
 %   See also
-%   bwmorph
+%     bwmorph
 %
 
 % ------
@@ -29,12 +29,12 @@ function res = skeleton(this, varargin)
 %% Parse input arguments
 
 % Error checks
-if this.dimension ~= 2
-    error('Image:WrongDimension', 'Input image should have dimension 2');
+if obj.Dimension ~= 2
+    error('Image:skeleton:WrongDimension', 'Input image should have dimension 2');
 end
 
-if ~strcmp(this.type, 'binary')
-    error('Image:WrongType', 'Input image should be binary');
+if ~strcmp(obj.Type, 'binary')
+    error('Image:skeleton:WrongType', 'Input image should be binary');
 end
 
 % default arguments
@@ -63,7 +63,7 @@ end
 %% Processing
 
 % compute skeleton
-binData = bwmorph(this.data, method, inf);
+binData = bwmorph(obj.Data, method, inf);
 
 % create result image
-res = Image('data', binData, 'parent', this');
+res = Image('data', binData, 'parent', obj);

@@ -21,9 +21,9 @@ function test_setGetSpacing %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 sp = [2.5 3];
-img.spacing = sp;
+img.Spacing = sp;
 
-sp2 = img.spacing;
+sp2 = img.Spacing;
 assertElementsAlmostEqual(sp, sp2);
 
 
@@ -31,9 +31,9 @@ function test_setGetOrigin
 
 img = Image.read('cameraman.tif');
 ori = [-5, -10];
-img.origin = ori;
+img.Origin = ori;
 
-ori2 = img.origin;
+ori2 = img.Origin;
 assertElementsAlmostEqual(ori, ori2);
 
 
@@ -42,9 +42,9 @@ function test_setGetSpacing3d
 dat = cat(3, [10 20 30;40 50 60], [30 40 50;60 70 80]);
 img = Image.create(uint8(dat));
 sp = [2.5 3 1.5];
-img.spacing = sp;
+img.Spacing = sp;
 
-sp2 = img.spacing;
+sp2 = img.Spacing;
 assertElementsAlmostEqual(sp, sp2);
 
 function test_setGetOrigin3d
@@ -53,7 +53,7 @@ dat = cat(3, [10 20 30;40 50 60], [30 40 50;60 70 80]);
 img = Image.create(uint8(dat));
 
 ori = [-5 -10 -2];
-img.origin = ori;
+img.Origin = ori;
 
-ori2 = img.origin;
+ori2 = img.Origin;
 assertElementsAlmostEqual(ori, ori2);

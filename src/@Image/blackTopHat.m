@@ -1,5 +1,5 @@
-function res = blackTopHat(this, varargin)
-%BLACKTOPHAT Black Top-Hat transform of an intensity or binary image
+function res = blackTopHat(obj, varargin)
+% Black Top-Hat transform of an intensity or binary image.
 %
 %   BTH = blackTopHat(IMG, SE);
 %   Performs a Black Top-Hat, that enhances dark structures smaller than
@@ -22,7 +22,7 @@ function res = blackTopHat(this, varargin)
 % Created: 2011-06-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-dat = imbothat(this.data, varargin{1});
+dat = imbothat(obj.Data, varargin{1});
 
 % create result image
-res = Image('data', dat, 'parent', this);
+res = Image('data', dat, 'parent', obj);

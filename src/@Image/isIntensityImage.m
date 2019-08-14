@@ -1,5 +1,5 @@
-function b = isIntensityImage(this)
-%ISINTENSITYIMAGE Checks if an image is intensity (signed scalar)
+function b = isIntensityImage(obj)
+% Checks if an image is intensity (signed scalar).
 %
 %   B = isIntensityImage(IMG)
 %   Returns true if an image is intensity. The difference between intensity
@@ -33,4 +33,4 @@ function b = isIntensityImage(this)
 % Created: 2011-09-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = strcmp(this.type, 'intensity');
+b = strcmp(obj.Type, 'intensity');

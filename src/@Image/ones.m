@@ -1,5 +1,5 @@
 function img = ones(varargin)
-%ONES Creates a new image filled with ones
+% Creates a new image filled with ones.
 %
 %   IMG = Image.ones(NX, NY)
 %   IMG = Image.ones(NX, NY, NZ)
@@ -15,8 +15,9 @@ function img = ones(varargin)
 %          1   1   1   1   1
 %
 %   See also
-%     create, zeros
- 
+%     Image, create, zeros
+%
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@inra.fr
@@ -35,4 +36,4 @@ end
 
 % create new image
 img = Image.create(dim, type);
-img.data(:) = 1;
+img.Data(:) = 1;

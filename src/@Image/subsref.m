@@ -1,12 +1,13 @@
-function varargout = subsref(this, subs)
-%SUBSREF Overrides subsref function for Image objects
-%   output = subsref(input)
+function varargout = subsref(obj, subs)
+% Overrides subsref function for Image objects.
+%
+%   RES = subsref(IMG, SUBS)
 %
 %   Example
 %   subsref
 %
 %   See also
-%   subsasgn, end
+%     subsasgn, end
 %
 
 % ------
@@ -27,10 +28,10 @@ if strcmp(type, '.')
     if nargout>0
         % if some output arguments are asked, pre-allocate result
         varargout = cell(nargout, 1);
-        [varargout{:}] = builtin('subsref', this, subs);
+        [varargout{:}] = builtin('subsref', obj, subs);
     else
         % call parent function, and eventually return answer
-        builtin('subsref', this, subs);
+        builtin('subsref', obj, subs);
         if exist('ans', 'var')
             varargout{1} = ans; %#ok<NOANS>
         end
@@ -44,14 +45,14 @@ elseif strcmp(type, '()')
     ns = length(s1.subs);
     if ns==1
         % one index: use linearised image
-        varargout{1} = this.data(s1.subs{1});
+        varargout{1} = obj.Data(s1.subs{1});
         
     elseif ns==2
         % two indices: parse x and y indices 
         
         % extract corresponding data, and transpose to comply with matlab
         % representation
-        varargout{1} = this.data(s1.subs{:})';
+        varargout{1} = obj.Data(s1.subs{:})';
         
     elseif ns==3
         % three indices: parse x y z indices 
@@ -63,11 +64,11 @@ elseif strcmp(type, '()')
         
         % extract corresponding data, and permute to comply with matlab
         % array representation
-        varargout{1} = permute(this.data(ind1, ind2, ind3, :, :), ...
+        varargout{1} = permute(obj.Data(ind1, ind2, ind3, :, :), ...
             [2 1 3:5]);
         
     else
-        varargout{1} = permute(this.data(s1.subs{:}), [2 1 3:5]);
+        varargout{1} = permute(obj.Data(s1.subs{:}), [2 1 3:5]);
     end
     
 elseif strcmp(type, '{}')

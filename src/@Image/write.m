@@ -1,7 +1,7 @@
-function write(this, filename, varargin)
-%WRITE Write image into specified file
+function write(obj, filename, varargin)
+% Write image data into specified file.
 %
-%   output = write(input)
+%   write(IMG, FILENAME)
 %
 %   Example
 %     % read a color image and write a new image
@@ -10,7 +10,7 @@ function write(this, filename, varargin)
 %     write(img2, 'colorImage.tif');
 %
 %   See also
-%   Image/read
+%     Image/read
 %
 
 % ------
@@ -20,4 +20,4 @@ function write(this, filename, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % assumes format can be managed by Matlab Image Processing
-imwrite(permute(this.data, [2 1 4 3 5]), filename, varargin{:});
+imwrite(permute(obj.Data, [2 1 4 3 5]), filename, varargin{:});

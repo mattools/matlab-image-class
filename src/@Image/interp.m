@@ -1,5 +1,5 @@
-function val = interp(this, varargin)
-%INTERP Interpolate an image at given position(s)
+function val = interp(obj, varargin)
+% Interpolate an image at given position(s).
 %
 %   V = interp(IMG, X, Y)
 %   V = interp(IMG, X, Y, Z)
@@ -22,7 +22,7 @@ function val = interp(this, varargin)
 
 %% Process input arguments
 
-nd = ndims(this);
+nd = ndims(obj);
 [point, dim, varargin] = mergeCoordinates(varargin{:});
 
 method = 'linear';
@@ -45,36 +45,36 @@ end
 %% Compute interpolation
 
 nv = size(point, 1);
-nc = channelNumber(this);
+nc = channelNumber(obj);
 val = zeros(nv, nc);
 
 if nd == 2
     % planar case
-    x = xData(this);
-    y = yData(this);
+    x = xData(obj);
+    y = yData(obj);
     
     if nc == 1
-        val = interp2(y, x, double(this.data), ...
+        val = interp2(y, x, double(obj.Data), ...
             point(:, 2), point(:, 1), method, fillValue);
     else
         for i = 1:nc
-            img2 = channel(this, i);
-            val(:, i) = interp2(y, x, double(img2.data), ...
+            img2 = channel(obj, i);
+            val(:, i) = interp2(y, x, double(img2.Data), ...
                 point(:, 2), point(:, 1), method, fillValue);
         end
     end
 elseif nd == 3
     % 3D Case
-    x = xData(this);
-    y = yData(this);
-    z = zData(this);
+    x = xData(obj);
+    y = yData(obj);
+    z = zData(obj);
     if nc == 1
-        val = interp3(y, x, z, double(this.data), ...
+        val = interp3(y, x, z, double(obj.Data), ...
             point(:, 2), point(:, 1), point(:, 3), method, fillValue);
     else
         for i = 1:nc
-            img2 = channel(this, i);
-            val(:, i) = interp2(y, x, z, double(img2.data), ...
+            img2 = channel(obj, i);
+            val(:, i) = interp2(y, x, z, double(img2.Data), ...
                 point(:, 2), point(:, 1), point(:, 3), method, fillValue);
         end
     end

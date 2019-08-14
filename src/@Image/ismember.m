@@ -1,5 +1,5 @@
-function res = ismember(this, values)
-%ISMEMBER  Override the ismember function
+function res = ismember(obj, values)
+% Override the ismember function.
 %
 %   RES = ismember(IMG, VALUES);
 %   Returns a binary image the same size as the input image. The value of
@@ -10,6 +10,7 @@ function res = ismember(this, values)
 %     ismember
 %
 %   See also
+%     eq
 %
 
 % ------
@@ -18,6 +19,6 @@ function res = ismember(this, values)
 % Created: 2011-09-09,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-dat = ismember(this.data, values);
-res = Image('data', dat, 'parent', this, 'type', 'binary');
+dat = ismember(obj.Data, values);
+res = Image('data', dat, 'parent', obj, 'type', 'binary');
 

@@ -1,5 +1,5 @@
 function ang = angle(this)
-%ANGLE Returns the phase angles, in radians, of an image with complex elements
+%Returns the phase angles, in radians, of an image with complex elements.
 %
 %   PHASE = angle(I)
 %

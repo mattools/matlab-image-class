@@ -1,11 +1,11 @@
-function [res, inds] = attributeOpening(this, att, op, val, varargin)
-%ATTRIBUTEOPENING Filter regions on a size or shape criterium
+function [res, inds] = attributeOpening(obj, att, op, val, varargin)
+% Selects regions based on a size or shape criterium.
 %
 %   BIN = attributeOpening(IMG, ATT, OP, VAL)
 %   Applies attribute opening on the binary or label image IMG. 
 %
 %   Example
-%   % Apply area opening on text image
+%     % Apply area opening on text image
 %     img = Image.read('text.png');
 %     res = attributeOpening(img, 'Area', @gt, 10);
 %     show(res);
@@ -21,10 +21,10 @@ function [res, inds] = attributeOpening(this, att, op, val, varargin)
 % Copyright 2012 INRA - Cepia Software Platform.
 
 % in case of binary image, compute labels
-if isBinaryImage(this)
-    lbl = labelmatrix(bwconncomp(this.data, varargin{:}));
-elseif isLabelImage(this)
-    lbl = this.data;
+if isBinaryImage(obj)
+    lbl = labelmatrix(bwconncomp(obj.Data, varargin{:}));
+elseif isLabelImage(obj)
+    lbl = obj.Data;
 else
     error('Image:attributeOpening', 'Requires binary or label image');
 end
@@ -43,4 +43,4 @@ inds = find(res);
 bin = ismember(lbl, inds);
 
 % create new image
-res = Image.create('data', bin, 'parent', this, 'type', 'binary');
+res = Image.create('data', bin, 'parent', obj, 'type', 'binary');

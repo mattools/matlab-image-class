@@ -1,8 +1,8 @@
-function ind = end(this, k, n)
-%END Determine last index when accessing an image
+function ind = end(obj, k, n)
+% Determine last index when accessing an image.
 %
 %   See Also
-%   subsref, subsasgn
+%     subsref, subsasgn
 %
 
 % ------
@@ -13,9 +13,9 @@ function ind = end(this, k, n)
 
 
 if n==1
-    ind = numel(this.data);
+    ind = numel(obj.Data);
 elseif n<=5
-    ind = size(this.data, k);
+    ind = size(obj.Data, k);
 else
     error('Image:end', ...
         'not enough dimension in Image object');

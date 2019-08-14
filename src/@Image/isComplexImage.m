@@ -1,5 +1,5 @@
-function b = isComplexImage(this)
-%ISCOMPLEXIMAGE Checks if an image contains complex values
+function b = isComplexImage(obj)
+% Check if an image contains complex values.
 %
 %   B = isComplexImage(IMG)
 %   Returns trus if the image is complex, i.e. contains two channels, one
@@ -21,4 +21,4 @@ function b = isComplexImage(this)
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = strcmp(this.type, 'complex');
+b = strcmp(obj.Type, 'complex');

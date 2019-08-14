@@ -1,5 +1,5 @@
 function nc = channelNumber(this)
-%CHANNELNUMBER Return the number of channels of the image
+% Returns the number of channels of the image.
 %
 %   NC = channelNumber(IMG)
 %   Returns the number of channels (color components, or spectral bands...)
@@ -12,7 +12,7 @@ function nc = channelNumber(this)
 %        3
 %
 %   See also
-%   size, channel
+%     size, channel
 %
 
 % ------
@@ -21,4 +21,4 @@ function nc = channelNumber(this)
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-nc = size(this.data, 4);
+nc = size(this.Data, 4);

@@ -1,5 +1,5 @@
-function res = uint16(this)
-%UINT16 Get the same image but with data stored as uint16
+function res = uint16(obj)
+% Get the same image but with data stored as uint16.
 %   
 %   IMG16 = uint16(IMG);
 %
@@ -18,7 +18,7 @@ function res = uint16(this)
 % Created: 2010-06-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-res = Image('data', uint16(this.data), 'parent', this);
+res = Image('data', uint16(obj.Data), 'parent', obj);
 
 % set type
-res.type = 'grayscale';
+res.Type = 'grayscale';

@@ -1,5 +1,5 @@
-function varargout = histogram(this, varargin)
-%HISTOGRAM Histogram of an Image (2D or 3D, Grayscale or Color)
+function varargout = histogram(obj, varargin)
+% Histogram of an Image (2D or 3D, Grayscale or Color).
 %
 %   Usage 
 %   H = histogram(IMG);
@@ -58,7 +58,7 @@ function varargout = histogram(this, varargin)
 %     histogram(X, X>0, 0:88)
 %
 %   See also
-%   imhist, hist
+%     imhist, histcounts
 %
 
 % ------
@@ -80,9 +80,9 @@ N = 256;
 roi = [];
 
 % If axis handle is specified, use it.
-if ishandle(this)
-    ax = this;
-    this = varargin{1};
+if ishandle(obj)
+    ax = obj;
+    obj = varargin{1};
     varargin(1) = [];
 end
 
@@ -90,19 +90,19 @@ end
 %% basic data info
 
 % check if image is vector
-vectorImage = size(this.data, 4) > 1;
+vectorImage = size(obj.Data, 4) > 1;
 
 % physical dimension of image
-imgSize = size(this);
+imgSize = size(obj);
 
 % compute intensity bounds, based either on type or on image data
-if isinteger(this.data)
-    type = class(this.data);
+if isinteger(obj.Data)
+    type = class(obj.Data);
     minimg = intmin(type);
     maximg = intmax(type);
 else
-    minimg = min(this.data(:));
-    maximg = max(this.data(:));
+    minimg = min(obj.Data(:));
+    maximg = max(obj.Data(:));
 end
 
 
@@ -115,8 +115,8 @@ while ~isempty(varargin)
     if isempty(var)
         % if an empty variable is given, assumes gray level bounds must be
         % recomputed from image values
-        minimg = min(this.data(:));
-        maximg = max(this.data(:));
+        minimg = min(obj.Data(:));
+        maximg = max(obj.Data(:));
         
     elseif isnumeric(var) && length(var)==1
         % argument is number of bins
@@ -131,7 +131,7 @@ while ~isempty(varargin)
         % argument is a ROI
         roi = var;
         if isa(roi, 'Image')
-            roi = roi.data;
+            roi = roi.Data;
             if ~islogical(roi)
                 error('ROI image must be binary');
             end
@@ -144,7 +144,7 @@ while ~isempty(varargin)
         end
         
         % check roi size
-        if sum(roiSize~=imgSize)>0
+        if sum(roiSize ~= imgSize)>0
             error('ROI and image must have same size');
         end
         
@@ -169,12 +169,12 @@ end
 %% Main processing 
 
 % number of channels (equal to 1 in the case of grayscale image)
-nc = channelNumber(this);
+nc = channelNumber(obj);
 
 % compute image histogram
 if ~vectorImage
     % process 2D or 3D grayscale image
-    h = computeDataHistogram(this.data, x, roi);
+    h = computeDataHistogram(obj.Data, x, roi);
     
 else
     % process vector image: compute histogram of each channel
@@ -182,7 +182,7 @@ else
     
     % Compute histogram of each channel
     for i = 1:nc
-        h(:, i) = computeDataHistogram(this.data(:,:,:,i), x, roi);
+        h(:, i) = computeDataHistogram(obj.Data(:,:,:,i), x, roi);
     end
 end
 
@@ -214,7 +214,7 @@ if nargout == 0
         set(hh(3), 'color', [0 0 1]); % blue
         
     else
-        % if nc is different from 3, assumes this is a spectral image, and
+        % if nc is different from 3, assumes obj is a spectral image, and
         % display each histogram using the HSV colormap
         map = hsv(nc);
         hh = stairs(ax, x, h);
@@ -230,8 +230,8 @@ if nargout == 0
     set(ax, 'xlim', [x(1)-w x(end)+w]);
     
     % set title and figure name
-    if ~isempty(this.name)
-        str = sprintf('Histogram of %s', this.name);
+    if ~isempty(obj.Name)
+        str = sprintf('Histogram of %s', obj.Name);
     else
         str = 'Image histogram';
     end
@@ -267,10 +267,14 @@ function h = computeDataHistogram(img, x, roi)
 % Compute image histogram using specified bins, and eventually a region of
 % interest
 
+
+dx = x(2) - x(1);
+binEdges = [x - dx/2, x(end)+dx/2];
+
 if isempty(roi)
     % histogram of the whole image
-    h = hist(img(:), x)';
+    h = histcounts(img(:), binEdges)';
 else
     % histogram constrained to ROI
-    h = hist(img(roi), x)';
+    h = histcounts(img(roi), binEdges)';
 end    

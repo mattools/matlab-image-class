@@ -1,5 +1,5 @@
-function res = clone(this)
-%CLONE  Create a deep-copy of an image object
+function res = clone(obj)
+% Create a deep-copy of an Image object.
 %
 %   output = clone(input)
 %
@@ -16,4 +16,4 @@ function res = clone(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % create new image object for storing result
-res = Image('data', this.data, 'parent', this);
+res = Image('data', obj.Data, 'parent', obj);

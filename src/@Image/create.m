@@ -1,5 +1,5 @@
 function img = create(varargin)
-%CREATE Static constructor of new images
+% Static constructor of new images.
 %
 %   Syntax
 %   IMG = Image.create(SIZE, DATACLASS);
@@ -20,6 +20,7 @@ function img = create(varargin)
 %
 %   See also
 %     read, ones, zeros
+%
 
 % ------
 % Author: David Legland
@@ -38,7 +39,7 @@ var1 = varargin{1};
 if isa(var1, 'Image')
     warning('Image:deprecated', ...
         'deprecated syntax, use public constructor instead');
-    img = Image.create(var1.data, 'parent', var1);
+    img = Image.create(var1.Data, 'parent', var1);
     return;
 end
 

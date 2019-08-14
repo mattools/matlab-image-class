@@ -1,7 +1,7 @@
 function res = whiteTopHat(this, varargin)
-%WHITETOPHAT White Top-Hat transform of an intensity or binary image
+% White Top-Hat transform of an intensity or binary image.
 %
-%   TH = whiteTopHat(IMG, SE)
+%   WTH = whiteTopHat(IMG, SE)
 %   Performs a White Top-Hat, that enhances bright structures smaller than
 %   the structuring element.
 %
@@ -27,7 +27,7 @@ function res = whiteTopHat(this, varargin)
 % Created: 2011-06-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-dat = imtophat(this.data, varargin{1});
+dat = imtophat(this.Data, varargin{1});
 
 % create result image
 res = Image('data', dat, 'parent', this);

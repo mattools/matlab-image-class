@@ -1,12 +1,16 @@
-function varargout = isosurface(this, isovalue, varargin)
-%ISOSURFACE Isosurface generation of a 3D image
+function varargout = isosurface(obj, isovalue, varargin)
+% Isosurface generation of a 3D image.
 %
 %   isosurface(IMG, ISOVALUE)
+%   Computes isosurface from image data ans the specified isovalue. 
+%   The functions simply consists in a wrapper to the "isosurface" function
+%   from Matlab.
 %
 %   Example
 %   isosurface
 %
 %   See also
+%     gt
 %
 
 % ------
@@ -15,11 +19,11 @@ function varargout = isosurface(this, isovalue, varargin)
 % Created: 2010-12-16,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-x = this.getX();
-y = this.getY();
-z = this.getZ();
+x = getX(obj);
+y = getY(obj);
+z = getZ(obj);
 
-v = permute(this.data(:,:,:,1,1), [2 1 3]);
+v = permute(obj.Data(:,:,:,1,1), [2 1 3]);
 
 if nargout == 0
     % display isosurface

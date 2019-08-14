@@ -1,5 +1,5 @@
-function res = overlay(this, varargin)
-%OVERLAY Add colored markers to an image (2D or 3D, grayscale or color)
+function res = overlay(obj, varargin)
+% Add colored markers to an image (2D or 3D, grayscale or color).
 %
 %   Usage
 %   OVR = overlay(IMG, MASK);
@@ -74,7 +74,7 @@ function res = overlay(this, varargin)
 %     show(squeeze(getSlice(ovr, 3, 7)))  % display each slice
 %
 %   See also
-%   Image/createRGB
+%     Image/createRGB
 %
 
 % ------
@@ -87,14 +87,14 @@ function res = overlay(this, varargin)
 %% If number of options is 1 or 3, use recursion with specific asumptions
 
 if length(varargin) == 1
-    % If only one input => this is the mask, the color is assumed to be red
-    res = overlay(this, varargin{1}, [1 0 0]);
+    % If only one input => obj is the mask, the color is assumed to be red
+    res = overlay(obj, varargin{1}, [1 0 0]);
     return;
 
 elseif length(varargin) == 3
     % If three inputs are given, there are supposed to be the red, green
     % and blue masks, in that order. One or two masks can be empty.
-    res = Image(this);
+    res = Image(obj);
     if ~isempty(varargin{1})
         res = overlay(res, varargin{1}, [1 0 0]);
     end
@@ -111,15 +111,15 @@ end
 %% Initializations
 
 % Ensure input image has uint8 type
-if isa(this.data, 'uint8')
-    img = this.data;
+if isa(obj.Data, 'uint8')
+    img = obj.Data;
 else
-    img = adjustDynamic(this);
-    img = img.data;
+    img = adjustDynamic(obj);
+    img = img.Data;
 end
 
 % initialize each channel of the result image with the original image
-if isColorImage(this)
+if isColorImage(obj)
     red     = img(:,:,:,1,:);
     green   = img(:,:,:,2,:);
     blue    = img(:,:,:,3,:);
@@ -138,7 +138,7 @@ while ~isempty(varargin)
     % First argument is the mask, second argument specifies color
     mask = varargin{1};
     if isa(mask, 'Image')
-        mask = mask.data;
+        mask = mask.Data;
     else
         % convert matlab indexing to Image class indexing
         mask = permute(mask, [2 1 3 4 5]);
@@ -156,7 +156,7 @@ while ~isempty(varargin)
     blue    =  blue .* uint8(mask==0) + mask .* b;
 end
 
-res = Image('data', cat(4, red, green, blue), 'parent', this, 'type', 'color');
+res = Image('data', cat(4, red, green, blue), 'parent', obj, 'type', 'color');
 
 
 function [r, g, b] = parseOverlayBands(color)

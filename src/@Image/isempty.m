@@ -1,7 +1,7 @@
-function b = isempty(this)
-%ISEMPTY  Check if image contains data
+function b = isempty(obj)
+% Check if image contains data.
 %
-%   B = img.isempty();
+%   B = isempty(IMG);
 %
 %   Example
 %   img = Image2D.read('cameraman.tif');
@@ -19,4 +19,4 @@ function b = isempty(this)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-b = numel(this.data)==0;
+b = numel(obj.Data)==0;

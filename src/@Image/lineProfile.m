@@ -1,5 +1,5 @@
-function varargout = lineProfile(this, varargin)
-%LINEPROFILE Interpolate image value along a line segment
+function varargout = lineProfile(obj, varargin)
+% Interpolate image value along a line segment.
 %
 %   VALS = lineProfile(IMG, P1, P2)
 %   Interpolates values within image between points P1 and P2.
@@ -10,10 +10,11 @@ function varargout = lineProfile(this, varargin)
 %   If no output is specified, interpolated values are plotted.
 %
 %   Example
-%   lineProfile
+%     img = Image.read('rice.png');
+%     plot(lineProfile(img, [150 10], [150 200]))
 %
 %   See also
-%   interp
+%     interp
 %
 
 % ------
@@ -56,7 +57,7 @@ x = linspace(p1(1), p2(1), nValues);
 y = linspace(p1(2), p2(2), nValues);
 
 % create point array
-nd = ndims(this);
+nd = ndims(obj);
 if nd == 2
     pts = [x' y'];
 else
@@ -65,7 +66,7 @@ else
 end
 
 % extract corresponding pixel values
-vals = interp(this, pts, method);
+vals = interp(obj, pts, method);
 
 if nargout == 0
     % create cumulative array of distances for plotting
@@ -87,7 +88,7 @@ if nargout == 0
         plot(dists, vals);
     end
     
-    name = this.name;
+    name = obj.Name;
     if isempty(name)
         title('Line Profile');
     else

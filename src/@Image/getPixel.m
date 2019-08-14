@@ -1,8 +1,11 @@
-function p = getPixel(this, x, y, varargin)
-% Returns a pixel in an image
+function p = getPixel(obj, x, y, varargin)
+% Returns a pixel in an image.
+%
 % P = IMG.getPixel(X, Y)
 % X is column index, Y is row index, both 1-indexed.
 %
+%   See also
+%     getPixels
 
 % ------
 % Author: David Legland
@@ -16,5 +19,5 @@ if ~isempty(varargin)
     indz = varargin{1};
 end
 
-p = this.data(x, y, indz, :, :);
+p = obj.Data(x, y, indz, :, :);
    

@@ -1,6 +1,7 @@
 function info = metaImageInfo(fileName)
-% Read information header of meta image data
-%   output = metaImageInfo(input)
+% Read information header of meta image data.
+%
+%   INFO = metaImageInfo(FILENAME)
 %
 %   Example
 %   info = metaImageInfo('example.hdr');

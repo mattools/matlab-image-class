@@ -1,14 +1,14 @@
-function res = absdiff(this, arg)
-%ABSDIFF Compute absolute difference between 2 images
+function res = absdiff(obj, arg)
+% Absolute difference between 2 images.
 %
 %   Usage
 %   DIFF = absdiff(I1, I2);
-%   DIFF = I1.absdiff(I2);
 %
 %   Example
 %   absdiff
 %
 %   See also
+%     abs
 %
 
 % ------
@@ -18,9 +18,9 @@ function res = absdiff(this, arg)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 if isa(arg, 'Image')
-    arg = arg.data;
+    arg = arg.Data;
 end
 
-newData = imabsdiff(this.data, cast(arg, class(this.data)));
+newData = imabsdiff(obj.Data, cast(arg, class(obj.Data)));
 
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', obj);

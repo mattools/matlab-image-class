@@ -1,5 +1,5 @@
-function res = slice(this, dir, index)
-%SLICE Extract a slice from a 3D image
+function res = slice(obj, dir, index)
+% Extract a slice from a 3D image.
 %
 %   S = slice(IMG, DIR, INDEX)
 %   DIR is 1, 2 or 3 for x, y or z direction respectively, and INDEX is the
@@ -16,7 +16,7 @@ function res = slice(this, dir, index)
 %     show(sli);
 %
 %   See also
-%   squeeze
+%     squeeze
 %
 
 % ------
@@ -28,18 +28,17 @@ function res = slice(this, dir, index)
 % parse axis, and check bounds
 dir = parseAxisIndex(dir);
 
-% ndims = length(size(this.data));
 switch dir
     case 1
         % x-slice: rows Z, cols Y
-        res = Image('data', this.data(index,:,:,:,:), 'dimension', 3, 'parent', this);
+        res = Image('data', obj.Data(index,:,:,:,:), 'dimension', 3, 'parent', obj);
     case 2
         % y-slice: rows Z, cols X
-        res = Image('data', this.data(:,index,:,:,:), 'dimension', 3, 'parent', this);
+        res = Image('data', obj.Data(:,index,:,:,:), 'dimension', 3, 'parent', obj);
     case 3
         % Z-slice: rows Y, cols X
-        res = Image('data', this.data(:,:,index,:,:), 'dimension', 3, 'parent', this);
+        res = Image('data', obj.Data(:,:,index,:,:), 'dimension', 3, 'parent', obj);
     otherwise
-        error('should specify direction between 1 and 3');
+        error('Should specify direction between 1 and 3');
 end
 

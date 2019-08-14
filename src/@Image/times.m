@@ -1,13 +1,14 @@
-function res = times(this, that)
-%MTIMES Overload the times operator for image objects
+function res = times(obj, value)
+% Overload the times operator for image objects.
 %
-%   output = times(input)
+%   RES = times(IMG, VAL)
+%   RES = IMG .* VAL
 %
 %   Example
 %   times
 %
 %   See also
-%   mtimes
+%     mtimes, plus, minus
 %
 
 % ------
@@ -17,12 +18,12 @@ function res = times(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, value, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@times, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
 newName = strcat(name1, '*', name2);

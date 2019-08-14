@@ -1,5 +1,5 @@
-function varargout = splitChannels(this)
-%SPLITCHANNELS Split the different channels of the image
+function varargout = splitChannels(obj)
+% Split the different channels of the image.
 %
 %   CHANNELS = splitChannels(IMG)
 %   [CHANNEL1 CHANNEL2 ... ] = splitChannels(IMG)
@@ -33,11 +33,11 @@ function varargout = splitChannels(this)
 % Created: 2011-12-05,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-nc = size(this, 4);
+nc = size(obj, 4);
 res = cell(1, nc);
 
 for i = 1:nc
-    res{i} = channel(this, i);
+    res{i} = channel(obj, i);
 end
 
 if nargout <= 1

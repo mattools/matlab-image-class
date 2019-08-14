@@ -1,5 +1,5 @@
-function b = isGrayscaleImage(this)
-%ISGRAYSCALEIMAGE Checks if an image is grayscale
+function b = isGrayscaleImage(obj)
+% Checks if an image is grayscale.
 %
 %   B = isGrayscaleImage(IMG)
 %   Returns true if an image is grayscale. Note that binary images are
@@ -30,4 +30,4 @@ function b = isGrayscaleImage(this)
 % Created: 2011-09-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = strcmp(this.type, 'grayscale') || strcmp(this.type, 'binary');
+b = strcmp(obj.Type, 'grayscale') || strcmp(obj.Type, 'binary');

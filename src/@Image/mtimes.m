@@ -1,13 +1,17 @@
-function res = mtimes(this, that)
-%MTIMES Overload the mtimes operator for image objects
+function res = mtimes(obj, that)
+% Overload the mtimes operator for image objects.
 %
-%   output = mtimes(input)
+%   RES = mtimes(IMG, VAL)
+%   RES = IMG * VAL
 %
 %   Example
-%   mtimes
+%     img = Image.read('rice.png');
+%     img2 = img * 2;
+%     show(img2)
 %
 %   See also
-% 
+%     mrdivide, plus, minus
+%
 
 % ------
 % Author: David Legland
@@ -16,12 +20,12 @@ function res = mtimes(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, that, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@times, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data))); %#ok<ZEROLIKE>
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data))); 
 
 % create result image
 newName = strcat(name1, '*', name2);

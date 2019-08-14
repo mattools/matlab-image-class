@@ -1,5 +1,5 @@
-function b = isBinaryImage(this)
-%ISBINARYIMAGE Checks if an image is binary (only black and white)
+function b = isBinaryImage(obj)
+% Checks if an image is binary (only black and white).
 %
 %   B = isBinaryImage(IMG)
 %
@@ -24,4 +24,4 @@ function b = isBinaryImage(this)
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = strcmp(this.type, 'binary');
+b = strcmp(obj.Type, 'binary');

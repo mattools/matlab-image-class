@@ -1,5 +1,5 @@
-function b = isVectorImage(this)
-%ISVECTORIMAGE Checks if an image is vector (more than one channel)
+function b = isVectorImage(obj)
+% Checks if an image is vector (more than one channel).
 %
 %   B = isVectorImage(IMG)
 %   Returns trus if the image is vector. Vector image have several
@@ -27,4 +27,4 @@ function b = isVectorImage(this)
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = this.dataSize(4) > 1;
+b = obj.DataSize(4) > 1;

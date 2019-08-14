@@ -1,5 +1,5 @@
-function res = repmat(this, M, N)
-%REPMAT  Overload repmat function for Image objects
+function res = repmat(obj, M, N)
+% Overload repmat function for Image objects.
 %
 %   RES = repmat(IMG, RX, RY)
 %   RES = repmat(IMG, [RX RY])
@@ -49,7 +49,7 @@ end
 siz = [siz ones(1, 5-length(siz))];
 
 % compute new data buffer
-data = repmat(this.data, siz);
+data = repmat(obj.Data, siz);
 
 % create result image
 res = Image('data', data);

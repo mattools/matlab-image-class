@@ -1,5 +1,5 @@
-function res = resample(this, varargin)
-%RESAMPLE Resample this image with a new coordinate basis
+function res = resample(obj, varargin)
+% Resample obj image with a new coordinate basis.
 %
 %   RES = resample(IMG, LX, LY);
 %   RES = resample(IMG, LX, LY, LZ);
@@ -13,7 +13,8 @@ function res = resample(this, varargin)
 %
 %   See also
 %     resize, interp
- 
+%
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@inra.fr
@@ -21,7 +22,7 @@ function res = resample(this, varargin)
 % Copyright 2018 INRA - Cepia Software Platform.
 
 % info about current image
-nd = this.dimension;
+nd = obj.Dimension;
 
 if isa(varargin{1}, 'Image')
     % if first argument is an image, extract its basis
@@ -29,7 +30,7 @@ if isa(varargin{1}, 'Image')
     lx = xData(img2);
     ly = yData(img2);
     if nd == 2
-        if img2.dimension ~= 2
+        if img2.Dimension ~= 2
             error('Image dimension must agree');
         end
         lz = zData(img2);
@@ -52,19 +53,19 @@ end
 % create new basis 
 if nd == 2
     [x, y] = meshgrid(lx, ly);
-    res = interp(this, x, y, varargin{:});
+    res = interp(obj, x, y, varargin{:});
 
     % convert to Image class
-    res = Image(res, 'parent', this, ...
+    res = Image(res, 'parent', obj, ...
         'origin', [lx(1) ly(1)], ...
         'spacing', [lx(2)-lx(1) ly(2)-ly(1)]);
     
 elseif nd == 3
     [x, y, z] = meshgrid(lx, ly, lz);
-    res = interp(this, x, y, z, varargin{:});
+    res = interp(obj, x, y, z, varargin{:});
     
     % convert to Image class
-    res = Image(res, 'parent', this, ...
+    res = Image(res, 'parent', obj, ...
         'origin', [lx(1) ly(1) lz(1)], ...
         'spacing', [lx(2)-lx(1) ly(2)-ly(1) lz(2)-lz(1)]);
 else

@@ -1,13 +1,13 @@
-function res = exp(this)
-%EXP Overload the exp operator for image object
+function res = exp(obj)
+% Overload the exp operator for image object.
 %
-%   output = exp(input)
+%   RES = exp(IMG)
 %
 %   Example
 %   exp
 %
 %   See also
-% 
+%     log, log10
 
 % ------
 % Author: David Legland
@@ -15,6 +15,6 @@ function res = exp(this)
 % Created: 2010-12-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-newData = exp(double(this.data));
+newData = exp(double(obj.Data));
 
-res = Image('data', newData, 'parent', this, 'type', 'intensity');
+res = Image('data', newData, 'parent', obj, 'type', 'intensity');

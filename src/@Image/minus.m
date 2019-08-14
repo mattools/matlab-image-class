@@ -1,12 +1,13 @@
-function res = minus(this, that)
-%MINUS Overload the minus operator for image objects
+function res = minus(obj, that)
+% Overload the minus operator for image objects.
 %
-%   output = minus(input)
+%   RES = minus(IMG, VAL)
 %
 %   Example
 %   minus
 %
 %   See also
+%     plus, mtimes, mrdivide
 % 
 
 % ------
@@ -16,13 +17,13 @@ function res = minus(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ....
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, that, ....
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@minus, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
-newName = strcat(name1, '+', name2);
+newName = strcat(name1, '-', name2);
 res = Image('data', newData, 'parent', parent, 'name', newName);

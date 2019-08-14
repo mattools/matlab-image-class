@@ -1,9 +1,9 @@
-function showOrthoPlanes(this, varargin)
-%SHOWORTHOPLANES Show three orthogonal slices in separate axes
+function showOrthoPlanes(obj, varargin)
+% Show three orthogonal slices in separate axes.
 %
-%   this.showOrthoPlanes(POS)
-%   POS is 1*3 row vector containing position of slices intersection point,
-%   in image index coordinate between 0 and size(img)-1.
+%   showOrthoPlanes(IMG, POS)
+%   POS is 1-by-3 row vector containing the position of slices intersection
+%   point, in image index coordinate between 0 and size(img)-1.
 %
 %   Example
 %   % Display Orthogonal planes of a brain image
@@ -14,7 +14,7 @@ function showOrthoPlanes(this, varargin)
 %     axis equal;                          % to have equal sizes
 %
 %   See also
-%   showOrthoSlices, showXSlice, showYSlice, showZSlice, getSlice
+%     showOrthoSlices, showXSlice, showYSlice, showZSlice, getSlice
 %
 
 % ------
@@ -28,7 +28,7 @@ function showOrthoPlanes(this, varargin)
 
 % if no position is specified, use the center of image
 if isempty(varargin)
-    siz = size(this);
+    siz = size(obj);
     pos = floor(siz/2);
 else
     pos = varargin{1};
@@ -38,14 +38,14 @@ end
 %% Extract data
 
 % extract each slice
-sliceXY = squeeze(slice(this, 3, pos(3)));
-sliceZY = squeeze(slice(this, 1, pos(1)))';
-sliceXZ = squeeze(slice(this, 2, pos(2)));
+sliceXY = squeeze(slice(obj, 3, pos(3)));
+sliceZY = squeeze(slice(obj, 1, pos(1)))';
+sliceXZ = squeeze(slice(obj, 2, pos(2)));
 
 % get spatial calibration
-xdata = xData(this);
-ydata = yData(this);
-zdata = zData(this);
+xdata = xData(obj);
+ydata = yData(obj);
+zdata = zData(obj);
 
 % coordinate of reference point
 xPos = xdata(pos(1));
@@ -151,7 +151,7 @@ set(hSliceXZ, 'ButtonDownFcn', @startDragCrossLine);
 axes('parent', hf, 'units', 'normalized', 'visible', 'off', ...
     'position', [width1 0 width2 height2], ...
     'ydir', 'reverse', 'zdir', 'reverse');
-[hSlice3dXY, hSlice3dYZ, hSlice3dXZ] = showOrthoSlices(this, pos);
+[hSlice3dXY, hSlice3dYZ, hSlice3dXZ] = showOrthoSlices(obj, pos);
 
 % show orthogonal lines
 hLine3dX = line([xdata(1) xdata(end)], [yPos yPos], [zPos zPos], 'color', 'r');
@@ -169,7 +169,7 @@ axis equal;
 data = struct;
 
 % general data common to all displays
-data.img = this;
+data.img = obj;
 data.pos = pos;
 
 % spatial basis

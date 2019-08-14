@@ -1,4 +1,8 @@
-function res = sum(this)
-%Computes the sum of pixel values in an image
+function res = sum(obj)
+% Computes the sum of pixel values in an image
+%
+%   See Also
+%     mean, std
+%
 
-res = sum(this.data(:));
+res = sum(obj.Data(:));

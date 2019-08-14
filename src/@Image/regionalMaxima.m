@@ -1,5 +1,5 @@
-function res = regionalMaxima(this, varargin)
-%REGIONALMAXIMA  Regional maxima of the image
+function res = regionalMaxima(obj, varargin)
+% Regional maxima of the image.
 %
 %   IMGMAX = regionalMaxima(IMG)
 %
@@ -8,6 +8,7 @@ function res = regionalMaxima(this, varargin)
 %
 %   See also
 %   regionalMinima, extendedMaxima, reconstruction
+%
 
 % ------
 % Author: David Legland
@@ -16,14 +17,14 @@ function res = regionalMaxima(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
 % default values
 conn = 4;
 
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -39,7 +40,7 @@ while ~isempty(varargin)
     end
 end
 
-data = imregionalmax(this.data, conn);
+data = imregionalmax(obj.Data, conn);
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', 'binary');
+res = Image('data', data, 'parent', obj, 'type', 'binary');

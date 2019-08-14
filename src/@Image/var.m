@@ -1,4 +1,8 @@
-function res = var(this)
-%Computes the variance of image values
+function res = var(obj)
+% Computes the variance of image values
+%
+%   See also
+%     mean, std
+%
 
-res = var(double(this.data(:)));
+res = var(double(obj.Data(:)));

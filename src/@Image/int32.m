@@ -1,5 +1,5 @@
-function res = int32(this)
-%INT32 Get the same image but with data stored as double
+function res = int32(obj)
+% Get the same image but with data stored as double.
 %   
 %   IMG32 = int32(IMG);
 %
@@ -9,7 +9,7 @@ function res = int32(this)
 %     show(img2);
 %
 %   See also
-%   Image/getBuffer
+%     uint8, double, Image/getBuffer
 %
 
 % ------
@@ -18,4 +18,4 @@ function res = int32(this)
 % Created: 2010-06-29,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-res = Image('data', int32(this.data), 'parent', this);
+res = Image('data', int32(obj.Data), 'parent', obj);

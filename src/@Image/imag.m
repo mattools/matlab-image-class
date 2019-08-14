@@ -1,13 +1,13 @@
-function res = imag(this)
-%IMAG Get the imaginary part of a complex image
+function res = imag(obj)
+% Get the imaginary part of a complex image.
 %
-%   output = imag(input)
+%   RES = imag(IMG)
 %
 %   Example
 %   imag
 %
 %   See also
-%   image
+%     real
 %
 
 % ------
@@ -16,6 +16,4 @@ function res = imag(this)
 % Created: 2011-12-18,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-newData = imag(this.data);
-
-res = Image('data', newData, 'parent', this);
+res = Image('data', imag(obj.Data), 'parent', obj);

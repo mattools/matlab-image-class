@@ -1,5 +1,5 @@
 function b = isPlanarImage(this)
-%ISPLANARIMAGE Checks if an image is planar (2D)
+% Check if an image is planar (2D).
 %
 %   B = isPlanarImage(IMG)
 %
@@ -17,4 +17,4 @@ function b = isPlanarImage(this)
 % Created: 2011-09-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = this.dimension == 2;
+b = this.Dimension == 2;

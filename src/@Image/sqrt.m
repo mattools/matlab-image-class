@@ -1,13 +1,16 @@
-function res = sqrt(this)
-%SQRT Overload the sqrt operator for image object
+function res = sqrt(obj)
+% Overload the sqrt operator for image object.
 %
-%   output = sqrt(input)
+%   RES = sqrt(IMG)
 %
 %   Example
-%   sqrt
+%     img = Image.read('rice.png');
+%     [gx, gy] = gradient(img);
+%     gnorm = sqrt(gx*gx + gy*gy);
 %
 %   See also
-% 
+%     hypot
+%
 
 % ------
 % Author: David Legland
@@ -15,6 +18,6 @@ function res = sqrt(this)
 % Created: 2010-12-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-newData = sqrt(double(this.data));
+newData = sqrt(double(obj.Data));
 
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', obj);

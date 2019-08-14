@@ -1,13 +1,14 @@
-function res = sign(this)
-%SIGN Overload the sign function for image object
+function res = sign(obj)
+% Overload the sign function for image object.
 %
-%   output = sign(input)
+%    PM = sign(IMG)
 %
 %   Example
 %   sign
 %
 %   See also
-% 
+%     plus, minus, gt, lt
+%
 
 % ------
 % Author: David Legland
@@ -15,6 +16,4 @@ function res = sign(this)
 % Created: 2010-12-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-newData = sign(this.data);
-
-res = Image('data', newData, 'parent', this);
+res = Image('data', sign(obj.Data), 'parent', obj);

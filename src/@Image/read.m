@@ -1,5 +1,5 @@
 function img = read(fileName, varargin)
-%READ Read an image from a file
+% Read an image from a file.
 %
 %   IMG = Image.read(FILENAME)
 %   Read an image from the specified file name.
@@ -22,7 +22,7 @@ function img = read(fileName, varargin)
 %   img = Image.read('brainMRI.hdr');
 %
 %   See also
-%   imread, readSeries, write
+%     imread, readSeries, write
 %
 
 % ------
@@ -83,7 +83,7 @@ else
     img = Image(data);
 end
 
-img.name = [name ext];
+img.Name = [name ext];
 
 
 function img = readMetaImage(fileName)
@@ -96,11 +96,11 @@ img = Image.create('data', data);
 
 % setup spatial calibration
 if isfield(info, 'Offset')
-    img.origin = info.Offset;
+    img.Origin = info.Offset;
 end
 if isfield(info, 'ElementSize')
-    img.spacing = info.ElementSpacing;
+    img.Spacing = info.ElementSpacing;
 end
 if isfield(info, 'ElementSpacing')
-    img.spacing = info.ElementSpacing;
+    img.Spacing = info.ElementSpacing;
 end

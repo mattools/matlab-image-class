@@ -1,5 +1,5 @@
-function res = fft(this)
-%FFT Fast-Fourier transform of an image
+function res = fft(obj)
+% Fast-Fourier transform of an image.
 %
 %   RES = fft(IMG)
 %
@@ -9,7 +9,7 @@ function res = fft(this)
 %     show(fftshift(log(abs(imgf))))
 %
 %   See also
-%   ifft, fftshift, abs
+%     ifft, fftshift, abs
 %
 
 % ------
@@ -19,7 +19,7 @@ function res = fft(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % process data buffer, using Matlab Image processing Toolbox
-data = fftn(this.data);
+data = fftn(obj.Data);
 
 % create new image object for storing result
-res = Image('data', data, 'parent', this, 'type', 'complex');
+res = Image('data', data, 'parent', obj, 'type', 'complex');

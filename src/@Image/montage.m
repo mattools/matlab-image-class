@@ -1,5 +1,5 @@
-function varargout = montage(this, varargin)
-%MONTAGE Display multiple image frames as rectangular montage
+function varargout = montage(obj, varargin)
+% Display multiple image frames as rectangular montage.
 %
 %   montage(IMG)
 %   Creates a montage from the 3D image IMG. This function is just a
@@ -21,7 +21,7 @@ function varargout = montage(this, varargin)
 %     montage(ovr);
 %
 %   See also
-%   montage
+%     montage
 %
 
 % ------
@@ -32,20 +32,20 @@ function varargout = montage(this, varargin)
 
 
 % check image dimension
-if this.dimension < 3
+if obj.Dimension < 3
     error('montage: works only for 3D images');
 end
 
 % call native montage fonction
 if nargout == 0
-    montage(permute(this.data, [2 1 4 3]), varargin{:});
+    montage(permute(obj.Data, [2 1 4 3]), varargin{:});
 else
-    varargout{1} = montage(permute(this.data, [2 1 4 3]), varargin{:});
+    varargout{1} = montage(permute(obj.Data, [2 1 4 3]), varargin{:});
 end
 
 % decorate figure
-if ~isempty(this.name)
-    set(gcf, 'name', ['Montage of ' this.name]);
+if ~isempty(obj.Name)
+    set(gcf, 'name', ['Montage of ' obj.Name]);
 else
-    set(gcf, 'name', ['Montage' this.name]);
+    set(gcf, 'name', ['Montage' obj.Name]);
 end

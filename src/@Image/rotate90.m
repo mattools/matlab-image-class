@@ -1,5 +1,5 @@
-function res = rotate90(this, axis, varargin)
-%ROTATE90 Rotate an image by 90 degrees around one of the main axes
+function res = rotate90(obj, axis, varargin)
+% Rotate an image by 90 degrees around one of the main axes.
 %
 %   ROTATED = rotate90(IMG, NDIR)
 %   Rotate the 2D image by 90 degrees:
@@ -20,7 +20,7 @@ function res = rotate90(this, axis, varargin)
 %   ROTATED = rotate90(IMG, AXIS, NUMBER)
 %   Apply NUMBER rotation around the axis. NUMBER is the number of
 %   rotations to apply, between 1 and 3. NUMER can also be negative, in
-%   this case the rotation is performed in reverse direction.
+%   obj case the rotation is performed in reverse direction.
 %
 %
 %   Example
@@ -30,7 +30,8 @@ function res = rotate90(this, axis, varargin)
 %     subplot(122);show(rotate90(img));
 %
 %   See also
-%   flip
+%     flip, permute
+%
 
 % ------
 % Author: David Legland
@@ -39,7 +40,7 @@ function res = rotate90(this, axis, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract input arguments (number of rotations and axis)
-nd = ndims(this);
+nd = ndims(obj);
 if nd == 2
     % number of rotations
     n = 1;
@@ -91,18 +92,18 @@ end
 permDims = [permDims 4 5];
 
 % apply matrix dimension permutation
-newData = permute(this.data, permDims);
+newData = permute(obj.Data, permDims);
 
 % depending on rotation, some dimensions must be fliped
 for i = 1:length(flipDims)
-    newData = flipdim(newData, flipDims(i));
+    newData = flip(newData, flipDims(i));
 end
 
 % create the new result image
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', obj);
 
 % also permute spacing and origin of image
-res.origin  = this.origin(permDims(1:nd));
-res.spacing = this.spacing(permDims(1:nd));
+res.Origin  = obj.Origin(permDims(1:nd));
+res.Spacing = obj.Spacing(permDims(1:nd));
 
     

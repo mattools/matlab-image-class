@@ -1,5 +1,5 @@
-function props = analyzeRegions(this, varargin)
-%ANALYZEREGIONS compute region properties on a label or binary image
+function props = analyzeRegions(obj, varargin)
+%ANALYZEREGIONS Computes region properties on a label or binary image.
 %
 %   PROPS = analyzeRegions(IMG)
 %
@@ -22,16 +22,17 @@ function props = analyzeRegions(this, varargin)
 %
 %   See also
 %     regionprops
- 
+%
+
 % ------
 % Author: David Legland
 % e-mail: david.legland@inra.fr
 % Created: 2017-11-15,    using Matlab 9.3.0.713579 (R2017b)
 % Copyright 2017 INRA - Cepia Software Platform.
 
-if ~(isLabelImage(this) || isBinaryImage(this))
+if ~(isLabelImage(obj) || isBinaryImage(obj))
     error('Requires a label of binary image');
 end
 
-buffer = getBuffer(this);
+buffer = getBuffer(obj);
 props = regionprops(buffer, varargin{:});

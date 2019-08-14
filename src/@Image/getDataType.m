@@ -1,15 +1,16 @@
 function type = getDataType(this)
-%GETDATATYPE  Return datatype of internal buffer
+% Return datatype of internal buffer.
 %
-%   TYPE = IMG.getDataType();
+%   TYPE = getDataType(IMG);
 %
 %   Example
 %   img = Image2D('cameraman.tif');
-%   img.getDataType()
+%   getDataType(img)
 %   ans = 
 %       uint8
 %
 %   See also
+%     class
 %
 
 % ------
@@ -19,4 +20,4 @@ function type = getDataType(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % Returns class name of data stored in internal buffer
-type = class(this.data);
+type = class(this.Data);

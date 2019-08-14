@@ -1,5 +1,5 @@
 function res = reconstruction(marker, mask, varargin)
-%RECONSTRUCTION Morphological reconstruction of marker image under mask image
+% Morphological reconstruction of marker image under mask image.
 %
 %   REC = reconstruction(MARKER, MASK)
 %   Performs a morphological reconstruction of image defined by MARKER
@@ -20,7 +20,7 @@ function res = reconstruction(marker, mask, varargin)
 %     show(rec);
 %
 %   See also
-%   killBorders, fillHoles, extendedMinima, imreconstruct
+%     killBorders, fillHoles, extendedMinima, imreconstruct
 %
 
 % ------
@@ -31,8 +31,8 @@ function res = reconstruction(marker, mask, varargin)
 
 %   HISTORY
 
-[marker, mask, this] = parseInputCouple(marker, mask);
+[marker, mask, parent] = parseInputCouple(marker, mask);
 data = imreconstruct(marker, mask, varargin{:});
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', parent, 'type', parent.Type);

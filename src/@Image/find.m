@@ -1,5 +1,5 @@
-function varargout = find(this, varargin)
-%FIND Find non zero elements in image
+function varargout = find(obj, varargin)
+% Find non zero elements in image.
 %
 %   INDS = find(IMG)
 %   Returns indices of non-zeros elements in image.
@@ -33,6 +33,7 @@ function varargout = find(this, varargin)
 %     hold on; plot(x, y, '.');
 %
 %   See also
+%     unique
 %
 
 % ------
@@ -41,28 +42,28 @@ function varargout = find(this, varargin)
 % Created: 2011-06-10,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-nd = this.dimension;
+nd = obj.Dimension;
 
 if nd <= 2
     % Process 2D image
     varargout = cell(1, max(nargout, 1));
-    [varargout{:}] = find(this.data, varargin{:});
+    [varargout{:}] = find(obj.Data, varargin{:});
 
 elseif nd == 3
     % Process 3D image -> need to take care of nargout
-    inds = find(this.data, varargin{:});
+    inds = find(obj.Data, varargin{:});
     
     if nargout <= 1
         varargout = {inds};
         
     elseif nargout == nd
         varargout = cell(1, nd);
-        [varargout{:}] = ind2sub(this.dataSize(1:nd), inds);
+        [varargout{:}] = ind2sub(obj.DataSize(1:nd), inds);
         
     else
-        vals = this.data(inds);
+        vals = obj.Data(inds);
         vars1 = cell(1, nd);
-        [vars1{:}] = ind2sub(this.dataSize(1:nd), inds);
+        [vars1{:}] = ind2sub(obj.DataSize(1:nd), inds);
         varargout = cell(1, nd+1);
         varargout(1:nd) = vars1;
         varargout{end} = vals;

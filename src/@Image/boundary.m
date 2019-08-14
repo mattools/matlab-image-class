@@ -1,5 +1,5 @@
-function bnd = boundary(this, varargin)
-%BOUNDARY Boundary of a binary image
+function bnd = boundary(obj, varargin)
+%Extracts the boundary image of a binary image.
 %
 %   BND = boundary(IMG)
 %   IMG is a boundary image with one or several structures of interest
@@ -29,7 +29,7 @@ function bnd = boundary(this, varargin)
 %     subplot(122);show(boundary(BW, 'outer')); title('outer boundary');
 %
 %   See also
-%
+%     gradient, morphoGradient
 
 % ------
 % Author: David Legland
@@ -41,7 +41,7 @@ function bnd = boundary(this, varargin)
 %% default parameters
 
 % number of dimensions
-nd = this.dimension;
+nd = obj.Dimension;
 
 % default structuring element
 if nd == 2
@@ -97,4 +97,4 @@ end
 %% Process
 
 % erode the structure and compare with original
-bnd = Image('data', op(this.data, se) ~= this.data, 'parent', this);
+bnd = Image('data', op(obj.Data, se) ~= obj.Data, 'parent', obj);

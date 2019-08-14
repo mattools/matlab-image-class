@@ -25,14 +25,14 @@ classdef Image < handle
 %% Declaration of class properties
 properties
     % Inner data of image
-    data            = [];
+    Data            = [];
     
     % Size of data buffer(in x,y,z,c,t order), should always have length=5
-    dataSize        = [1 1 1 1 1];
+    DataSize        = [1 1 1 1 1];
     
     % Number of spatial dimensions of the image, between 0 (single value)
     % and 3 (volume image). Common value is 2 (planar image).
-    dimension       = 1;
+    Dimension       = 1;
     
     % The type of image (grayscale, color, complex...)
     % It is represented by one of the following strings:
@@ -44,29 +44,29 @@ properties
     % 'vector', data buffer contains several channels
     % 'complex', data buffer contains 2 channels
     % 'unknown'
-    type            = 'grayscale';
+    Type            = 'grayscale';
         
     % Image name, empty by default
-    name            = '';
+    Name            = '';
     
     % boolean flag indicating whether the image is calibrated or not
-    calibrated      = false;
+    Calibrated      = false;
     
     % spatial origin of image
     % corresponding to position of pixel (1,1) or voxel (1,1,1)
-    origin          = [1 1];
+    Origin          = [1 1];
     
     % the amount of space between two pixels or voxels
-    spacing         = [1 1];
+    Spacing         = [1 1];
     
     % the name of the spatial unit
-    unitName        = '';
+    UnitName        = '';
     
     % the name of each of the axes
-    axisNames       = {};
+    AxisNames       = {};
     
     % the name of the channels
-    channelNames    = {};
+    ChannelNames    = {};
     
 end
 
@@ -102,12 +102,12 @@ end % static methods
 %% Private methods
 methods(Access = protected)
     
-    se = defaultStructuringElement(this, varargin)
+    se = defaultStructuringElement(obj, varargin)
 end
 
 %% Constructor declaration
 methods
-    function this = Image(varargin)
+    function obj = Image(varargin)
         %IMAGE Constructor for Image object.
         %
         %   Syntax
@@ -140,25 +140,25 @@ methods
             
             img = varargin{1};
             varargin(1) = [];
-            if islogical(img.data)
-                this.data   = false(size(img.data));
+            if islogical(img.Data)
+                obj.Data   = false(size(img.Data));
             else
-                this.data   = zeros(size(img.data), 'like', img.data);
+                obj.Data   = zeros(size(img.Data), 'like', img.Data);
             end
-            this.data(:)    = img.data(:);
-            this.dataSize   = img.dataSize;
+            obj.Data(:)    = img.Data(:);
+            obj.DataSize   = img.DataSize;
 
             % update private fields
-            this.copyFields(img);
+            obj.copyFields(img);
 
         elseif isnumeric(varargin{1}) || islogical(varargin{1})
             % first argument is either data buffer, or image dimension
             
             if isscalar(varargin{1})
-                % if argument is scalar, this is the image dimension
-                this.dataSize = ones(1, 5);
+                % if argument is scalar, obj is the image dimension
+                obj.DataSize = ones(1, 5);
                 nd = varargin{1};
-                this.dimension = nd;
+                obj.Dimension = nd;
                 
             else
                 % initialize data buffer from matlab array
@@ -168,7 +168,7 @@ methods
             varargin(1) = [];
             
             % update other data depending on image dimension
-            initCalibration(this);
+            initCalibration(obj);
         
         end
         
@@ -179,41 +179,41 @@ methods
             
             switch varName
                 case 'data'
-                    setInnerData(this, value);
-                    initDimension(this);
-                    initCalibration(this);
+                    setInnerData(obj, value);
+                    initDimension(obj);
+                    initCalibration(obj);
                     
                 case 'parent'
-                    this.copyFields(value);
+                    obj.copyFields(value);
                     
                 case 'name'
-                    this.name = value;
+                    obj.Name = value;
                     
                 case 'dimension'
-                    this.dimension = value;
-                    initCalibration(this);
+                    obj.Dimension = value;
+                    initCalibration(obj);
                     
                 case 'type'
-                    this.type = value;
+                    obj.Type = value;
                 case 'vector'
                     % if vector image is forced, permute dims 3 and 4
                     if value
-                        setInnerData(this, permute(this.data, [1 2 4 3 5]));
-                        initDimension(this);
-                        initCalibration(this);
+                        setInnerData(obj, permute(obj.Data, [1 2 4 3 5]));
+                        initDimension(obj);
+                        initCalibration(obj);
                     end
                     
                 case 'origin'
-                    this.origin = value;
+                    obj.Origin = value;
                 case 'spacing'
-                    this.spacing = value;
+                    obj.Spacing = value;
                     
                 case 'unitname'
-                    this.unitName = value;
+                    obj.UnitName = value;
                 case 'axisnames'
-                    this.axisNames = value;
+                    obj.AxisNames = value;
                 case 'channelnames'
-                    this.channelNames = value;
+                    obj.ChannelNames = value;
                     
                 otherwise
                     error(['Unknown parameter name: ' varName]);
@@ -224,11 +224,11 @@ methods
         end
        
         % additional setup
-        if strcmp(this.type, 'color') && isempty(this.channelNames)
-            this.channelNames = {'red', 'green', 'blue'};
+        if strcmp(obj.Type, 'color') && isempty(obj.ChannelNames)
+            obj.ChannelNames = {'red', 'green', 'blue'};
         end
-        if strcmp(this.type, 'complex') && isempty(this.channelNames)
-            this.channelNames = {'real', 'imaginary'};
+        if strcmp(obj.Type, 'complex') && isempty(obj.ChannelNames)
+            obj.ChannelNames = {'real', 'imaginary'};
         end
     
         
@@ -242,13 +242,13 @@ methods
             % check if image is color or grayscale
             if nd == 3 && imageSize(3) == 3 && sum(imageSize(1:2) > 5) == 2
                 % init color image
-                setInnerData(this, permute(mat, [2 1 4 3 5]));
+                setInnerData(obj, permute(mat, [2 1 4 3 5]));
             else
                 % init grayscale
-                setInnerData(this, permute(mat, [2 1 3:nd]));
+                setInnerData(obj, permute(mat, [2 1 3:nd]));
             end
             
-            initDimension(this);
+            initDimension(obj);
         end
     end
 end % constructor       
@@ -256,32 +256,32 @@ end % constructor
 
 %% Protected utilitary methods
 methods (Access = protected)
-    function copyFields(this, that)
+    function copyFields(obj, that)
         % Initialize inner fields with the fields of the parameter image
         % Does not copy the data buffer.
         
-        this.name   = that.name;
+        obj.Name   = that.Name;
         
-        if isCompatibleType(this, that.type)
-            this.type   = that.type;
+        if isCompatibleType(obj, that.Type)
+            obj.Type   = that.Type;
         end
         
         % copy dimension elements that are common
-        nd = min(this.dimension, that.dimension);
-        this.calibrated = that.calibrated;
-        this.origin(1:nd)     = that.origin(1:nd);
-        this.spacing(1:nd)    = that.spacing(1:nd);
-        if ~isempty(that.unitName)
-            this.unitName(1:nd)   = that.unitName(1:nd);
+        nd = min(obj.Dimension, that.Dimension);
+        obj.Calibrated = that.Calibrated;
+        obj.Origin(1:nd)     = that.Origin(1:nd);
+        obj.Spacing(1:nd)    = that.Spacing(1:nd);
+        if ~isempty(that.UnitName)
+            obj.UnitName(1:nd)   = that.UnitName(1:nd);
         end
-        if ~isempty(that.axisNames)
-            this.axisNames(1:nd)  = that.axisNames(1:nd);
+        if ~isempty(that.AxisNames)
+            obj.AxisNames(1:nd)  = that.AxisNames(1:nd);
         end
     end
     
-    function tf = isCompatibleType(this, typeName)
+    function tf = isCompatibleType(obj, typeName)
         tf = true;
-        nc = this.dataSize(4);
+        nc = obj.DataSize(4);
         switch lower(typeName)
             case 'binary', if nc ~= 1, tf = false; end
             case 'grayscale', if nc ~= 1, tf = false; end
@@ -295,37 +295,37 @@ methods (Access = protected)
         end
     end
     
-    function setInnerData(this, data)
+    function setInnerData(obj, data)
         % Initialize data buffer and computes its size
-        this.data = data;
+        obj.Data = data;
         
         % determines size of data buffer
-        siz = size(this.data);
-        this.dataSize(1:length(siz)) = siz;
+        siz = size(obj.Data);
+        obj.DataSize(1:length(siz)) = siz;
         
-        initImageType(this);
+        initImageType(obj);
     end
     
-    function initImageType(this)
+    function initImageType(obj)
         % Determines a priori the type of image
-        if islogical(this.data)
-            this.type = 'binary';
-        elseif isfloat(this.data)
-            this.type = 'intensity';
-        elseif this.dataSize(4) == 3
-            this.type = 'color';
-        elseif this.dataSize(4) == 2
-            this.type = 'complex';
-        elseif this.dataSize(4) > 3
-            this.type = 'vector';
+        if islogical(obj.Data)
+            obj.Type = 'binary';
+        elseif isfloat(obj.Data)
+            obj.Type = 'intensity';
+        elseif obj.DataSize(4) == 3
+            obj.Type = 'color';
+        elseif obj.DataSize(4) == 2
+            obj.Type = 'complex';
+        elseif obj.DataSize(4) > 3
+            obj.Type = 'vector';
         end
     end
 
-    function initDimension(this)
+    function initDimension(obj)
         % Automatically determines dimension of image from data array
         
         % compute image dim, 
-        dims = this.dataSize;
+        dims = obj.DataSize;
         
         nd = 3;
         if dims(3) == 1
@@ -334,83 +334,83 @@ methods (Access = protected)
                 nd = 1;
             end
         end        
-        this.dimension = nd;
+        obj.Dimension = nd;
     end
     
-    function initCalibration(this)
+    function initCalibration(obj)
         % Initializes spatial calibration of image based on its dimension.
-        nd = this.dimension;
-        this.origin  = ones(1, nd);
-        this.spacing = ones(1, nd);
-        this.calibrated = false;
+        nd = obj.Dimension;
+        obj.Origin  = ones(1, nd);
+        obj.Spacing = ones(1, nd);
+        obj.Calibrated = false;
     end
 end % protected methods
 
 
 %% Spatial calibration methods
 methods
-    function copySpatialCalibration(this, that)
+    function copySpatialCalibration(obj, that)
         %copySpatialCalibration copy spatial calibration
         %
         % copySpatialCalibration(THIS, THAT)
         % Copies the spatial calibration from THAT image to THIS image.
         
-        this.origin     = that.origin;
-        this.spacing    = that.spacing;
-        this.unitName   = that.unitName;
-        this.calibrated = that.calibrated;
+        obj.Origin     = that.Origin;
+        obj.Spacing    = that.Spacing;
+        obj.UnitName   = that.UnitName;
+        obj.Calibrated = that.Calibrated;
     end
     
-    function ori = get.origin(this)
+    function ori = get.Origin(obj)
         % Return image origin
-        ori = this.origin;
+        ori = obj.Origin;
     end
     
-    function set.origin(this, origin)
+    function set.Origin(obj, origin)
         % Change image origin
-        this.origin = origin;
-        this.calibrated = true; %#ok<MCSUP>
+        obj.Origin = origin;
+        obj.Calibrated = true; %#ok<MCSUP>
     end
     
-    function ori = get.spacing(this)
+    function ori = get.Spacing(obj)
         % Return image spacing
-        ori = this.spacing;
+        ori = obj.Spacing;
     end
     
-    function set.spacing(this, spacing)
+    function set.Spacing(obj, spacing)
         % Change image spacing
-        this.spacing = spacing;
-        this.calibrated = true; %#ok<MCSUP>
+        obj.Spacing = spacing;
+        obj.Calibrated = true; %#ok<MCSUP>
     end
 
-    function name = get.unitName(this)
-        name = this.unitName;
+    function name = get.UnitName(obj)
+        name = obj.UnitName;
     end
     
-    function set.unitName(this, newName)
-        this.unitName = newName;
-        this.calibrated = true; %#ok<MCSUP>
+    function set.UnitName(obj, newName)
+        obj.UnitName = newName;
+        obj.Calibrated = true; %#ok<MCSUP>
     end
     
-    function [index, isInside] = pointToIndex(this, point)
+    function [index, isInside] = pointToIndex(obj, point)
         % Converts point in physical coordinate into image index
 
         % repeat points avoiding repmat
         nI = ones(size(point, 1), 1);
-        index = round((point - this.origin(nI, :)) ./ this.spacing(nI, :)) + 1;
+        index = round((point - obj.Origin(nI, :)) ./ obj.Spacing(nI, :)) + 1;
 
         if nargout > 1
             isInside = true(size(nI));
             isInside(find(sum(index <= 0, 2))) = false; %#ok<*FNDSB>
-            isInside(find(sum(index >  this.dataSize(nI,:), 2))) = false;
+            isInside(find(sum(index >  obj.DataSize(nI,:), 2))) = false;
         end
     end
     
-    function [point, isInside] = pointToContinuousIndex(this, point)
+    function [point, isInside] = pointToContinuousIndex(obj, point)
         % Converts point in physical coordinate into unrounded image index
         
-        for i = 1:length(this.spacing)
-            point(:,i) = (point(:,i) - this.origin(i)) / this.spacing(i) + 1;
+        for i = 1:length(obj.Spacing)
+            point(:,i) = (point(:,i) - obj.Origin(i)) / obj.Spacing(i) + 1;
         end
         
         if nargout > 1
@@ -418,15 +418,15 @@ methods
             n = size(point, 1);
             isInside = true(size(n));
             isInside(find(sum(point <= 0, 2))) = false;
-            isInside(find(sum(point >  this.dataSize(n,:), 2))) = false;
+            isInside(find(sum(point >  obj.DataSize(n,:), 2))) = false;
         end
     end
     
-    function point = indexToPoint(this, index)
+    function point = indexToPoint(obj, index)
         % Converts image index into point in physical coordinate
         
         nI = ones(size(index, 1), 1);
-        point = (index - 1) .* this.spacing(nI, :) + this.origin(nI, :);
+        point = (index - 1) .* obj.Spacing(nI, :) + obj.Origin(nI, :);
     end
     
 end % methods

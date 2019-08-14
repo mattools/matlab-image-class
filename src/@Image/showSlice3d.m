@@ -1,5 +1,5 @@
-function hs = showSlice3d(this, dim, varargin)
-%SHOWSLICE3D Show a moving 3D slice of an image
+function hs = showSlice3d(obj, dim, varargin)
+% Show a moving 3D slice of an image.
 %
 %   showSlice3d(IMG, DIR)
 %   showSlice3d(IMG, DIR, INDEX)
@@ -20,7 +20,7 @@ function hs = showSlice3d(this, dim, varargin)
 %   to displayed black and white respectively.
 %
 %   See also
-%   showOrthoSlices, showXSlice, showYSlice, showZSlice, showOrthoPlanes
+%     showOrthoSlices, showXSlice, showYSlice, showZSlice, showOrthoPlanes
 %
 %   References
 %   Largely inspired by file 'slice3i' from Anders Brun, see FEx:
@@ -37,7 +37,7 @@ function hs = showSlice3d(this, dim, varargin)
 %% Initialisations
 
 % get image size (in x, y, z order)
-siz = size(this);
+siz = size(obj);
 
 % use a default position if not specified
 if nargin < 3 || ischar(varargin{1})
@@ -50,32 +50,9 @@ end
 % check axis direction
 dim = parseAxisIndex(dim);
 
-% % extract spatial calibration
-% if ~isempty(varargin) && isnumeric(varargin{1})
-%     var = varargin{1};
-%     if numel(var) == 3
-%         % resolution is given for each x, y, and z directions
-%         dcm = diag([var 1]);
-%         
-%     elseif sum(size(var) >= [3 3]) == 2
-%         % resolution is given as a transformation matrix
-%         dcm = var;
-%         dcm(4, 4) = 1;
-%         
-%     else
-%         error('Unable to parse spatial calibration');
-%     end
-%     varargin(1) = [];
-%     
-% else
-%     % no spatial calibration: use identity matrix
-%     dcm = eye(4);
-% end
-
-
 % initialize transform matrix from index coords to physical coords
-dcm = diag([this.spacing 1]);
-dcm(1:3, 4) = this.origin;
+dcm = diag([obj.Spacing 1]);
+dcm(1:3, 4) = obj.Origin;
 
 % default display calibration
 displayRange = [];
@@ -102,7 +79,7 @@ end
 %% Extract and normalise slice
 
 % extract the slice
-planarSlice = slice(this, dim, index);
+planarSlice = slice(obj, dim, index);
 
 displayData = computeSliceRGB(planarSlice, displayRange, lut);
 
@@ -170,7 +147,7 @@ hs = surface(xdata, ydata, zdata, displayData, params{:});
 
 % set up slice data
 data.handle         = hs;
-data.image          = this;
+data.image          = obj;
 data.dim            = dim;
 data.index          = index;
 data.dcm            = dcm;
@@ -403,7 +380,7 @@ function rgb = computeSliceRGB(slice, displayRange, lut)
 % Convert image slice to renderable data
 
 % convert to a 2D (or 2D+color) array
-data = permute(squeeze(slice.data), [2 1 3]);
+data = permute(squeeze(slice.Data), [2 1 3]);
 
 % eventually converts to uint8, rescaling data between 0 and max value
 if ~isa(data, 'uint8')

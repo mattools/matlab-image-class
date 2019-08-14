@@ -1,5 +1,5 @@
-function lx = xData(this)
-%XDATA  Return the vector of positions in the x direction
+function lx = xData(obj)
+% Return the vector of positions in the x direction.
 %
 %   XPOS = xData(IMG);
 %   XPOS is a 1-by-Nx row vector, with Nx being the number of elements in
@@ -9,7 +9,7 @@ function lx = xData(this)
 %   xData
 %
 %   See also
-%   yData, zData
+%     yData, zData
 %
 
 % ------
@@ -20,7 +20,7 @@ function lx = xData(this)
 
 
 % extract number of voxels in each dimension
-dim = this.dataSize;
+dim = obj.DataSize;
 
 % compute voxel positions
-lx = (0:dim(1)-1) * this.spacing(1) + this.origin(1);
+lx = (0:dim(1)-1) * obj.Spacing(1) + obj.Origin(1);

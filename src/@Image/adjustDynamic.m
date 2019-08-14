@@ -1,5 +1,5 @@
-function res = adjustDynamic(this, varargin)
-%ADJUSTDYNAMIC Rescale gray levels of image to get better dynamic
+function res = adjustDynamic(obj, varargin)
+% Rescales gray levels of image to get better dynamic.
 %
 %   RES = adjustDynamic(IMG, [GMIN GMAX]);
 %   all values below GMIN will be set to 0, all values greater than GMAX
@@ -62,7 +62,7 @@ if ~isempty(varargin)
     % use min and max values given as parameter
     var = varargin{1};
     if length(var) == 1
-        [mini, maxi] = computeGrayscaleAdjustement(this.data, var);
+        [mini, maxi] = computeGrayscaleAdjustement(obj.Data, var);
     else
         mini = var(1);
         maxi = var(2);
@@ -72,7 +72,7 @@ if ~isempty(varargin)
 else
     % use min and max values computed from input image, by saturating 1
     % percent of image elements
-    [mini, maxi] = computeGrayscaleAdjustement(this.data, .01);
+    [mini, maxi] = computeGrayscaleAdjustement(obj.Data, .01);
 end
 
 % check if a class cast is specified
@@ -87,20 +87,20 @@ end
 a = double((outMax - outMin) / (maxi - mini));
 
 % compute result image
-res = (this.data - mini) * a + outMin;
+res = (obj.Data - mini) * a + outMin;
 
 % cast to output type
 res = cast(res, outputClass);
 
 % create resulting Image
-res = Image('data', res, 'parent', this);
+res = Image('data', res, 'parent', obj);
 
 
 function [mini, maxi] = computeExtremeValues(data) %#ok<DEFNU>
 % compute min and max (finite) values in image
 
-mini = min(this(isfinite(data)));
-maxi = max(this(isfinite(data)));
+mini = min(obj(isfinite(data)));
+maxi = max(obj(isfinite(data)));
 
 % If the difference is too small, use default range check
 if abs(maxi - mini) < 1e-12

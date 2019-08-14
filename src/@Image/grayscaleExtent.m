@@ -1,8 +1,8 @@
-function varargout = grayscaleExtent(this)
-%GRAYSCALEEXTENT Grayscale extent of input image data type
+function varargout = grayscaleExtent(obj)
+% Grayscale extent of input image data type.
 %
 %   EXTENT = grayscaleExtent(IMG)
-%   [GMIN GMAX] = grayscaleExtent(IMG)
+%   [GMIN, GMAX] = grayscaleExtent(IMG)
 %   Returns minimal and maximal values of image data type. If image is of
 %   type double, returns the minimal and maximal values of image data.
 %   Useful for computing appropriate display scaling.
@@ -14,7 +14,7 @@ function varargout = grayscaleExtent(this)
 %         0   255
 %
 %   See also
-%   intmin, intmax, min, max, dataExtent
+%     intmin, intmax, min, max, dataExtent
 %
 
 % ------
@@ -24,13 +24,13 @@ function varargout = grayscaleExtent(this)
 % Copyright 2012 INRA - Cepia Software Platform.
 
 % compute minimal 
-if isinteger(this.data)
-    type = class(this.data);
+if isinteger(obj.Data)
+    type = class(obj.Data);
     minVal = double(intmin(type));
     maxVal = double(intmax(type));
 else
-    minVal = double(min(this.data(:)));
-    maxVal = double(max(this.data(:)));
+    minVal = double(min(obj.Data(:)));
+    maxVal = double(max(obj.Data(:)));
 end
 
 % format output

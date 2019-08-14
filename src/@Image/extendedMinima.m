@@ -1,12 +1,13 @@
-function res = extendedMinima(this, dyn ,varargin)
-%EXTENDEDMINIMA  Extended minima of the image
+function res = extendedMinima(obj, dyn ,varargin)
+% Extended minima of an image.
 %
 %   IMGMIN = extendedMinima(IMG, DYN)
 %
 %   Example
-%   extendedMinima
+%     extendedMinima
 %
 %   See also
+%     extendedMaxima, regionalMinima
 %
 
 % ------
@@ -16,14 +17,14 @@ function res = extendedMinima(this, dyn ,varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
 % default values
 conn = 4;
 
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -39,7 +40,7 @@ while ~isempty(varargin)
     end
 end
 
-data = imextendedmin(this.data, dyn, conn);
+data = imextendedmin(obj.Data, dyn, conn);
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', 'binary');
+res = Image('data', data, 'parent', obj, 'type', 'binary');

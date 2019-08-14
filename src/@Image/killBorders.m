@@ -1,5 +1,5 @@
-function res = killBorders(this, varargin)
-%KILLBORDERS Remove borders of a binary or grayscale image
+function res = killBorders(obj, varargin)
+% Remove borders of a binary or grayscale image.
 %
 %   RES = killBorders(IMG)
 %   RES = killBorders(IMG, CONN)
@@ -24,7 +24,7 @@ function res = killBorders(this, varargin)
 
 % choose default connectivity
 conn = 4;
-if ndims(this) == 3
+if ndims(obj) == 3
     conn = 8;
 end
 
@@ -34,7 +34,7 @@ if ~isempty(varargin)
 end
 
 % call matlab function
-newData = imclearborder(this.data, conn);
+newData = imclearborder(obj.Data, conn);
 
 % create resulting image
-res = Image('data', newData, 'parent', this);
+res = Image('data', newData, 'parent', obj);

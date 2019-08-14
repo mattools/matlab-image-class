@@ -1,9 +1,9 @@
-function [res, inds] = areaOpening(this, value, varargin)
-%AREAOPENING Remove small regions or particles in binary or label image
+function [res, inds] = areaOpening(obj, value, varargin)
+%AREAOPENING Remove small regions or particles in binary or label image.
 %
 %   IMG2 = areaOpening(IMG, MINSIZE);
 %   Removes the particles in image IMG that have less than MINSIZE pixels
-%   or voxels. IMG can be either a bianry or a label image. If IMG is
+%   or voxels. IMG can be either a binary or a label image. If IMG is
 %   binary, it is first labelled using 4 or 6 connectivity.
 %
 %   IMG2 = areaOpening(IMG, MINSIZE, CONN);
@@ -25,7 +25,7 @@ function [res, inds] = areaOpening(this, value, varargin)
 %     figure; show(BW2);
 % 
 %   See also
-%   attributeOpening, largestRegion, regionprops, bwareaopen, opening
+%     attributeOpening, largestRegion, regionprops, bwareaopen, opening
 %
 
 % ------
@@ -34,15 +34,15 @@ function [res, inds] = areaOpening(this, value, varargin)
 % Created: 2011-11-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-if isLabelImage(this)
-    data = this.data;
+if isLabelImage(obj)
+    data = obj.Data;
     
-elseif isBinaryImage(this)
+elseif isBinaryImage(obj)
     % if image is binary compute labeling
     
     % first determines connectivity to use
     conn = 4;
-    if this.dimension == 3
+    if obj.Dimension == 3
         conn = 6;
     end
     if ~isempty(varargin)
@@ -50,7 +50,7 @@ elseif isBinaryImage(this)
     end
     
     % appply labeling, get result as 2D or 3D matrix
-    data = labelmatrix(bwconncomp(this.data, conn));
+    data = labelmatrix(bwconncomp(obj.Data, conn));
     
 else
     error('Image:areaOpening', 'Requires binary or label image');
@@ -65,4 +65,4 @@ inds = find(areas >= value);
 data = ismember(data, inds);
 
 % create new image
-res = Image.create('data', data, 'parent', this, 'type', 'binary');
+res = Image.create('data', data, 'parent', obj, 'type', 'binary');

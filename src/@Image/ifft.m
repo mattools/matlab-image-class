@@ -1,5 +1,5 @@
-function res = ifft(this)
-%IFFT  Inverse Fourier Transform of an image
+function res = ifft(obj)
+% Inverse Fourier Transform of an image.
 %
 %   output = ifft(input)
 %
@@ -13,7 +13,7 @@ function res = ifft(this)
 %     show(abs(img2));
 %
 %   See also
-%    fft, ifftshift
+%     fft, ifftshift
 %
 
 % ------
@@ -23,7 +23,7 @@ function res = ifft(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % process data buffer, using Matlab Image processing Toolbox
-data = ifftn(this.data);
+data = ifftn(obj.Data);
 
 % create new image object for storing result
-res = Image('data', data, 'parent', this, 'type', 'complex');
+res = Image('data', data, 'parent', obj, 'type', 'complex');

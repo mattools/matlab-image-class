@@ -1,5 +1,5 @@
-function varargout = showOrthoSlices(this, varargin)
-%SHOWORTHOSLICES Show three orthogonal slices in 3D
+function varargout = showOrthoSlices(obj, varargin)
+% Show three orthogonal slices in 3D.
 %
 %   showOrthoSlices(IMG, POS)
 %   POS is 1*3 row vector containing position of slices intersection point,
@@ -24,7 +24,7 @@ function varargout = showOrthoSlices(this, varargin)
 
 % if no position is specified, use the center of image
 if isempty(varargin) || ischar(varargin{1})
-    siz = this.dataSize;
+    siz = obj.DataSize;
     pos = floor(siz/2);
 else
     pos = varargin{1};
@@ -50,9 +50,9 @@ end
 
 % display three mutually orthogonal 3D slices
 hold on;
-hyz = showSlice3d(this, 1, pos(1), options{:});
-hxz = showSlice3d(this, 2, pos(2), options{:});
-hxy = showSlice3d(this, 3, pos(3), options{:});
+hyz = showSlice3d(obj, 1, pos(1), options{:});
+hxz = showSlice3d(obj, 2, pos(2), options{:});
+hxy = showSlice3d(obj, 3, pos(3), options{:});
 
 % use equal spacing by default
 axis equal;

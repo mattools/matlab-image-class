@@ -1,12 +1,13 @@
-function res = lt(this, that)
-%LT Overload the lt operator for Image objects
+function res = lt(obj, that)
+% Overload the lt operator for Image objects.
 %
-%   output = lt(input)
+%   RES s= lt(IMG, VAL)
 %
 %   Example
 %   lt
 %
 %   See also
+%     gt, le, eq, ne
 %
 
 % ------
@@ -16,12 +17,12 @@ function res = lt(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, that, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@lt, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
 newName = strcat(name1, '<', name2);

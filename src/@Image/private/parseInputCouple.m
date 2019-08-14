@@ -1,7 +1,7 @@
 function [data1, data2, parent, name1, name2] = parseInputCouple(this, that, inp1, inp2)
-%PARSEINPUTCOUPLE Extract numeric data from image inputs
+% Extract numeric data from image inputs.
 %
-%   [DATA1 DATA2 PARENT NAME1 NAME2] = parseInputCouple(THIS, THAT)
+%   [DATA1, DATA2, PARENT, NAME1, NAME2] = parseInputCouple(THIS, THAT)
 %   This function is used to parse inputs of functions that accept two
 %   arguments, that can be either image or numeric array, in any order.
 %   This function aims at extracting numeric data, and a pointer to an
@@ -26,7 +26,7 @@ function [data1, data2, parent, name1, name2] = parseInputCouple(this, that, inp
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@nantes.inra.fr
+% e-mail: david.legland@inra.fr
 % Created: 2011-08-07,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -36,8 +36,8 @@ name2 = '';
 % extract info from first input
 if isa(this, 'Image')
     parent = this;
-    name1 = this.name;
-    data1 = this.data;
+    name1 = this.Name;
+    data1 = this.Data;
     
 else
     parent = that;
@@ -57,8 +57,8 @@ end
 
 % extract info from second input
 if isa(that, 'Image')
-    name2 = that.name;
-    data2 = that.data;
+    name2 = that.Name;
+    data2 = that.Data;
     
 else
     data2 = permute(that, [2 1 3:5]);

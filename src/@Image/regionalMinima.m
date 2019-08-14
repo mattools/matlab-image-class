@@ -1,5 +1,5 @@
-function res = regionalMinima(this, varargin)
-%REGIONALMINIMA  Regional minima of the image
+function res = regionalMinima(obj, varargin)
+% Regional minima of the image.
 %
 %   IMGMIN = regionalMinima(IMG)
 %
@@ -8,6 +8,7 @@ function res = regionalMinima(this, varargin)
 %
 %   See also
 %   regionalMaxima, extendedMinima, reconstruction
+%
 
 % ------
 % Author: David Legland
@@ -16,14 +17,14 @@ function res = regionalMinima(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
 % default values
 conn = 4;
 
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -39,7 +40,7 @@ while ~isempty(varargin)
     end
 end
 
-data = imregionalmin(this.data, conn);
+data = imregionalmin(obj.Data, conn);
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', 'binary');
+res = Image('data', data, 'parent', obj, 'type', 'binary');

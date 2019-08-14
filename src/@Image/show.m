@@ -1,16 +1,17 @@
-function varargout = show(this, varargin)
+function varargout = show(obj, varargin)
 % Shows image on current axis
+%
 % Image is displayed in its physical extent, based on image origin and
 % spacing. 
 %
 
 % Check image dimension: should be 2, or can be squeezed to 2.
-if this.dimension ~= 2
+if obj.Dimension ~= 2
     % compute number of image dimension
-    nd = sum(this.dataSize(1:3) > 1);
+    nd = sum(obj.DataSize(1:3) > 1);
     if nd == 2
-        img = this.squeeze();
-        img.show(varargin{:});
+        img = squeeze(obj);
+        show(img, varargin{:});
         return;
         
     else
@@ -20,7 +21,7 @@ end
 
 options = varargin;
 
-data = this.getDisplayData();
+data = getDisplayData(obj);
 
 % if double, adjust grayscale extent
 if isfloat(data)
@@ -28,14 +29,14 @@ if isfloat(data)
 end
 
 % compute physical extents
-xdata = xData(this);
-ydata = yData(this);
+xdata = xData(obj);
+ydata = yData(obj);
 
 % display image with approriate spatial reference
 h = imshow(data, 'XData', xdata, 'YData', ydata, options{:});
 
 % check extent of image
-extent = physicalExtent(this);
+extent = physicalExtent(obj);
 xl = xlim;
 xl = [min(xl(1), extent(1)) max(xl(2), extent(2))];
 yl = ylim;

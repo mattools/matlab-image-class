@@ -1,7 +1,8 @@
-function res = labeling(this, varargin)
-%LABELING Label connected components in a binary image
+function res = labeling(obj, varargin)
+% Label connected components in a binary image.
 %
-%   output = labeling(input)
+%   LBL = labeling(IMB)
+%   LBL = labeling(IMB, CONN)
 %
 %   Example
 %   labeling
@@ -17,18 +18,18 @@ function res = labeling(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check type
-if ~strcmp(this.type, 'binary')
+if ~strcmp(obj.Type, 'binary')
     error('Requires a binary image');
 end
 
-nd = ndims(this);
+nd = ndims(obj);
 if nd == 2
     % Planar images
-    data = bwlabel(this.data, varargin{:});
+    data = bwlabel(obj.Data, varargin{:});
     
 elseif nd == 3
     % 3D images
-    data = bwlabeln(this.data, varargin{:});
+    data = bwlabeln(obj.Data, varargin{:});
     
 else
     error('Function "labeling" is not implemented for image of dim %d', nd);
@@ -36,5 +37,5 @@ end
 
 % create new image
 res = Image('data', data, ...
-    'parent', this, ...
+    'parent', obj, ...
     'type', 'label');

@@ -1,6 +1,7 @@
-function varargout = subsasgn(this, subs, value)
-%subsasgn Overrides subsasgn function for Image objects
-%   output = subsasgn(input)
+function varargout = subsasgn(obj, subs, value)
+% Overrides subsasgn function for Image objects.
+%
+%   RES = subsasgn(IMG, SUBS, VAL)
 %
 %   Example
 %   subsasgn
@@ -23,9 +24,9 @@ if strcmp(type, '.')
     % if some output arguments are asked, use specific processing
     if nargout > 0
         varargout = cell(1);
-        varargout{1} = builtin('subsasgn', this, subs, value);    
+        varargout{1} = builtin('subsasgn', obj, subs, value);    
     else
-        builtin('subsasgn', this, subs, value);
+        builtin('subsasgn', obj, subs, value);
     end
     
 elseif strcmp(type, '()')
@@ -37,30 +38,30 @@ elseif strcmp(type, '()')
         % one index: use linearised image
 
         % check that indices are within image bound
-        this.data(s1.subs{:});
+        obj.Data(s1.subs{:});
 
-        this.data(s1.subs{1}) = value;
+        obj.Data(s1.subs{1}) = value;
 
     elseif ns == 2
         % two indices: parse x and y indices
 
         % check that indices are within image bound
-        this.data(s1.subs{:});
+        obj.Data(s1.subs{:});
         
         % extract corresponding data, and 
         if isa(value, 'Image')
-            value = value.data;
+            value = value.Data;
         else
             % numerical array area transposed to comply with matlab representation
             value = value';
         end
-        this.data(s1.subs{:}) = value;
+        obj.Data(s1.subs{:}) = value;
         
     elseif ns == 3
         % two indices: parse x y and z indices
 
         % check that indices are within image bound
-        this.data(s1.subs{:});
+        obj.Data(s1.subs{:});
         
         % parse x, y, z indices
         ind1 = s1.subs{1};
@@ -69,7 +70,7 @@ elseif strcmp(type, '()')
         
         % extract corresponding data, and permute to comply with matlab
         % array representation
-        this.data(ind1, ind2, ind3, :, :) = permute(value, [2 1 3]);
+        obj.Data(ind1, ind2, ind3, :, :) = permute(value, [2 1 3]);
         
     else
         error('Image:subsasgn', ...
@@ -84,5 +85,5 @@ else
 end
 
 if nargout > 0
-    varargout{1} = this;
+    varargout{1} = obj;
 end

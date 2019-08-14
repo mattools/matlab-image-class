@@ -1,9 +1,9 @@
-function res = medianFilter(this, se, varargin)
-%MEDIANFILTER Compute median value in the neighboorhood of each pixel
+function res = medianFilter(obj, se, varargin)
+% Compute median value in the neighboorhood of each pixel.
 %
 %   RES = medianFilter(IMG, SE)
 %   Compute the mean filter of image IMG, using structuring element SE.
-%   The goal of this function is to provide the same interface as for
+%   The goal of obj function is to provide the same interface as for
 %   other image filters (imopen, imerode ...), and to allow the use of 
 %   mean filter with user-defined structuring element. 
 %   This function can be used for directional filtering.
@@ -18,7 +18,7 @@ function res = medianFilter(this, se, varargin)
 %   default for ordfilt2).
 %
 %   See also:
-%   meanFilter, ordfilt2
+%     meanFilter, ordfilt2, median
 %
 
 % ------
@@ -28,7 +28,7 @@ function res = medianFilter(this, se, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 
-if this.dimension > 2
+if obj.Dimension > 2
     error('Median filter implemented only for planar images');
 end
 
@@ -48,7 +48,7 @@ se = permute(se, [2 1 3:5]);
 
 % perform filtering
 order = ceil(sum(se(:)) / 2);
-data = ordfilt2(this.data, order, se, padopt);
+data = ordfilt2(obj.Data, order, se, padopt);
 
 % create result image
-res = Image('data', data, 'parent', this);
+res = Image('data', data, 'parent', obj);

@@ -1,7 +1,7 @@
-function map = distanceMap(this, varargin)
-%DISTANCEMAP Distance map of a binary image (2D or 3D)
+function map = distanceMap(obj, varargin)
+% Distance map of a binary image (2D or 3D).
 %
-%   output = distanceMap(input)
+%   MAP = distanceMap(IMG)
 %
 %   Example
 %   distanceMap
@@ -16,15 +16,15 @@ function map = distanceMap(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check type
-if ~strcmp(this.type, 'binary')
+if ~strcmp(obj.Type, 'binary')
     error('Requires a binary image');
 end
 
 % compute distance map
-dist = bwdist(this.data, varargin{:});
+dist = bwdist(obj.Data, varargin{:});
 
 % create new image
 map = Image('data', dist, ...
-    'parent', this, ...
+    'parent', obj, ...
     'type', 'intensity', ...
     'channelNames', {'distance'});

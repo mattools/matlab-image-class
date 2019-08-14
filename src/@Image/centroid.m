@@ -1,5 +1,5 @@
-function [points, labs] = centroid(this, varargin)
-%CENTROID Centroid(s) of a binary or label image
+function [points, labs] = centroid(obj, varargin)
+%CENTROID Centroid(s) of a binary or label image.
 %
 %   C = centroid(I)
 %   Returns the centroid C of the binary image I. C is a 1-by-2 or 1-by-3
@@ -32,7 +32,7 @@ function [points, labs] = centroid(this, varargin)
 % Copyright 2018 INRA - Cepia Software Platform.
 
 % check image type
-if ~(isLabelImage(this) || isBinaryImage(this))
+if ~(isLabelImage(obj) || isBinaryImage(obj))
     error('Requires a label of binary image');
 end
 
@@ -44,19 +44,19 @@ end
 
 % extract the set of labels, without the background
 if isempty(labels)
-    labels = findLabels(this);
+    labels = findLabels(obj);
 end
 nLabels = length(labels);
 
 % allocate memory for result
-nd = ndims(this);
+nd = ndims(obj);
 points = zeros(nLabels, nd);
 
 % switch processing depending on image dimensionality
 if nd == 2
     for i = 1:nLabels
         % extract points of the current particle
-        [x, y] = find(this.data == labels(i));
+        [x, y] = find(obj.Data == labels(i));
 
         % coordinates of particle centroid
         xc = mean(x);
@@ -69,7 +69,7 @@ elseif nd == 3
     dim = size(img);
     for i = 1:nLabels
         % extract points of the current particle
-        inds = find(this.data == labels(i));
+        inds = find(obj.Data == labels(i));
         [x, y, z] = ind2sub(dim, inds);
 
         % coordinates of particle centroid

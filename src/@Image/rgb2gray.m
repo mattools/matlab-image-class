@@ -1,5 +1,5 @@
-function res = rgb2gray(this)
-%RGB2GRAY Convert RGB image to grayscale image
+function res = rgb2gray(obj)
+% Convert RGB image to grayscale image.
 %
 %   IMG = rgb2gray(RGB)
 %   Convert color image RGB into grayscale image with same size.
@@ -10,6 +10,7 @@ function res = rgb2gray(this)
 %     show(gray);
 %
 %   See also
+%     rgb2hsv, overlay
 %
 
 % ------
@@ -19,8 +20,8 @@ function res = rgb2gray(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check type
-if ~strcmp(this.type, 'color')
-    error('Requires a color image');
+if ~strcmp(obj.Type, 'color')
+    error('Image:rgb2gray:InvalidArgument', 'Requires a color image');
 end
 
 % compute coefs
@@ -29,9 +30,9 @@ coefs = mat(1, :);
 
 % compute grayscale value from weighted mean of RGB bands
 gray = imlincomb(...
-    coefs(1), this.data(:,:,:,1,:), ...
-    coefs(2), this.data(:,:,:,2,:), ...
-    coefs(3), this.data(:,:,:,3,:));
+    coefs(1), obj.Data(:,:,:,1,:), ...
+    coefs(2), obj.Data(:,:,:,2,:), ...
+    coefs(3), obj.Data(:,:,:,3,:));
 
 % create new image
-res = Image('data', gray, 'parent', this, 'type', 'grayscale');
+res = Image('data', gray, 'parent', obj, 'type', 'grayscale');

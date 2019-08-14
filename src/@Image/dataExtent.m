@@ -1,5 +1,5 @@
-function varargout = dataExtent(this, varargin)
-%DATAEXTENT Intensity extent of image data 
+function varargout = dataExtent(obj, varargin)
+%Intensity extent of image data.
 %
 %   EXTENT = dataExtent(IMG)
 %   [VMIN VMAX] = dataExtent(IMG)
@@ -12,7 +12,7 @@ function varargout = dataExtent(this, varargin)
 %         7   253
 %
 %   See also
-%   min, max, grayscaleExtent
+%     min, max, grayscaleExtent
 %
 
 % ------
@@ -23,13 +23,13 @@ function varargout = dataExtent(this, varargin)
 
 if isempty(varargin)
     % compute minimal and maximal values
-    minVal = double(min(this.data(:)));
-    maxVal = double(max(this.data(:)));
+    minVal = double(min(obj.Data(:)));
+    maxVal = double(max(obj.Data(:)));
 else
     % compute minimal and maximal values within a mask
     roi = varargin{1};
-    minVal = double(min(this.data(roi)));
-    maxVal = double(max(this.data(roi)));
+    minVal = double(min(obj.Data(roi)));
+    maxVal = double(max(obj.Data(roi)));
 end
 
 

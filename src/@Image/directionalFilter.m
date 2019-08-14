@@ -1,5 +1,5 @@
-function res = directionalFilter(this, varargin)
-%DIRECTIONALFILTER Apply and combine several directional filters
+function res = directionalFilter(obj, varargin)
+% Apply and combine several directional filters.
 %
 %   Apply a directional filter, with linear structural element, and 
 %   compute min or max of results. Result is the same type as input
@@ -22,7 +22,7 @@ function res = directionalFilter(this, varargin)
 %
 %
 %   See also
-%   meanFilter, medianFilter
+%     meanFilter, medianFilter
 %
 
 % ------
@@ -114,23 +114,23 @@ end
 % memory allocation, creating result the same type as input
 if strcmp(op2, 'max')
     % fill image with zeros
-    if islogical(this.data)
-        res = false(size(this.data));
+    if islogical(obj.Data)
+        res = false(size(obj.Data));
     else
-        res = zeros(size(this.data), class(this.data)); %#ok<ZEROLIKE>
+        res = zeros(size(obj.Data), class(obj.Data));
     end
     
 elseif strcmp(op2, 'min')
     % fill image with ones
-    if islogical(this.data)
-        res = true(size(this.data));
+    if islogical(obj.Data)
+        res = true(size(obj.Data));
         
-    elseif isinteger(this.data)
-        res = zeros(size(this.data), class(this.data)); %#ok<ZEROLIKE>
+    elseif isinteger(obj.Data)
+        res = zeros(size(obj.Data), class(obj.Data));
         res(:) = intmax(type);
         
     else
-        res = zeros(size(this.data), class(this.data)); %#ok<ZEROLIKE>
+        res = zeros(size(obj.Data), class(obj.Data));
         res(:) = inf;
         
     end
@@ -149,25 +149,25 @@ for d = 1:Nd
     
     % eventually dilate by a ball
     if w > 1
-        se = imdilate(se, ones(3*ones(1, ndims(this.data))), 'full');
+        se = imdilate(se, ones(3*ones(1, ndims(obj.Data))), 'full');
     end
     
     % keep max or min along all directions
-    res = feval(op2, res, feval(op1, this.data, se));
+    res = feval(op2, res, feval(op1, obj.Data, se));
 end
 
 
 %% create result image
 
-res = Image('data', res, 'parent', this);
+res = Image('data', res, 'parent', obj);
 
 
-function res = immean(img, filtre, varargin)
+function res = immean(img, filt, varargin)
 %IMMEAN Compute mean value in the neighboorhood of each pixel
 %
 %   RES = immean(IMG, SE)
 %   Compute the mean filter of image IMG, using structuring element SE.
-%   The goal of this function is to provide the same interface as for
+%   The goal of obj function is to provide the same interface as for
 %   other image filters (imopen, imerode ...), and to allow the use of 
 %   mean filter with user-defined structuring element. 
 %   This function can be used for directional filtering.
@@ -192,8 +192,8 @@ function res = immean(img, filtre, varargin)
 %   20/02/2004 : add PADOPT option, and documentation.
 
 % transform STREL object into single array
-if isa(filtre, 'strel')
-    filtre = getnhood(filtre);
+if isa(filt, 'strel')
+    filt = getnhood(filt);
 end
 
 % get Padopt option
@@ -203,15 +203,15 @@ if ~isempty(varargin)
 end
 
 % perform filtering
-res = imfilter(img, filtre./sum(filtre(:)), padopt);
+res = imfilter(img, filt./sum(filt(:)), padopt);
 
 
-function res = immedian(img, filtre, varargin)
+function res = immedian(img, filt, varargin)
 %IMMEDIAN Compute median value in the neighboorhood of each pixel
 %
 %   RES = immedian(IMG, SE)
 %   Compute the median filter of image IMG, using structuring element SE.
-%   The goal of this function is to provide the same interface as for
+%   The goal of obj function is to provide the same interface as for
 %   other image filters (imopen, imerode ...), and to allow the use of 
 %   median filter with user-defined structuring element. 
 %   This function can be used for directional filtering.
@@ -235,8 +235,8 @@ function res = immedian(img, filtre, varargin)
 
 
 % transform STREL object into single array
-if isa(filtre, 'strel')
-    filtre = getnhood(filtre);
+if isa(filt, 'strel')
+    filt = getnhood(filt);
 end
 
 % get padopt option.
@@ -246,5 +246,5 @@ if ~isempty(varargin)
 end
 
 % perform filtering
-order = ceil(sum(filtre(:))/2);
-res = ordfilt2(img, order, filtre, padopt);
+order = ceil(sum(filt(:))/2);
+res = ordfilt2(img, order, filt, padopt);

@@ -1,5 +1,5 @@
-function norm = norm(this)
-%NORM  Compute the norm of each vector in image
+function norm = norm(obj)
+% Compute the norm of each vector in image.
 %
 %   NOR = norm(IMG)
 %   Computes the norm image of the vector image IMG. The result NOR is a
@@ -12,7 +12,7 @@ function norm = norm(this)
 %     show(nor);
 %
 %   See also
-%   channel, channelNumber, size
+%     channel, channelNumber, size
 %
 
 % ------
@@ -22,16 +22,16 @@ function norm = norm(this)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % allocate memory
-siz = this.dataSize;
+siz = obj.DataSize;
 siz2 = [siz(1:3) 1 siz(5)];
 norm = zeros(siz2);
 
 % iterate on channels
 nc = siz(4);
 for i = 1:nc
-    norm = norm + double(this.data(:,:,:,i,:)).^2;
+    norm = norm + double(obj.Data(:,:,:,i,:)).^2;
 end
 norm = sqrt(norm);
 
 % create result image
-norm = Image('data', norm, 'parent', this, 'type', 'intensity');
+norm = Image('data', norm, 'parent', obj, 'type', 'intensity');

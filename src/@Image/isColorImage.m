@@ -1,5 +1,5 @@
-function b = isColorImage(this)
-%ISCOLORIMAGE Checks if an image is color
+function b = isColorImage(obj)
+% Checks if an image is color.
 %
 %   B = isColorImage(IMG)
 %
@@ -25,4 +25,4 @@ function b = isColorImage(this)
 % Created: 2011-09-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-b = strcmp(this.type, 'color');
+b = strcmp(obj.Type, 'color');

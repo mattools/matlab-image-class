@@ -1,16 +1,21 @@
-function res = closing(this, varargin)
-%CLOSING Morphological closing of an image
+function res = closing(obj, varargin)
+% Morphological closing of an image.
+%
+%   Example
+%     img = Image.read('rice.png');
+%     imgC = closing(img, ones(5, 5));
+%     show(imgC)
 %
 %   See Also
 %     opening, erosion, dilation, blackTopHat
 
 % default structuring element
 if nargin == 1
-    varargin = {defaultStructuringElement(this)};
+    varargin = {defaultStructuringElement(obj)};
 end
 
 % process data buffer, using Matlab Image processing Toolbox
-data = imclose(this.getBuffer(), varargin{:});
+data = imclose(getBuffer(obj), varargin{:});
 
 % create new image object for storing result
-res = Image(data, 'parent', this);
+res = Image(data, 'parent', obj);

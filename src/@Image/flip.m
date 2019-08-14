@@ -1,8 +1,8 @@
-function res = flip(this, d)
-%FLIP Flip an image along one of its dimensions
+function res = flip(obj, d)
+% Flip an image along one of its dimensions.
 %
-%   IMG2 = IMG.flip(D);
 %   IMG2 = flip(IMG, D);
+%   IMG2 = IMG.flip(D);
 %   Flips the image IMG with respect to the axis D.
 %   D=1 corresponds to x axis
 %   D=2 corresponds to y axis
@@ -11,11 +11,13 @@ function res = flip(this, d)
 %   flip with respect to first axis (horizontal flip)
 %
 %   Example
-%   % flip an image in the x axis
-%   img = Image2D('rice.png');
-%   img2 = flip(img, 1);
-%   img2.show();
+%     % flip an image in the x axis
+%     img = Image2D('rice.png');
+%     img2 = flip(img, 1);
+%     img2.show();
+%
 %   See also
+%     permute
 %
 
 % ------
@@ -30,10 +32,10 @@ if nargin == 1
 end
 
 % check dim
-nd = ndims(this);
+nd = ndims(obj);
 if d > nd
     error('Can not flip a dimension greater than image dimension');
 end
 
 % create empty result image
-res = Image('data', flipdim(this.data, d), 'parent', this);
+res = Image('data', flip(obj.Data, d), 'parent', obj);

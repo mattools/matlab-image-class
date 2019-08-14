@@ -1,5 +1,5 @@
-function bin = cropLabel(this, label)
-%CROPLABEL Extract the portion of image that contains the specified label
+function bin = cropLabel(obj, label)
+% Extract the portion of image that contains the specified label.
 %
 %   BIN = cropLabel(IMG, LABEL)
 %   Crops the regions in original label image IMG that corresponds to the
@@ -17,7 +17,7 @@ function bin = cropLabel(this, label)
 %     show(bin3);
 %
 %   See also
-%    crop, label2rgb, findLabels
+%     crop, label2rgb, findLabels
 %
 
 % ------
@@ -28,11 +28,11 @@ function bin = cropLabel(this, label)
 
 
 % get image size and dimension
-dim = size(this);
+dim = size(obj);
 nd = length(dim);
 
 % binarize image
-bin = this.data == label;
+bin = obj.Data == label;
 
 if nd == 2
     % first array direction
@@ -83,4 +83,4 @@ else
     error('Can not manage dimensions other than 2 or 3');
 end
 
-bin = Image('data', bin, 'parent', this, 'type', 'binary');
+bin = Image('data', bin, 'parent', obj, 'type', 'binary');

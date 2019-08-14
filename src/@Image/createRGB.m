@@ -1,5 +1,5 @@
 function rgb = createRGB(red, green, blue)
-%CREATERGB  Create a RGB color image
+% Create a RGB color image.
 %
 %   RGB = createRGB(DATA)
 %   Create a RGB image from data array DATA, using the third dimension as
@@ -14,10 +14,10 @@ function rgb = createRGB(red, green, blue)
 %   
 %
 %   Example
-%   createRGB
+%     createRGB
 %
 %   See also
-%
+%     create, Image
 
 % ------
 % Author: David Legland
@@ -38,7 +38,7 @@ if nargin == 1
     if isa(red, 'Image')
         % input is an image with at least 3 channels
         rgb = channel(red, [1 2 3]);
-        rgb.type = 'color';
+        rgb.Type = 'color';
         
     else
         if ndims(red) == 3

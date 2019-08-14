@@ -1,13 +1,15 @@
-function res = imposeMinima(this, marker, varargin)
-%IMPOSEMINIMA Impose minima on a grayscale or intensity image
+function res = imposeMinima(obj, marker, varargin)
+% Impose minima on a grayscale or intensity image.
 %
-%   output = imposeMinima(input)
+%   RES = imposeMinima(IMG, MARKERS)
+%   RES = imposeMinima(IMG, MARKERS, CONN)
 %
 %   Example
 %   imposeMinima
 %
 %   See also
 %     regionalMinima, extendedMinima
+%
 
 % ------
 % Author: David Legland
@@ -16,14 +18,14 @@ function res = imposeMinima(this, marker, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
 % default values
 conn = 4;
 
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -40,10 +42,10 @@ while ~isempty(varargin)
 end
 
 if isa(marker, 'Image')
-    marker = marker.data;
+    marker = marker.Data;
 end
 
-data = imimposemin(this.data, marker, conn);
+data = imimposemin(obj.Data, marker, conn);
 
 % create result image
-res = Image('data', data, 'parent', this, 'type', this.type);
+res = Image('data', data, 'parent', obj, 'type', obj.Type);

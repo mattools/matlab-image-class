@@ -1,12 +1,13 @@
 function res = ge(this, that)
-%GE Overload the ge operator for Image objects
+% Overload the ge operator for Image objects.
 %
-%   output = ge(input)
+%   RES = ge(IMG1, IMG2)
 %
 %   Example
 %   ge
 %
 %   See also
+%     gt, le, eq
 %
 
 % ------
@@ -21,7 +22,7 @@ function res = ge(this, that)
 
 % compute new data
 newData = bsxfun(@ge, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
 newName = strcat(name1, '>=', name2);

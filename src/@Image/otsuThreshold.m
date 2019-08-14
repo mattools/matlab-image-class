@@ -1,5 +1,5 @@
 function [bin, value] = otsuThreshold(img, varargin)
-%OTSUTHRESHOLD Threshold the image using Otsu method
+% Threshold the image using Otsu method.
 %
 %   BIN = otsuThreshold(IMG)
 %   Automatically computes threshold for segmenting image IMG, based on
@@ -25,7 +25,7 @@ function [bin, value] = otsuThreshold(img, varargin)
 %
 %
 %   See also
-%   histogram, otsuThresholdValue, lt, le
+%     histogram, otsuThresholdValue, lt, le
 %
 
 % ------

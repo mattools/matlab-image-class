@@ -1,5 +1,5 @@
-function res = filter(this, h, varargin)
-%FILTER Applies linear filter on the image
+function res = filter(obj, h, varargin)
+% Apply linear filter on the image.
 %
 %   IMGF = filter(IMG, H);
 %   Apply the linear filter H to the image, and stores the result in IMGF.
@@ -10,7 +10,7 @@ function res = filter(this, h, varargin)
 %
 %   
 %   see also
-%   boxFilter, gaussianFilter, medianFilter, gradient, imfilter
+%     boxFilter, gaussianFilter, medianFilter, gradient, imfilter
 %
 
 % choose default options
@@ -23,5 +23,5 @@ h = double(h);
 
 % create new image with result of filtering
 res = Image(...
-    'data', imfilter(this.data, h, varargin{:}), ...
-    'parent', this);
+    'data', imfilter(obj.Data, h, varargin{:}), ...
+    'parent', obj);

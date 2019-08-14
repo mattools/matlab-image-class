@@ -1,13 +1,13 @@
-function res = xor(this, that)
-%XOR Overload the xor operator for Image objects
+function res = xor(obj, value)
+% Overload the xor operator for Image objects.
 %
-%   output = xor(input)
+%     RES = xor(IMG, VALUE)
 %
 %   Example
 %   xor
 %
 %   See also
-%
+%     or, and
 
 % ------
 % Author: David Legland
@@ -16,7 +16,7 @@ function res = xor(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, value, ...
     inputname(1), inputname(2));
 
 % compute new data

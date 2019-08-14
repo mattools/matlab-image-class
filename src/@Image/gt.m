@@ -1,13 +1,13 @@
-function res = gt(this, that)
-%GT Overload the gt operator for Image objects
+function res = gt(obj, that)
+% Overload the gt operator for Image objects.
 %
-%   output = gt(input)
+%   RES = gt(IMG, VAL)
 %
 %   Example
 %   gt
 %
 %   See also
-%
+%     ge, lt, eq
 
 % ------
 % Author: David Legland
@@ -16,12 +16,12 @@ function res = gt(this, that)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % extract data
-[data1, data2, parent, name1, name2] = parseInputCouple(this, that, ...
+[data1, data2, parent, name1, name2] = parseInputCouple(obj, that, ...
     inputname(1), inputname(2));
 
 % compute new data
 newData = bsxfun(@gt, ...
-    cast(data1, class(parent.data)), cast(data2, class(parent.data)));
+    cast(data1, class(parent.Data)), cast(data2, class(parent.Data)));
 
 % create result image
 newName = strcat(name1, '>', name2);

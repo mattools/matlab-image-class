@@ -1,5 +1,5 @@
-function channel = channel(this, index, varargin)
-%CHANNEL Return a specific channel of a Vector Image
+function channel = channel(obj, index, varargin)
+%Returns a specific channel from a Vector Image.
 %
 %   CHANNEL = channel(IMG, INDEX)
 %   Returns the channel indexed by INDEX in a vector or color image.
@@ -32,7 +32,7 @@ function channel = channel(this, index, varargin)
 % Copyright 2010 INRA - Cepia Software Platform.
 
 % check index bounds
-nc = size(this, 4);
+nc = size(obj, 4);
 if index > nc
     pattern = 'Can not get channel %d of an image with %d channels';
     error('Image:channel:IndexOutsideBounds', ...
@@ -40,16 +40,16 @@ if index > nc
 end
 
 % compute the name of the new image
-if ~isempty(this.channelNames)
-    channelName = this.channelNames{index};
+if ~isempty(obj.ChannelNames)
+    channelName = obj.ChannelNames{index};
 else
     channelName = sprintf('channel%d', index);
 end
-newName = sprintf('%s-%s', this.name, channelName);
+newName = sprintf('%s-%s', obj.Name, channelName);
 
 % determines the new type (vector if several channels are given)
 if length(index) == 1
-    if isfloat(this.data)
+    if isfloat(obj.Data)
         newType = 'intensity';
     else
         newType = 'grayscale';
@@ -62,5 +62,5 @@ else
 end
 
 % create a new Image
-channel = Image('data', this.data(:,:,:,index,:), ...
-    'parent', this, 'type', newType, 'name', newName, varargin{:});
+channel = Image('data', obj.Data(:,:,:,index,:), ...
+    'parent', obj, 'type', newType, 'name', newName, varargin{:});

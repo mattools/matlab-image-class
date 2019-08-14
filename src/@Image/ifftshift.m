@@ -1,5 +1,5 @@
-function res = ifftshift(this)
-%IFFTSHIFT Shift the zero frequency of spectrum image to the center
+function res = ifftshift(obj)
+% Shift the zero frequency of spectrum image from center to corner.
 %
 %   RES = ifftshift(IMG)
 %
@@ -7,6 +7,7 @@ function res = ifftshift(this)
 %   ifftshift
 %
 %   See also
+%     fftshift, fft
 %
 
 % ------
@@ -16,7 +17,7 @@ function res = ifftshift(this)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % process data buffer, using Matlab Image processing Toolbox
-data = ifftshift(this.data);
+data = ifftshift(obj.Data);
 
 % create new image object for storing result
-res = Image('data', data, 'parent', this);
+res = Image('data', data, 'parent', obj);

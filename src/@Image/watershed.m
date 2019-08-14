@@ -1,5 +1,5 @@
-function res = watershed(this, varargin)
-%WATERSHED Watershed of a gray-scale image
+function res = watershed(obj, varargin)
+% Watershed of a gray-scale image.
 %
 %   WAT = watershed(IMG)
 %   Computes the watershed of the intenity or grayscale image IMG.
@@ -26,6 +26,7 @@ function res = watershed(this, varargin)
 %
 %   See also
 %     extendedMinima, imposeMinima, skeleton, otsuThreshold
+%
 
 % ------
 % Author: David Legland
@@ -34,7 +35,7 @@ function res = watershed(this, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % check image type
-if ~strcmp(this.type, 'grayscale') && ~strcmp(this.type, 'intensity')
+if ~isIntensityImage(obj) && ~isGrayscaleImage(obj)
     error('Requires a Grayscale or intensity image to work');
 end
 
@@ -42,7 +43,7 @@ end
 dyn = [];
 marker = [];
 conn = 4;
-if this.dimension == 3
+if obj.Dimension == 3
     conn = 6;
 end
 
@@ -73,17 +74,17 @@ end
 
 % if dynamic was specified, compute marker image
 if ~isempty(dyn)
-    marker = imextendedmin(this.data, dyn, conn);
+    marker = imextendedmin(obj.Data, dyn, conn);
 end
 
 % If markers are specified, impose minima on image
 if isempty(marker)
-    data = this.data;
+    data = obj.Data;
 else
     if isa(marker, 'Image')
-        marker = marker.data;
+        marker = marker.Data;
     end
-    data = imimposemin(this.data, marker, conn);
+    data = imimposemin(obj.Data, marker, conn);
 end
 
 % Compute watershed
@@ -100,4 +101,4 @@ elseif lmax < 2^32
 end
 
 % create result image
-res = Image('data', wat, 'parent', this, 'type', 'label');
+res = Image('data', wat, 'parent', obj, 'type', 'label');

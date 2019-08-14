@@ -1,5 +1,5 @@
-function nd = ndims(this)
-%NDIMS  Return the number of spatial dimension of image
+function nd = ndims(obj)
+% Return the number of spatial dimension of image.
 %
 %   N = ndims(IMG);
 %   Returns the number of spatial dimensions of the image IMG. This number
@@ -28,4 +28,4 @@ function nd = ndims(this)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-nd = this.dimension;
+nd = obj.Dimension;
