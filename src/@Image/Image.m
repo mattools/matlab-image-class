@@ -147,7 +147,8 @@ methods
             end
             obj.Data(:)    = img.Data(:);
             obj.DataSize   = img.DataSize;
-
+            obj.Dimension  = img.Dimension;
+            
             % update private fields
             obj.copyFields(img);
 
