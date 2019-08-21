@@ -35,13 +35,14 @@ function img = read(fileName, varargin)
 [path, name, ext] = fileparts(fileName); %#ok<ASGLU>
 
 % try to deduce format from extension
-format = ext;
 if strcmpi(ext, '.hdr')
     format = 'analyze';
 elseif strcmpi(ext, '.dcm')
     format = 'dicom';
 elseif strcmpi(ext, '.mhd')
     format = 'metaimage';
+else
+    format = ext(2:end);
 end
 
 % parse optional arguments
@@ -72,14 +73,33 @@ elseif strcmpi(format, 'dicom')
     data = dicomread(info);
     img = Image(data);
     
+elseif strcmpi(format, 'tif')
+    % special handling of tif files that can contain 3D images
+    infoList = imfinfo(fileName);
+    read3d = false;
+    if length(infoList) > 1 
+        if infoList(1).Width == infoList(end).Width && infoList(1).Height == infoList(end).Height 
+            read3d = true;
+        end
+    end
+    
+    if read3d
+        % read first image to initialize 3D image
+        img1 = Image(imread(fileName, 1));
+        dim = [infoList(1).Width infoList(2).Height length(infoList)];
+        img = Image.create(dim, class(img1.Data));
+        
+        % iterate over slices
+        for i = 1:length(infoList)
+            img.Data(:,:,i,:) = permute(imread(fileName, i), [2 1 3]);
+        end
+    else
+        % For 2D images, use standard Matlab functions
+        img = Image(imread(fileName));
+    end
 else
     % otherwise, assumes format can be managed by Matlab Image Processing
     data = imread(fileName);
-    
-    %     vector = false;
-    %     if size(data, 3) == 3
-    %         vector = true;
-    %     end
     img = Image(data);
 end
 

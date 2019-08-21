@@ -24,17 +24,18 @@ classdef Image < handle
 
 %% Declaration of class properties
 properties
-    % Inner data of image
+    % Inner data of image.
     Data            = [];
     
-    % Size of data buffer(in x,y,z,c,t order), should always have length=5
+    % Size of data buffer(in XYZCT order), should always have length=5.
     DataSize        = [1 1 1 1 1];
     
-    % Number of spatial dimensions of the image, between 0 (single value)
-    % and 3 (volume image). Common value is 2 (planar image).
+    % Number of spatial dimensions of the image. 
+    % Ranges between 0 (single value) and 3 (volume image). Common value is
+    % 2 (planar image). 
     Dimension       = 1;
     
-    % The type of image (grayscale, color, complex...)
+    % The type of image (grayscale, color, complex...).
     % It is represented by one of the following strings:
     % 'binary', data buffer contains one channel of logical values
     % 'grayscale' (the default), data buffer contains 1 channel (int)
@@ -46,26 +47,26 @@ properties
     % 'unknown'
     Type            = 'grayscale';
         
-    % Image name, empty by default
+    % Image name, empty by default.
     Name            = '';
     
-    % boolean flag indicating whether the image is calibrated or not
+    % Boolean flag indicating whether the image is calibrated or not.
     Calibrated      = false;
     
-    % spatial origin of image
+    % Spatial origin of image.
     % corresponding to position of pixel (1,1) or voxel (1,1,1)
     Origin          = [1 1];
     
-    % the amount of space between two pixels or voxels
+    % The amount of space between two pixels or voxels.
     Spacing         = [1 1];
     
-    % the name of the spatial unit
+    % The name of the spatial unit.
     UnitName        = '';
     
-    % the name of each of the axes
+    % The name of each of the axes.
     AxisNames       = {};
     
-    % the name of the channels
+    % The name of the channels.
     ChannelNames    = {};
     
 end
@@ -117,17 +118,17 @@ methods
         %   type.
         %
         %   IMG = Image('data', DATA);
-        %   Creates a new image by specifying the inner data array of the
-        %   image. Useful to creates an image based on the data of another
-        %   image.
+        %   Creates a new image by specifying the inner data array in XYZCT
+        %   order. Useful to creates an image based on the data of another
+        %   image, or when reading from a binary file.
         %   
         %   IMG = Image(..., PARAM, VALUE);
-        %   Specify additional parameters for initializing image.
+        %   Specifies additional parameters for initializing image.
         %
         %   Example
         %     img = Image.read('cameraman.tif');
-        %     img.show();
-        %     figure; img.histogram;
+        %     show(img);
+        %     figure; histogram(img);
         %     figure; show(img > 50);
         %
         
