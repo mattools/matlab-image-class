@@ -22,7 +22,7 @@ function img = read(fileName, varargin)
 %   img = Image.read('brainMRI.hdr');
 %
 %   See also
-%     imread, readSeries, write
+%     imread, readSeries, write, fileInfo
 %
 
 % ------
@@ -63,15 +63,15 @@ if strcmpi(format, 'analyze')
     data = analyze75read(info);
     img = Image(data);
     
-elseif strcmpi(format, 'metaimage')
-    % read image in MetaImage format
-    img = readMetaImage(fileName);
-    
 elseif strcmpi(format, 'dicom')
     % read image in DICOM format
     info = dicominfo(fileName);
     data = dicomread(info);
     img = Image(data);
+    
+elseif strcmpi(format, 'metaimage')
+    % read image in MetaImage format
+    img = readMetaImage(fileName);
     
 elseif strcmpi(format, 'tif')
     % special handling of tif files that can contain 3D images

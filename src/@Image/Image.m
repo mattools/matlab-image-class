@@ -79,8 +79,9 @@ methods (Static)
     img = zeros(varargin)
     
     img = read(fileName, varargin)
-
     img = readSeries(fileName, varargin)
+    
+    info = fileInfo(fileName)
     
     [sx, sy, sz] = create3dGradientKernels(varargin)
     % Create kernels for gradient computations
