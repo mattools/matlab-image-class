@@ -94,15 +94,23 @@ elseif strcmpi(format, 'tif')
     end
     
     if read3d
+        % (see also the 'readstack' function in private directory)
         % read first image to initialize 3D image
         img1 = Image(imread(fileName, 1));
         dim = [infoList(1).Width infoList(2).Height length(infoList)];
         img = Image.create(dim, class(img1.Data));
         
+        % Read all images using Tiff class
+        t = Tiff(fileName, 'r');
+
         % iterate over slices
-        for i = 1:length(infoList)
-            img.Data(:,:,i,:) = permute(imread(fileName, i), [2 1 3]);
+        img.Data(:,:,1,:) = permute(read(t), [2 1 3]);
+        for i = 2:length(infoList)
+            nextDirectory(t);
+            img.Data(:,:,i,:) = permute(read(t), [2 1 3]);
         end
+        close(t);
+        
     else
         % For 2D images, use standard Matlab functions
         img = Image(imread(fileName));
