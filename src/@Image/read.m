@@ -7,9 +7,10 @@ function img = read(fileName, varargin)
 %   IMG = Image.read(FILENAME, 'format', FMT)
 %   Forces the format. Available formats are:
 %   * all the formats recognized by the imread function
-%   * analyze
-%   * dicom
-%   * metaimage
+%   * analyze (via the analyze75read function)
+%   * dicom (via the dicomread function)
+%   * metaimage (see https://itk.org/Wiki/ITK/MetaIO/Documentation#Quick_Start)
+%   * VGI (used by software VGSTUDIO MAX, partial support only).
 %
 %   Example
 %   % read a grayscale image
@@ -34,13 +35,16 @@ function img = read(fileName, varargin)
 % extract filename's extension
 [path, name, ext] = fileparts(fileName); %#ok<ASGLU>
 
-% try to deduce format from extension
+% try to deduce format from extension.
+% First use reader provided by Matlab then use readers in private directory.
 if strcmpi(ext, '.hdr')
     format = 'analyze';
 elseif strcmpi(ext, '.dcm')
     format = 'dicom';
 elseif strcmpi(ext, '.mhd')
     format = 'metaimage';
+elseif strcmpi(ext, '.vgi')
+    format = 'vgi';
 else
     format = ext(2:end);
 end
@@ -70,9 +74,14 @@ elseif strcmpi(format, 'dicom')
     img = Image(data);
     
 elseif strcmpi(format, 'metaimage')
-    % read image in MetaImage format 
+    % read image in MetaImage format
     % (use function in "private" directory)
     img = readMetaImage(fileName);
+
+elseif strcmpi(format, 'vgi')
+    % read image in VGStudi Max format
+    % (use function in "private" directory)
+    img = readVgiStack(fileName);
     
 elseif strcmpi(format, 'tif')
     % special handling of tif files that can contain 3D images

@@ -3,6 +3,13 @@ function info = fileInfo(fileName)
 %
 %   INFO = fileInfo(FNAME)
 %
+%   Currently supported file formats include:
+%   * all the formats recognized by the imread function (see imfinfo)
+%   * Analyze (see (see imfinfo))
+%   * Dicom (see dicominfo)
+%   * MetaImage
+%   * VGI
+%
 %   Example
 %     info = Image.fileInfo('brainMRI.hdr');
 %
@@ -22,12 +29,12 @@ function info = fileInfo(fileName)
 % remove dot
 ext(1) = [];
 
-switch ext
+switch lower(ext)
     case {'tif', 'png', 'jpg', 'bmp'}
         info = imfinfo(fileName);
         
     case 'hdr'
-        info = analyze75info(fileName);
+        info = c(fileName);
         
     case 'dicom'
         info = dicominfo(fileName);
@@ -35,6 +42,10 @@ switch ext
     case {'mhd', 'mha'}
         % use function in 'private' directory
         info = readMetaImageInfo(fileName);
+
+    case {'vgi'}
+        % use function in 'private' directory
+        info = readVgiStackInfo(fileName);
 
     otherwise
         error(['Can not manage file with extension: ' ext]);
