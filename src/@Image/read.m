@@ -70,7 +70,8 @@ elseif strcmpi(format, 'dicom')
     img = Image(data);
     
 elseif strcmpi(format, 'metaimage')
-    % read image in MetaImage format
+    % read image in MetaImage format 
+    % (use function in "private" directory)
     img = readMetaImage(fileName);
     
 elseif strcmpi(format, 'tif')
@@ -104,23 +105,3 @@ else
 end
 
 img.Name = [name ext];
-
-
-function img = readMetaImage(fileName)
-% read image in MetaImage format
-
-% read info file and data
-info = metaImageInfo(fileName);
-data = readMetaImageData(info);
-img = Image.create('data', data);
-
-% setup spatial calibration
-if isfield(info, 'Offset')
-    img.Origin = info.Offset;
-end
-if isfield(info, 'ElementSize')
-    img.Spacing = info.ElementSpacing;
-end
-if isfield(info, 'ElementSpacing')
-    img.Spacing = info.ElementSpacing;
-end

@@ -1,7 +1,7 @@
-function info = metaImageInfo(fileName)
+function info = readMetaImageInfo(fileName)
 % Read information header of meta image data.
 %
-%   INFO = metaImageInfo(FILENAME)
+%   INFO = readMetaImageInfo(FILENAME)
 %
 %   Example
 %   info = metaImageInfo('example.hdr');
@@ -10,7 +10,7 @@ function info = metaImageInfo(fileName)
 %   TODO: add support for multiple image
 %
 %   See also
-%   metaImageRead, readstack, analyze75info
+%   readMetaImage, readstack, analyze75info
 %
 
 % ------

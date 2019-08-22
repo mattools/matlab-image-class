@@ -1,18 +1,19 @@
 function [img, info] = readMetaImageData(info, varargin)
-% Read image data from a metaImage info file
+% Read image data from a metaImage info file.
 %
 %   DATA = readMetaImageData(INFO)
 %   Read the image IMG from data given in structure INFO. INFO is typically
-%   returned by the metaImageInfo function.
+%   returned by the 'readMetaImageInfo' function.
 %   Data are returned in the natural order of the file (no permutation).
 %
 %   Example
 %   % first load info, then load data
-%   info = metaImageInfo('example.mhd');
+%   info = readMetaImageInfo('example.mhd');
 %   data = readMetaImageData(info);
 %
 %   See also
-%   metaImageInfo, metaImageRead
+%     readMetaImageInfo, readMetaImage
+%
 
 % ------
 % Author: David Legland

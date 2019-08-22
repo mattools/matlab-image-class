@@ -33,7 +33,8 @@ switch ext
         info = dicominfo(fileName);
         
     case {'mhd', 'mha'}
-        info = metaImageInfo(fileName);
+        % use function in 'private' directory
+        info = readMetaImageInfo(fileName);
 
     otherwise
         error(['Can not manage file with extension: ' ext]);

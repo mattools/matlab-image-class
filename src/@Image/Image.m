@@ -89,18 +89,6 @@ methods (Static)
 end % static methods
 
 
-%% Private Static methods
-methods (Static, Access = protected)
-    info = metaImageInfo(fileName)
-    img = metaImageRead(info)
-    
-    img = readstack(fileName, varargin)
-
-    axis = parseAxisIndex(axis)
-    % convert index or string to index    
-    
-end % static methods
-
 %% Private methods
 methods(Access = protected)
     
