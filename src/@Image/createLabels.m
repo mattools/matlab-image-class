@@ -1,6 +1,8 @@
 function [res, num] = createLabels(obj, conn)
 % Connected components labeling of a binary image.
 %
+%   Deprecated, use "componentLabeling" instead.
+
 %   LBL = createLabels(BIN);
 %   where BIN is either a 2D or 3D binary image, returns a label image of
 %   the connected components of image BIN.
@@ -13,11 +15,13 @@ function [res, num] = createLabels(obj, conn)
 %     createLabels
 %
 %   See also
-%     bwlabel, bwlabeln, bwconncomp
+%     componentLabeling
 %
 
+warning('Function "createLabels" is deprecated, use "componentLabeling" instead');
+
 % check image data type
-if ~strcmp(obj.type, 'binary')
+if ~strcmp(obj.Type, 'binary')
     error('Image:createLabels:WrongArgument', ...
         'Function "createLabels" requires a binary image as input');
 end

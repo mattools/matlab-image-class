@@ -1,6 +1,8 @@
 function res = labeling(obj, varargin)
 % Label connected components in a binary image.
 %
+%   Note: deprecated, use 'componentLabeling' instead
+%
 %   LBL = labeling(IMB)
 %   LBL = labeling(IMB, CONN)
 %
@@ -8,7 +10,7 @@ function res = labeling(obj, varargin)
 %   labeling
 %
 %   See also
-%   label2rgb, watershed
+%     componentLabeling
 %
 
 % ------
@@ -16,6 +18,8 @@ function res = labeling(obj, varargin)
 % e-mail: david.legland@inra.fr
 % Created: 2011-08-05,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
+
+warning('Function "labeling" is deprecated, use "componentLabeling" instead');
 
 % check type
 if ~strcmp(obj.Type, 'binary')
