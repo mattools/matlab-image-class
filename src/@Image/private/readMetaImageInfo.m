@@ -7,18 +7,17 @@ function info = readMetaImageInfo(fileName)
 %   info = metaImageInfo('example.hdr');
 %   X = metaImageRead(info);
 %
-%   TODO: add support for multiple image
-%
 %   See also
-%   readMetaImage, readstack, analyze75info
+%     readMetaImage, readstack, analyze75info
 %
 
 % ------
 % Author: David Legland
 % e-mail: david.legland@inra.fr
 % Created: 2010-01-27,    using Matlab 7.9.0.529 (R2009b)
-% http://www.pfl-cepia.inra.fr/index.php?page=slicer
-% Copyright 2010 INRA - Cepia Software Platform.
+
+
+%% Open info file
 
 % add extension if not present
 ext = [];
@@ -35,6 +34,9 @@ path = fileparts(fileName);
 % open the file for reading
 f = fopen(fileName, 'rt');
 
+
+%% Initialisations
+
 % extract key and value of current line
 [tag, string] = splitLine(fgetl(f));
 
@@ -44,6 +46,7 @@ if ~strcmp(tag, 'ObjectType') || ~strcmp(string, 'Image')
 end
 
 % default values
+info.ObjectType = 'Image';
 info.NDims = 0;
 info.DimSize = [];
 info.ElementType = 'uint8';
@@ -51,6 +54,9 @@ info.ElementDataFile = '';
 
 % default optional values
 info.HeaderSize = 0;
+
+
+%% Iterates over lines in the file
 
 while true
     % read current line, if exists
@@ -64,35 +70,62 @@ while true
     
     % extract each possible tag
     switch tag
+        % First parse mandatory tags
         case 'NDims'
-            nd = sscanf(string, '%d');
+            % number of dimensions. Used for initializing data structure.
+            nd = parseInteger(string);
             info.NDims = nd;
             
             % setup default values for spatial calibration
             info.ElementSpacing = ones(1, nd);
             info.ElementSize = ones(1, nd);
         case 'DimSize'
-            info.DimSize = sscanf(string, '%d', inf)';
+            info.DimSize = parseIntegerVector(string);
         case 'ElementType'
             info.ElementType = string;
         case 'HeaderSize'
-            info.HeaderSize = sscanf(string, '%d');
+            info.HeaderSize = parseInteger(string);
+        case 'ElementDataFile'
+            info.ElementDataFile = computeDataFileName(string, f, path);
+            % this tag is supposed to be the last one in the tag list
+            break;
+            
+        % Following tags are optional, but often encountered
+            
         case 'ElementSize'
-            info.ElementSize = sscanf(string, '%f', inf)';
+            info.ElementSize = parseFloatVector(string);
         case 'ElementSpacing'
-            info.ElementSpacing = sscanf(string, '%f', inf)';
+            info.ElementSpacing = parseFloatVector(string);
         case 'ElementByteOrderMSB'
             info.ElementByteOrderMSB = parseBoolean(string);
         case 'ElementNumberOfChannels'
-            info.ElementNumberOfChannels = sscanf(string, '%d');
+            info.ElementNumberOfChannels = parseInteger(string);
         case 'BinaryData'
             info.BinaryData = parseBoolean(string);
         case 'BinaryDataByteOrderMSB'
             info.BinaryDataByteOrderMSB = parseBoolean(string);
-        case 'ElementDataFile'
-            info.ElementDataFile = fullfile(path, string);
+        case 'CompressedData'
+            info.CompressedData = parseBoolean(string);
+            
+        case 'CompressedDataSize'
+            info.CompressedData = parseIntegerVector(string);
+            
+        % Some less common tags, used e.g. by Elastix
+        
+        case 'AnatomicalOrientation'
+            info.AnatomicalOrientation = string;
+            
+        case 'CenterOfRotation'
+            info.CenterOfRotation = parseFloatVector(string);
+            
+        case 'Offset'
+            info.Offset = parseFloatVector(string);
+            
+        case 'TransformMatrix'
+            info.TransformMatrix = parseFloatVector(string);
+
         otherwise
-            disp(['unknown tag in MetaImage header: ' tag]);
+            disp(['Unknown tag in MetaImage header: ' tag]);
             info.(tag) = string;
     end
 end
@@ -106,5 +139,53 @@ tag = strtrim(tag);
 string = strtrim(strtok(remain, '='));
 
 
+function name = computeDataFileName(string, f, path)
+% compute filename or file name list from pattern and current path
+
+% remove eventual trailing spaces
+string = strtrim(string);
+
+if strcmpi(string, 'list')
+    % read the list of file names and add the path
+    tline = fgetl(f);
+    name = {};
+    i = 1;
+    while ischar(tline)
+        name{i} = fullfile(path, tline); %#ok<AGROW>
+        i = i + 1;
+        tline = fgetl(f);
+    end
+    
+elseif contains(string, ' ')
+    % If filename contains spaces, it is parsed to extract indices
+    C = textscan(string, '%s %d %d %d');
+    pattern = C{1}{1};
+    i0 = C{2};
+    iend = C{3};
+    istep = C{4};
+    
+    inds = i0:istep:iend;
+    
+    name = cell(length(inds), 1);
+    
+    for i=1:length(inds)
+        name{i} = fullfile(path, sprintf(pattern, inds(i)));
+    end
+    
+else
+    % Simply use the string as the name of the file
+    name = fullfile(path, string);
+end
+
+
 function b = parseBoolean(string)
 b = strcmpi(string, 'true');
+
+function v = parseInteger(string)
+v = sscanf(string, '%d');
+
+function v = parseIntegerVector(string)
+v = sscanf(string, '%d', inf)';
+
+function v = parseFloatVector(string)
+v = sscanf(string, '%f', inf)';

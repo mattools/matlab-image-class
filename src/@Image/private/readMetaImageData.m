@@ -1,4 +1,4 @@
-function [img, info] = readMetaImageData(info, varargin)
+function [imgData, info] = readMetaImageData(info, varargin)
 % Read image data from a metaImage info file.
 %
 %   DATA = readMetaImageData(INFO)
@@ -51,7 +51,7 @@ if isArrayType
 end
 
 % allocate memory for data
-img = zeros(dims, pixelType);
+imgData = zeros(dims, pixelType);
 
 % Specify little- or big-endian ordering
 byteOrder = determineByteOrder(info);
@@ -70,7 +70,7 @@ if ischar(info.ElementDataFile)
     fread(f, info.HeaderSize, 'uint8');
 
     % read binary data
-    img(:) = fread(f, prod(dims), ['*' pixelType], byteOrder);
+    imgData(:) = fread(f, prod(dims), ['*' pixelType], byteOrder);
 
     % close file
     fclose(f);
@@ -78,8 +78,8 @@ if ischar(info.ElementDataFile)
 
     % convert order of elements
     if isArrayType
-        % for color images, replace channel dim at third position
-        img = permute(img, [3 1 2 4:length(dims)]);
+        % for color images, replace channel dim at fourth position
+        imgData = permute(imgData, [4 1 2 3 5]);
     end
 
 elseif iscell(info.ElementDataFile)
@@ -98,9 +98,9 @@ elseif iscell(info.ElementDataFile)
         
         % use different processing for grayscale and color images
         if isArrayType
-            img(:,:,:,i) = data;
+            imgData(:,:,i,:) = data;
         else
-            img(:,:,i) = data;
+            imgData(:,:,i) = data;
         end
     end
     
