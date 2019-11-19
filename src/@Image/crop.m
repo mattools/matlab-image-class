@@ -30,7 +30,7 @@ nd = ndims(obj);
 indices = cell(ndims(obj.Data), 1);
 newOrigin = zeros(1, nd);
 
-% convert user corodinates to pixel coordinates
+% convert user coordinates to pixel coordinates
 for i = 1:nd
     % compute all pixel positions in current direction
     pos = (0:siz(i) - 1) * obj.Spacing(i) + obj.Origin(i);
