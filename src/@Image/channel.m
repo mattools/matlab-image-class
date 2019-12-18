@@ -33,7 +33,7 @@ function channel = channel(obj, index, varargin)
 
 % check index bounds
 nc = size(obj, 4);
-if index > nc
+if any(index > nc)
     pattern = 'Can not get channel %d of an image with %d channels';
     error('Image:channel:IndexOutsideBounds', ...
         pattern, index, nc);
@@ -61,6 +61,9 @@ else
     newType = 'vector';
 end
 
+channelNames = obj.ChannelNames(index);
+
 % create a new Image
 channel = Image('data', obj.Data(:,:,:,index,:), ...
-    'parent', obj, 'type', newType, 'name', newName, varargin{:});
+    'parent', obj, 'type', newType, 'name', newName, ...
+    'channelNames', channelNames, varargin{:});

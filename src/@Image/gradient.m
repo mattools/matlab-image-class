@@ -26,7 +26,7 @@ function varargout = gradient(obj, varargin)
 %     subplot(1, 2, 2); show(gradY); title('Grad Y');
 %
 %   See also
-%     filter, fspecial, norm
+%     filter, fspecial, norm, channel
 %
 
 % ------
@@ -69,6 +69,7 @@ if nd <= 2
         % normalisation to have sum of positive values equal to 1
         sx = sx / sum(sx(sx > 0));
     end
+    channelNames = {'gradX', 'gradY'};
     
 elseif nd == 3
     if sigma == 0
@@ -95,6 +96,7 @@ elseif nd == 3
         % normalisation to have sum of positive values equal to 1
         sx = sx / sum(sx(sx > 0));
     end
+    channelNames = {'gradX', 'gradY', 'gradZ'};
     
 else
     error('Input image must have 2 or 3 dimensions');
@@ -143,10 +145,10 @@ if nargout == 1
     % Create a new 2D or 3D vector image
     if nd == 2
         res = Image('data', cat(4, gx, gy), ...
-            'parent', obj, 'type', 'vector');
+            'parent', obj, 'type', 'vector', 'channelNames', channelNames);
     elseif nd == 3
         res = Image('data', cat(4, gx, gy, gz), ...
-            'parent', obj, 'type', 'vector');
+            'parent', obj, 'type', 'vector', 'channelNames', channelNames);
     end
     varargout{1} = res;
     
