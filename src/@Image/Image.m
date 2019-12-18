@@ -259,9 +259,9 @@ methods (Access = protected)
         
         % copy dimension elements that are common
         nd = min(obj.Dimension, that.Dimension);
-        obj.Calibrated = that.Calibrated;
         obj.Origin(1:nd)     = that.Origin(1:nd);
         obj.Spacing(1:nd)    = that.Spacing(1:nd);
+        obj.Calibrated       = that.Calibrated;
         if ~isempty(that.UnitName)
             obj.UnitName(1:nd)   = that.UnitName(1:nd);
         end
