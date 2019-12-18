@@ -23,9 +23,9 @@ if ~strcmp(obj.Type, 'label')
     error('Requires a label image');
 end
 
-% default behaviour is shuffled HSV LUT with white BackGround
+% default behaviour is shuffled 'JET' LUT with white BackGround
 if isempty(varargin)
-    varargin = {jet(double(max(obj.Data(:)))+1), 'w', 'shuffle'};
+    varargin = {jet(double(max(obj.Data(:)))), 'w', 'shuffle'};
 end
 
 nd = obj.Dimension;
