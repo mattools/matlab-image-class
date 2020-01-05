@@ -121,4 +121,6 @@ else
     img = Image(data);
 end
 
-img.Name = [name ext];
+% populate additional meta-data
+img.Name = name;
+img.FilePath = fileName;

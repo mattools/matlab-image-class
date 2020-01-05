@@ -50,6 +50,11 @@ properties
     % Image name, empty by default.
     Name            = '';
     
+    % The path to the file containing the image, if relevant.
+    % This property is set for images read from a file. It is usually not
+    % kept in images resulting from operators.
+    FilePath        = '';
+    
     % Boolean flag indicating whether the image is calibrated or not.
     Calibrated      = false;
     
@@ -252,6 +257,7 @@ methods (Access = protected)
         % Does not copy the data buffer.
         
         obj.Name   = that.Name;
+        % The "FileName" property is intentionnally not copied.
         
         if isCompatibleType(obj, that.Type)
             obj.Type   = that.Type;

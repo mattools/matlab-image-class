@@ -1,5 +1,5 @@
 function img = readSeries(fileName, varargin)
-% Reads a series of 2D images as a 3D image.
+% Read a series of 2D images as a 3D image.
 %
 %   Syntax:
 %   IMG = Image.readSeries(FILEPATH);
@@ -95,3 +95,7 @@ for iSlice = 2:length(range)
 end
 
 img = Image('data', data, 'parent', img0);
+
+% populate additional meta-data
+img.Name = name;
+img.FilePath = fileName;
