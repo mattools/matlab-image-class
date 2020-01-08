@@ -39,14 +39,6 @@ if any(index > nc)
         pattern, index, nc);
 end
 
-% compute the name of the new image
-if ~isempty(obj.ChannelNames)
-    channelName = obj.ChannelNames{index};
-else
-    channelName = sprintf('channel%d', index);
-end
-newName = sprintf('%s-%s', obj.Name, channelName);
-
 % determines the new type (vector if several channels are given)
 if length(index) == 1
     if isfloat(obj.Data)
@@ -61,8 +53,24 @@ else
     newType = 'vector';
 end
 
-channelNames = obj.ChannelNames(index);
+% compute the channel names of the new image
+if ~isempty(obj.ChannelNames)
+    channelNames = obj.ChannelNames(index);
+else
+    % if channel names were not initialized, use channel numbers
+    channelNames = cell(1, length(index));
+    for i = 1:length(index)
+        channelNames{i} = sprintf('Channel%d', index(i));
+    end
+end
 
+% compute name of new image
+if length(channelNames) == 1
+    newName = sprintf('%s-%s', obj.Name, channelNames{1});
+else
+    newName = sprintf('%s-channels', obj.Name, channelName);
+end
+    
 % create a new Image
 channel = Image('data', obj.Data(:,:,:,index,:), ...
     'parent', obj, 'type', newType, 'name', newName, ...
