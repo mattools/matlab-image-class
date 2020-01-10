@@ -305,14 +305,22 @@ methods (Access = protected)
     
     function initImageType(obj)
         % Determines a priori the type of image
-        if islogical(obj.Data)
-            obj.Type = 'binary';
-        elseif isfloat(obj.Data)
-            obj.Type = 'intensity';
-        elseif obj.DataSize(4) == 3
-            obj.Type = 'color';
+        
+        if obj.DataSize(4) == 1
+            if islogical(obj.Data)
+                obj.Type = 'binary';
+            elseif ismember(class(obj.Data), {'uint8', 'uint16', 'uint32'})
+                obj.Type = 'grayscale';
+            else
+                obj.Type = 'intensity';
+            end
+            
         elseif obj.DataSize(4) == 2
             obj.Type = 'complex';
+            
+        elseif obj.DataSize(4) == 3
+            obj.Type = 'color';
+            
         elseif obj.DataSize(4) > 3
             obj.Type = 'vector';
         end
