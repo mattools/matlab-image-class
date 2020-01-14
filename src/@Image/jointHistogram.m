@@ -3,10 +3,13 @@ function res = jointHistogram(obj1, obj2, varargin)
 %
 %   JHIST = jointHistogram(I1, I2);
 %   I1 and I2 are two images with the same size, JHIST is a 256-by-256
-%   array containing number of pixels for each combination of values.
+%   image containing number of pixels for each combination of values.
 %
 %   Example
-%    jointHistogram
+%     % Compute joint histogram on two channels of a color image
+%     img = Image.read('peppers.png');
+%     histoRG = jointHistogram(channel(img, 1), channel(img, 2));
+%     figure; show(log(histoRG+1)); colormap jet;
 %
 %   See also
 %     histogram
@@ -14,7 +17,7 @@ function res = jointHistogram(obj1, obj2, varargin)
  
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2019-11-25,    using Matlab 8.6.0.267246 (R2015b)
 % Copyright 2019 INRA - Cepia Software Platform.
 
@@ -99,6 +102,8 @@ if q1==256 && q2==256 && maxVal1==255 && maxVal2 == 255
         res(v1, v2) = res(v1, v2)+1;
     end
 else
+    % More generic case: iterate over all pixels, find indices of first
+    % bins greater than each value
     for i = 1:length(inds)
         % get each value, and convert to index
         v1 = find(obj1.Data(inds(i))>=vals1, 1, 'last');
@@ -109,4 +114,7 @@ else
     end
 end
 
-res = Image('Data', res);
+% create new image
+res = Image('Data', res, ...
+    'Name', 'JointHistogram', ...
+    'AxisNames', {obj1.Name, obj2.Name});
