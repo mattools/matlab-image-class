@@ -23,8 +23,14 @@ end
 % compute distance map
 dist = bwdist(obj.Data, varargin{:});
 
+newName = '';
+if ~isempty(obj.Name)
+    newName = sprintf('distanceMap(%s)', obj.Name);
+end
+
 % create new image
 map = Image('data', dist, ...
     'parent', obj, ...
+    'name', newName, ...
     'type', 'intensity', ...
     'channelNames', {'distance'});
