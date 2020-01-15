@@ -18,7 +18,7 @@ function [res, centers] = kmeans(obj, k, varargin)
 %     figure; show(rgb)
 %     % display the classes with average color of each region
 %     [cls, centers] = kmeans(img, 6);
-%     map = centers([1 1:end],:) / 255; % small trick to manage background
+%     map = centers / 255; % average color of each class
 %     rgb = label2rgb(cls, map);
 %     figure; show(rgb);
 %
@@ -46,7 +46,7 @@ data = double(reshape(obj.Data, [nr nc]));
 [idx, centers] = kmeans(data, k);
 
 % convert to label image, by avoiding zero label
-idx = reshape(idx+1, size(obj));
+idx = reshape(idx, size(obj));
 
 % create parent image
 newName = 'classes';
