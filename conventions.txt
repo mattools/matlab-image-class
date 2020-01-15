@@ -1,5 +1,0 @@
-Conventions used for the "Image" class
-
-
-* getter function are written without 'get' prefix. 
-    Ex: "size(img)"
