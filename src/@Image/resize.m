@@ -16,6 +16,11 @@ function res = resize(obj, k, varargin)
 %     size(img2)
 %     ans =
 %         75   62
+%     % Both images should have similar extents.
+%     [physicalExtent(img) ; physicalExtent(img2)]
+%     ans =
+%         0.5000  300.5000    0.5000  246.5000
+%         0.5000  300.5000    0.5000  248.5000
 %
 %     % resize a color image
 %     img = Image.read('peppers.png');
@@ -26,6 +31,14 @@ function res = resize(obj, k, varargin)
 %     size(img2)
 %     ans =
 %        103    77
+%
+%     % Resize color image, and overlay a cropped portion at initial resolution
+%     img = Image.read('peppers.png');
+%     img2 = resize(img, 1/8);
+%     figure; show(img2, 'InitialMagnification', 8*100);
+%     box = [71 240 181 330];
+%     imgC = crop(img, box);
+%     hold on; show(imgC);
 %
 %     % resize a 3D image, using different resize ratios
 %     img = Image.read('brainMRI.hdr');
@@ -59,5 +72,10 @@ else
     data = imresize3(obj.Data, k, varargin{:});
 end
 
+% compute new spatial calibration
+sp2 = obj.Spacing ./ k;
+or2 = (obj.Origin - obj.Spacing * 0.5) + sp2 * 0.5;
+
 % create new image object for storing result
-res = Image('data', data, 'parent', obj);
+res = Image('data', data, 'parent', obj, ...
+    'Spacing', sp2, 'Origin', or2);
