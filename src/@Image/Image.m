@@ -59,7 +59,7 @@ properties
     Calibrated      = false;
     
     % Spatial origin of image.
-    % corresponding to position of pixel (1,1) or voxel (1,1,1)
+    % corresponding to the position of the pixel (1,1) or voxel (1,1,1).
     Origin          = [1 1];
     
     % The amount of space between two pixels or voxels.
@@ -68,10 +68,10 @@ properties
     % The name of the spatial unit.
     UnitName        = '';
     
-    % The name of each of the axes.
+    % The name of each of the axes, as a 1-by-Nd cell array.
     AxisNames       = {};
     
-    % The name of the channels.
+    % The name of the channels, as a 1-by-Nc cell array.
     ChannelNames    = {};
     
 end
@@ -190,7 +190,7 @@ methods
                     initCalibration(obj);
                     
                 case 'type'
-                    obj.Type = value;
+                    obj.Type = lower(value);
                 case 'vector'
                     % if vector image is forced, permute dims 3 and 4
                     if value
