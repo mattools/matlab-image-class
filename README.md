@@ -35,7 +35,9 @@ The following example performs a segmentation on a grayscale image. It uses comp
     % cleanup segmentation and convert to RGB image
     lbl2 = killBorders(lbl);
     show(label2rgb(lbl2, 'jet', 'w'));
-  
+
+![segmentation pipeline of a grayscale image using watershed](https://github.com/mattools/matlab-image-class/blob/master/doc/images/coins-segWat.png)
+
 ## Example 2
 
 The following example presents various ways to explore and display the content of a 3D image.
@@ -51,3 +53,5 @@ The following example presents various ways to explore and display the content o
     % display as isosurface
     figure; isosurface(gaussianFilter(img, [5 5 5], 2), 50);
     axis equal; axis(physicalExtent(img)); view([145 25]); light;
+
+![Various representations of 3D image using Image class](https://github.com/mattools/matlab-image-class/blob/master/doc/images/visu3d.png)
