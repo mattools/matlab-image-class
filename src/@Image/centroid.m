@@ -66,7 +66,7 @@ if nd == 2
     end
   
 elseif nd == 3
-    dim = size(img);
+    dim = size(obj.Data);
     for i = 1:nLabels
         % extract points of the current particle
         inds = find(obj.Data == labels(i));

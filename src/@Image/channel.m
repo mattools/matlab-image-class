@@ -68,7 +68,7 @@ end
 if length(channelNames) == 1
     newName = sprintf('%s-%s', obj.Name, channelNames{1});
 else
-    newName = sprintf('%s-channels', obj.Name, channelName);
+    newName = sprintf('%s-channels', obj.Name);
 end
     
 % create a new Image

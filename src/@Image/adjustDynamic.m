@@ -99,8 +99,8 @@ res = Image('data', res, 'parent', obj);
 function [mini, maxi] = computeExtremeValues(data) %#ok<DEFNU>
 % compute min and max (finite) values in image
 
-mini = min(obj(isfinite(data)));
-maxi = max(obj(isfinite(data)));
+mini = min(data(isfinite(data)));
+maxi = max(data(isfinite(data)));
 
 % If the difference is too small, use default range check
 if abs(maxi - mini) < 1e-12

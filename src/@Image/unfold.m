@@ -1,8 +1,8 @@
-function [tab, coordsTab] = unfold(obj)
-% Unfold a vector image and returns Table instance.
+function [data, coords] = unfold(obj)
+% Unfold a vector image.
 %
 %   TAB = unfold(VIMG);
-%   Unfold the vector image VIMG, and returns Table instance with as many
+%   Unfold the vector image VIMG, and returns an array with as many
 %   rows as the number of pixels in VIMG, and as many columns as the number
 %   of channels.
 %
@@ -51,7 +51,7 @@ end
 
 % create data table
 data = reshape(obj.Data, [nr nc]);
-tab = Table(data, colNames);
+% tab = Table(data, colNames);
 
 % optionnaly creates table of coordinates
 if nargout > 1
@@ -60,6 +60,6 @@ if nargout > 1
     ly = 1:size(obj, 2);
     [y, x] = meshgrid(ly, lx);
     coords = [reshape(x, [numel(x) 1]), reshape(y, [numel(x) 1])];
-    coordsTab = Table(coords, {'x', 'y'}, tab.RowNames);
+%     coordsTab = Table(coords, {'x', 'y'}, tab.RowNames);
 end
  

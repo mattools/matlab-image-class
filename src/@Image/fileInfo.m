@@ -5,9 +5,9 @@ function info = fileInfo(fileName)
 %
 %   Currently supported file formats include:
 %   * all the formats recognized by the imread function (see imfinfo)
-%   * Analyze (see (see imfinfo))
+%   * Analyze (see analyze75info)
 %   * Dicom (see dicominfo)
-%   * MetaImage
+%   * MetaImage (from Kitware)
 %   * VGI
 %
 %   Example
@@ -19,7 +19,7 @@ function info = fileInfo(fileName)
  
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2019-08-22,    using Matlab 9.6.0.1072779 (R2019a)
 % Copyright 2019 INRA - Cepia Software Platform.
 
@@ -34,7 +34,7 @@ switch lower(ext)
         info = imfinfo(fileName);
         
     case 'hdr'
-        info = c(fileName);
+        info = analyze75info(fileName);
         
     case 'dicom'
         info = dicominfo(fileName);
