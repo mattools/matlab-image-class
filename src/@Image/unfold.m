@@ -15,23 +15,14 @@ function [data, coords] = unfold(obj)
 %     size(tab)
 %     ans =
 %           196608           3
-%     head(tab)
-%     ans = 
-%              Ch01    Ch02    Ch03
-%     1          62      29      64
-%     2          63      31      64
-%     3          63      34      64
-%     4          65      30      60
-%     5          66      27      59
-%     6          63      31      62
 %
 %   See also
-%     Table
+%     Table, kmeans
 %
  
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2019-11-19,    using Matlab 9.7.0.1190202 (R2019b)
 % Copyright 2019 INRA - Cepia Software Platform.
 
