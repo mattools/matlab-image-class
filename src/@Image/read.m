@@ -41,7 +41,7 @@ if strcmpi(ext, '.hdr')
     format = 'analyze';
 elseif strcmpi(ext, '.dcm')
     format = 'dicom';
-elseif strcmpi(ext, '.mhd')
+elseif any(strcmpi(ext, {'.mhd', '.mha'}))
     format = 'metaimage';
 elseif strcmpi(ext, '.vgi')
     format = 'vgi';

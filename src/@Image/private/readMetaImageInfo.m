@@ -19,17 +19,13 @@ function info = readMetaImageInfo(fileName)
 
 %% Open info file
 
+% extract file name parts
+[path, baseName, ext] = fileparts(fileName); %#ok<ASGLU>
+
 % add extension if not present
-ext = [];
-if length(fileName)>3
-    ext = fileName(end-3:end);
-end
-if ~strcmp(ext, '.mhd')
+if isempty(ext)
     fileName = [fileName '.mhd'];
 end
-
-% get base directory
-path = fileparts(fileName);
 
 % open the file for reading
 f = fopen(fileName, 'rt');
@@ -87,6 +83,12 @@ while true
             info.HeaderSize = parseInteger(string);
         case 'ElementDataFile'
             info.ElementDataFile = computeDataFileName(string, f, path);
+            % local keyword indicates data are stored right after this tag
+            if strcmpi(info.ElementDataFile, 'Local')
+                info.ElementDataFile = fileName;
+                info.HeaderSize = ftell(f);
+            end
+            
             % this tag is supposed to be the last one in the tag list
             break;
             
@@ -168,7 +170,7 @@ elseif contains(string, ' ')
     
     name = cell(length(inds), 1);
     
-    for i=1:length(inds)
+    for i = 1:length(inds)
         name{i} = fullfile(path, sprintf(pattern, inds(i)));
     end
     
