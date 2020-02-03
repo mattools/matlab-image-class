@@ -23,12 +23,12 @@ function value = otsuThresholdValue(img, varargin)
 %
 %
 %   See also
-%     otsuThreshold, histogram
+%     otsuThreshold, histogram, maxEntropyThresholdValue
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2012-01-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
 
