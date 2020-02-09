@@ -36,20 +36,20 @@ assertEqual(99, img(end));
 % set one row (y = cte)
 new = 8:2:18;
 img(:,2) = new;
-assertEqual(new, img(:, 2));
+assertEqual(new, img{:, 2});
 
 % set last row (y = cte)
 img(:,end) = new;
-assertEqual(new, img(:, end));
+assertEqual(new, img{:, end});
 
 % set one column (x = cte)
 new = (12:3:21)';
 img(1,:) = new;
-assertEqual(new, img(1,:));
+assertEqual(new, img{1,:});
 
 % set last column (x = cte)
 img(end,:) = new;
-assertEqual(new, img(end,:));
+assertEqual(new, img{end,:});
 
 
 function test_subsasgn_3d
@@ -73,20 +73,20 @@ assertEqual(99, img(end));
 % set one row (y = cte)
 new = 8:2:18;
 img(:, 2, 1) = new;
-assertEqual(new, img(:, 2, 1));
+assertEqual(new, img{:, 2, 1});
 
 % set last row (y = cte)
 img(:, end, 1) = new;
-assertEqual(new, img(:, end, 1));
+assertEqual(new, img{:, end, 1});
 
 % set one column (x = cte)
 new = (12:3:21)';
 img(2, :, 1) = new;
-assertEqual(new, img(2, :, 1));
+assertEqual(new, img{2, :, 1});
 
 % set last column (x = cte)
 img(end, :, 1) = new;
-assertEqual(new, img(end, :, 1));
+assertEqual(new, img{end, :, 1});
 
 function test_subsasgn_outside
 % If we try to assign a pixel outside, should throw an error

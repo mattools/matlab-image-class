@@ -29,7 +29,7 @@ if strcmp(type, '.')
         builtin('subsasgn', obj, subs, value);
     end
     
-elseif strcmp(type, '()')
+elseif strcmp(type, '()') || strcmp(type, '{}')
     % In case of parens reference, index the inner data
     
     % different processing if 1 or 2 indices are used
@@ -76,9 +76,7 @@ elseif strcmp(type, '()')
         error('Image:subsasgn', ...
             'Too many indices');
     end
-elseif strcmp(type, '{}')
-    error('Image:subsasgn', ...
-        'Can not manage braces reference');
+    
 else
     error('Image:subsasgn', ...
         ['Can not manage such reference: ' type]);

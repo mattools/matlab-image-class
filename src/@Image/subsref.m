@@ -43,18 +43,32 @@ elseif strcmp(type, '()')
     
     % different processing if 1 or 2 indices are used
     ns = length(s1.subs);
-    if ns==1
+    if ns == 1
+        % one index: use linearised image
+        varargout{1} = obj.Data(s1.subs{1});
+    else
+        img = Image('Data', obj.Data(s1.subs{:}), 'Parent', obj);
+        varargout{1}= img;
+    end
+    
+elseif strcmp(type, '{}')
+    % In case of braces reference, index the inner data
+    varargout{1} = 0;
+    
+    % different processing if 1 or 2 indices are used
+    ns = length(s1.subs);
+    if ns == 1
         % one index: use linearised image
         varargout{1} = obj.Data(s1.subs{1});
         
-    elseif ns==2
+    elseif ns == 2
         % two indices: parse x and y indices 
         
         % extract corresponding data, and transpose to comply with matlab
         % representation
         varargout{1} = obj.Data(s1.subs{:})';
         
-    elseif ns==3
+    elseif ns == 3
         % three indices: parse x y z indices 
         
         % parse x, y and z index
@@ -71,9 +85,6 @@ elseif strcmp(type, '()')
         varargout{1} = permute(obj.Data(s1.subs{:}), [2 1 3:5]);
     end
     
-elseif strcmp(type, '{}')
-    error('Image:subsref', ...
-        'can not manage braces reference');
 else
     error('Image:subsref', ...
         ['can not manage such reference: ' type]);
