@@ -1,0 +1,45 @@
+function res = floodFill(img, pos, value, varargin)
+% Flood-fill operation from a position.
+%
+%   IMG2 = floodFill(IMG, POS, V)
+%   Determines the region of connected pixels with the same value and
+%   containing the position POS, and replaces their value by V.
+%   
+%   Example
+%     % remove the region corresponding to the label at a given position
+%     img = Image.read('coins.png');
+%     lbl = componentLabeling(img > 95, 4);
+%     lbl2 = floodFill(lbl, [180 120], 0); % replaces by background
+%     figure; show(lbl2); colormap jet;
+%     
+%   See also
+%     reconstruction
+%
+ 
+% ------
+% Author: David Legland
+% e-mail: david.legland@inrae.fr
+% INRAE - BIA Research Unit - BIBS Platform (Nantes)
+% Created: 2020-02-10,    using Matlab 9.7.0.1247435 (R2019b) Update 2
+% Copyright 2020 INRAE.
+
+% check input dimensions
+if size(pos, 2) ~= ndims(img)
+    error('Image:floodFill', ...
+        'position array size must match image dimension');
+end
+
+% create binary image of mask
+pos = num2cell(pos);
+mask = img == img.Data(pos{:});
+
+% binary image for marker
+marker = Image.false(size(img));
+marker.Data(pos{:}) = true;
+
+% compute the region composed of connected pixels with same value
+rec = reconstruction(marker, mask);
+
+% replace values in result image
+res = Image(img);
+res.Data(rec.Data) = value;

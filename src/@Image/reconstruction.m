@@ -20,8 +20,7 @@ function res = reconstruction(marker, mask, varargin)
 %     show(rec);
 %
 %   See also
-%     killBorders, fillHoles, extendedMinima, imreconstruct
-%
+%     killBorders, fillHoles, extendedMinima, floodFill, imreconstruct
 
 % ------
 % Author: David Legland

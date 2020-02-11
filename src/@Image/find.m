@@ -4,13 +4,13 @@ function varargout = find(obj, varargin)
 %   INDS = find(IMG)
 %   Returns indices of non-zeros elements in image.
 %
-%   [XI YI] = find(IMG)
-%   [XI YI ZI] = find(IMG)
+%   [XI, YI] = find(IMG)
+%   [XI, YI, ZI] = find(IMG)
 %   Returns X and Y positions as indices (between 1 and max dim). If image
 %   is 3D, returns also the Z indices if non zeros voxels.
 %
-%   [XI YI VI] = find(IMG)
-%   [XI YI ZI VI] = find(IMG)
+%   [XI, YI, VI] = find(IMG)
+%   [XI, YI, ZI, VI] = find(IMG)
 %   Also returns the value of the non-zero pixels or voxels.
 %
 %   [...] = find(IMG, k, 'first');
