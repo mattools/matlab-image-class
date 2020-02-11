@@ -82,6 +82,8 @@ methods (Static)
     img = createRGB(varargin)
     img = ones(varargin)
     img = zeros(varargin)
+    img = false(varargin)
+    img = true(varargin)
     
     img = read(fileName, varargin)
     img = readSeries(fileName, varargin)
