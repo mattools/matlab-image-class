@@ -1,4 +1,4 @@
-function [data, coords] = unfold(obj)
+function [data, colNames, coords] = unfold(obj)
 % Unfold a vector image.
 %
 %   TAB = unfold(VIMG);
@@ -24,8 +24,9 @@ function [data, coords] = unfold(obj)
 % Author: David Legland
 % e-mail: david.legland@inrae.fr
 % Created: 2019-11-19,    using Matlab 9.7.0.1190202 (R2019b)
-% Copyright 2019 INRA - Cepia Software Platform.
+% Copyright 2019 INRAE - Cepia Software Platform.
 
+% check type
 if ~isVectorImage(obj)
     return;
 end
@@ -42,15 +43,19 @@ end
 
 % create data table
 data = reshape(obj.Data, [nr nc]);
-% tab = Table(data, colNames);
 
 % optionnaly creates table of coordinates
-if nargout > 1
+if nargout > 2
     % create sampling grid (iterating over x first)
     lx = 1:size(obj, 1);
     ly = 1:size(obj, 2);
-    [y, x] = meshgrid(ly, lx);
-    coords = [reshape(x, [numel(x) 1]), reshape(y, [numel(x) 1])];
-%     coordsTab = Table(coords, {'x', 'y'}, tab.RowNames);
+    if size(obj, 3) > 1
+        lz = 1:size(obj, 3);
+        [y, x, z] = meshgrid(ly, lx, lz);
+        coords = [x(:) y(:) z(:)];
+    else
+        [y, x] = meshgrid(ly, lx);
+        coords = [x(:) y(:)];
+    end
 end
  
