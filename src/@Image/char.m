@@ -17,8 +17,16 @@ function string = char(obj)
 
 nd = ndims(obj);
 
-pattern = repmat('%d x ', 1, nd);
-pattern(end-2:end) = [];
-pattern = [ pattern ' %s'];
+% string pattern for size (space dimensions)
+pattern = ['%d' repmat(' x %d', 1, nd-1)];
+pattern = [ pattern '%s %s'];
 
-string = sprintf(pattern, size(obj), class(obj));
+% optionnaly adds time dimension
+frames = '';
+nf = size(obj, 5);
+if nf == 1
+    frames = [' (x ' num2str(nf, '%d') ')'];
+end
+
+% concatenate with image type
+string = sprintf(pattern, size(obj, 1:ndims(obj)), frames, class(obj));

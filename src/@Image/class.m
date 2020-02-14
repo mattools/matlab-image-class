@@ -20,4 +20,9 @@ function classname = class(obj)
 % Created: 2010-12-09,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-classname = [obj.Type ' Image'];
+baseName = 'Image';
+if size(obj.Data, 5) > 1
+    baseName = 'Movie';
+end
+
+classname = [obj.Type ' ' baseName];

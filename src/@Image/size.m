@@ -2,8 +2,11 @@ function varargout = size(obj, dim)
 % Return image size.
 %
 %   S = size(IMG);
-%   Return the size of the image in the spatial dimensions. S is a row
-%   vector with at most 3 columns.
+%   Return the size of the image in the space and time dimensions. S is a
+%   row vector with at most 5 values, corresponding to the X, Y, Z, C and T
+%   dimensions. 
+%   In the case of images with no time dimensions (single frame images),
+%   only the space dimensions are returned.
 %
 %   S = size(IMG, DIM);
 %   Return the size of the image in a given dimension:
@@ -35,14 +38,18 @@ function varargout = size(obj, dim)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
-% Copyright 2010 INRA - Cepia Software Platform.
+% Copyright 2010 INRAE - Cepia Software Platform.
 
 if nargout <= 1
     % compute dim
     if nargin == 1
-        s = obj.DataSize(1:obj.Dimension);
+        if size(obj.Data, 5) == 1
+            s = obj.DataSize(1:obj.Dimension);
+        else
+            s = obj.DataSize;
+        end
     else
         s = obj.DataSize(dim);
     end

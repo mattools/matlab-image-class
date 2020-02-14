@@ -28,9 +28,9 @@ function img = read(fileName, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
-% Copyright 2010 INRA - Cepia Software Platform.
+% Copyright 2010 INRAE - Cepia Software Platform.
 
 % extract filename's extension
 [path, name, ext] = fileparts(fileName); %#ok<ASGLU>
@@ -43,9 +43,8 @@ elseif strcmpi(ext, '.dcm')
     format = 'dicom';
 elseif any(strcmpi(ext, {'.mhd', '.mha'}))
     format = 'metaimage';
-elseif strcmpi(ext, '.vgi')
-    format = 'vgi';
 else
+    % for classical formats, simply needs to remove the initial dot.
     format = ext(2:end);
 end
 
@@ -59,6 +58,10 @@ while length(varargin) > 1
     end
     varargin(1,2) = [];
 end
+
+% initialize the list of video file format extensions
+fmtList = VideoReader.getFileFormats();
+videoFormatExtensions = {fmtList.Extension};
 
 % Process image reading depending on the format
 if strcmpi(format, 'analyze')
@@ -82,6 +85,23 @@ elseif strcmpi(format, 'vgi')
     % read image in VGStudi Max format
     % (use function in "private" directory)
     img = readVgiStack(fileName);
+    
+elseif any(strcmp(videoFormatExtensions, format))
+    % read a movie as a 5D Image with several frames
+    % by converting from the VideoReader output.
+    reader = VideoReader(fileName);
+    nFrames = reader.NumFrames;
+    sizeX = reader.Width;
+    sizeY = reader.Height;
+    frame0 = reader.read(1);
+    nChannels = size(frame0, 3);
+    data = zeros([sizeX sizeY 1 nChannels nFrames], 'uint8');
+    for i = 1:nFrames
+        data(:,:,:,:,i) = permute(reader.read(i), [2 1 3]);
+    end
+    img = Image('Data', data);
+    img.TimeStep = 1 / reader.FrameRate;
+    img.TimeUnit = 's';
     
 elseif strcmpi(format, 'tif')
     % special handling of tif files that can contain 3D images

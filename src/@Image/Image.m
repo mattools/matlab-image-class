@@ -68,7 +68,13 @@ properties
     % The name of the spatial unit.
     UnitName        = '';
     
-    % The name of each of the axes, as a 1-by-Nd cell array.
+    % The interval opf time between two frames.
+    TimeStep        = 1.0;
+    
+    % The name of the time unit. Typically: 's', 'mn', 'h'...
+    TimeUnit        = '';
+
+    % The name of each of the axes, as a 1-by-Nd cell array (optionnal).
     AxisNames       = {};
     
     % The name of the channels, as a 1-by-Nc cell array.
@@ -306,7 +312,7 @@ methods (Access = protected)
     end
     
     function initImageType(obj)
-        % Determines a priori the type of image
+        % Determines a priori the type of image.
         
         if obj.DataSize(4) == 1
             if islogical(obj.Data)
@@ -316,14 +322,11 @@ methods (Access = protected)
             else
                 obj.Type = 'intensity';
             end
-            
-        elseif obj.DataSize(4) == 2
-            obj.Type = 'complex';
-            
+                      
         elseif obj.DataSize(4) == 3
             obj.Type = 'color';
             
-        elseif obj.DataSize(4) > 3
+        else
             obj.Type = 'vector';
         end
     end
