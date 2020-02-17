@@ -159,7 +159,7 @@ methods
             % first argument is either data buffer, or image dimension
             
             if isscalar(varargin{1})
-                % if argument is scalar, obj is the image dimension
+                % if argument is scalar, this is the image dimension
                 obj.DataSize = ones(1, 5);
                 nd = varargin{1};
                 obj.Dimension = nd;
@@ -176,7 +176,7 @@ methods
         
         end
         
-        % assumes there are pairs of param-values
+        % assumes there are pairs of parameter name-values
         while length(varargin) > 1
             varName = lower(varargin{1});
             value = varargin{2};
@@ -277,7 +277,7 @@ methods (Access = protected)
         obj.Spacing(1:nd)    = that.Spacing(1:nd);
         obj.Calibrated       = that.Calibrated;
         if ~isempty(that.UnitName)
-            obj.UnitName(1:nd)   = that.UnitName(1:nd);
+            obj.UnitName     = that.UnitName;
         end
         if ~isempty(that.AxisNames)
             obj.AxisNames(1:nd)  = that.AxisNames(1:nd);

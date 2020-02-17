@@ -14,7 +14,7 @@ function hs = showSlice3d(obj, dim, varargin)
 %   showSlice3d(..., 'ColorMap', MAP)
 %   Specifies a color map for diplaying grayscale images.
 %
-%   showSlice3d(..., 'displayRange', RANGE)
+%   showSlice3d(..., 'DisplayRange', RANGE)
 %   Specifies the range in which image data should be displayed. RANGE is a
 %   1-by-2 row vector containing values of min and max values corresponding
 %   to displayed black and white respectively.

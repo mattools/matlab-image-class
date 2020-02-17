@@ -64,7 +64,11 @@ fmtList = VideoReader.getFileFormats();
 videoFormatExtensions = {fmtList.Extension};
 
 % Process image reading depending on the format
-if strcmpi(format, 'analyze')
+if strcmpi(format, 'tif')
+    % call the local 'read_tif' function
+    img = read_tif(fileName);
+    
+elseif strcmpi(format, 'analyze')
     % read image in Mayo's Analyze Format
     info = analyze75info(fileName);
     data = analyze75read(info);
@@ -87,54 +91,9 @@ elseif strcmpi(format, 'vgi')
     img = readVgiStack(fileName);
     
 elseif any(strcmp(videoFormatExtensions, format))
-    % read a movie as a 5D Image with several frames
-    % by converting from the VideoReader output.
-    reader = VideoReader(fileName);
-    nFrames = reader.NumFrames;
-    sizeX = reader.Width;
-    sizeY = reader.Height;
-    frame0 = reader.read(1);
-    nChannels = size(frame0, 3);
-    data = zeros([sizeX sizeY 1 nChannels nFrames], 'uint8');
-    for i = 1:nFrames
-        data(:,:,:,:,i) = permute(reader.read(i), [2 1 3]);
-    end
-    img = Image('Data', data);
-    img.TimeStep = 1 / reader.FrameRate;
-    img.TimeUnit = 's';
+    % read movie by calling the local 'read_movie' function.
+    img = read_movie(fileName);
     
-elseif strcmpi(format, 'tif')
-    % special handling of tif files that can contain 3D images
-    infoList = imfinfo(fileName);
-    read3d = false;
-    if length(infoList) > 1 
-        if infoList(1).Width == infoList(end).Width && infoList(1).Height == infoList(end).Height 
-            read3d = true;
-        end
-    end
-    
-    if read3d
-        % (see also the 'readstack' function in private directory)
-        % read first image to initialize 3D image
-        img1 = Image(imread(fileName, 1));
-        dim = [infoList(1).Width infoList(2).Height length(infoList)];
-        img = Image.create(dim, class(img1.Data));
-        
-        % Read all images using Tiff class
-        t = Tiff(fileName, 'r');
-
-        % iterate over slices
-        img.Data(:,:,1,:) = permute(read(t), [2 1 3]);
-        for i = 2:length(infoList)
-            nextDirectory(t);
-            img.Data(:,:,i,:) = permute(read(t), [2 1 3]);
-        end
-        close(t);
-        
-    else
-        % For 2D images, use standard Matlab functions
-        img = Image(imread(fileName));
-    end
 else
     % otherwise, assumes format can be managed by Matlab Image Processing
     data = imread(fileName);
@@ -144,3 +103,120 @@ end
 % populate additional meta-data
 img.Name = name;
 img.FilePath = fileName;
+
+end
+
+function img = read_tif(fileName)
+% Read image stored in a TIFF File.
+%
+% Can manage 3D images as well.
+
+% check if the file contains a 3D image
+infoList = imfinfo(fileName);
+info1 = infoList(1);
+read3d = false;
+if length(infoList) > 1
+    if info1.Width == infoList(end).Width && info1.Height == infoList(end).Height
+        read3d = true;
+    end
+end
+
+if read3d
+    % read first image to initialize 3D image
+    img1 = Image(imread(fileName, 1));
+    dim = [info1.Width info1.Height length(infoList)];
+    img = Image.create(dim, class(img1.Data));
+    
+    % Read all images using Tiff class
+    t = Tiff(fileName, 'r');
+    
+    % iterate over slices
+    img.Data(:,:,1,:) = permute(read(t), [2 1 3]);
+    for i = 2:length(infoList)
+        nextDirectory(t);
+        img.Data(:,:,i,:) = permute(read(t), [2 1 3]);
+    end
+    close(t);
+    
+else
+    % For 2D images, use standard Matlab functions
+    img = Image(imread(fileName));
+end
+
+% Parse some Tiff Tags
+if isfield(info1, 'XResolution') && ~isempty(info1.XResolution)
+    img.Spacing(1) = 1.0 / info1.XResolution;
+end
+if isfield(info1, 'YResolution') && ~isempty(info1.YResolution)
+    img.Spacing(2) = 1.0 / info1.YResolution;
+end
+
+% Read additional comments written by ImageJ
+img = parseImageJTiffComments(img, info1);
+
+
+end
+
+function img = parseImageJTiffComments(img, info)
+% Read comments written by ImageJ in the "ImageDescription" Tag
+
+% check the tag is present
+if ~isfield(info, 'ImageDescription')
+    return;
+end
+
+% check the tag has content
+desc = info.ImageDescription;
+if isempty(desc)
+    return;
+end
+
+% check description starts by 'ImageJ'
+if ~strncmpi(desc, 'ImageJ=', 7)
+    return;
+end
+
+% parse tokens in the "ImageDescription' Tag.
+tokens = regexp(desc, '\n', 'split');
+while ~isempty(tokens)
+    if isempty(tokens{1})
+        break;
+    end
+    
+    [name, remain] = strtok( tokens{1}, '=');
+    value = remain(2:end);
+    
+    switch lower(name)
+        case {'imagej', 'images', 'slices', 'loop'}
+            % nothing to do.
+        case 'unit'
+            img.UnitName = value;
+        case 'spacing'
+            img.Spacing(3) = str2double(value);
+            img.Origin = [0 0 0];
+        otherwise
+            warning(['Could not parse ImageJ comment: ' name]);
+    end
+    
+    tokens(1) = [];
+end
+
+end
+
+function img = read_movie(fileName)
+% read a movie as a 5D Image with several frames
+% by converting from the VideoReader output.
+reader = VideoReader(fileName);
+nFrames = reader.NumFrames;
+sizeX = reader.Width;
+sizeY = reader.Height;
+frame0 = reader.read(1);
+nChannels = size(frame0, 3);
+data = zeros([sizeX sizeY 1 nChannels nFrames], 'uint8');
+for i = 1:nFrames
+    data(:,:,:,:,i) = permute(reader.read(i), [2 1 3]);
+end
+img = Image('Data', data);
+img.TimeStep = 1 / reader.FrameRate;
+img.TimeUnit = 's';
+end
