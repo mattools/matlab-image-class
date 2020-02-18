@@ -150,6 +150,9 @@ end
 if isfield(info1, 'YResolution') && ~isempty(info1.YResolution)
     img.Spacing(2) = 1.0 / info1.YResolution;
 end
+if any(img.Spacing(1:2) ~= [1 1])
+    img.Origin = zeros(size(img.Spacing));
+end
 
 % Read additional comments written by ImageJ
 img = parseImageJTiffComments(img, info1);
@@ -176,6 +179,17 @@ if ~strncmpi(desc, 'ImageJ=', 7)
     return;
 end
 
+% default values
+nImages     = size(img, 3);
+nSlices     = size(img, 3);
+nChannels   = size(img, 4);
+nFrames     = size(img, 5);
+hyperstack	= 'false'; %#ok<NASGU>
+spacing     = img.Spacing;
+origin      = img.Origin;
+unitName    = img.UnitName;
+timeStep    = img.TimeStep;
+
 % parse tokens in the "ImageDescription' Tag.
 tokens = regexp(desc, '\n', 'split');
 while ~isempty(tokens)
@@ -187,19 +201,48 @@ while ~isempty(tokens)
     value = remain(2:end);
     
     switch lower(name)
-        case {'imagej', 'images', 'slices', 'loop'}
+        case {'imagej', 'hyperstack', 'mode', 'loop'}
             % nothing to do.
+        case 'images'
+            nImages = str2double(value);
+        case 'channels'
+            nChannels = str2double(value);
+        case 'slices'
+            nSlices = str2double(value);
+        case 'frames'
+            nFrames = str2double(value);
         case 'unit'
             img.UnitName = value;
         case 'spacing'
-            img.Spacing(3) = str2double(value);
-            img.Origin = [0 0 0];
+            spacing(3) = str2double(value);
+            origin = [0 0 0];
+        case 'finterval'
+            timeStep = str2double(value);
+        case {'min', 'max'}
+            % nothing to do.
         otherwise
             warning(['Could not parse ImageJ comment: ' name]);
     end
     
     tokens(1) = [];
 end
+
+% check input validity
+if nSlices * nChannels * nFrames ~= nImages
+    warning('Z x C x T should match image number');
+    return;
+end
+
+% reshape image
+sizeX = size(img.Data, 1);
+sizeY = size(img.Data, 2);
+img = permute(reshape(img, [sizeX sizeY nChannels nSlices nFrames]), [1 2 4 3 5]);
+
+% restore calibration data
+img.Spacing = spacing;
+img.Origin = origin;
+img.UnitName = unitName;
+img.TimeStep = timeStep;
 
 end
 

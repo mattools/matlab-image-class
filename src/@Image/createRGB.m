@@ -111,7 +111,7 @@ end
 if nd == 2
     dim = [dim 1];
 end
-newDim = [dim(1:3) 3];
+newDim = [dim(1:3) 3 frameNumber(refImage)];
 
 % compute data type of image
 if isa(refImage, 'Image')
@@ -128,9 +128,9 @@ end
 rgb = zeros(newDim, newType);
 
 % fill result with data
-if ~isempty(red),   rgb(:,:,:,1) = red;   end
-if ~isempty(green), rgb(:,:,:,2) = green; end
-if ~isempty(blue),  rgb(:,:,:,3) = blue;  end
+if ~isempty(red),   rgb(:,:,:,1,:) = red;   end
+if ~isempty(green), rgb(:,:,:,2,:) = green; end
+if ~isempty(blue),  rgb(:,:,:,3,:) = blue;  end
 
 % create new image object
 rgb = Image('data', rgb, 'type', 'color');
