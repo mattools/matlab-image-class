@@ -53,7 +53,7 @@ if nd == 2
 
 elseif nd == 3
     % parse axis, and check bounds
-    axis = Image.parseAxisIndex(axis);
+    axis = parseAxisIndex(axis);
     
     % positive or negative rotation
     n = 1;
