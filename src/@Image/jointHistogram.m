@@ -50,9 +50,12 @@ end
 vals1 = [];
 
 % check if a ROI is specified
-if ~isempty(varargin) && sum(size(obj1) ~= size(varargin{1})) == 0
-    roi = varargin{1};
-    varargin(1) = [];
+if ~isempty(varargin) 
+    var1 = varargin{1};
+    if ndims(var1) == ndims(obj1) && sum(size(obj1) ~= size(var1)) == 0
+        roi = varargin{1};
+        varargin(1) = [];
+    end
 end
 
 % extract user-specified number of bins, or bin values
