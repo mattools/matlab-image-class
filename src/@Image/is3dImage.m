@@ -17,7 +17,7 @@ function b = is3dImage(obj)
 %
 %
 %   See also
-%     isPlanarImage, ndims, size
+%     isPlanarImage, isColorImage, isTimeLapseImage, ndims, size
 %
 
 % ------

@@ -22,6 +22,13 @@ function img = read(fileName, varargin)
 %   % read a 3D image
 %   img = Image.read('brainMRI.hdr');
 %
+%   % read a time-lapse image
+%   img = Image.read('xylophone.mp4');
+%   isTimeLapseImage(img)
+%   ans =
+%      logical
+%       1
+%
 %   See also
 %     imread, readSeries, write, fileInfo
 %
