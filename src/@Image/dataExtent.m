@@ -1,8 +1,8 @@
 function varargout = dataExtent(obj, varargin)
-%Intensity extent of image data.
+% Intensity extent of image data.
 %
 %   EXTENT = dataExtent(IMG)
-%   [VMIN VMAX] = dataExtent(IMG)
+%   [VMIN, VMAX] = dataExtent(IMG)
 %   Returns minimal and maximal intensity values in image. 
 %
 %   Example
@@ -12,7 +12,7 @@ function varargout = dataExtent(obj, varargin)
 %         7   253
 %
 %   See also
-%     min, max, grayscaleExtent
+%     min, max, dataTypeExtent
 %
 
 % ------

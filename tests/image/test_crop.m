@@ -20,6 +20,7 @@ test_suite = buildFunctionHandleTestSuite(localfunctions);
 function test_2d  %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
+clearCalibration(img);
 
 img2 = img.crop([51 200 51 150]);
 

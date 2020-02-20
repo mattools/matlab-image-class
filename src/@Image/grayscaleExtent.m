@@ -1,6 +1,8 @@
 function varargout = grayscaleExtent(obj)
 % Grayscale extent of input image data type.
 %
+%   Deprecated: please use methods "dataTypeExtent" or "dataExtent".
+%
 %   EXTENT = grayscaleExtent(IMG)
 %   [GMIN, GMAX] = grayscaleExtent(IMG)
 %   Returns minimal and maximal values of image data type. If image is of
@@ -14,7 +16,7 @@ function varargout = grayscaleExtent(obj)
 %         0   255
 %
 %   See also
-%     intmin, intmax, min, max, dataExtent
+%     dataTypeExtent, dataExtent, intmin, intmax, min, max, dataExtent
 %
 
 % ------
@@ -22,6 +24,8 @@ function varargout = grayscaleExtent(obj)
 % e-mail: david.legland@inra.fr
 % Created: 2012-02-27,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
+
+warning('method ''grayscaleExtent'' will be replaced by ''dataTypeExtent'' in a future release');
 
 % compute minimal 
 if isinteger(obj.Data)
