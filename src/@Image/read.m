@@ -150,17 +150,6 @@ else
     img = Image(imread(fileName));
 end
 
-% Parse some Tiff Tags
-if isfield(info1, 'XResolution') && ~isempty(info1.XResolution)
-    img.Spacing(1) = 1.0 / info1.XResolution;
-end
-if isfield(info1, 'YResolution') && ~isempty(info1.YResolution)
-    img.Spacing(2) = 1.0 / info1.YResolution;
-end
-if any(img.Spacing(1:2) ~= [1 1])
-    img.Origin = zeros(size(img.Spacing));
-end
-
 % Read additional comments written by ImageJ
 img = parseImageJTiffComments(img, info1);
 
