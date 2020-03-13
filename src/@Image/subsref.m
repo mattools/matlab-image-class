@@ -72,8 +72,9 @@ elseif strcmp(type, '()')
     end
     
 elseif strcmp(type, '{}')
-    error('Image:subsref', ...
-        'can not manage braces reference');
+    % In case of braces indexing, returns a new Image instance
+    varargout{1} = Image('Data', obj.Data(s1.subs{:}), 'Parent', obj);
+    
 else
     error('Image:subsref', ...
         ['can not manage such reference: ' type]);
