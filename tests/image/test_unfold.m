@@ -1,4 +1,4 @@
-function test_suite = test_unfold(varargin)
+function tests = test_unfold(varargin)
 %TEST_NUMEL  One-line description here, please.
 %
 %   output = test_unfold(input)
@@ -15,22 +15,22 @@ function test_suite = test_unfold(varargin)
 % Created: 2011-06-14,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_2d_color
+function test_2d_color(testCase)
 
 img = Image.read('peppers.png');
 nr = elementNumber(img);
 nc = channelNumber(img);
 
 tab = unfold(img);
-assertEqual(size(tab), [nr nc]);
+assertEqual(testCase, size(tab), [nr nc]);
 
-function test_2d_color_getNames
+function test_2d_color_getNames(testCase)
 
 img = Image.read('peppers.png');
 
 [tab, names] = unfold(img);
-assertTrue(iscell(names));
-assertEqual(length(names), size(tab, 2));
+assertTrue(testCase, iscell(names));
+assertEqual(testCase, length(names), size(tab, 2));
 

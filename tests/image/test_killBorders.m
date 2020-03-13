@@ -1,4 +1,4 @@
-function test_suite = test_killBorders(varargin)
+function tests = test_killBorders(varargin)
 %TEST_KILLBORDERS  Test case for the file clearBorders
 %
 %   Test case for the file killBorders
@@ -15,9 +15,9 @@ function test_suite = test_killBorders(varargin)
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_Simple_C4 %#ok<*DEFNU>
+function test_Simple_C4(testCase) %#ok<*DEFNU>
 % Test call of function without argument
 
 data = [...
@@ -37,10 +37,10 @@ exp4 = Image.create([...
 
 res = killBorders(img);
 
-assertTrue(sum(res ~= exp4) == 0);
+assertTrue(testCase, sum(res ~= exp4) == 0);
 
 
-function test_Simple_C8 %#ok<*DEFNU>
+function test_Simple_C8(testCase) %#ok<*DEFNU>
 % Test call of function without argument
 
 data = [...
@@ -60,4 +60,4 @@ exp8 = Image.create([...
 
 res = killBorders(img, 8);
 
-assertTrue(sum(res ~= exp8) == 0);
+assertTrue(testCase, sum(res ~= exp8) == 0);

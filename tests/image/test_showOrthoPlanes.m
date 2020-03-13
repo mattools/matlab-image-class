@@ -1,4 +1,4 @@
-function test_suite = test_showOrthoPlanes(varargin)
+function tests = test_showOrthoPlanes(varargin)
 %TEST_SHOWORTHOPLANES  One-line description here, please.
 %
 %   output = test_showOrthoPlanes(input)
@@ -15,9 +15,9 @@ function test_suite = test_showOrthoPlanes(varargin)
 % Created: 2011-07-20,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_brain %#ok<*DEFNU>
+function test_brain(testCase) %#ok<*DEFNU>
 
 img = Image.read('brainMRI.hdr');
 figure(1); clf; hold on;

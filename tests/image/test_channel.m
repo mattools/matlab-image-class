@@ -1,4 +1,4 @@
-function test_suite = test_channel(varargin)
+function tests = test_channel(varargin)
 %TEST_CHANNEL  One-line description here, please.
 %
 %   output = test_channel(input)
@@ -15,9 +15,9 @@ function test_suite = test_channel(varargin)
 % Created: 2011-07-06,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_2d %#ok<*DEFNU>
+function test_2d(testCase) %#ok<*DEFNU>
 
 img = Image.read('peppers.png');
 dim = size(img);
@@ -25,4 +25,4 @@ dim = size(img);
 red =  channel(img, 1);
 dim2 = size(red);
 
-assertEqual(dim, dim2);
+assertEqual(testCase, dim, dim2);

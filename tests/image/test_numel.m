@@ -1,4 +1,4 @@
-function test_suite = test_numel(varargin)
+function tests = test_numel(varargin)
 %TEST_NUMEL  One-line description here, please.
 %
 %   output = test_numel(input)
@@ -15,9 +15,9 @@ function test_suite = test_numel(varargin)
 % Created: 2011-06-14,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_2d_gray %#ok<*DEFNU>
+function test_2d_gray(testCase) %#ok<*DEFNU>
 
 % img = Image.read('cameraman.tif');
 % exp = 256 * 256;
@@ -25,7 +25,7 @@ function test_2d_gray %#ok<*DEFNU>
 % assertEqual(exp, n);
 
 
-function test_2d_color
+function test_2d_color(testCase)
 
 % img = Image.read('peppers.png');
 % s1 = size(img, 1);

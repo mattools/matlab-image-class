@@ -1,4 +1,4 @@
-function test_suite = test_show(varargin)
+function tests = test_show(varargin)
 %TEST_SHOW  One-line description here, please.
 %
 %   output = test_show(input)
@@ -15,9 +15,9 @@ function test_suite = test_show(varargin)
 % Created: 2010-11-17,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_simple() %#ok<*DEFNU>
+function test_simple(testCase) %#ok<*DEFNU>
 
 % test with image full of ones
 dat = ones(10, 15);

@@ -1,4 +1,4 @@
-function test_suite = test_max(varargin)
+function tests = test_max(varargin)
 %TEST_MAX  One-line description here, please.
 %
 %   output = test_max(input)
@@ -15,50 +15,50 @@ function test_suite = test_max(varargin)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_2d %#ok<*DEFNU>
+function test_2d(testCase) %#ok<*DEFNU>
 
 img = Image.create(uint8([10 20 30;40 50 60]));
 exp = uint8(60);
 
 res = max(img);
-assertEqual([1 1], size(res));
-assertEqual(exp, res);
+assertEqual(testCase, [1 1], size(res));
+assertEqual(testCase, exp, res);
 
 % result should have same type as image pixels
-assertTrue(isa(res, 'uint8'));
+assertTrue(testCase, isa(res, 'uint8'));
 
 
-function test_2d_color 
+function test_2d_color(testCase) 
 
 img = Image.read('peppers.png');
 
 res = max(img);
-assertEqual([1 3], size(res));
+assertEqual(testCase, [1 3], size(res));
 
 
-function test_2d_color_2
+function test_2d_color_2(testCase)
 
 img = Image.read('peppers.png');
 
 res = max(img, 50);
 assertTrue(isa(res, 'Image'));
 
-assertEqual([50 50 50], min(res));
+assertEqual(testCase, [50 50 50], min(res));
 
 
-function test_3d
+function test_3d(testCase)
 
 dat = uint8(cat(3, [10 20 30;40 50 60], [30 40 50;60 70 80]));
 img = Image.create(dat);
 exp = uint8(80);
 
 res = max(img);
-assertEqual([1 1], size(res));
-assertEqual(exp, res);
+assertEqual(testCase, [1 1], size(res));
+assertEqual(testCase, exp, res);
 
 % result should have same type as image pixels
-assertTrue(isa(res, 'uint8'));
+assertTrue(testCase, isa(res, 'uint8'));
 
 

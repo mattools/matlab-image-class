@@ -1,4 +1,4 @@
-function test_suite = test_ctranspose(varargin)
+function tests = test_ctranspose(varargin)
 %TEST_CTRANSPOSE  One-line description here, please.
 %
 %   output = test_ctranspose(input)
@@ -15,20 +15,20 @@ function test_suite = test_ctranspose(varargin)
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_grayscale %#ok<*DEFNU>
+function test_grayscale(testCase) %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 dim = size(img);
 img2 = img'; 
 dim2 = size(img2);
-assertEqual(dim, dim2([2 1]));
+assertEqual(testCase, dim, dim2([2 1]));
 
-function test_color
+function test_color(testCase)
 
 img = Image.read('peppers.png');
 dim = size(img);
 img2 = img'; 
 dim2 = size(img2);
-assertEqual(dim, dim2([2 1]));
+assertEqual(testCase, dim, dim2([2 1]));

@@ -1,4 +1,4 @@
-function test_suite = test_showXYZSlices(varargin)
+function tests = test_showXYZSlices(varargin)
 %TEST_SHOWXYZSLICES  One-line description here, please.
 %
 %   output = test_showXYZSlices(input)
@@ -15,9 +15,9 @@ function test_suite = test_showXYZSlices(varargin)
 % Created: 2011-07-20,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function testBasic() %#ok<*DEFNU>
+function testBasic(testCase) %#ok<*DEFNU>
 
 img = Image.read('brainMRI.hdr');
 figure(1); clf; hold on;

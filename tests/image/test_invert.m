@@ -1,4 +1,4 @@
-function test_suite = test_invert(varargin)
+function tests = test_invert(varargin)
 %TEST_INVERT  One-line description here, please.
 %
 %   output = test_invert(input)
@@ -15,21 +15,21 @@ function test_suite = test_invert(varargin)
 % Created: 2011-06-12,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_cameraman %#ok<*DEFNU>
+function test_cameraman(testCase) %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 inv = invert(img);
 
-assertEqual(size(img), size(inv));
+assertEqual(testCase, size(img), size(inv));
 
-function test_peppers
+function test_peppers(testCase)
 
 img = Image.read('peppers.png');
 inv = invert(img);
 
-assertEqual(size(img), size(inv));
+assertEqual(testCase, size(img), size(inv));
 
 
 

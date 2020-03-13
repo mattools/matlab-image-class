@@ -1,4 +1,4 @@
-function test_suite = test_isColorImage(varargin)
+function tests = test_isColorImage(varargin)
 %TEST_ISCOLORIMAGE  Test case for the file isColorImage
 %
 %   Test case for the file isColorImage
@@ -15,24 +15,24 @@ function test_suite = test_isColorImage(varargin)
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_grayscale %#ok<*DEFNU>
+function test_grayscale(testCase) %#ok<*DEFNU>
 % Test on a grayscale image
 img = Image.read('cameraman.tif');
 res = isColorImage(img);
-assertFalse(res);
+assertFalse(testCase, res);
       
 
-function test_binary
+function test_binary(testCase)
 % Test on a binary image
 img = Image.read('circles.png');
 res = isColorImage(img);
-assertFalse(res);
+assertFalse(testCase, res);
 
 
-function test_color
+function test_color(testCase)
 % Test on a color image
 img = Image.read('peppers.png');
 res = isColorImage(img);
-assertTrue(res);
+assertTrue(testCase, res);

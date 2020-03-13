@@ -1,4 +1,4 @@
-function test_suite = test_histogram(varargin)
+function tests = test_histogram(varargin)
 %TEST_histogram  One-line description here, please.
 %
 %   output = test_histogram(input)
@@ -15,41 +15,41 @@ function test_suite = test_histogram(varargin)
 % Created: 2010-09-10,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_cameraman %#ok<*DEFNU>
+function test_cameraman(testCase) %#ok<*DEFNU>
 
 img = Image.read('cameraman.tif');
 h = histogram(img);
 
-assertEqual(256, length(h));
-assertEqual(elementNumber(img), sum(h));
+assertEqual(testCase, 256, length(h));
+assertEqual(testCase, elementNumber(img), sum(h));
 
 
-function test_cameraman_nbins
+function test_cameraman_nbins(testCase)
 
 img = Image.read('cameraman.tif');
 h0 = histogram(img);
 h = histogram(img, 256);
-assertEqual(h0, h);
+assertEqual(testCase, h0, h);
 
 
-function test_cameraman_xlims 
+function test_cameraman_xlims(testCase)
 
 img = Image.read('cameraman.tif');
 h0 = histogram(img);
 h = histogram(img, [0 255]);
-assertEqual(h0, h);
+assertEqual(testCase, h0, h);
 
-function test_cameraman_xbins 
+function test_cameraman_xbins(testCase)
 
 img = Image.read('cameraman.tif');
 h0 = histogram(img);
 h = histogram(img, linspace(0, 255, 256));
-assertEqual(h0, h);
+assertEqual(testCase, h0, h);
 
 
-function test_cameraman_display
+function test_cameraman_display(testCase)
 
 img = Image.read('cameraman.tif');
 figure;
@@ -57,7 +57,7 @@ histogram(img);
 close;
 
 
-function test_cameraman_float
+function test_cameraman_float(testCase)
 
 img = Image.read('cameraman.tif');
 h0 = histogram(img);
@@ -67,32 +67,32 @@ buffer = double(buffer)/255;
 img2 = Image.create(buffer);
 h = histogram(img2, [0 1]);
 
-assertEqual(elementNumber(img2), sum(h));
-assertEqual(h0, h);
+assertEqual(testCase, elementNumber(img2), sum(h));
+assertEqual(testCase, h0, h);
 
 
-function test_cameraman_roi
+function test_cameraman_roi(testCase)
 
 img = Image.read('cameraman.tif');
 mask = img < 80;
 h1 = histogram(img, mask);
 h2 = histogram(img, ~mask);
 
-assertEqual(256, length(h1));
-assertEqual(256, length(h2));
-assertEqual(elementNumber(img), sum(h1)+sum(h2));
+assertEqual(testCase, 256, length(h1));
+assertEqual(testCase, 256, length(h2));
+assertEqual(testCase, elementNumber(img), sum(h1)+sum(h2));
 
 
-function test_peppers
+function test_peppers(testCase)
 
 img = Image.read('peppers.png');
 h = histogram(img);
 
-assertEqual([256 3], size(h));
-assertEqual(elementNumber(img), sum(h(:,1)));
+assertEqual(testCase, [256 3], size(h));
+assertEqual(testCase, elementNumber(img), sum(h(:,1)));
 
 
-function test_peppers_display
+function test_peppers_display(testCase)
 
 img = Image.read('peppers.png');
 figure;
@@ -115,16 +115,16 @@ close;
 % assertEqual(elementNumber(img), sum(h1(:))+sum(h2(:)));
 
 
-function test_brainMRI
+function test_brainMRI(testCase)
 
 X = Image.read('brainMRI.hdr');
 h = histogram(X);
-assertEqual(elementNumber(X), sum(h(:)));
+assertEqual(testCase, elementNumber(X), sum(h(:)));
 
-function test_brainMRI_roi_bins
+function test_brainMRI_roi_bins(testCase)
 
 X = Image.read('brainMRI.hdr');
 h = histogram(X, X>0, 1:88);
 
-assertEqual(88, length(h));
+assertEqual(testCase, 88, length(h));
 

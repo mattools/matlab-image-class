@@ -1,4 +1,4 @@
-function test_suite = test_componentLabeling
+function tests = test_componentLabeling
 %TEST_COMPONENTLABELING  Test case for the file componentLabeling
 %
 %   Test case for the file componentLabeling
@@ -15,7 +15,7 @@ function test_suite = test_componentLabeling
 % Created: 2019-08-22,    using Matlab 9.6.0.1072779 (R2019a)
 % Copyright 2019 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
 function test_processCoins(testCase) %#ok<*DEFNU>
 
@@ -24,4 +24,4 @@ bin = opening(img > 80, ones(3, 3));
 lbl = componentLabeling(bin);
 labelNumber = max(lbl);
 
-assertEqual(10, labelNumber);
+assertEqual(testCase, 10, labelNumber);

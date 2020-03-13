@@ -1,4 +1,4 @@
-function test_suite = test_isBinaryImage(varargin)
+function tests = test_isBinaryImage(varargin)
 %TEST_ISBINARYIMAGE  Test case for the file isBinaryImage
 %
 %   Test case for the file isBinaryImage
@@ -15,24 +15,24 @@ function test_suite = test_isBinaryImage(varargin)
 % Created: 2011-09-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_grayscale %#ok<*DEFNU>
+function test_grayscale(testCase) %#ok<*DEFNU>
 % Test on a grayscale image
 img = Image.read('cameraman.tif');
 res = isBinaryImage(img);
-assertFalse(res);
+assertFalse(testCase, res);
       
 
-function test_binary
+function test_binary(testCase)
 % Test on a binary image
 img = Image.read('circles.png');
 res = isBinaryImage(img);
-assertTrue(res);
+assertTrue(testCase, res);
 
 
-function test_color
+function test_color(testCase)
 % Test on a color image
 img = Image.read('peppers.png');
 res = isBinaryImage(img);
-assertFalse(res);
+assertFalse(testCase, res);

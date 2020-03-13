@@ -1,4 +1,4 @@
-function test_suite = test_plus(varargin)
+function tests = test_plus(varargin)
 %TEST_PLUS  Test case for the file plus
 %
 %   Test case for the file plus
@@ -15,18 +15,18 @@ function test_suite = test_plus(varargin)
 % Created: 2011-08-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_TwoImages %#ok<*DEFNU>
+function test_TwoImages(testCase) %#ok<*DEFNU>
 
 img1 = Image.create([1 2 3 4;5 6 7 8;9 10 11 12]);
 img2 = Image.create(ones(3, 4));
 
 exp = Image.create([2 3 4 5;6 7 8 9;10 11 12 13]);
 res = img1 + img2;
-assertElementsAlmostEqual(exp.Data, res.Data);
+assertEqual(testCase, exp.Data, res.Data);
 
-function test_AddConstant 
+function test_AddConstant(testCase)
 
 img1 = Image.create([1 2 3 4;5 6 7 8;9 10 11 12]);
 
@@ -36,9 +36,9 @@ res = img1 + 2;
 assertElementsAlmostEqual(exp.Data, res.Data);
 
 res = 2 + img1;
-assertElementsAlmostEqual(exp.Data, res.Data);
+assertEqual(testCase, exp.Data, res.Data);
 
-function test_Images3d
+function test_Images3d(testCase)
 
 img1 = Image.create(uint8(200*ones([2 3 4])));
 
@@ -48,6 +48,6 @@ img2(2, 2, 2) = 100;
 res = img1 + img2;
 exp = Image.create(uint8(200*ones([2 3 4])));
 exp(2, 2, 2) = 255;
-assertEqual(0, sum(absdiff(exp, res)));
+assertEqual(testCase, 0, sum(absdiff(exp, res)));
 
 

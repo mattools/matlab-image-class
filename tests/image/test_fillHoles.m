@@ -1,4 +1,4 @@
-function test_suite = test_fillHoles(varargin)
+function tests = test_fillHoles(varargin)
 %TEST_FILLHOLES  Test case for the file fillHoles
 %
 %   Test case for the file fillHoles
@@ -15,9 +15,9 @@ function test_suite = test_fillHoles(varargin)
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_Conn4 %#ok<*DEFNU>
+function test_Conn4(testCase) %#ok<*DEFNU>
 % Test call of function without argument
 
 dat = [...
@@ -37,9 +37,9 @@ exp4 = Image.create([...
 
 res = fillHoles(img);
 
-assertTrue(sum(res ~= exp4) == 0);
+assertTrue(testCase, sum(res ~= exp4) == 0);
 
-function test_Conn8
+function test_Conn8(testCase)
 % Test call of function without argument
 
 dat = [...
@@ -59,4 +59,4 @@ exp8 = Image.create([...
 
 res = fillHoles(img, 8);
 
-assertTrue(sum(res ~= exp8) == 0);
+assertTrue(testCase, sum(res ~= exp8) == 0);

@@ -1,4 +1,4 @@
-function test_suite = test_catChannels(varargin) 
+function tests = test_catChannels(varargin) 
 %TEST_CATCHANNELS  Test case for the file catChannels
 %
 %   Test case for the file catChannels
@@ -15,12 +15,12 @@ function test_suite = test_catChannels(varargin)
 % Created: 2011-11-22,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_Simple %#ok<*DEFNU>
+function test_Simple(testCase) %#ok<*DEFNU>
 % Test call of function without argument
 img = Image.read('cameraman.tif');
 res = catChannels(img, img, invert(img));
 assertEqual(3, channelNumber(res));
 
-assertEqual(size(img), size(res));
+assertEqual(testCase, size(img), size(res));

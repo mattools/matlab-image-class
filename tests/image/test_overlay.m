@@ -1,4 +1,4 @@
-function test_suite = test_overlay(varargin)
+function tests = test_overlay(varargin)
 %TEST_OVERLAY  Test case for the file overlay
 %
 %   Test case for the file overlay
@@ -15,9 +15,9 @@ function test_suite = test_overlay(varargin)
 % Created: 2012-01-05,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_Circles %#ok<*DEFNU>
+function test_Circles(testCase) %#ok<*DEFNU>
 % test overlay on a simple binary image
 
 img = Image.read('circles.png');
@@ -25,10 +25,10 @@ img = Image.read('circles.png');
 bnd = boundary(img);
 ovr = overlay(img, bnd);
 
-assertTrue(isColorImage(ovr));
-assertEqual(size(ovr), size(img));
+assertTrue(testCase, isColorImage(ovr));
+assertEqual(testCase, size(ovr), size(img));
 
-function test_multipleOverlay
+function test_multipleOverlay(testCase)
 img = Image.read('coins.png');
 bin = closing(img>100, ones(3, 3));
 bnd = boundary(bin);
@@ -36,17 +36,17 @@ wat = watershed(distanceMap(bin), 8);
 
 % compute and display overlay as 3 separate bands
 ovr = overlay(img, bnd, [], wat==0);
-assertTrue(isColorImage(ovr));
-assertEqual(size(ovr), size(img));
+assertTrue(testCase, isColorImage(ovr));
+assertEqual(testCase, size(ovr), size(img));
 
 
 % display result with different colors
 ovr = overlay(img, bnd, 'y', wat==0, [1 0 1]);
-assertTrue(isColorImage(ovr));
-assertEqual(size(ovr), size(img));
+assertTrue(testCase, isColorImage(ovr));
+assertEqual(testCase, size(ovr), size(img));
 
 
-function test_brainMRI
+function test_brainMRI(testCase)
 % Compute overlay on a 3D image
 
 img = Image.read('brainMRI.hdr'); % read 3D data
@@ -55,11 +55,11 @@ bin = closing(img > 0, se);       % binarize and remove small holes
 bnd = boundary(bin);              % compute boundary
 ovr = overlay(img*3, bnd, 'm');   % compute overlay
 
-assertTrue(isColorImage(ovr));
-assertEqual(size(ovr), size(img));
+assertTrue(testCase, isColorImage(ovr));
+assertEqual(testCase, size(ovr), size(img));
 
 
-function test_doubleImage
+function test_doubleImage(testCase)
 
 img = Image.read('cameraman.tif');
 gn = norm(gradient(img));
@@ -67,13 +67,13 @@ bin = gn > 50;
 
 ovr = overlay(gn, bin);
 
-assertTrue(isColorImage(ovr));
-assertEqual(size(ovr), size(img));
+assertTrue(testCase, isColorImage(ovr));
+assertEqual(testCase, size(ovr), size(img));
 
-[r g b] = splitChannels(ovr); %#ok<ASGLU,NASGU>
-assertTrue(sum(g > 128) < prod(size(img)) / 2) %#ok<PSIZE>
+[r, g, b] = splitChannels(ovr); %#ok<ASGLU>
+assertTrue(testCase, sum(g > 128) < prod(size(img)) / 2) %#ok<PSIZE>
 
-function test_OverlayImage
+function test_OverlayImage(testCase)
 
 % read input grayscale image
 img = Image.read('cameraman.tif');
@@ -87,5 +87,5 @@ mask(80:180, 20:120) = true;
 % compute and show the overlay
 ovr = overlay(img, mask, yellow);
 
-assertTrue(isColorImage(ovr));
-assertEqual(size(ovr), size(img));
+assertTrue(testCase, isColorImage(ovr));
+assertEqual(testCase, size(ovr), size(img));

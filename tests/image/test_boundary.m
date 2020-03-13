@@ -1,4 +1,4 @@
-function test_suite = test_boundary(varargin)
+function tests = test_boundary(varargin)
 %TEST_BOUNDARY  One-line description here, please.
 %
 %   output = test_boundary(input)
@@ -15,110 +15,121 @@ function test_suite = test_boundary(varargin)
 % Created: 2011-06-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-test_suite = buildFunctionHandleTestSuite(localfunctions);
+tests = functiontests(localfunctions);
 
-function test_basic %#ok<*DEFNU>
+function test_basic(testCase) %#ok<*DEFNU>
 
 img = Image.read('circles.png');
-bnd = boundary(img);
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
 
-function test_rect
+bnd = boundary(img);
+
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
+
+function test_rect(testCase)
 
 img = Image.read('circles.png');
 img = crop(img, [1 200 1 255]);
+
 bnd = boundary(img);
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
 
-function test_Inner
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
+
+function test_Inner(testCase)
 
 img = Image.read('circles.png');
+
 bnd = boundary(img, 'inner');
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
 
-function test_Outer
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
+
+function test_Outer(testCase)
 
 img = Image.read('circles.png');
+
 bnd = boundary(img, 'outer');
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
+
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
 
 
-function test_Conn8
+function test_Conn8(testCase)
 
 img = Image.read('circles.png');
+
 bnd = boundary(img, 8);
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
 
-function test_basic_3d
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
+
+
+function test_basic_3d(testCase)
 
 img = Image.create(false([5 5 5]));
 img(2:4, 2:4, 2:4) = true;
 
 bnd = boundary(img);
 
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
 
 exp = Image.create(false([5 5 5]));
 exp(2:4, 2:4, 2:4) = true;
 exp(3, 3, 3) = false;
-assertEqual(0, sum(exp ~= bnd));
+assertEqual(testCase, 0, sum(exp ~= bnd));
 
 
-function test_inner_3d
+function test_inner_3d(testCase)
 
 img = Image.create(false([5 5 5]));
 img(2:4, 2:4, 2:4) = true;
 
 bnd = boundary(img, 'inner');
 
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
 
 exp = Image.create(false([5 5 5]));
 exp(2:4, 2:4, 2:4) = true;
 exp(3, 3, 3) = false;
-assertEqual(0, sum(exp ~= bnd));
+assertEqual(testCase, 0, sum(exp ~= bnd));
 
 
-function test_outer_3d
+function test_outer_3d(testCase)
 
 img = Image.create(false([5 5 5]));
 img(2:4, 2:4, 2:4) = true;
 
 bnd = boundary(img, 'outer');
 
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
 
 
-function test_outer_conn26_3d
+function test_outer_conn26_3d(testCase)
 
 img = Image.create(false([5 5 5]));
 img(2:4, 2:4, 2:4) = true;
 
 bnd = boundary(img, 26, 'outer');
 
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
 
 exp = Image.create(true([5 5 5]));
 exp(2:4, 2:4, 2:4) = false;
-assertEqual(0, sum(exp ~= bnd));
+assertEqual(testCase, 0, sum(exp ~= bnd));
 
 
-function test_conn26_3d
+function test_conn26_3d(testCase)
 
 img = Image.create(false([5 5 5]));
 img(2:4, 2:4, 2:4) = true;
 
 bnd = boundary(img, 26);
 
-assertTrue(isa(bnd, 'Image'));
-assertEqual(size(img), size(bnd));
+assertTrue(testCase, isa(bnd, 'Image'));
+assertEqual(testCase, size(img), size(bnd));
 
