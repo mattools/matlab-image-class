@@ -79,7 +79,7 @@ end
 %% Extract and normalise slice
 
 % extract the slice
-planarSlice = slice(obj, dim, index);
+planarSlice = slice3d(obj, dim, index);
 
 displayData = computeSliceRGB(planarSlice, displayRange, lut);
 
@@ -287,7 +287,7 @@ set(hs, 'UserData', data);
 %% Update content of the surface object with current slice
 
 % extract slice corresponding to current index
-planarSlice = slice(data.image, data.dim, data.index);
+planarSlice = slice3d(data.image, data.dim, data.index);
 displayData = computeSliceRGB(planarSlice, data.displayRange, data.lut);
 set(hs, 'CData', displayData);
 

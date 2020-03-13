@@ -20,7 +20,7 @@ test_suite = buildFunctionHandleTestSuite(localfunctions);
 function test_Simple %#ok<*DEFNU>
 % Test call of function without argument
 img = Image.read('brainMRI.hdr');
-sli = slice(img, 3, 12);
+sli = slice3d(img, 3, 12);
 sli2 = squeeze(sli);
 
 assertEqual(2, ndims(sli2));

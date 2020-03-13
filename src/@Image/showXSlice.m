@@ -45,7 +45,7 @@ params = {'facecolor', 'texturemap', 'edgecolor', 'none'};
 yz_x = ones(size(yz_y)) * lx(sliceIndex);
 
 % extract slice in x direction
-sli = slice(obj, 1, sliceIndex);
+sli = slice3d(obj, 1, sliceIndex);
 sli = getBuffer(squeeze(sli));
 
 % eventually converts to uint8, rescaling data between 0 and max value

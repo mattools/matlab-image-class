@@ -38,9 +38,9 @@ end
 %% Extract data
 
 % extract each slice
-sliceXY = squeeze(slice(obj, 3, pos(3)));
-sliceZY = squeeze(slice(obj, 1, pos(1)))';
-sliceXZ = squeeze(slice(obj, 2, pos(2)));
+sliceXY = squeeze(slice3d(obj, 3, pos(3)));
+sliceZY = squeeze(slice3d(obj, 1, pos(1)))';
+sliceXZ = squeeze(slice3d(obj, 2, pos(2)));
 
 % get spatial calibration
 xdata = xData(obj);
@@ -318,9 +318,9 @@ img = data.img;
 pos = data.pos;
 
 % extract each slice
-sliceXY = squeeze(slice(img, 3, pos(3)));
-sliceZY = squeeze(slice(img, 1, pos(1)));
-sliceXZ = squeeze(slice(img, 2, pos(2)));
+sliceXY = squeeze(slice3d(img, 3, pos(3)));
+sliceZY = squeeze(slice3d(img, 1, pos(1)));
+sliceXZ = squeeze(slice3d(img, 2, pos(2)));
 
 % get spatial calibration
 xdata = xData(img);
