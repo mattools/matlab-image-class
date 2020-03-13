@@ -244,7 +244,7 @@ methods
             nd = length(imageSize);
             
             % check if image is color or grayscale
-            if nd == 3 && imageSize(3) == 3 && sum(imageSize(1:2) > 5) == 2
+            if nd >= 3 && imageSize(3) == 3 && sum(imageSize(1:2) > 5) == 2
                 % init color image
                 setInnerData(obj, permute(mat, [2 1 4 3 5]));
             else
