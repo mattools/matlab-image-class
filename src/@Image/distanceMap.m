@@ -1,10 +1,15 @@
 function map = distanceMap(obj, varargin)
 % Distance map of a binary image (2D or 3D).
 %
-%   MAP = distanceMap(IMG)
+%   MAP = distanceMap(BIN)
+%   The distance transform is an operator applied to binary images, that
+%   results in a graylevel image that contains, for each foregournd pixel,
+%   the distance to the closest background pixel.  
 %
 %   Example
-%   distanceMap
+%     img = Image.read('circles.png');
+%     map = distanceMap(img);
+%     show(map)
 %
 %   See also
 %
@@ -21,7 +26,7 @@ if ~strcmp(obj.Type, 'binary')
 end
 
 % compute distance map
-dist = bwdist(obj.Data, varargin{:});
+dist = bwdist(~obj.Data, varargin{:});
 
 newName = '';
 if ~isempty(obj.Name)
