@@ -36,9 +36,13 @@ nr = elementNumber(obj);
 nc = channelNumber(obj);
 
 % create column names array
-colNames = cell(1, nc);
-for i = 1:nc
-    colNames{i} = sprintf('Ch%02d', i);
+colNames = obj.ChannelNames;
+if isempty(obj.ChannelNames) || length(obj.ChannelNames) ~= nc
+    warning('ChannelNames property was not correctly initialized');
+    colNames = cell(1, nc);
+    for i = 1:nc
+        colNames{i} = sprintf('Ch%02d', i);
+    end
 end
 
 % create data table
