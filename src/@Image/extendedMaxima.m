@@ -2,9 +2,17 @@ function res = extendedMaxima(obj, dyn, varargin)
 % Extended maxima of the image.
 %
 %   IMGMAX = extendedMaxima(IMG, DYN)
+%   Computes extended maxima of input image IMG, using the dynamic value
+%   DYN. 
+%
+%   IMGMAX = extendedMaxima(IMG, DYN, CONN)
+%   Also specifies the connectivity for computing the maxima.
 %
 %   Example
-%   extendedMaxima
+%     % Compute extended maxima to identify grains
+%     img = Image.read('rice.png');
+%     emax30 = extendedMaxima(img, 30);
+%     figure; show(emax30)
 %
 %   See also
 %     extendedMinima, regionalMaxima
@@ -21,9 +29,8 @@ if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
-% default values
+% default value for connectivity
 conn = 4;
-
 if obj.Dimension == 3
     conn = 6;
 end
