@@ -12,11 +12,11 @@ function map = distanceMap(obj, varargin)
 %     show(map)
 %
 %   See also
-%
+%     skeleton, geodesicDistanceMap
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-03-27,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
