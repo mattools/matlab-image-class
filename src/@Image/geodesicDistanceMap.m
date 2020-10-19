@@ -40,36 +40,25 @@ function dist = geodesicDistanceMap(marker, mask, varargin)
 %   Displays info on iterations.
 %
 %   Example
-%   % computes distance function inside a complex particle
+%     % computes distance function inside a complex particle
 %     mask = Image.read('circles.png');
 %     marker = Image.false(size(mask));
 %     marker(80, 80) = 1;
 %     % compute using quasi-enclidean weights
 %     dist = geodesicDistanceMap(marker, mask);
-%     figure; imshow(dist, []);
-%     colormap(jet); title('Quasi-euclidean distance');
-%     % compute using integer weights, giving integer results
+%     figure; show(double2rgb(dist));
+%     title('Geodesic distance map');
+%
+%     % compute the same distance map but using integer weights, giving
+%     % integer results.
 %     dist34 = geodesicDistanceMap(marker, mask, int16([3 4]));
-%     figure; imshow(double(dist34)/3, [0 max(dist34(mask))/3]);
-%     colormap(jet); title('Borgefors 3-4 weights');
+%     % convert to double, taking into account values out of mask
+%     dist34 = double(dist34) / 3;
+%     dist34(~mask) = inf;
+%     % display result
+%     rgb = double2rgb(dist34);
+%     figure; show(rgb); title('Geodesic distance map, integer weights');
 %
-%
-%   % uses the examples from bwdist with different distances
-%     img = ones(255, 255);
-%     img(126, 126) = 0;
-%     res1 = geodesicDistanceMap(img);
-%     res2 = geodesicDistanceMap(img, [1 inf]);
-%     res3 = geodesicDistanceMap(img, [1 1]);
-%     res4 = geodesicDistanceMap(img, [1 1.5]);
-%     figure;
-%     subplot(221); subimage(mat2gray(res1));
-%     hold on; imcontour(res1); title('quasi-euclidean');
-%     subplot(222); subimage(mat2gray(res2));
-%     hold on; imcontour(res2); title('city-block');
-%     subplot(223); subimage(mat2gray(res3));
-%     hold on; imcontour(res3); title('chessboard');
-%     subplot(224); subimage(mat2gray(res4));
-%     hold on; imcontour(res4); title('approx euclidean');
 %
 %   The function uses scanning algorithm. Each iteration consists in a
 %   sequence of a forward and a backward scan. Iterations stop when
