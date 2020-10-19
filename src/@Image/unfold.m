@@ -17,7 +17,7 @@ function [data, colNames, coords] = unfold(obj)
 %           196608           3
 %
 %   See also
-%     Table, kmeans
+%     Table, fold, kmeans
 %
  
 % ------

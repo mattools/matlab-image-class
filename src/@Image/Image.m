@@ -90,6 +90,7 @@ methods (Static)
     img = zeros(varargin)
     img = false(varargin)
     img = true(varargin)
+    img = fold(varargin)
     
     img = read(fileName, varargin)
     img = readSeries(fileName, varargin)

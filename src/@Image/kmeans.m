@@ -23,7 +23,7 @@ function [res, centers] = kmeans(obj, k, varargin)
 %     figure; show(rgb);
 %
 %   See also
-%     label2rgb
+%     label2rgb, fold
 %
  
 % ------
