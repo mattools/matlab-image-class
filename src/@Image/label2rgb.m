@@ -2,14 +2,19 @@ function rgb = label2rgb(obj, varargin)
 % Convert label image to RGB image.
 %
 %   RGB = label2rgb(LBL)
-%   Covnerts the label image LBL to a RGB image. The result image is
+%   Converts the label image LBL to a RGB image. The result image is
 %   encoded into uint8.
 %
 %   Example
-%     label2rgb
+%     img = Image.read('coins.png');
+%     bin = closing(img > 80, ones(3,3));
+%     lbl = componentLabeling(bin);
+%     rgb = label2rgb(lbl, 'jet', 'w', 'shuffle');
+%     rgb.Name = 'regions(coins)';
+%     figure; show(rgb);
 %
 %   See also
-%     watershed
+%     watershed, binarize
 %
 
 % ------
@@ -58,4 +63,9 @@ elseif nd == 3
 end
 
 % create new image
-rgb = Image('data', data, 'parent', obj, 'type', 'color');
+rgb = Image('Data', data, 'Parent', obj, 'Type', 'Color');
+
+% setup result image name
+if ~isempty(obj.Name)
+    rgb.Name = sprintf('label2rgb(%s)', obj.Name);
+end

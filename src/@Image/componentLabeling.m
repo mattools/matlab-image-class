@@ -43,3 +43,8 @@ end
 res = Image('Data', data, ...
     'Parent', obj, ...
     'Type', 'label');
+
+% setup result image name
+if ~isempty(obj.Name)
+    res.Name = sprintf('componentLabeling(%s)', obj.Name);
+end

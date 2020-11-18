@@ -14,7 +14,7 @@ function bin = maxEntropyThreshold(img, varargin)
 %
 %
 %   See also
-%     otsuThreshold, maxEntropyThresholdValue
+%     binarize, otsuThreshold, maxEntropyThresholdValue
 %
  
 % ------

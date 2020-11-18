@@ -7,11 +7,11 @@ function img = fold(array, dims, varargin)
 %   the number of rows in the array (N).
 %
 %   Example
-%     % Read color image, and convert to N-by-P data array
+%     % Read color image, and convert to N-by-P Table class
 %     img = Image.read('peppers.png');
-%     data = double(unfold(img));
+%     tab = unfold(img);
 %     % Performs basic clustering
-%     km = kmeans(data, 6);
+%     km = kmeans(tab, 6);
 %     % Convert result to imaeg using the 'fold' method
 %     img2 = Image.fold(km+1, size(img), 'type', 'label', 'Name', 'km3 labels');
 %     figure; show(label2rgb(img2, 'jet'));
