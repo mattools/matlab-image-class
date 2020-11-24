@@ -96,7 +96,7 @@ vectorImage = size(obj.Data, 4) > 1;
 imgSize = size(obj);
 
 % compute intensity bounds, based either on type or on image data
-if isinteger(obj.Data)
+if isa(obj.Data, 'uint8')
     type = class(obj.Data);
     minimg = intmin(type);
     maximg = intmax(type);
