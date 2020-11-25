@@ -34,15 +34,22 @@ function [res, inds] = areaOpening(obj, value, varargin)
 % Created: 2011-11-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
+% check input arguments
+if nargin < 2
+    error('Image:areaOpening', 'Need to specify the minimum number of pixels');
+end
+
+% force image to be label
 if isLabelImage(obj)
     data = obj.Data;
+    res = zeros(size(obj.Data), 'like', obj.Data);
     
 elseif isBinaryImage(obj)
     % if image is binary compute labeling
     
     % first determines connectivity to use
     conn = 4;
-    if obj.Dimension == 3
+    if ndims(obj) == 3
         conn = 6;
     end
     if ~isempty(varargin)
@@ -51,6 +58,7 @@ elseif isBinaryImage(obj)
     
     % appply labeling, get result as 2D or 3D matrix
     data = labelmatrix(bwconncomp(obj.Data, conn));
+    res = false(size(obj.Data), 'like', obj.Data);
     
 else
     error('Image:areaOpening', 'Requires binary or label image');
@@ -62,7 +70,10 @@ areas = [props.Area];
 
 % select regions with areas greater than threshold
 inds = find(areas >= value);
-data = ismember(data, inds);
+
+% keep only the pixels belonging to the selected regions
+mask = ismember(data, inds);
+res(mask) = data(mask);
 
 % create new image
-res = Image.create('data', data, 'parent', obj, 'type', 'binary');
+res = Image.create('data', res, 'parent', obj);
