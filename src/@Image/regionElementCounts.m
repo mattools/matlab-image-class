@@ -29,11 +29,14 @@ else
     labels = varargin{1};
 end
 
-% allocate memory
-nLabels = length(labels);
-counts = zeros(nLabels, 1);
-
-% iterate over labels and count elements
-for i = 1:nLabels
-    counts(i) = sum(obj.Data(:) == labels(i));
+% rely on regionprops for speed
+if size(obj.Data, 3) == 1
+    props = regionprops(obj.Data, 'Area');
+    counts = [props.Area];
+    counts = counts(labels);
+else
+    props = regionprops3(obj.Data, 'Volume');
+    counts = [props.Volume];
+    counts = counts(labels);
 end
+    
