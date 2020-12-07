@@ -30,7 +30,7 @@ function res = rotate90(obj, axis, varargin)
 %     subplot(122);show(rotate90(img));
 %
 %   See also
-%     flip, permute
+%     flip, permute, rotate
 %
 
 % ------
@@ -105,5 +105,3 @@ res = Image('data', newData, 'parent', obj);
 % also permute spacing and origin of image
 res.Origin  = obj.Origin(permDims(1:nd));
 res.Spacing = obj.Spacing(permDims(1:nd));
-
-    
