@@ -32,7 +32,7 @@ end
 % rely on regionprops for speed
 if size(obj.Data, 3) == 1
     props = regionprops(obj.Data, 'Area');
-    counts = [props.Area];
+    counts = [props.Area]';
     counts = counts(labels);
 else
     props = regionprops3(obj.Data, 'Volume');
