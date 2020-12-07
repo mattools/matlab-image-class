@@ -16,21 +16,21 @@ function res = horzcat(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-08-04,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-data = obj.data;
-name = obj.name;
+data = obj.Data;
+name = obj.Name;
 
 for i = 1:length(varargin)
-    var = varargin{i};    
-    data = [data ; var.data]; %#ok<AGROW>
+    var = varargin{i};
+    data = [data ; var.Data]; %#ok<AGROW>
     
-    name = strcat(name, '+', var.name);
+    name = strcat(name, '+', var.Name);
 end
 
 res = Image( ...
-    'data', data, ...
-    'parent', obj, ...
-    'name', name);
+    'Data', data, ...
+    'Parent', obj, ...
+    'Name', name);

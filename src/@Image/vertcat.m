@@ -5,7 +5,10 @@ function res = vertcat(obj, varargin)
 %   RES = [IMG1 ; IMG2];
 %
 %   Example
-%   vertcat
+%     % duplicate image in vertical direction
+%     img = Image.read('cameraman.tif');
+%     res = vertcat(img, img);
+%     show(res);
 %
 %   See also
 %     horzcat, repmat, cat
@@ -13,7 +16,7 @@ function res = vertcat(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-08-04,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
