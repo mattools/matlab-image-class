@@ -8,10 +8,10 @@ function tests = test_unfold(varargin)
 %
 %   See also
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-06-14,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -20,17 +20,20 @@ tests = functiontests(localfunctions);
 function test_2d_color(testCase)
 
 img = Image.read('peppers.png');
-nr = elementNumber(img);
-nc = channelNumber(img);
+nr = elementCount(img);
+nc = channelCount(img);
 
 tab = unfold(img);
+
 assertEqual(testCase, size(tab), [nr nc]);
+
 
 function test_2d_color_getNames(testCase)
 
 img = Image.read('peppers.png');
 
 [tab, names] = unfold(img);
+
 assertTrue(testCase, iscell(names));
 assertEqual(testCase, length(names), size(tab, 2));
 

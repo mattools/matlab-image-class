@@ -2,7 +2,7 @@ function varargout = splitChannels(obj)
 % Split the different channels of the image.
 %
 %   CHANNELS = splitChannels(IMG)
-%   [CHANNEL1 CHANNEL2 ... ] = splitChannels(IMG)
+%   [CHANNEL1, CHANNEL2 ... ] = splitChannels(IMG)
 %   Splits the channels of the input image into several scalar images.
 %   CHANNELS is a cell array of scalar images.
 %   CHANNEL1, CHANNEL2... are individual scalar images.
@@ -24,12 +24,12 @@ function varargout = splitChannels(obj)
 %     end
 %
 %   See also
-%     catChannels, createRGB, isVectorImage
+%     catChannels, createRGB, isVectorImage, channelCount
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-12-05,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 

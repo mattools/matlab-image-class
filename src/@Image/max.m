@@ -22,7 +22,7 @@ if isempty(varargin)
         
     else
         % case of color or vector images
-        nc = channelNumber(obj);
+        nc = channelCount(obj);
         res = zeros(1, nc);
         for i = 1:nc
             dat = obj.Data(:,:,:,i,:);

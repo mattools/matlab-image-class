@@ -33,7 +33,7 @@ function varargout = size(obj, dim)
 %
 %
 %   See also
-%     ndims
+%     ndims, elementCount, elementSize, channelCount, frameCount
 %
 
 % ------

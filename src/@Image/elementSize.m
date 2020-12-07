@@ -19,12 +19,12 @@ function dim = elementSize(obj, varargin)
 %        3   1
 %
 %   See also
-%     size, dataSize, channelNumber
+%     size, dataSize, elementCount, channelCount, frameCount
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-12-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 

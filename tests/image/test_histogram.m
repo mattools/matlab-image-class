@@ -8,10 +8,10 @@ function tests = test_histogram(varargin)
 %
 %   See also
 %
-%
+
 % ------
 % Author: David Legland
-% e-mail: david.legland@grignon.inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-09-10,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -23,7 +23,7 @@ img = Image.read('cameraman.tif');
 h = histogram(img);
 
 assertEqual(testCase, 256, length(h));
-assertEqual(testCase, elementNumber(img), sum(h));
+assertEqual(testCase, elementCount(img), sum(h));
 
 
 function test_cameraman_nbins(testCase)
@@ -67,7 +67,7 @@ buffer = double(buffer)/255;
 img2 = Image.create(buffer);
 h = histogram(img2, [0 1]);
 
-assertEqual(testCase, elementNumber(img2), sum(h));
+assertEqual(testCase, elementCount(img2), sum(h));
 assertEqual(testCase, h0, h);
 
 
@@ -80,7 +80,7 @@ h2 = histogram(img, ~mask);
 
 assertEqual(testCase, 256, length(h1));
 assertEqual(testCase, 256, length(h2));
-assertEqual(testCase, elementNumber(img), sum(h1)+sum(h2));
+assertEqual(testCase, elementCount(img), sum(h1)+sum(h2));
 
 
 function test_peppers(testCase)
@@ -89,7 +89,7 @@ img = Image.read('peppers.png');
 h = histogram(img);
 
 assertEqual(testCase, [256 3], size(h));
-assertEqual(testCase, elementNumber(img), sum(h(:,1)));
+assertEqual(testCase, elementCount(img), sum(h(:,1)));
 
 
 function test_peppers_display(testCase)
@@ -112,14 +112,14 @@ close;
 % 
 % assertEqual(256, size(h1, 1));
 % assertEqual(256, size(h2, 1));
-% assertEqual(elementNumber(img), sum(h1(:))+sum(h2(:)));
+% assertEqual(elementCount(img), sum(h1(:))+sum(h2(:)));
 
 
 function test_brainMRI(testCase)
 
 X = Image.read('brainMRI.hdr');
 h = histogram(X);
-assertEqual(testCase, elementNumber(X), sum(h(:)));
+assertEqual(testCase, elementCount(X), sum(h(:)));
 
 function test_brainMRI_roi_bins(testCase)
 

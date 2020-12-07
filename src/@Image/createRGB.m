@@ -1,5 +1,5 @@
 function rgb = createRGB(red, green, blue)
-% Create a RGB color image.
+% Create a RGB color image from scalar channels.
 %
 %   RGB = createRGB(DATA)
 %   Create a RGB image from data array DATA, using the third dimension as
@@ -17,11 +17,11 @@ function rgb = createRGB(red, green, blue)
 %     createRGB
 %
 %   See also
-%     create, Image
+%     create, Image, catChannels
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-11-25,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -111,7 +111,7 @@ end
 if nd == 2
     dim = [dim 1];
 end
-newDim = [dim(1:3) 3 frameNumber(refImage)];
+newDim = [dim(1:3) 3 frameCount(refImage)];
 
 % compute data type of image
 if isa(refImage, 'Image')

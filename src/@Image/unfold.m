@@ -32,8 +32,8 @@ if ~isVectorImage(obj)
 end
 
 % size of the table
-nr = elementNumber(obj);
-nc = channelNumber(obj);
+nr = elementCount(obj);
+nc = channelCount(obj);
 
 % create column names array
 colNames = obj.ChannelNames;

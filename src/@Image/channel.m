@@ -1,5 +1,5 @@
 function channel = channel(obj, index, varargin)
-%Returns a specific channel from a Vector Image.
+% Return a specific channel from a multi-channel Image.
 %
 %   CHANNEL = channel(IMG, INDEX)
 %   Returns the channel indexed by INDEX in a vector or color image.
@@ -22,12 +22,12 @@ function channel = channel(obj, index, varargin)
 %     show(Image.createRGB(green, blue, red));
 %
 %   See also
-%     channelNumber, catChannels, splitChannels
+%     channelCount, catChannels, splitChannels
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-07-08,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 

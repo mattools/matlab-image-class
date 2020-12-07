@@ -1,5 +1,5 @@
 function res = catFrames(obj, varargin)
-% Frame concatenation of several images.
+% Concatenate the frames of several time-lapse images.
 %
 %   RES = catFrames(IMG1, IMG2)
 %
@@ -10,12 +10,12 @@ function res = catFrames(obj, varargin)
 %     show(res);
 %
 %   See also
-%     splitFrames, cat, catChannels
+%     splitFrames, cat, catChannels, frameCount
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-11-22,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 

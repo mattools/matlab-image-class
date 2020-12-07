@@ -35,7 +35,7 @@ function varargout = histogram(obj, varargin)
 %   histogram only for pixels/voxels located inside of the specified region
 %   of interest.
 %
-%   [H X] = histogram(...);
+%   [H, X] = histogram(...);
 %   Returns the center of bins used for histogram computation.
 %
 %   histogram(IMG);
@@ -52,18 +52,18 @@ function varargout = histogram(obj, varargin)
 %     img = Image.read('peppers.png');
 %     histogram(img);
 %
-%   % Compute histogram of a 3D image, only for pixel with non null values
+%   % Compute histogram of a 3D image, only for pixels with non null value
 %   % (requires image processing toolbox)
 %     X = Image.read('brainMRI.hdr');
 %     histogram(X, X>0, 0:88)
 %
 %   See also
-%     imhist, histcounts
+%     imhist, histcounts, elementCount
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -169,7 +169,7 @@ end
 %% Main processing 
 
 % number of channels (equal to 1 in the case of grayscale image)
-nc = channelNumber(obj);
+nc = channelCount(obj);
 
 % compute image histogram
 if ~vectorImage

@@ -1,6 +1,8 @@
 function count = elementNumber(obj)
 % Count the total number of elements (pixels or voxels).
 %
+%   Deprecated, replaced by elementCount.
+%
 %   COUNT = elementNumber(IMG)
 %   COUNT = IMG.elementNumber(IMG)
 %
@@ -35,5 +37,7 @@ function count = elementNumber(obj)
 % e-mail: david.legland@inra.fr
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
+
+warning('deprecated, use ''elementCount'' instead');
 
 count = prod(obj.DataSize(1:3));
