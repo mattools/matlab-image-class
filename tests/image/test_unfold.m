@@ -25,6 +25,7 @@ nc = channelCount(img);
 
 tab = unfold(img);
 
+assertTrue(testCase, isa(tab, 'Table'));
 assertEqual(testCase, size(tab), [nr nc]);
 
 
@@ -32,8 +33,9 @@ function test_2d_color_getNames(testCase)
 
 img = Image.read('peppers.png');
 
-[tab, names] = unfold(img);
+[tab, coords] = unfold(img);
 
-assertTrue(testCase, iscell(names));
-assertEqual(testCase, length(names), size(tab, 2));
-
+assertTrue(testCase, isa(coords, 'Table'));
+assertEqual(testCase, size(tab, 1), prod(size(img))); %#ok<PSIZE>
+ax2 = coords.Axes{2};
+assertEqual(testCase, length(ax2.Names), ndims(img));

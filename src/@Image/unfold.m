@@ -1,10 +1,14 @@
-function [data, colNames, coords] = unfold(obj)
+function [tab, coords] = unfold(obj)
 % Unfold a vector image.
 %
 %   TAB = unfold(VIMG);
-%   Unfold the vector image VIMG, and returns an array with as many
-%   rows as the number of pixels in VIMG, and as many columns as the number
-%   of channels.
+%   Unfold the vector image VIMG, and returns a Table with as many rows as
+%   the number of pixels in VIMG, and as many columns as the number of
+%   channels. 
+%
+%   [TAB, COORDS] = unfold(VIMG);
+%   Also returns an array with the (X,Y) or (X,Y,Z) coordinates of each
+%   element of the table.
 %
 %   Example
 %     img = Image.read('peppers.png');
@@ -30,10 +34,16 @@ function [data, colNames, coords] = unfold(obj)
 if ~isVectorImage(obj)
     return;
 end
+if frameCount(obj) > 1
+    error('Can not process multi-frame images');
+end
 
 % size of the table
 nr = elementCount(obj);
 nc = channelCount(obj);
+
+% create data table
+tab = Table(reshape(obj.Data, [nr nc]));
 
 % create column names array
 colNames = obj.ChannelNames;
@@ -44,22 +54,21 @@ if isempty(obj.ChannelNames) || length(obj.ChannelNames) ~= nc
         colNames{i} = sprintf('Ch%02d', i);
     end
 end
+tab.ColNames = colNames;
 
-% create data table
-data = reshape(obj.Data, [nr nc]);
 
 % optionnaly creates table of coordinates
-if nargout > 2
+if nargout > 1
     % create sampling grid (iterating over x first)
     lx = 1:size(obj, 1);
     ly = 1:size(obj, 2);
     if size(obj, 3) > 1
         lz = 1:size(obj, 3);
         [y, x, z] = meshgrid(ly, lx, lz);
-        coords = [x(:) y(:) z(:)];
+        coords = Table([x(:) y(:) z(:)], {'x', 'y', 'z'});
     else
         [y, x] = meshgrid(ly, lx);
-        coords = [x(:) y(:)];
+        coords = Table([x(:) y(:)], {'x', 'y'});
     end
 end
  
