@@ -1,7 +1,7 @@
 function nc = channelCount(this)
 % Returns the number of channels of the image.
 %
-%   NC = channelNumber(IMG)
+%   NC = channelCount(IMG)
 %   Returns the number of channels (color components, or spectral bands...)
 %   of the input image. For grayscale or binary images, returns 1.
 %
@@ -12,7 +12,7 @@ function nc = channelCount(this)
 %        3
 %
 %   See also
-%     size, channel
+%     size, channel, splitChannels, frameCount
 %
 
 % ------
