@@ -94,6 +94,7 @@ methods (Static)
     
     img = read(fileName, varargin)
     img = readSeries(fileName, varargin)
+    img = importRaw(fileName, varargin)
     
     info = fileInfo(fileName)
     
