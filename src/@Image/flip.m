@@ -38,4 +38,5 @@ if d > nd
 end
 
 % create empty result image
-res = Image('data', flip(obj.Data, d), 'parent', obj);
+name = createNewName(obj, '%s-flip');
+res = Image('Data', flip(obj.Data, d), 'Parent', obj, 'Name', name);

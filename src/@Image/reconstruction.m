@@ -35,4 +35,5 @@ function res = reconstruction(marker, mask, varargin)
 data = imreconstruct(marker, mask, varargin{:});
 
 % create result image
-res = Image('data', data, 'parent', parent, 'type', parent.Type);
+name = createNewName(parent, '%s-minima');
+res = Image('Data', data, 'Parent', parent, 'Type', parent.Type, 'Name', name);

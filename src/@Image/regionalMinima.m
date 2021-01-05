@@ -43,4 +43,5 @@ end
 data = imregionalmin(obj.Data, conn);
 
 % create result image
-res = Image('data', data, 'parent', obj, 'type', 'binary');
+name = createNewName(obj, '%s-minima');
+res = Image('Data', data, 'Parent', obj, 'Type', 'binary', 'Name', name);

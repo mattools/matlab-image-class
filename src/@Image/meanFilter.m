@@ -46,4 +46,5 @@ se = permute(se, [2 1 3]) ./ sum(se(:));
 data = imfilter(obj.Data, se, padopt);
 
 % create result image
-res = Image('data', data, 'parent', obj);
+name = createNewName(obj, '%s-meanFilt');
+res = Image('Data', data, 'Parent', obj, 'Name', name);

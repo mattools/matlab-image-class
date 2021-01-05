@@ -32,7 +32,7 @@ function varargout = montage(obj, varargin)
 
 
 % check image dimension
-if obj.Dimension < 3
+if size(obj, 3) == 1
     error('montage: works only for 3D images');
 end
 

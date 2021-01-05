@@ -25,4 +25,5 @@ function res = blackTopHat(obj, varargin)
 dat = imbothat(obj.Data, varargin{1});
 
 % create result image
-res = Image('data', dat, 'parent', obj);
+name = createNewName(obj, '%s-BTH');
+res = Image('Data', dat, 'Parent', obj, 'Name', name);

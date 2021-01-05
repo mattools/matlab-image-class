@@ -49,6 +49,8 @@ else
     end
 end
 
+% compute new name
+name = createNewName(obj, '%s-resample');
 
 % create new basis 
 if nd == 2
@@ -56,7 +58,7 @@ if nd == 2
     res = interp(obj, x, y, varargin{:});
 
     % convert to Image class
-    res = Image(res, 'parent', obj, ...
+    res = Image(res, 'Parent', obj, 'Name', name, ...
         'origin', [lx(1) ly(1)], ...
         'spacing', [lx(2)-lx(1) ly(2)-ly(1)]);
     
@@ -65,7 +67,7 @@ elseif nd == 3
     res = interp(obj, x, y, z, varargin{:});
     
     % convert to Image class
-    res = Image(res, 'parent', obj, ...
+    res = Image(res, 'Parent', obj, 'Name', name, ...
         'origin', [lx(1) ly(1) lz(1)], ...
         'spacing', [lx(2)-lx(1) ly(2)-ly(1) lz(2)-lz(1)]);
 else

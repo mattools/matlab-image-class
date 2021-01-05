@@ -9,11 +9,11 @@ function res = circshift(obj, varargin)
 %     show(res)
 %
 %   See also
-%
+%     fftshift
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-12-18,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -21,4 +21,5 @@ function res = circshift(obj, varargin)
 data = circshift(obj.Data, varargin{:});
 
 % create new image object for storing result
-res = Image.create('data', data, 'parent', obj);
+name = createNewName(obj, '%s-circshift');
+res = Image('Data', data, 'Parent', obj, 'Name', name);

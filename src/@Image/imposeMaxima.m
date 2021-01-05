@@ -48,4 +48,5 @@ end
 data = imcomplement(imimposemin(imcomplement(obj.Data), marker, conn));
 
 % create result image
-res = Image('data', data, 'parent', obj, 'type', obj.Type);
+name = createNewName(obj, '%s-impMax');
+res = Image('Data', data, 'Parent', obj, 'type', obj.Type, 'Name', name);

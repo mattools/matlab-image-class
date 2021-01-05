@@ -40,4 +40,5 @@ elseif nd == 3
 end
 
 % create result image
-res = Image('data', data, 'parent', obj);
+name = createNewName(obj, '%s-boxFilt');
+res = Image('Data', data, 'Parent', obj, 'Name', name);

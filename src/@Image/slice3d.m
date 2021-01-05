@@ -28,16 +28,17 @@ function res = slice3d(obj, dir, index)
 % parse axis, and check bounds
 dir = parseAxisIndex(dir);
 
+name = createNewName(obj, '%s-slice');
 switch dir
     case 1
         % x-slice: rows Z, cols Y
-        res = Image('data', obj.Data(index,:,:,:,:), 'dimension', 3, 'parent', obj);
+        res = Image('Data', obj.Data(index,:,:,:,:), 'Dimension', 3, 'Parent', obj, 'Name', name);
     case 2
         % y-slice: rows Z, cols X
-        res = Image('data', obj.Data(:,index,:,:,:), 'dimension', 3, 'parent', obj);
+        res = Image('Data', obj.Data(:,index,:,:,:), 'Dimension', 3, 'Parent', obj, 'Name', name);
     case 3
         % Z-slice: rows Y, cols X
-        res = Image('data', obj.Data(:,:,index,:,:), 'dimension', 3, 'parent', obj);
+        res = Image('Data', obj.Data(:,:,index,:,:), 'Dimension', 3, 'Parent', obj, 'Name', name);
     otherwise
         error('Should specify direction between 1 and 3');
 end

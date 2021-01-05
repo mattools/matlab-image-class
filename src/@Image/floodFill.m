@@ -1,4 +1,4 @@
-function res = floodFill(img, pos, value, varargin)
+function res = floodFill(obj, pos, value, varargin)
 % Flood-fill operation from a position.
 %
 %   IMG2 = floodFill(IMG, POS, V)
@@ -24,22 +24,23 @@ function res = floodFill(img, pos, value, varargin)
 % Copyright 2020 INRAE.
 
 % check input dimensions
-if size(pos, 2) ~= ndims(img)
+if size(pos, 2) ~= ndims(obj)
     error('Image:floodFill', ...
         'position array size must match image dimension');
 end
 
 % create binary image of mask
 pos = num2cell(pos);
-mask = img == img.Data(pos{:});
+mask = obj == obj.Data(pos{:});
 
 % binary image for marker
-marker = Image.false(size(img));
+marker = Image.false(size(obj));
 marker.Data(pos{:}) = true;
 
 % compute the region composed of connected pixels with same value
 rec = reconstruction(marker, mask);
 
 % replace values in result image
-res = Image(img);
+name = createNewName(obj, '%s-floodFill');
+res = Image(obj, 'Name', name);
 res.Data(rec.Data) = value;

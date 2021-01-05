@@ -44,4 +44,5 @@ else
 end
 
 % create result image
-res = Image('data', res, 'parent', obj);
+name = createNewName(obj, '%s-morphoGrad');
+res = Image('Data', res, 'Parent', obj, 'Name', name);

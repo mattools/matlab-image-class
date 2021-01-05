@@ -18,4 +18,5 @@ end
 data = imclose(getBuffer(obj), varargin{:});
 
 % create new image object for storing result
-res = Image(data, 'parent', obj);
+name = createNewName(obj, '%s-clo');
+res = Image(data, 'Parent', obj, 'Name', name);

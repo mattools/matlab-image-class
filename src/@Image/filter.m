@@ -22,6 +22,7 @@ end
 h = double(h);
 
 % create new image with result of filtering
+name = createNewName(obj, '%s-filt');
 res = Image(...
-    'data', imfilter(obj.Data, h, varargin{:}), ...
-    'parent', obj);
+    'Data', imfilter(obj.Data, h, varargin{:}), ...
+    'Parent', obj, 'Name', name);

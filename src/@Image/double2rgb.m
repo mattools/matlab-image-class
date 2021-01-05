@@ -20,7 +20,7 @@ function rgb = double2rgb(obj, map, bounds, varargin)
 %   Example
 %   % Distance map of a binary image
 %     img = Image.read('circles.png');
-%     dist = distanceMap(img);
+%     dist = distanceMap(invert(img));
 %     dist(img) = NaN;
 %     rgb = double2rgb(dist, 'parula', [], 'w');
 %     show(rgb);
@@ -83,15 +83,14 @@ else
     rgb(:,:,3,:) = b;
 end
 
-newName = '';
-if ~isempty(obj.Name)
-    newName = sprintf('label2rgb(%s)', obj.Name);
-end
+% create result array
+data = permute(rgb, [2 1 3 4:length(dim)]);
 
 % create Image object from data
-rgb = Image(permute(rgb, [2 1 3 4:length(dim)]), 'Type', 'color', ...
+name = createNewName(obj, '%s-rgb');
+rgb = Image(data, 'Type', 'color', ...
     'Parent', obj, ...
-    'Name', newName);
+    'Name', name);
 
 function color = parseColor(color)
 

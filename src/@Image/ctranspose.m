@@ -15,7 +15,7 @@ function res = ctranspose(obj)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-11-26,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -26,6 +26,8 @@ if nd > 2
 end
 
 % permute data array
-dat = permute(obj.Data, [2 1 3:5]);
+datz = permute(obj.Data, [2 1 3:5]);
 
-res = Image('data', dat, 'parent', obj);
+% create result image
+name = createNewName(obj, 'transpose(%s)');
+res = Image('Data', datz, 'Parent', obj, 'Name', name);

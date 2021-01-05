@@ -37,4 +37,5 @@ end
 newData = imclearborder(obj.Data, conn);
 
 % create resulting image
-res = Image('data', newData, 'parent', obj);
+name = createNewName(obj, '%s-killBorders');
+res = Image('Data', newData, 'Parent', obj, 'Name', name);

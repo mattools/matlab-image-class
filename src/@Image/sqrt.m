@@ -20,4 +20,5 @@ function res = sqrt(obj)
 
 newData = sqrt(double(obj.Data));
 
-res = Image('data', newData, 'parent', obj);
+name = createNewName(obj, '%s-sqrt');
+res = Image('Data', newData, 'Parent', obj, 'Name', name);

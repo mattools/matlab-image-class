@@ -42,4 +42,5 @@ res = imadd(imdilate(obj.Data, se), imerode(obj.Data, se), 'double') / 2;
 res = imsubtract(res, double(obj.Data));
 
 % create the result image
-res = Image('data', res, 'parent', obj);
+name = createNewName(obj, '%s-morphoLapl');
+res = Image('Data', res, 'Parent', obj, 'Name', name);

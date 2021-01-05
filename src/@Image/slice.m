@@ -23,5 +23,6 @@ function res = slice(obj, index)
 % Copyright 2010 INRAE - Cepia Software Platform.
 
 % Z-slice: rows Y, cols X
-res = Image('data', obj.Data(:,:,index,:,:), 'parent', obj);
+name = createNewName(obj, '%s-slice');
+res = Image('Data', obj.Data(:,:,index,:,:), 'Parent', obj, 'Name', name);
 

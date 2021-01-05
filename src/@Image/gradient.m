@@ -31,7 +31,7 @@ function varargout = gradient(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-06-16,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -143,20 +143,23 @@ end
 % or each component of the gradient vector.
 if nargout == 1
     % Create a new 2D or 3D vector image
+    name = createNewName(obj, '%s-grad');
     if nd == 2
-        res = Image('data', cat(4, gx, gy), ...
-            'parent', obj, 'type', 'vector', 'channelNames', channelNames);
+        res = Image('Data', cat(4, gx, gy), ...
+            'Parent', obj, 'Type', 'vector', 'Name', name, ...
+            'ChannelNames', channelNames);
     elseif nd == 3
-        res = Image('data', cat(4, gx, gy, gz), ...
-            'parent', obj, 'type', 'vector', 'channelNames', channelNames);
+        res = Image('Data', cat(4, gx, gy, gz), ...
+            'Parent', obj, 'Type', 'vector', 'Name', name, ...
+            'ChannelNames', channelNames);
     end
     varargout{1} = res;
     
 else
     % return each component of the vector array
-    varargout{1} = Image('data', gx, 'parent', obj, 'type', 'intensity');
-    varargout{2} = Image('data', gy, 'parent', obj, 'type', 'intensity');
+    varargout{1} = Image('Data', gx, 'Parent', obj, 'type', 'intensity', 'Name', createNewName(obj, '%s-gradX'));
+    varargout{2} = Image('Data', gy, 'Parent', obj, 'type', 'intensity', 'Name', createNewName(obj, '%s-gradY'));
     if nd == 3
-        varargout{3} = Image('data', gz, 'parent', obj, 'type', 'intensity');
+        varargout{3} = Image('Data', gz, 'Parent', obj, 'type', 'intensity', 'Name', createNewName(obj, '%s-gradZ'));
     end
 end

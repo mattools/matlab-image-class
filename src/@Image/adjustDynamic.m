@@ -93,7 +93,8 @@ res = (obj.Data - mini) * a + outMin;
 res = cast(res, outputClass);
 
 % create resulting Image
-res = Image('data', res, 'parent', obj);
+name = createNewName(obj, '%s-adjDyn');
+res = Image('Data', res, 'Parent', obj, 'Name', name);
 
 
 function [mini, maxi] = computeExtremeValues(data) %#ok<DEFNU>

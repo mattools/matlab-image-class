@@ -43,4 +43,5 @@ end
 data = imregionalmax(obj.Data, conn);
 
 % create result image
-res = Image('data', data, 'parent', obj, 'type', 'binary');
+name = createNewName(obj, '%s-maxima');
+res = Image('Data', data, 'Parent', obj, 'Type', 'binary', 'Name', name);

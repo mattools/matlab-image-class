@@ -86,4 +86,7 @@ end
 
 % keep as binary
 bin = lbl == indMax;
-res = Image.create('data', bin, 'parent', obj, 'type', 'binary');
+
+% create result image
+name = createNewName(obj, '%s-largestRegion');
+res = Image.create('Data', bin, 'Parent', obj, 'Type', 'binary', 'Name', name);

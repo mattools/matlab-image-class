@@ -1,5 +1,5 @@
 function res = watershed(obj, varargin)
-% Watershed of a gray-scale image.
+% Watershed of a gray-scale or intensity image.
 %
 %   WAT = watershed(IMG)
 %   Computes the watershed of the intenity or grayscale image IMG.
@@ -30,7 +30,7 @@ function res = watershed(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-06-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -101,4 +101,5 @@ elseif lmax < 2^32
 end
 
 % create result image
-res = Image('data', wat, 'parent', obj, 'type', 'label');
+name = createNewName(obj, '%s-wat');
+res = Image('Data', wat, 'Parent', obj, 'Type', 'label', 'Name', name);

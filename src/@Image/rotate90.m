@@ -100,7 +100,8 @@ for i = 1:length(flipDims)
 end
 
 % create the new result image
-res = Image('data', newData, 'parent', obj);
+name = createNewName(obj, '%s-rot90');
+res = Image('Data', newData, 'Parent', obj, 'Name', name);
 
 % also permute spacing and origin of image
 res.Origin  = obj.Origin(permDims(1:nd));

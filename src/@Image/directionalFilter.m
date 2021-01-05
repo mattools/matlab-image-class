@@ -153,13 +153,13 @@ for d = 1:Nd
     end
     
     % keep max or min along all directions
-    res = feval(op2, res, feval(op1, obj.Data, se));
+    res = feval(op2, res, feval(op1, obj.Data, se)); %#ok<FVAL>
 end
 
 
 %% create result image
-
-res = Image('data', res, 'parent', obj);
+name = createNewName(obj, '%s-dirFilt');
+res = Image('Data', res, 'Parent', obj, 'Name', name);
 
 
 function res = immean(img, filt, varargin)

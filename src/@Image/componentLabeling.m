@@ -17,7 +17,7 @@ function res = componentLabeling(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-08-05,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -40,11 +40,8 @@ else
 end
 
 % create new image
+name = createNewName(obj, '%s-labels');
 res = Image('Data', data, ...
     'Parent', obj, ...
-    'Type', 'label');
-
-% setup result image name
-if ~isempty(obj.Name)
-    res.Name = sprintf('componentLabeling(%s)', obj.Name);
-end
+    'Type', 'label', ...
+    'Name', name);

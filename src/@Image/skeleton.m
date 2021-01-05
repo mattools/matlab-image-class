@@ -66,4 +66,5 @@ end
 binData = bwmorph(obj.Data, method, inf);
 
 % create result image
-res = Image('data', binData, 'parent', obj);
+name = createNewName(obj, '%s-skel');
+res = Image('Data', binData, 'Parent', obj, 'Name', name);

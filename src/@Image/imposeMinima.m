@@ -48,4 +48,5 @@ end
 data = imimposemin(obj.Data, marker, conn);
 
 % create result image
-res = Image('data', data, 'parent', obj, 'type', obj.Type);
+name = createNewName(obj, '%s-impMin');
+res = Image('Data', data, 'Parent', obj, 'Type', obj.Type, 'Name', name);

@@ -13,7 +13,7 @@ function res = fillHoles(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -32,4 +32,5 @@ end
 newData = imfill(obj.Data, conn, 'holes');
 
 % create resulting image
-res = Image('data', newData, 'parent', obj);
+name = createNewName(obj, '%s-fillHoles');
+res = Image('Data', newData, 'Parent', obj, 'Name', name);

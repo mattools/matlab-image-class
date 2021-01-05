@@ -49,7 +49,8 @@ for i = (nd+1):ndims(obj.Data)
 end
 
 % create new image with cropped buffer
-res = Image('data', obj.Data(indices{:}), 'parent', obj);
+name = createNewName(obj, '%s-crop');
+res = Image('Data', obj.Data(indices{:}), 'Parent', obj, 'Name', name);
 
 % change origin of new image
 res.Origin = newOrigin;

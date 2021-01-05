@@ -34,4 +34,5 @@ end
 norm = sqrt(norm);
 
 % create result image
-norm = Image('data', norm, 'parent', obj, 'type', 'intensity');
+name = createNewName(obj, '%s-norm');
+norm = Image('Data', norm, 'Parent', obj, 'Type', 'intensity', 'Name', name);

@@ -1,5 +1,5 @@
-function ang = angle(this)
-%Returns the phase angles, in radians, of an image with complex elements.
+function ang = angle(obj)
+% Return the phase angles, in radians, of an image with complex elements.
 %
 %   PHASE = angle(I)
 %
@@ -15,7 +15,10 @@ function ang = angle(this)
 % Created: 2017-09-29,    using Matlab 9.3.0.713579 (R2017b)
 % Copyright 2017 INRA - Cepia Software Platform.
 
-real = getBuffer(channel(this, 1));
-imag = getBuffer(channel(this, 2));
+% retrieve components
+imgA = channel(obj, 1);
+imgB = channel(obj, 2);
 
-ang = Image(atan2(imag, real));
+% create result image
+name = createNewName(obj, '%s-angle');
+ang = Image('Data', atan2(imgA.Data, imgB.Data), 'Parent', obj, 'Name', name);

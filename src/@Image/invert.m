@@ -17,4 +17,6 @@ function res = invert(obj)
 % Created: 2011-06-12,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-res = Image('data', imcomplement(obj.Data), 'parent', obj);
+newName = createNewName(obj, '%s-inv');
+
+res = Image('Data', imcomplement(obj.Data), 'Parent', obj, 'Name', newName);

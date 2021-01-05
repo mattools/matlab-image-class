@@ -17,6 +17,7 @@ function tests = test_unfold(varargin)
 
 tests = functiontests(localfunctions);
 
+
 function test_2d_color(testCase)
 
 img = Image.read('peppers.png');
@@ -37,5 +38,3 @@ img = Image.read('peppers.png');
 
 assertTrue(testCase, isa(coords, 'Table'));
 assertEqual(testCase, size(tab, 1), prod(size(img))); %#ok<PSIZE>
-ax2 = coords.Axes{2};
-assertEqual(testCase, length(ax2.Names), ndims(img));

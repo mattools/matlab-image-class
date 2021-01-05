@@ -13,11 +13,12 @@ function res = reshape(obj, dims)
  
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2019-06-09,    using Matlab 8.6.0.267246 (R2015b)
 % Copyright 2019 INRA - Cepia Software Platform.
 
 newData = reshape(obj.Data, dims);
 
 % create a new Image
-res = Image('data', newData, 'parent', obj);
+name = createNewName(obj, '%s-reshape');
+res = Image('Data', newData, 'Parent', obj, 'Name', name);

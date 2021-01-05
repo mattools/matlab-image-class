@@ -47,7 +47,8 @@ for i = 1:ndim
 end
 
 % create new image with subsampled buffer
-res = Image('data', obj.Data(subsArray{:}), 'parent', obj);
+name = createNewName(obj, '%s-subsample');
+res = Image('Data', obj.Data(subsArray{:}), 'Parent', obj, 'Name', name);
 
 
 %% Post-processing

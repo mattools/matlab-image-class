@@ -156,7 +156,12 @@ while ~isempty(varargin)
     blue    =  blue .* uint8(mask==0) + mask .* b;
 end
 
-res = Image('data', cat(4, red, green, blue), 'parent', obj, 'type', 'color');
+% concatenate color channels
+ovr = cat(4, red, green, blue);
+
+% create result image
+name = createNewName(obj, '%s-ovr');
+res = Image('Data', ovr, 'Parent', obj, 'Type', 'color', 'Name', name);
 
 
 function [r, g, b] = parseOverlayBands(color)

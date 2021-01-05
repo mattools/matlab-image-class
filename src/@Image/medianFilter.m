@@ -51,4 +51,5 @@ order = ceil(sum(se(:)) / 2);
 data = ordfilt2(obj.Data, order, se, padopt);
 
 % create result image
-res = Image('data', data, 'parent', obj);
+name = createNewName(obj, '%s-medianFilt');
+res = Image('Data', data, 'Parent', obj, 'Name', name);

@@ -108,6 +108,8 @@ end % static methods
 methods(Access = protected)
     
     se = defaultStructuringElement(obj, varargin)
+    
+    name = createNewName(obj, pattern)
 end
 
 %% Constructor declaration

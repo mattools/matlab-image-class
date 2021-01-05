@@ -39,4 +39,5 @@ else
 end
 
 % create result image
-HSV = Image('data', data, 'parent', obj);
+name = createNewName(obj, '%s-hsv');
+HSV = Image('Data', data, 'Parent', obj, 'Name', name);

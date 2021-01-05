@@ -18,4 +18,5 @@ function res = log10(obj)
 
 newData = log10(double(obj.Data));
 
-res = Image('data', newData, 'parent', obj, 'type', 'intensity');
+name = createNewName(obj, '%s-log10');
+res = Image('Data', newData, 'Parent', obj, 'Type', 'intensity', 'Name', name);

@@ -17,4 +17,5 @@ function res = exp(obj)
 
 newData = exp(double(obj.Data));
 
-res = Image('data', newData, 'parent', obj, 'type', 'intensity');
+name = createNewName(obj, '%s-exp');
+res = Image('Data', newData, 'Parent', obj, 'Type', 'Intensity', 'Name', name);

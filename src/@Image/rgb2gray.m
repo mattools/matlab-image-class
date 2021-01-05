@@ -35,4 +35,5 @@ gray = imlincomb(...
     coefs(3), obj.Data(:,:,:,3,:));
 
 % create new image
-res = Image('data', gray, 'parent', obj, 'type', 'grayscale');
+name = createNewName(obj, '%s-gray');
+res = Image('Data', gray, 'Parent', obj, 'Type', 'grayscale', 'Name', name);

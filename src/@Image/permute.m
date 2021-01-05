@@ -13,9 +13,13 @@ function res = permute(obj, order)
  
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2019-06-17,    using Matlab 8.6.0.267246 (R2015b)
 % Copyright 2019 INRA - Cepia Software Platform.
 
+% permute data
 data2 = permute(obj.Data, order);
-res = Image('data', data2, 'parent', obj);
+
+% create result image
+name = createNewName(obj, '%s-permute');
+res = Image('Data', data2, 'Parent', obj, 'Name', name);

@@ -19,6 +19,7 @@ function res = squeeze(obj)
 keepDims = find(obj.DataSize(1:3) ~= 1);
 removeDims = find(obj.DataSize(1:3) == 1);
 
-res = Image('data', permute(obj.Data, [keepDims removeDims 4 5]), ...
-    'parent', obj, 'dimension', length(keepDims));
+name = createNewName(obj, '%s-squeeze');
+res = Image('Data', permute(obj.Data, [keepDims removeDims 4 5]), ...
+    'Parent', obj, 'Dimension', length(keepDims), 'Name', name);
 res.Type = obj.Type;

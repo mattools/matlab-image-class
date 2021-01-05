@@ -24,4 +24,5 @@ nd = length(obj.Data);
 data = permute(obj.Data, [2 1 3:nd]);
 data2 = permute(imrotate(data, -angle, varargin{:}), [2 1 3:nd]);
 
-res = Image('Data', data2, 'Parent', obj);
+name = createNewName(obj, '%s-rot');
+res = Image('Data', data2, 'Parent', obj, 'Name', name);

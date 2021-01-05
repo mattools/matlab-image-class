@@ -1,4 +1,4 @@
-function res = whiteTopHat(this, varargin)
+function res = whiteTopHat(obj, varargin)
 % White Top-Hat transform of an intensity or binary image.
 %
 %   WTH = whiteTopHat(IMG, SE)
@@ -23,11 +23,12 @@ function res = whiteTopHat(this, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-06-02,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-dat = imtophat(this.Data, varargin{1});
+datz = imtophat(obj.Data, varargin{1});
 
 % create result image
-res = Image('data', dat, 'parent', this);
+name = createNewName(obj, '%s-WTH');
+res = Image('Data', datz, 'Parent', obj, 'Name', name);

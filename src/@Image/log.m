@@ -18,11 +18,6 @@ function res = log(obj)
 
 newData = log(double(obj.Data));
 
-newName = '';
-if ~isempty(obj.Name)
-    newName = sprintf('log(%s)', obj.Name);
-end
-
-res = Image('data', newData, 'parent', obj, ...
-    'name', newName, ...
-    'type', 'intensity');
+name = createNewName(obj, '%s-log');
+res = Image('Data', newData, 'Parent', obj, 'Type', 'intensity', ...
+    'Name', name);

@@ -77,5 +77,6 @@ sp2 = obj.Spacing ./ k;
 or2 = (obj.Origin - obj.Spacing * 0.5) + sp2 * 0.5;
 
 % create new image object for storing result
-res = Image('data', data, 'parent', obj, ...
+name = createNewName(obj, '%s-resize');
+res = Image('Data', data, 'Parent', obj, 'Name', name, ...
     'Spacing', sp2, 'Origin', or2);

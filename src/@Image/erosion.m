@@ -21,4 +21,5 @@ end
 data = imerode(getBuffer(obj), varargin{:});
 
 % create new image object for storing result
-res = Image(data, 'parent', obj);
+name = createNewName(obj, '%s-ero');
+res = Image(data, 'Parent', obj, 'Name', name);

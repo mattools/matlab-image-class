@@ -63,9 +63,5 @@ elseif nd == 3
 end
 
 % create new image
-rgb = Image('Data', data, 'Parent', obj, 'Type', 'Color');
-
-% setup result image name
-if ~isempty(obj.Name)
-    rgb.Name = sprintf('label2rgb(%s)', obj.Name);
-end
+name = createNewName(obj, '%s-rgb');
+rgb = Image('Data', data, 'Parent', obj, 'Type', 'Color', 'Name', name);

@@ -19,4 +19,5 @@ end
 data = imdilate(getBuffer(obj), varargin{:});
 
 % create new image object for storing result
-res = Image(data, 'parent', obj);
+name = createNewName(obj, '%s-dil');
+res = Image(data, 'Parent', obj, 'Name', name);

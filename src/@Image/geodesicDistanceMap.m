@@ -308,4 +308,5 @@ if normalize
     dist(mask > 0) = dist(mask > 0) / w1;
 end
 
-dist = Image('Data', dist, 'Parent', mask, 'Type', 'Intensity');
+name = createNewName(mask, '%s-geodDistMap');
+dist = Image('Data', dist, 'Parent', mask, 'Type', 'Intensity', 'Name', name);

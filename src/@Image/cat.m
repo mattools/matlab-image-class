@@ -26,4 +26,5 @@ for i = 1:length(varargin)
     data = cat(dim, data, var.Data);
 end
 
-res = Image('data', data, 'Parent', obj);
+name = createNewName(obj, '%s-cat');
+res = Image('data', data, 'Parent', obj, 'Name', name);

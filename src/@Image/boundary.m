@@ -97,4 +97,8 @@ end
 %% Process
 
 % erode the structure and compare with original
-bnd = Image('data', op(obj.Data, se) ~= obj.Data, 'parent', obj);
+newData = op(obj.Data, se) ~= obj.Data;
+
+% create result image
+name = createNewName(obj, '%s-bnd');
+bnd = Image('Data', newData, 'Parent', obj, 'Name', name);
