@@ -11,7 +11,7 @@ Images are asociated to a type that indicates how the content should be interpre
 
 Nearly 200 methods are provided for quickly applying image processing operators on image instances, 
 by keeping relevant meta-data such as spatial calibration, and automatically inferring the type of the
-result images. A [User Manual](https://github.com/mattools/matlab-image-class/releases/download/v1.0/ImageClass-Manual.pdf) is available in pdf format.
+result images. A [User Manual](https://github.com/mattools/matlab-image-class/releases/download/v1.1/ImageClass-Manual-1.1.pdf) is available in pdf format.
 
 The `Image` class is at the basis of the development of the `ImageM` application (http://github.com/mattools/ImageM). The MatStats package (https://github.com/mattools/matStats) may be necessary for some functions.
 
