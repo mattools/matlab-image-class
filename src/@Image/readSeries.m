@@ -79,8 +79,8 @@ img0 = Image.read(fullfile(path, fileList(range(1)).name));
 % create result array
 dim0 = size(img0);
 dim = [dim0(1:2) length(range)];
-if channelNumber(img0) > 1
-    dim = [dim channelNumber(img0)];
+if channelCount(img0) > 1
+    dim = [dim channelCount(img0)];
 end
 data = zeros(dim, 'like', img0.Data);
 
