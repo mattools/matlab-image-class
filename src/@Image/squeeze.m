@@ -23,3 +23,8 @@ name = createNewName(obj, '%s-squeeze');
 res = Image('Data', permute(obj.Data, [keepDims removeDims 4 5]), ...
     'Parent', obj, 'Dimension', length(keepDims), 'Name', name);
 res.Type = obj.Type;
+
+% copy spatial calibration info
+res.Spacing = obj.Spacing(keepDims);
+res.Origin = obj.Origin(keepDims);
+res.UnitName = obj.UnitName;
