@@ -293,7 +293,7 @@ methods (Access = protected)
         nc = obj.DataSize(4);
         switch lower(typeName)
             case 'binary', if nc ~= 1, tf = false; end
-            case 'grayscale', if nc ~= 1, tf = false; end
+            case 'grayscale', if nc ~= 1 || isfloat(obj.Data), tf = false; end
             case 'intensity', if nc ~= 1, tf = false; end
             case 'color', if nc ~= 3, tf = false; end
             case 'label', if nc ~= 1, tf = false; end

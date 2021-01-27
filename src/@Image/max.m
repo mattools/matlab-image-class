@@ -1,7 +1,7 @@
 function res = max(obj, varargin)
 % Compute the maximal value within image.
 %
-%   M = mean(IMG);
+%   M = max(IMG);
 %
 %   Example
 %     img = Image.read('rice.png');
@@ -10,7 +10,7 @@ function res = max(obj, varargin)
 %        204
 %
 %   See also
-%     mean, median, min
+%     mean, median, min, orthogonalProjection
 %
 
 if isempty(varargin)

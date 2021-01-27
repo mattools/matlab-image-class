@@ -1,16 +1,16 @@
 function res = min(obj, varargin)
 % Compute the minimal value within image.
 %
-%   M = mean(IMG);
+%   M = min(IMG);
 %
 %   Example
 %     img = Image.read('rice.png');
-%     max(img)
+%     min(img)
 %     ans =
 %        40
 %
 %   See also
-%     mean, median, max
+%     mean, median, max, orthogonalProjection
 %
 
 

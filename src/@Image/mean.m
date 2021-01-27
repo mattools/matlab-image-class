@@ -10,7 +10,7 @@ function res = mean(obj)
 %       111.2468
 %
 %   See also
-%     median
+%     median, min, max, orthogonalProjection
 %
 
 res = mean(double(obj.Data(:)));
