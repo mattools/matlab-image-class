@@ -45,7 +45,7 @@ end
 %% Compute interpolation
 
 nv = size(point, 1);
-nc = channelNumber(obj);
+nc = channelCount(obj);
 val = zeros(nv, nc);
 
 if nd == 2
