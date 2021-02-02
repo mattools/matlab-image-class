@@ -26,6 +26,7 @@ function [bin, value] = otsuThreshold(img, varargin)
 %
 %   See also
 %     binarize, otsuThresholdValue, maxEntropyThreshold, lt, le, histogram
+%     multilevelOtsuThreshold
 %
 
 % ------
