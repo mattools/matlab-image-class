@@ -24,6 +24,7 @@ function [points, labels] = regionCentroids(obj, varargin)
 %
 %   See also
 %     analyzeRegions, findRegionLabels, componentLabeling, regionprops
+%     regionEquivalentEllipses
  
 % ------
 % Author: David Legland
