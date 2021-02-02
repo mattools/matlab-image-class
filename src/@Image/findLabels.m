@@ -27,7 +27,7 @@ if isBinaryImage(obj)
 end
 
 if ~isLabelImage(obj)
-    error('Reqsuires a label image');
+    error('Requires a label image');
 end
 
 % special case of CC structure, not used at the moment

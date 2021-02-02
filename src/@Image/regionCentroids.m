@@ -1,39 +1,35 @@
-function [points, labs] = centroid(obj, varargin)
-%CENTROID Centroid(s) of a binary or label image.
+function [points, labels] = regionCentroids(obj, varargin)
+% Centroid of region(s) in a binary or label image.
 %
-%   Deprecated: renamed as regionCentroids
-%
-%   C = centroid(I)
+%   C = regionCentroids(I)
 %   Returns the centroid C of the binary image I. C is a 1-by-2 or 1-by-3
 %   row vector, depending on the dimension of the image.
 %
-%   C = centroid(LBL)
+%   C = regionCentroids(LBL)
 %   If LBL is a label D-dimensional image, returns an array of N-by-D
-%   values, corresponding to the centroid values of the N regions within
-%   the image.
+%   values, corresponding to the centroids of the N regions within the
+%   image.
 %
-%   [C, LABELS] = centroid(LBL)
+%   [C, LABELS] = regionCentroids(LBL)
 %   Also returns the labels of the regions that were measured.
 %
 %   Example
 %     % Compute centroids of coins particles
 %     img = Image.read('coins.png');            % read image
 %     bin = opening(img > 80, ones([3 3]));     % binarize
-%     lbl = labeling(bin);                      % compute labels
+%     lbl = componentLabeling(bin);             % compute labels
 %     figure; show(img);                        % display image
-%     pts = centroid(lbl);                      % compute centroids
-%     hold on; plot(pts(:,1), pts(:,2), 'b+');  % display centroid
+%     pts = regionCentroids(lbl);               % compute centroids
+%     hold on; plot(pts(:,1), pts(:,2), 'b+');  % display centroids
 %
 %   See also
-%     analyzeRegions
+%     analyzeRegions, findRegionLabels, componentLabeling, regionprops
  
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2018-07-03,    using Matlab 9.4.0.813654 (R2018a)
 % Copyright 2018 INRA - Cepia Software Platform.
-
-warning('deprecated, use ''regionCentroids'' instead');
 
 % check image type
 if ~(isLabelImage(obj) || isBinaryImage(obj))
@@ -48,7 +44,7 @@ end
 
 % extract the set of labels, without the background
 if isempty(labels)
-    labels = findLabels(obj);
+    labels = findRegionLabels(obj);
 end
 nLabels = length(labels);
 
@@ -62,7 +58,7 @@ if nd == 2
         % extract points of the current particle
         [x, y] = find(obj.Data == labels(i));
 
-        % coordinates of particle centroid
+        % coordinates of particle regionCentroids
         xc = mean(x);
         yc = mean(y);
 
@@ -76,7 +72,7 @@ elseif nd == 3
         inds = find(obj.Data == labels(i));
         [x, y, z] = ind2sub(dim, inds);
 
-        % coordinates of particle centroid
+        % coordinates of particle regionCentroids
         xc = mean(x);
         yc = mean(y);
         zc = mean(z);
@@ -88,6 +84,5 @@ else
     error('Requires an image of dimension 2 or 3');
 end
 
-if nargout > 1
-    labs = labels;
-end
+% calibrate result
+points = bsxfun(@plus, bsxfun(@times, points-1, obj.Spacing), obj.Origin);

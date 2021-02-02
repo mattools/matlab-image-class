@@ -1,12 +1,24 @@
 function [counts, labels] = regionElementCounts(obj, varargin)
 % Count the number of pixels/voxels within each region of a label image.
 %
-%   output = regionElementCounts(input)
+%   CNT = regionElementCounts(LBL)
+%   For each region on the label image LBL, count the number of elements
+%   (pixels or voxels) that constitute this region. Return a column vector
+%   with as many elements as the number of regions.
+%
+%   [CNT, LABELS] = regionElementCounts(LBL)
+%   Also returns the labels of the regions.
 %
 %   Example
-%   regionElementCounts
+%     img = Image.read('coins.png');
+%     bin = fillHoles(img > 100);
+%     lbl = componentLabeling(bin);
+%     regionElementCounts(lbl)'
+%     ans =
+%       2563   1899   2598   1840   2693   1906   2648   2725   1935   2796
 %
 %   See also
+%     regionCentroids, findRegionLabels
 %
  
 % ------
