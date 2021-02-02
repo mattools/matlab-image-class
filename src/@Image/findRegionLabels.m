@@ -1,24 +1,25 @@
-function labels = findLabels(obj)
-% Find unique labels in a label image.
+function labels = findRegionLabels(obj)
+% Find unique region labels within a label or binary image.
 %
-%   Deprecated: renamed as findRegionLabels
-%
-%   output = findLabels(input)
+%   LABELS = findRegionLabels(IMG)
 %
 %   Example
-%   findLabels
+%     img = Image.read('coins.png');
+%     bin = fillHoles(img > 100);
+%     lbl = componentLabeling(bin);
+%     labels = findRegionLabels(lbl)'
+%     labels =
+%          1     2     3     4     5     6     7     8     9    10
 %
 %   See also
-%     unique
+%     regionCentroids, unique
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2018-07-03,    using Matlab 9.4.0.813654 (R2018a)
 % Copyright 2018 INRA - Cepia Software Platform.
-
-warning('deprecated, use ''findRegionLabels'' instead');
 
 % test special case of binary image based on image type
 if isBinaryImage(obj)
@@ -27,14 +28,8 @@ if isBinaryImage(obj)
 end
 
 if ~isLabelImage(obj)
-    error('Reqsuires a label image');
+    error('Requires a label image');
 end
-
-% special case of CC structure, not used at the moment
-% if isstruct(img) && isfield(img, 'NumObjects')
-%     labels = (1:img.NumObjects)';
-%     return;
-% end
 
 if isinteger(obj.Data)
     % For integer images, iterates over possible labels
