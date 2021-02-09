@@ -25,3 +25,15 @@ clearCalibration(img);
 img2 = img.crop([51 200 51 150]);
 
 assertEqual(testCase, [150 100], size(img2));
+
+
+function test_keepChannelNames(testCase)  %#ok<*DEFNU>
+
+img = Image.read('peppers.png');
+clearCalibration(img);
+img.ChannelNames = {'Rot', 'Gruen', 'Blau'};
+
+img2 = img.crop([51 200 51 150]);
+
+assertEqual(testCase, [150 100], size(img2));
+assertEqual(testCase, img2.ChannelNames, img.ChannelNames);

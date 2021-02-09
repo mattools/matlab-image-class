@@ -283,6 +283,12 @@ methods (Access = protected)
         if ~isempty(that.UnitName)
             obj.UnitName     = that.UnitName;
         end
+        
+        % copy channel names if images have same number of channels
+        if size(obj.Data,4) == size(that.Data,4) && ~isempty(that.ChannelNames)
+            obj.ChannelNames = that.ChannelNames;
+        end
+        
         if ~isempty(that.AxisNames)
             obj.AxisNames(1:nd)  = that.AxisNames(1:nd);
         end
