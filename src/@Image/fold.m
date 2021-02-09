@@ -12,8 +12,8 @@ function img = fold(array, dims, varargin)
 %     tab = unfold(img);
 %     % Performs basic clustering
 %     km = kmeans(tab, 6);
-%     % Convert result to imaeg using the 'fold' method
-%     img2 = Image.fold(km+1, size(img), 'type', 'label', 'Name', 'km3 labels');
+%     % Convert result to image using the 'fold' method
+%     img2 = Image.fold(km+1, size(img), 'Type', 'label', 'Name', 'km6 labels');
 %     figure; show(label2rgb(img2, 'jet'));
 %
 %   See also
@@ -27,19 +27,53 @@ function img = fold(array, dims, varargin)
 % Created: 2020-10-19,    using Matlab 9.8.0.1323502 (R2020a)
 % Copyright 2020 INRAE.
 
+% process data provided as Table
+tab = [];
+if isa(array, 'Table')
+    tab = array;
+    array = tab.Data;
+end
+
+% retrieve array size
 nr = size(array, 1);
 nc = size(array, 2);
 
 if prod(dims) ~= nr
-    error('The number of elements of output image must match the row nomber of array');
+    error('The number of elements of output image must match the row number of array');
 end
 
+% allocate memory for image data
 data = zeros([dims nc], 'like', array);
 
-subs = {':', ':', 1};
+% copy each column into an image channel
+nd = length(dims);
+subs = [repmat({':'}, 1, nd) {1}];
 for i = 1:nc
     subs{end} = i;
     data(subs{:}) = reshape(array(:,i), dims);
 end
 
-img = Image('Data', data, 'vector', nc > 1, varargin{:});
+% Defulat meta-data for new image
+newName = 'fold';
+if nc == 1
+    channelNames = {'Intensity'};
+else
+    channelNames = cell(1,nc);
+    for i = 1:nc
+        channelNames{i} = sprintf('Ch%02d', i);
+    end
+end
+
+% choose result image name
+if ~isempty(tab)
+    if ~isempty(tab.Name)
+        newName = [tab.Name '-fold'];
+    end
+    channelNames = tab.ColNames;
+end
+
+% create result Image
+img = Image('Data', data, 'Vector', nc > 1, ...
+    'Name', newName, ...
+    'ChannelNames', channelNames, ...
+    varargin{:});

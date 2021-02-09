@@ -8,7 +8,7 @@ function [tab, coords] = unfold(obj)
 %
 %   [TAB, COORDS] = unfold(VIMG);
 %   Also returns an array with the (X,Y) or (X,Y,Z) coordinates of each
-%   element of the table.
+%   element within the table.
 %
 %   Example
 %     img = Image.read('peppers.png');
@@ -35,7 +35,7 @@ if ~isVectorImage(obj)
     return;
 end
 if frameCount(obj) > 1
-    error('Can not process multi-frame images');
+    error('Can not process time-lapse images');
 end
 
 % size of the table
@@ -56,6 +56,10 @@ if isempty(obj.ChannelNames) || length(obj.ChannelNames) ~= nc
 end
 tab.ColNames = colNames;
 
+% create default name
+newName = createNewName(obj, '%s-unfold');
+tab.Name = newName;
+
 
 % optionnaly creates table of coordinates
 if nargout > 1
@@ -70,5 +74,9 @@ if nargout > 1
         [y, x] = meshgrid(ly, lx);
         coords = Table([x(:) y(:)], {'x', 'y'});
     end
+    
+    % create default name
+    newName = createNewName(obj, '%s-coords');
+    coords.Name = newName;
 end
  
