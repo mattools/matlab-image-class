@@ -18,14 +18,14 @@ function res = killBorders(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-% choose default connectivity
+% choose default connectivity depending on dimension
 conn = 4;
 if ndims(obj) == 3
-    conn = 8;
+    conn = 6;
 end
 
 % case of connectivity specified by user
