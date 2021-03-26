@@ -22,12 +22,6 @@ function img = read(fileName, varargin)
 %   % read a 3D image
 %   img = Image.read('brainMRI.hdr');
 %
-%   % read a time-lapse image
-%   img = Image.read('xylophone.mp4');
-%   isTimeLapseImage(img)
-%   ans =
-%      logical
-%       1
 %
 %   See also
 %     imread, readSeries, write, fileInfo
@@ -67,8 +61,8 @@ while length(varargin) > 1
 end
 
 % initialize the list of video file format extensions
-fmtList = VideoReader.getFileFormats();
-videoFormatExtensions = {fmtList.Extension};
+% fmtList = VideoReader.getFileFormats();
+% videoFormatExtensions = {fmtList.Extension};
 
 % Process image reading depending on the format
 if strcmpi(format, 'tif')
@@ -97,9 +91,10 @@ elseif strcmpi(format, 'vgi')
     % (use function in "private" directory)
     img = readVgiStack(fileName);
     
-elseif any(strcmp(videoFormatExtensions, format))
-    % read movie by calling the local 'read_movie' function.
-    img = read_movie(fileName);
+% The following is not supported with octave
+%elseif any(strcmp(videoFormatExtensions, format))
+%    % read movie by calling the local 'read_movie' function.
+%    img = read_movie(fileName);
     
 else
     % otherwise, assumes format can be managed by Matlab Image Processing
@@ -240,22 +235,4 @@ img.Origin = origin;
 img.UnitName = unitName;
 img.TimeStep = timeStep;
 
-end
-
-function img = read_movie(fileName)
-% read a movie as a 5D Image with several frames
-% by converting from the VideoReader output.
-reader = VideoReader(fileName);
-nFrames = reader.NumFrames;
-sizeX = reader.Width;
-sizeY = reader.Height;
-frame0 = reader.read(1);
-nChannels = size(frame0, 3);
-data = zeros([sizeX sizeY 1 nChannels nFrames], 'uint8');
-for i = 1:nFrames
-    data(:,:,:,:,i) = permute(reader.read(i), [2 1 3]);
-end
-img = Image('Data', data);
-img.TimeStep = 1 / reader.FrameRate;
-img.TimeUnit = 's';
 end
