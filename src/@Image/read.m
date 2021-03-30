@@ -33,8 +33,24 @@ function img = read(fileName, varargin)
 % Created: 2010-07-13,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRAE - Cepia Software Platform.
 
-% extract filename's extension
-[path, name, ext] = fileparts(fileName); %#ok<ASGLU>
+% parse fileName components
+[filePath, baseName, ext] = fileparts(fileName);
+
+% if file does not exist, try to add the path to the list of sample files
+if exist(fileName, 'file') == 0 && isempty(filePath)
+    % retrieve the path to sample files
+    [filePath, ~] = fileparts(mfilename('fullpath'));
+    filePath = fullfile(filePath, 'sampleFiles');
+    
+    % create newfile path
+    fileName = fullfile(filePath, [baseName ext]);
+    
+    % if file still does not exist, try to add default '.txt' extension
+    if exist(fileName, 'file') == 0 && isempty(ext)
+        ext = '.tif';
+        fileName = fullfile(filePath, [baseName ext]);
+    end
+end
 
 % try to deduce format from extension.
 % First use reader provided by Matlab then use readers in private directory.
@@ -103,7 +119,7 @@ else
 end
 
 % populate additional meta-data
-img.Name = name;
+img.Name = baseName;
 img.FilePath = fileName;
 
 end
