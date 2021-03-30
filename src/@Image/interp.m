@@ -33,9 +33,11 @@ if ~isempty(varargin)
     varargin(1) = [];
 end
 
-if ischar(method) && method(1)~='*'
-    method = ['*' method];
-end
+% Previous versions of Matlab provided enhanced version using '*',
+% but this does not seem to be valid any more (2021-03-30)
+% if ischar(method) && method(1)~='*'
+%     method = ['*' method];
+% end
 
 if ~isempty(varargin)
     fillValue = varargin{1};

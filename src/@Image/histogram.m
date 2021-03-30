@@ -273,8 +273,12 @@ binEdges = [x - dx/2, x(end)+dx/2];
 
 if isempty(roi)
     % histogram of the whole image
-    h = histcounts(img(:), binEdges)';
+    h = histc(img(:), binEdges); %#ok<HISTC>
 else
     % histogram constrained to ROI
-    h = histcounts(img(roi), binEdges)';
-end    
+    h = histc(img(roi), binEdges); %#ok<HISTC>
+end
+
+% merge the last two bins to be consistent with behaviour of histcounts
+h(end-1) = h(end-1) + h(end);
+h(end) = [];

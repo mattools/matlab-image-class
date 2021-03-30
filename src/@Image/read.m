@@ -124,21 +124,19 @@ if length(infoList) > 1
 end
 
 if read3d
-    % read first image to initialize 3D image
-    img1 = Image(imread(fileName, 1));
-    dim = [info1.Width info1.Height length(infoList)];
-    img = Image.create(dim, class(img1.Data));
+    % If file contains several images, attempts to read as a 3D image.
     
-    % Read all images using Tiff class
-    t = Tiff(fileName, 'r');
+    % initialize image from full size and data type of first slice
+    dim = [info1.Width info1.Height length(infoList)];
+    img1 = imread(fileName, 1);
+    img = Image.create(dim, class(img1));
+    img.Data(:,:,1,:) = permute(img1, [2 1 3]);
     
     % iterate over slices
-    img.Data(:,:,1,:) = permute(read(t), [2 1 3]);
     for i = 2:length(infoList)
-        nextDirectory(t);
-        img.Data(:,:,i,:) = permute(read(t), [2 1 3]);
+        img1 = imread(fileName, i);
+        img.Data(:,:,i,:) = permute(img1, [2 1 3]);
     end
-    close(t);
     
 else
     % For 2D images, use standard Matlab functions

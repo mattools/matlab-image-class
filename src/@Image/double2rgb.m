@@ -38,7 +38,7 @@ function rgb = double2rgb(obj, map, bounds, varargin)
 % HISTORY
 
 if nargin < 2 || isempty(map)
-    map = 'parula';
+    map = 'viridis'; % to replace Matlab's "parula" colormap
 end
 
 % ensure map is a numeric array

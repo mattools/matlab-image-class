@@ -47,7 +47,7 @@ if ~isempty(varargin) && isnumeric(varargin{1})
     varargin(1) = [];
 end
 
-method = '*linear';
+method = 'linear';
 if ~isempty(varargin) && ischar(varargin{1})
     method = varargin{1};
 end
