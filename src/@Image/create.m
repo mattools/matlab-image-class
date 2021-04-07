@@ -83,7 +83,7 @@ elseif ischar(var1)
             continue;
         end
         
-        if strcmp(varargin{i}, 'data')
+        if strcmpi(varargin{i}, 'data')
             data = varargin{i+1};
             imageSize = size(data);
             varargin(i:i+1) = [];
