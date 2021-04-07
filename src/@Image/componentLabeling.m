@@ -12,7 +12,7 @@ function res = componentLabeling(obj, varargin)
 %     figure; show(rgb);
 %
 %   See also
-%     label2rgb, watershed
+%     label2rgb, watershed, reconstruction
 %
 
 % ------
@@ -26,14 +26,22 @@ if ~strcmp(obj.Type, 'binary')
     error('Requires a binary image');
 end
 
+% choose default connectivity depending on dimension
+conn = defaultConnectivity(obj);
+
+% case of connectivity specified by user
+if ~isempty(varargin)
+    conn = varargin{1};
+end
+
 nd = ndims(obj);
 if nd == 2
     % Planar images
-    data = bwlabel(obj.Data, varargin{:});
+    data = bwlabel(obj.Data, conn);
     
 elseif nd == 3
     % 3D images
-    data = bwlabeln(obj.Data, varargin{:});
+    data = bwlabeln(obj.Data, conn);
     
 else
     error('Function "componentLabeling" is not implemented for image of dim %d', nd);

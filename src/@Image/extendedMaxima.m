@@ -29,22 +29,12 @@ if ~strcmp(obj.Type, 'grayscale') && ~strcmp(obj.Type, 'intensity')
     error('Requires a Grayscale or intensity image to work');
 end
 
-% default value for connectivity
-conn = 4;
-if obj.Dimension == 3
-    conn = 6;
-end
+% choose default connectivity depending on dimension
+conn = defaultConnectivity(obj);
 
-% process input arguments
-while ~isempty(varargin)
-    var = varargin{1};
-
-    if isnumeric(var) && isscalar(var)
-        % extract connectivity
-        conn = var;
-        varargin(1) = [];
-        continue;
-    end
+% case of connectivity specified by user
+if ~isempty(varargin)
+    conn = varargin{1};
 end
 
 data = imextendedmax(obj.Data, dyn, conn);

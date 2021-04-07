@@ -47,11 +47,10 @@ if isLabelImage(obj)
 elseif isBinaryImage(obj)
     % if image is binary compute labeling
     
-    % first determines connectivity to use
-    conn = 4;
-    if ndims(obj) == 3
-        conn = 6;
-    end
+    % choose default connectivity depending on dimension
+    conn = defaultConnectivity(obj);
+    
+    % case of connectivity specified by user
     if ~isempty(varargin)
         conn = varargin{1};
     end

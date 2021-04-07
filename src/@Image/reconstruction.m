@@ -25,15 +25,28 @@ function res = reconstruction(marker, mask, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-08-01,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 %   HISTORY
 
+
+% Parse input arguments
 [marker, mask, parent] = parseInputCouple(marker, mask);
-data = imreconstruct(marker, mask, varargin{:});
+
+% choose default connectivity depending on dimension
+conn = defaultConnectivity(parent);
+
+% case of connectivity specified by user
+if ~isempty(varargin)
+    conn = varargin{1};
+end
+
+
+% process reconstruction
+data = imreconstruct(marker, mask, conn);
 
 % create result image
-name = createNewName(parent, '%s-minima');
+name = createNewName(parent, '%s-rec');
 res = Image('Data', data, 'Parent', parent, 'Type', parent.Type, 'Name', name);

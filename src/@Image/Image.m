@@ -108,6 +108,7 @@ end % static methods
 methods(Access = protected)
     
     se = defaultStructuringElement(obj, varargin)
+    conn = defaultConnectivity(obj);
     
     name = createNewName(obj, pattern)
 end
@@ -115,7 +116,7 @@ end
 %% Constructor declaration
 methods
     function obj = Image(varargin)
-        %IMAGE Constructor for Image object.
+        % Constructor for Image object.
         %
         %   Syntax
         %   IMG = Image(MAT);

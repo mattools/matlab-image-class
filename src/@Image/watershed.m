@@ -42,10 +42,10 @@ end
 % default values
 dyn = [];
 marker = [];
-conn = 4;
-if obj.Dimension == 3
-    conn = 6;
-end
+
+% choose default connectivity depending on dimension
+conn = defaultConnectivity(obj);
+
 
 % process input arguments
 while ~isempty(varargin)

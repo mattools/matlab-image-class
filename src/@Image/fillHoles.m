@@ -17,11 +17,8 @@ function res = fillHoles(obj, varargin)
 % Created: 2011-09-11,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
-% default connectivity
-conn = 4;
-if ndims(obj) == 3
-    conn = 6;
-end
+% choose default connectivity depending on dimension
+conn = defaultConnectivity(obj);
 
 % parse input connectivity
 if ~isempty(varargin)

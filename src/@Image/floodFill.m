@@ -5,6 +5,11 @@ function res = floodFill(obj, pos, value, varargin)
 %   Determines the region of connected pixels with the same value and
 %   containing the position POS, and replaces their value by V.
 %   
+%   IMG2 = floodFill(IMG, POS, V, CONN)
+%   Also specifies the connectivity to use. Default connectivity is 4 for
+%   planar images, and 6 for 3D images.
+%
+%
 %   Example
 %     % remove the region corresponding to the label at a given position
 %     img = Image.read('coins.png');
@@ -13,7 +18,7 @@ function res = floodFill(obj, pos, value, varargin)
 %     figure; show(lbl2); colormap jet;
 %     
 %   See also
-%     reconstruction
+%     reconstruction, fillHoles, killBorders
 %
  
 % ------
@@ -29,6 +34,14 @@ if size(pos, 2) ~= ndims(obj)
         'position array size must match image dimension');
 end
 
+% choose default connectivity depending on dimension
+conn = defaultConnectivity(obj);
+
+% case of connectivity specified by user
+if ~isempty(varargin)
+    conn = varargin{1};
+end
+
 % create binary image of mask
 pos = num2cell(pos);
 mask = obj == obj.Data(pos{:});
@@ -38,7 +51,7 @@ marker = Image.false(size(obj));
 marker.Data(pos{:}) = true;
 
 % compute the region composed of connected pixels with same value
-rec = reconstruction(marker, mask);
+rec = reconstruction(marker, mask, conn);
 
 % replace values in result image
 name = createNewName(obj, '%s-floodFill');

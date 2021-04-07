@@ -23,10 +23,7 @@ function res = killBorders(obj, varargin)
 % Copyright 2011 INRA - Cepia Software Platform.
 
 % choose default connectivity depending on dimension
-conn = 4;
-if ndims(obj) == 3
-    conn = 6;
-end
+conn = defaultConnectivity(obj);
 
 % case of connectivity specified by user
 if ~isempty(varargin)
