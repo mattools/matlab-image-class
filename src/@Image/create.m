@@ -19,12 +19,12 @@ function img = create(varargin)
 %
 %
 %   See also
-%     read, ones, zeros
+%     read, ones, zeros, true, false
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2010-07-21,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2010 INRA - Cepia Software Platform.
 
@@ -59,7 +59,7 @@ if isnumeric(var1) || islogical(var1)
         end
         
         % create empty data buffer
-        if strcmp(type, 'logical') || strcmp(type, 'binary')
+        if strcmpi(type, 'logical') || strcmp(type, 'binary')
             % case of binary image
             data = false(imageSize);
         else
@@ -120,4 +120,4 @@ end
 
 % call constructor depending on image dimension
 nd = length(imageSize);
-img = Image(nd, 'data', data, arguments{:});
+img = Image(nd, 'Data', data, arguments{:});

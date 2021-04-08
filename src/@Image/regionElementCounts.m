@@ -18,7 +18,7 @@ function [counts, labels] = regionElementCounts(obj, varargin)
 %       2563   1899   2598   1840   2693   1906   2648   2725   1935   2796
 %
 %   See also
-%     regionCentroids, findRegionLabels
+%     regionCentroids, findRegionLabels, largestRegion
 %
  
 % ------

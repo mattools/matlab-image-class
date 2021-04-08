@@ -6,14 +6,14 @@ function [res, indMax] = largestRegion(obj, varargin)
 %   image corresponding to obj label. Can be used to select automatically
 %   the most proeminent region in a segmentation or labelling result.
 %
-%   [REG IND] = largestRegion(LBL)
+%   [REG, IND] = largestRegion(LBL)
 %   Also returns the index of the largest region.
 %
 %   REG = largestRegion(BIN)
 %   REG = largestRegion(BIN, CONN)
-%   Finds the largest connected region in the binary image IMG. A labelling
-%   of the image is performed prior to the identification of the largest
-%   label. The connectivity can be specified.
+%   Finds the largest connected region in the binary image IMG. A connected
+%   component labelling of the image is performed prior to the
+%   identification of the largest label. The connectivity can be specified.
 %
 %   Example
 %     % Find the binary image corresponding to the largest label
@@ -31,7 +31,7 @@ function [res, indMax] = largestRegion(obj, varargin)
 %         0   0   0   0   0   0 
 %         0   0   0   0   0   0
 %
-%   % Keep largest region in a binary image
+%   % Keep the largest region in a binary image
 %     BW = Image.read('text.png');
 %     BW2 = largestRegion(BW, 4);
 %     figure; show(overlay(BW, BW2));
@@ -43,12 +43,13 @@ function [res, indMax] = largestRegion(obj, varargin)
 %     show(overlay(img, bin2));
 %
 %   See also
-%     regionprops, killBorders, areaOpening
+%     regionprops, killBorders, areaOpening, componentLabeling, 
+%     regionElementCounts
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2012-07-27,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2012 INRA - Cepia Software Platform.
 
@@ -58,11 +59,10 @@ if isLabelImage(obj)
 elseif isBinaryImage(obj)
     % if image is binary compute labeling
     
-    % first determines connectivity to use
-    conn = 4;
-    if obj.Dimension == 3
-        conn = 6;
-    end
+    % choose default connectivity depending on dimension
+    conn = defaultConnectivity(parent);
+    
+    % case of connectivity specified by user
     if ~isempty(varargin)
         conn = varargin{1};
     end
