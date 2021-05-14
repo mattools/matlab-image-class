@@ -60,7 +60,7 @@ elseif isBinaryImage(obj)
     % if image is binary compute labeling
     
     % choose default connectivity depending on dimension
-    conn = defaultConnectivity(parent);
+    conn = defaultConnectivity(obj);
     
     % case of connectivity specified by user
     if ~isempty(varargin)
