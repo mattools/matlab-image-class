@@ -36,7 +36,7 @@ function [ellipse, labels] = regionEquivalentEllipses(obj, varargin)
 %     drawEllipse(ellipses, 'linewidth', 2, 'color', 'g');
 %
 %   See also
-%     regionCentroids, regionBoxes
+%     regionCentroids, regionBoxes, regionOrientedBox
 %
 
 % ------
