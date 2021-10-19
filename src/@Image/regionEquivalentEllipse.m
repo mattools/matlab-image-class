@@ -1,20 +1,18 @@
-function [ellipse, labels] = regionEquivalentEllipses(obj, varargin)
+function [ellipse, labels] = regionEquivalentEllipse(obj, varargin)
 % Equivalent ellipse of region(s) in a binary or label image.
 %
-%   Note: deprecated, use 'regionEquivalentEllipse' instead
-%
-%   ELLI = regionEquivalentEllipses(IMG)
+%   ELLI = regionEquivalentEllipse(IMG)
 %   Computes the ellipse with same second order moments for each region in
 %   label image IMG. If the case of a binary image, a single ellipse
 %   corresponding to the foreground (i.e. to the region with pixel value 1)
 %   will be computed. 
 %
-%   The result is a N-by-5 array ELLI = [XC YC A B THETA], containing
-%   coordinates of ellipse center, lengths of major and minor semi-axes,
-%   and the orientation of the largest axis (in degrees, and
+%   The result is a N-by-5 array ELLI = [XC YC A B THETA], containing the
+%   coordinates of ellipse center, the lengths of major and minor
+%   semi-axes, and the orientation of the largest axis (in degrees, 
 %   counter-clockwise). 
 %
-%   ELLI = regionEquivalentEllipses(..., LABELS)
+%   ELLI = regionEquivalentEllipse(..., LABELS)
 %   Specifies the labels for which the equivalent ellipse needs to be
 %   computed. The result is a N-by-5 array with as many rows as the number
 %   of labels. 
@@ -24,19 +22,19 @@ function [ellipse, labels] = regionEquivalentEllipses(obj, varargin)
 %   % Draw a commplex particle together with its equivalent ellipse
 %     img = Image.read('circles.png');
 %     show(img); hold on;
-%     elli = regionEquivalentEllipses(img);
+%     elli = regionEquivalentEllipse(img);
 %     drawEllipse(elli)
 %
 %   % Compute and display the equivalent ellipses of several particles
 %     img = Image.read('rice.png');
 %     img2 = img - opening(img, ones(30, 30));
 %     lbl = componentLabeling(img2 > 50, 4);
-%     ellipses = regionEquivalentEllipses(lbl);
+%     ellipses = regionEquivalentEllipse(lbl);
 %     show(img); hold on;
 %     drawEllipse(ellipses, 'linewidth', 2, 'color', 'g');
 %
 %   See also
-%     regionCentroids, regionBoxes
+%     regionCentroid, regionBoundingBox, drawEllipse
 %
 
 % ------
@@ -46,9 +44,16 @@ function [ellipse, labels] = regionEquivalentEllipses(obj, varargin)
 % Created: 2021-02-02,    using Matlab 9.8.0.1323502 (R2020a)
 % Copyright 2021 INRAE.
 
-warning('Function "regionEquivalentEllipses" is deprecated, use "regionEquivalentEllipse" instead');
+%% check image type and dimension
+if ~(isBinaryImage(obj) || isLabelImage(obj))
+    error('Requires a label of binary image');
+end
+if ndims(obj) ~= 2 %#ok<ISMAT>
+    error('Requires a 2D image');
+end
 
-%% extract spatial calibration
+
+%% Retrieve spatial calibration
 
 % extract calibration
 spacing = obj.Spacing;

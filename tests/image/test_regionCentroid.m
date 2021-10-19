@@ -1,13 +1,13 @@
-function tests = test_regionEquivalentEllipses
-% Test suite for the file regionEquivalentEllipses.
+function tests = test_regionCentroid
+% Test suite for the file regionCentroid.
 %
-%   Test suite for the file regionEquivalentEllipses
+%   Test suite for the file regionCentroid
 %
 %   Example
-%   test_regionEquivalentEllipses
+%   test_regionCentroid
 %
 %   See also
-%     regionEquivalentEllipses
+%     regionCentroid
 
 % ------
 % Author: David Legland
@@ -20,16 +20,6 @@ tests = functiontests(localfunctions);
 function test_Simple(testCase) %#ok<*DEFNU>
 % Test call of function without argument.
 
-img = Image.read('circles.png');
-
-elli = regionEquivalentEllipses(img);
-
-assertEqual(testCase, size(elli), [1 5]);
-
-
-function test_severalLabels(testCase) %#ok<*DEFNU>
-
-% create a label image with four regions
 data = zeros([10 10], 'uint8');
 data(2:4, 2:4) = 3;
 data(6:10, 2:4) = 4;
@@ -37,7 +27,11 @@ data(2:4, 6:10) = 7;
 data(6:10, 6:10) = 8;
 img = Image('Data', data, 'Type', 'Label');
 
-[elli, labels] = regionEquivalentEllipses(img);
+[centroids, labels] = regionCentroid(img);
 
-assertEqual(testCase, size(elli), [4 5]);
+assertEqual(testCase, size(centroids), [4 2]);
+assertEqual(testCase, centroids, [3 3;8 3;3 8;8 8]);
 assertEqual(testCase, size(labels), [4 1]);
+assertEqual(testCase, labels, [3;4;7;8]);
+
+

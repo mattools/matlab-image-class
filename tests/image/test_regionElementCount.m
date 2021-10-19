@@ -1,13 +1,13 @@
-function tests = test_regionElementCounts
-% Test suite for the file regionElementCounts.
+function tests = test_regionElementCount
+% Test suite for the file regionElementCount.
 %
-%   Test suite for the file regionElementCounts
+%   Test suite for the file regionElementCount
 %
 %   Example
-%   test_regionElementCounts
+%   test_regionElementCount
 %
 %   See also
-%     regionElementCounts
+%     regionElementCount
 
 % ------
 % Author: David Legland
@@ -27,7 +27,7 @@ data(4:8, 2) = 4;
 data(4:8, 4:8) = 9;
 img = Image('Data', data, 'Type', 'label');
 
-counts = regionElementCounts(img);
+counts = regionElementCount(img);
 
 assertEqual(testCase, length(counts), 4);
 assertEqual(testCase, counts, [1 5 5 25]');
@@ -47,7 +47,7 @@ data(2, 4:8, 4:8) = 15;
 data(4:8, 4:8, 4:8) = 19;
 img = Image('Data', data, 'Type', 'label');
 
-counts = regionElementCounts(img);
+counts = regionElementCount(img);
 
 assertEqual(testCase, length(counts), 8);
 assertEqual(testCase, counts, [1  5 5 5  25 25 25  125]');

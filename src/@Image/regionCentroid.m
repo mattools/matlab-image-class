@@ -1,18 +1,16 @@
-function [points, labels] = regionCentroids(obj, varargin)
+function [points, labels] = regionCentroid(obj, varargin)
 % Centroid of region(s) in a binary or label image.
 %
-%   Note: deprecated, use 'regionCentroid' instead
-%
-%   C = regionCentroids(I)
+%   C = regionCentroid(I)
 %   Returns the centroid C of the binary image I. C is a 1-by-2 or 1-by-3
 %   row vector, depending on the dimension of the image.
 %
-%   C = regionCentroids(LBL)
+%   C = regionCentroid(LBL)
 %   If LBL is a label D-dimensional image, returns an array of N-by-D
 %   values, corresponding to the centroids of the N regions within the
 %   image.
 %
-%   [C, LABELS] = regionCentroids(LBL)
+%   [C, LABELS] = regionCentroid(LBL)
 %   Also returns the labels of the regions that were measured.
 %
 %   Example
@@ -21,20 +19,18 @@ function [points, labels] = regionCentroids(obj, varargin)
 %     bin = opening(img > 80, ones([3 3]));     % binarize
 %     lbl = componentLabeling(bin);             % compute labels
 %     figure; show(img);                        % display image
-%     pts = regionCentroids(lbl);               % compute centroids
+%     pts = regionCentroid(lbl);                % compute centroids
 %     hold on; plot(pts(:,1), pts(:,2), 'b+');  % display centroids
 %
 %   See also
 %     analyzeRegions, findRegionLabels, componentLabeling, regionprops
-%     regionEquivalentEllipses
+%     regionEquivalentEllipse, regionBoundingBox
  
 % ------
 % Author: David Legland
 % e-mail: david.legland@inrae.fr
 % Created: 2018-07-03,    using Matlab 9.4.0.813654 (R2018a)
 % Copyright 2018 INRA - Cepia Software Platform.
-
-warning('Function "regionCentroids" is deprecated, use "regionCentroid" instead');
 
 % check image type
 if ~(isLabelImage(obj) || isBinaryImage(obj))
@@ -60,10 +56,10 @@ points = zeros(nLabels, nd);
 % switch processing depending on image dimensionality
 if nd == 2
     for i = 1:nLabels
-        % extract points of the current particle
+        % extract points of the current region
         [x, y] = find(obj.Data == labels(i));
 
-        % coordinates of particle regionCentroids
+        % coordinates of particle regionCentroid
         xc = mean(x);
         yc = mean(y);
 
@@ -73,11 +69,11 @@ if nd == 2
 elseif nd == 3
     dim = size(obj.Data);
     for i = 1:nLabels
-        % extract points of the current particle
+        % extract points of the current region
         inds = find(obj.Data == labels(i));
         [x, y, z] = ind2sub(dim, inds);
 
-        % coordinates of particle regionCentroids
+        % coordinates of particle regionCentroid
         xc = mean(x);
         yc = mean(y);
         zc = mean(z);
@@ -90,4 +86,6 @@ else
 end
 
 % calibrate result
-points = bsxfun(@plus, bsxfun(@times, points-1, obj.Spacing), obj.Origin);
+if isCalibrated(obj)
+    points = bsxfun(@plus, bsxfun(@times, points-1, obj.Spacing), obj.Origin);
+end
