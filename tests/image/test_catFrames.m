@@ -24,5 +24,5 @@ img = Image.read('cameraman.tif');
 
 res = catFrames(img, img, invert(img), invert(img), img);
 
-assertEqual(5, frameCount(res));
+assertEqual(testCase, 5, frameCount(res));
 assertEqual(testCase, size(img), size(res, 1:2));

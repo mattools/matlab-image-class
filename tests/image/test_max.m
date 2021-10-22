@@ -43,7 +43,7 @@ function test_2d_color_2(testCase)
 img = Image.read('peppers.png');
 
 res = max(img, 50);
-assertTrue(isa(res, 'Image'));
+assertTrue(testCase, isa(res, 'Image'));
 
 assertEqual(testCase, [50 50 50], min(res));
 

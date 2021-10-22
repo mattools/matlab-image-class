@@ -33,7 +33,7 @@ img1 = Image.create([1 2 3 4;5 6 7 8;9 10 11 12]);
 exp = Image.create([3 4 5 6; 7 8 9 10; 11 12 13 14]);
 
 res = img1 + 2;
-assertElementsAlmostEqual(exp.Data, res.Data);
+assertEqual(testCase, exp.Data, res.Data);
 
 res = 2 + img1;
 assertEqual(testCase, exp.Data, res.Data);

@@ -27,11 +27,11 @@ img = Image.create(dat);
 
 % set one element
 img(1) = 99;
-assertEqual(99, img(1));
+assertEqual(testCase, 99, img(1));
 img(2) = 99;
-assertEqual(99, img(2));
+assertEqual(testCase, 99, img(2));
 img(end) = 99;
-assertEqual(99, img(end));
+assertEqual(testCase, 99, img(end));
 
 % set one row (y = cte)
 new = 8:2:18;

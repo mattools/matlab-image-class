@@ -24,5 +24,5 @@ img = Image.read('cameraman.tif');
 
 res = catChannels(img, img, invert(img));
 
-assertEqual(3, channelCount(res));
+assertEqual(testCase, 3, channelCount(res));
 assertEqual(testCase, size(img), size(res));

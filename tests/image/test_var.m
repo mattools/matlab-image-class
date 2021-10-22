@@ -24,7 +24,7 @@ img = Image.create(uint8(dat));
 exp = var(double(dat(:)));
 
 res = var(img);
-assertEqual([1 1], size(res));
+assertEqual(testCase, [1 1], size(res));
 assertEqual(testCase, exp, res, 'AbsTol', 1e-10);
 
 function test_3d(testCase)
@@ -34,7 +34,7 @@ img = Image.create(uint8(dat));
 exp = var(double(dat(:)));
 
 res = var(img);
-assertEqual([1 1], size(res));
+assertEqual(testCase, [1 1], size(res));
 assertEqual(testCase, exp, res, 'AbsTol', 1e-10);
 
 

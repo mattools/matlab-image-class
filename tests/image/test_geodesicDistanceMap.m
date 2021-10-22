@@ -29,7 +29,7 @@ marker(1, 1) = 1;
 dist = geodesicDistanceMap(marker, mask, [1 0]);
 maxDist = max(dist(mask));
 
-assertTrue(isfinite(maxDist));
+assertTrue(testCase, isfinite(maxDist));
 
 expDist = 10+12-2;
 assertEqual(testCase, expDist, maxDist);
@@ -44,7 +44,7 @@ marker(end, end) = 1;
 dist = geodesicDistanceMap(marker, mask, [1 0]);
 maxDist = max(dist(mask));
 
-assertTrue(isfinite(maxDist));
+assertTrue(testCase, isfinite(maxDist));
 
 expDist = 10+12-2;
 assertEqual(testCase, expDist, maxDist);
@@ -60,7 +60,7 @@ marker(1, 1) = 1;
 dist = geodesicDistanceMap(marker, mask, [1 1]);
 maxDist = max(dist(mask));
 
-assertTrue(isfinite(maxDist));
+assertTrue(testCase, isfinite(maxDist));
 
 expDist = 29;
 assertEqual(testCase, expDist, maxDist);
@@ -76,7 +76,7 @@ marker(end, end) = 1;
 dist = geodesicDistanceMap(marker, mask, [1 1]);
 maxDist = max(dist(mask));
 
-assertTrue(isfinite(maxDist));
+assertTrue(testCase, isfinite(maxDist));
 
 expDist = 29;
 assertEqual(testCase, expDist, maxDist);
@@ -102,4 +102,4 @@ marker(2, 2) = 1;
 dist = imGeodesicDistanceMap(marker, mask);
 maxDist = max(dist(isfinite(dist)));
 
-assertTrue(isfinite(maxDist));
+assertTrue(testCase, isfinite(maxDist));
