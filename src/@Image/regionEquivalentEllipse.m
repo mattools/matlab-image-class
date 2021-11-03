@@ -19,13 +19,13 @@ function [ellipse, labels] = regionEquivalentEllipse(obj, varargin)
 %
 %
 %   Example
-%   % Draw a commplex particle together with its equivalent ellipse
+%   % Draw a complex particle together with its equivalent ellipse
 %     img = Image.read('circles.png');
 %     show(img); hold on;
 %     elli = regionEquivalentEllipse(img);
-%     drawEllipse(elli)
+%     drawEllipse(elli); % requires the MatGeom toolbox
 %
-%   % Compute and display the equivalent ellipses of several particles
+%   % Compute and display the equivalent ellipses of several regions
 %     img = Image.read('rice.png');
 %     img2 = img - opening(img, ones(30, 30));
 %     lbl = componentLabeling(img2 > 50, 4);
@@ -34,7 +34,8 @@ function [ellipse, labels] = regionEquivalentEllipse(obj, varargin)
 %     drawEllipse(ellipses, 'linewidth', 2, 'color', 'g');
 %
 %   See also
-%     regionCentroid, regionBoundingBox, drawEllipse
+%     regionCentroid, regionBoundingBox, regionEquivalentEllipsoid,
+%     drawEllipse     
 %
 
 % ------
@@ -82,7 +83,7 @@ ellipse = zeros(nLabels, 5);
 %% Extract ellipse corresponding to each label
 
 for i = 1:nLabels
-    % extract points of the current particle
+    % extract points of the current region
     [x, y] = find(obj.Data==labels(i));
     
     % transform to physical space if needed
