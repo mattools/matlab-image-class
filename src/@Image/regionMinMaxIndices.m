@@ -50,6 +50,7 @@ end
 nd = ndims(obj);
 if nd == 2
     %% Process planar case 
+    % compute bounds using regionprops for speed. Result is a struct array.
     props = regionprops(obj.Data, 'BoundingBox');
     props = props(labels);
     bb = reshape([props.BoundingBox], [4 length(props)])';
@@ -63,10 +64,9 @@ if nd == 2
     
 elseif nd == 3
     %% Process 3D case
+    % compute bounds using regionprops3 for speed. Result is a table.
     props = regionprops3(obj.Data, 'BoundingBox');
-    props = props(labels);
-    bb = reshape([props.BoundingBox], [6 size(props, 1)])';
-    bb = bb(labels, :);
+    bb = props.BoundingBox(labels, :);
 
     % round start index
     bb(:,[1 2 3]) = ceil(bb(:,[1 2 3]));

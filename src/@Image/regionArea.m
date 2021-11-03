@@ -20,7 +20,7 @@ function [area, labels] = regionArea(obj, varargin)
 %
 %   See Also
 %     regionprops, regionPerimeter, regionEulerNumber, regionElementCount
-%
+%     regionVolume
  
 % ------
 % Author: David Legland
@@ -51,5 +51,6 @@ if isempty(labels)
     labels = findRegionLabels(obj);
 end
 
+% count the number of elements, and multiply by pixel volume
 pixelCounts = regionElementCount(obj, labels);
 area = pixelCounts * prod(obj.Spacing(1:2));

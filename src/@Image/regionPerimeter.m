@@ -6,7 +6,7 @@ function [perim, labels] = regionPerimeter(obj, varargin)
 %   counting intersections with 2D lines, and using discretized version of
 %   the Crofton formula.
 %
-%   P = imPerimeter(IMG, NDIR);
+%   P = imPerimeter(IMG, NDIRS);
 %   Specify number of directions to use. Use either 2 or 4 (the default).
 %
 %   [P, LABELS] = imPerimeter(LBL, ...)
@@ -24,7 +24,7 @@ function [perim, labels] = regionPerimeter(obj, varargin)
 %     % to be compared to (2 * pi * 40), approximately 251.3274
 %
 %   See also
-%     regionArea, regionSurfaceArea, regionprops
+%     regionArea, regionEulerNumber, regionSurfaceArea, regionprops
 %
  
 % ------
@@ -87,8 +87,10 @@ end
 %% Process label images
 
 if isBinaryImage(obj)
+    % in case of binary image, compute only one label
     perim = perimeterBinaryData(obj.Data, nDirs, obj.Spacing);
     labels = 1;
+    
 else
     % in case of a label image, return a vector with a set of results
     

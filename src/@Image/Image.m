@@ -113,6 +113,11 @@ methods(Access = protected)
     name = createNewName(obj, pattern)
 end
 
+%% Private utility methods
+methods(Static, Access = protected)
+    weights = directionWeights3d13(delta);
+end
+
 %% Constructor declaration
 methods
     function obj = Image(varargin)
