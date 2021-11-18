@@ -65,7 +65,8 @@ function dist = geodesicDistanceMap(marker, mask, varargin)
 %   stability is reached.
 %
 %   See also
-%     distanceMap, reconstruction
+%     distanceMap, reconstruction, chamferDistanceMap,
+%     regionGeodesicDiameter
 %
  
 % ------
@@ -176,7 +177,7 @@ end
 outputType = class(w1);
 
 % allocate memory for result
-dist = ones(size(mask), outputType);
+dist = ones(size(mask.Data), outputType);
 
 % init result: either max value, or 0 for marker pixels
 if isinteger(w1)
@@ -184,10 +185,10 @@ if isinteger(w1)
 else
     dist(:) = inf;
 end
-dist(marker) = 0;
+dist(marker.Data) = 0;
 
 % size of image
-[D1, D2] = size(mask);
+[D1, D2] = size(mask.Data);
 
 
 %% Iterations until no more changes
