@@ -1,9 +1,7 @@
-function [res, labels] = regionIsosurfaces(obj, varargin)
+function [res, labels] = regionIsosurface(obj, varargin)
 % Generate isosurface of each region within a label image.
 %
-%   Deprecated: replaced by regionIsosurface
-%
-%   MESHES = regionIsosurfaces(LBL)
+%   MESHES = regionIsosurface(LBL)
 %   Computes isosurfaces of each region within the label image LBL.
 %   
 %
@@ -18,7 +16,7 @@ function [res, labels] = regionIsosurfaces(obj, varargin)
 %     wat = watershed(distanceMap(markers), 6);
 %     wat2 = killBorders(wat);
 %     figure; hold on; axis equal; 
-%     regionIsosurfaces(wat2, 'smoothRadius', 2, 'LineStyle', 'none');
+%     regionIsosurface(wat2, 'smoothRadius', 2, 'LineStyle', 'none');
 %     view(3), light;
 %
 %   See also
@@ -31,8 +29,6 @@ function [res, labels] = regionIsosurfaces(obj, varargin)
 % INRAE - BIA Research Unit - BIBS Platform (Nantes)
 % Created: 2021-02-22,    using Matlab 9.8.0.1323502 (R2020a)
 % Copyright 2021 INRAE.
-
-warning('deprecated: replaced by "regionIsosurface" method');
 
 
 %% Input arguiment processing
@@ -106,7 +102,7 @@ else
     % return computed mesh list
     res = meshes;
 end
-end
+
 
 %% Utility function
 function data = filterData(data, kernelSize, sigma)
@@ -130,4 +126,4 @@ for i = 1:3
     % apply filtering along one direction
     data = imfilter(data, kernel, 'replicate');
 end
-end
+
