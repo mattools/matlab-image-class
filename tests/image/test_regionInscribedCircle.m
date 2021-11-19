@@ -1,0 +1,83 @@
+function tests = test_regionInscribedCircle
+% Test suite for the file regionInscribedCircle.
+%
+%   Test suite for the file regionInscribedCircle
+%
+%   Example
+%   test_regionInscribedCircle
+%
+%   See also
+%     regionInscribedCircle
+
+% ------
+% Author: David Legland
+% e-mail: david.legland@inrae.fr
+% Created: 2021-11-19,    using Matlab 9.10.0.1684407 (R2021a) Update 3
+% Copyright 2021 INRAE - BIA-BIBS.
+
+tests = functiontests(localfunctions);
+
+function test_Simple(testCase) %#ok<*DEFNU>
+% Test call of function without argument.
+
+img = Image.false(100, 100);
+img(30:60, 20:80) = 1;
+
+circle = regionInscribedCircle(img);
+
+assertEqual(testCase, size(circle), [1 3]);
+assertEqual(testCase, circle(3), 16, 'AbsTol', 0.01);
+
+
+function test_MultiLabels(testCase) %#ok<*DEFNU>
+% Test call of function without argument.
+
+img = Image([ ...
+    0 0 0 0 0 0 0 0 0 0 0; ...
+    0 1 1 1 0 4 4 4 4 4 0; ...
+    0 1 1 1 0 4 4 4 4 4 0; ...
+    0 1 1 1 0 4 4 4 4 4 0; ...
+    0 0 0 0 0 0 0 0 0 0 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 6 6 6 6 6 6 6 6 6 0; ...
+    0 0 0 0 0 0 0 0 0 0 0], 'Type', 'Label');
+
+[circles, labels] = regionInscribedCircle(img);
+
+assertEqual(testCase, size(circles), [3 3]);
+assertEqual(testCase, length(labels), 3);
+
+expRadius = [2 2 5]';
+assertEqual(testCase, circles(:,3), expRadius, 'AbsTol', 0.01);
+
+
+function test_LabelsTouchingImageBorder(testCase) %#ok<*DEFNU>
+% Test call of function without argument.
+
+img = Image([ ...
+    1 1 1 0 4 4 4 4 4; ...
+    1 1 1 0 4 4 4 4 4; ...
+    1 1 1 0 4 4 4 4 4; ...
+    0 0 0 0 0 0 0 0 0; ...
+    6 6 6 6 6 6 6 6 6; ...
+    6 6 6 6 6 6 6 6 6; ...
+    6 6 6 6 6 6 6 6 6; ...
+    6 6 6 6 6 6 6 6 6; ...
+    6 6 6 6 6 6 6 6 6], 'Type', 'Label');
+
+[circles, labels] = regionInscribedCircle(img);
+
+assertEqual(testCase, size(circles), [3 3]);
+assertEqual(testCase, length(labels), 3);
+
+expRadius = [3 3 5]';
+assertEqual(testCase, circles(:,3), expRadius, 'AbsTol', 0.01);
+

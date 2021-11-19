@@ -35,7 +35,7 @@ function [ellipse, labels] = regionEquivalentEllipse(obj, varargin)
 %
 %   See also
 %     regionCentroid, regionBoundingBox, regionEquivalentEllipsoid,
-%     drawEllipse     
+%     drawEllipse, regionInscribedCircle
 %
 
 % ------

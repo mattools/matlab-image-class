@@ -16,7 +16,8 @@ function map = distanceMap(obj, varargin)
 %     show(map)
 %
 %   See also
-%     skeleton, geodesicDistanceMap, chamferDistanceMap
+%     skeleton, geodesicDistanceMap, chamferDistanceMap,
+%     regionInscribedCircle 
 
 % ------
 % Author: David Legland
