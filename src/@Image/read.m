@@ -177,14 +177,15 @@ end
 
 % default values
 nImages     = size(img, 3);
-nSlices     = size(img, 3);
-nChannels   = size(img, 4);
-nFrames     = size(img, 5);
+nSlices     = 1;
+nChannels   = 1;
+nFrames     = 1;
 hyperstack	= 'false'; %#ok<NASGU>
 spacing     = img.Spacing;
 origin      = img.Origin;
 unitName    = img.UnitName;
 timeStep    = img.TimeStep;
+timeUnit    = img.TimeUnit;
 
 % parse tokens in the "ImageDescription' Tag.
 tokens = regexp(desc, '\n', 'split');
@@ -214,6 +215,9 @@ while ~isempty(tokens)
             origin = [0 0 0];
         case 'finterval'
             timeStep = str2double(value);
+        case 'fps'
+            timeStep = 1 / str2double(value);
+            timeUnit = 's';
         case {'min', 'max'}
             % nothing to do.
         otherwise
@@ -239,6 +243,7 @@ img.Spacing = spacing;
 img.Origin = origin;
 img.UnitName = unitName;
 img.TimeStep = timeStep;
+img.TimeUnit = timeUnit;
 
 end
 
