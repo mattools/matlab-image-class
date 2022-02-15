@@ -14,7 +14,10 @@ showAxisNames = true;
 % parse options
 options = {};
 while length(varargin) > 1
-    if strcmp(varargin{1}, 'showAxisNames')
+    if strcmpi(varargin{1}, 'showAxisNames')
+        showAxisNames = varargin{2};
+    elseif strcmpi(varargin{1}, 'showTitle')
+        showTitle = varargin{2};
     else
         options = [options, varargin(1:2)]; %#ok<AGROW>
     end
@@ -49,6 +52,10 @@ end
 xdata = xData(obj);
 ydata = yData(obj);
 
+% get axis bounds before image display
+xl = xlim;
+yl = ylim;
+
 
 %% Display data
 
@@ -57,9 +64,7 @@ h = imshow(data, 'XData', xdata, 'YData', ydata, options{:});
 
 % check extent of image
 extent = physicalExtent(obj);
-xl = xlim;
 xl = [min(xl(1), extent(1)) max(xl(2), extent(2))];
-yl = ylim;
 yl = [min(yl(1), extent(3)) max(yl(2), extent(4))];
 xlim(xl); ylim(yl);
 
