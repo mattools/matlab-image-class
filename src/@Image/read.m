@@ -118,8 +118,13 @@ function img = read_tif(fileName)
 %
 % Can manage 3D images as well.
 
+% disable some warnings specific to TIFF format
+warning('off', 'imageio:tifftagsread:zeroComponentCount');
 % check if the file contains a 3D image
 infoList = imfinfo(fileName);
+% re-enable warnings
+warning('on', 'imageio:tifftagsread:zeroComponentCount');
+
 info1 = infoList(1);
 read3d = false;
 if length(infoList) > 1
