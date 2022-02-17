@@ -1,17 +1,27 @@
 function res = clone(obj)
 % Create a deep-copy of an Image object.
 %
-%   output = clone(input)
+%   RES = clone(IMG)
+%   Return a new Image, initialized with same data values as in IMG.
+%
 %
 %   Example
-%   clone
+%     img = Image.read('rice.png');
+%     img2 = clone(img);
+%     all(size(img) == size(img2))
+%     ans =
+%          1
+%     strcmp(class(img.Data), class(img2.Data))
+%     ans =
+%          1
 %
 %   See also
+%     read, zeros, ones
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-12-15,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 

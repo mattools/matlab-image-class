@@ -7,16 +7,16 @@ function res = catChannels(obj, varargin)
 %     % 'manual' creation of a color image
 %     img = Image.read('cameraman.tif');
 %     res = catChannels(img, img, invert(img));
-%     res.type = 'color';
+%     res.Type = 'color';
 %     show(res);
 %
 %   See also
-%     splitChannels, cat, catFrames
+%     splitChannels, createRGB, cat, catFrames
 %
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-11-22,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -31,7 +31,7 @@ for i = 1:length(varargin)
 end
 
 res = Image(...
-    'data', data, ...
-    'parent', obj, ...
-    'type', 'vector', ...
-    'name', name);
+    'Data', data, ...
+    'Parent', obj, ...
+    'Type', 'vector', ...
+    'Name', name);

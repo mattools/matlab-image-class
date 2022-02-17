@@ -1,20 +1,22 @@
 function rgb = createRGB(red, green, blue)
 % Create a RGB color image from scalar channels.
 %
-%   RGB = createRGB(DATA)
+%   RGB = Image.createRGB(DATA)
 %   Create a RGB image from data array DATA, using the third dimension as
 %   channel dimension.
 %   Input array DATA can be either a 3D or a 4D array, resulting in a 2D or
 %   3D image. DATA is ordered using Matlab convention: y, x, channel, z.
 %
-%   RGB = createRGB(RED, GREEN, BLUE)
+%   RGB = Image.createRGB(RED, GREEN, BLUE)
 %   Concatenates the 3 data arrays to form a RGB color image. Inputs can be
 %   either 2D or 3D, but they must have the same dimension. One of them can
 %   be empty.
 %   
 %
 %   Example
-%     createRGB
+%     img = Image.read('peppers.png');
+%     img2 = Image.createRGB(channel(img, 3), channel(img, 1), channel(img, 2));
+%     figure; show(img2)
 %
 %   See also
 %     create, Image, catChannels
