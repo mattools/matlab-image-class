@@ -86,8 +86,11 @@ nLabels = length(labels);
 ellipsoid = zeros(nLabels, 9);
 
 for i = 1:nLabels
-    % extract points of the current particle
+    % extract position of voxels for the current region
     inds = find(obj.Data == labels(i));
+    if isempty(inds)
+        continue;
+    end
     [x, y, z] = ind2sub(dim, inds);
     
     % compute approximate location of ellipsoid center
@@ -106,7 +109,7 @@ for i = 1:nLabels
     points = [x y z];
     
     % compute the covariance matrix
-    covPts = cov(points, 1) + diag(spacing / 12);
+    covPts = cov(points, 1) + diag(spacing.^2 / 12);
     
     % perform a principal component analysis with 3 variables,
     % to extract equivalent axes
