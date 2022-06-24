@@ -15,7 +15,7 @@ function val = interp(obj, varargin)
 
 % ------
 % Author: David Legland
-% e-mail: david.legland@inra.fr
+% e-mail: david.legland@inrae.fr
 % Created: 2011-12-14,    using Matlab 7.9.0.529 (R2009b)
 % Copyright 2011 INRA - Cepia Software Platform.
 
@@ -54,7 +54,7 @@ if nd == 2
     y = yData(obj);
     
     if nc == 1
-        val = interp2(y, x, double(obj.Data), ...
+        val(:) = interp2(y, x, double(obj.Data), ...
             point(:, 2), point(:, 1), method, fillValue);
     else
         for i = 1:nc
@@ -69,7 +69,7 @@ elseif nd == 3
     y = yData(obj);
     z = zData(obj);
     if nc == 1
-        val = interp3(y, x, z, double(obj.Data), ...
+        val(:) = interp3(y, x, z, double(obj.Data), ...
             point(:, 2), point(:, 1), point(:, 3), method, fillValue);
     else
         for i = 1:nc
