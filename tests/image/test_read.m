@@ -30,3 +30,18 @@ img = Image.read('peppers.png');
 
 assertEqual(testCase, 2, ndims(img));
 
+
+function test_read_sampleFile(testCase) %#ok<*DEFNU>
+
+img = Image.read('wheatGrainSlice.tif');
+
+assertEqual(testCase, [340 340], size(img));
+
+
+
+function test_read_sampleFile_noExtension(testCase) %#ok<*DEFNU>
+
+img = Image.read('wheatGrainSlice');
+
+assertEqual(testCase, [340 340], size(img));
+
