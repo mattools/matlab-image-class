@@ -3,8 +3,20 @@ function val = interp(obj, varargin)
 %
 %   V = interp(IMG, X, Y)
 %   V = interp(IMG, X, Y, Z)
+%   Evaluates the value(s) within the image at the specified position(s),
+%   in pixel coordinates.
+%   The positions X, Y (and Z for 3D images) must be specified with numeric
+%   arrays the same size. 
+%   For scalar images, the result V has the same size as the input arrays.
+%
 %   V = interp(IMG, POS)
+%   Speifies the positions as a N-by-2 or N-by-3 array of coordinates. The
+%   result V is a N-by-1 numeric array.
+%
 %   V = interp(..., 'method')
+%   Specifies the interpolation method to use. Valid options are the ones
+%   available for the interp2 and interp3 functions. 
+%   Default is 'linear'.
 %
 %   Example
 %   interp
