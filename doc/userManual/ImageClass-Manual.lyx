@@ -2335,7 +2335,7 @@ https://itk.org/Wiki/ITK/MetaIO/Documentation
  Movie file formats supported by Matlab can also be read.
  
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Add a table of supported formats and where is the reader
@@ -8555,6 +8555,14 @@ structuring element
 
 \end_inset
 
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Soille_2003"
+literal "false"
+
+\end_inset
+
 .
  The structuring element is a binary neighborhood defined by its shape and its size.
  Typical shapes for 2D structuring elements are the square (faster to process),
@@ -9067,7 +9075,7 @@ Other examples of morphological filters on a grayscale image.
 
  square structuring element.
  (c) Result of a morphological opening with the same structuring element.
- The grains tend to separate each others.
+ The grains tend to separate from each others.
 \end_layout
 
 \end_inset
@@ -9430,7 +9438,15 @@ mask
 \begin_inset Quotes srd
 \end_inset
 
-) is used to constrain the reconstruction.
+) is used to constrain the reconstruction 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Soille_2003"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Minisec
@@ -11235,7 +11251,15 @@ chamfer distance map
 \begin_layout Standard
 Another implementation of distance maps,
  that allows to compute distance map for label images,
- even in the case of adjacent regions.
+ even in the case of adjacent regions 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Borgefors_1984_CVGIP,Borgefors_1986_CVGIP"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Minisec
@@ -11275,7 +11299,15 @@ geodesic distance map
 
 \begin_layout Standard
 Progagates the distance from a binary marker image,
- constrained to another binary image (the mask).
+ constrained to another binary image (the mask) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Soille_2003"
+literal "false"
+
+\end_inset
+
+.
  An example is shown in Figure
 \begin_inset space ~
 \end_inset
@@ -12469,7 +12501,15 @@ surface area
 
  of regions within a 3D binary or label image.
  Uses a discretization of the Crofton formula,
- by counting intersections with 3D lines in either 3 or 13 directions.
+ by counting intersections with 3D lines in either 3 or 13 directions 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Schladitz_2006_DGCI,Ohser_2009"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Minisec
@@ -12740,7 +12780,15 @@ geodesic diameter
 \end_layout
 
 \begin_layout Standard
-Computes the largest geodesic diameter within each region within a (2D) binary or label image.
+Computes the largest geodesic diameter within each region within a (2D) binary or label image 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Lantuejoul_1981_JMicrosc"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Minisec
@@ -16183,6 +16231,19 @@ LatexCommand printindex
 type "met"
 name "Image Class Methods"
 literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "imageClass-Manual"
+options "bibtotoc,apalike"
+encoding "default"
 
 \end_inset
 
