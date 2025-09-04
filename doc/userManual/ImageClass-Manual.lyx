@@ -6,11 +6,13 @@
 \origin unavailable
 \textclass scrreprt
 \begin_preamble
-\usepackage{textcomp}
-
+\PassOptionsToPackage{usenames,dvipsnames}{xcolor}
 \usepackage[dvipsnames]{xcolor}
 
-\usepackage{hyperref}
+\usepackage{textcomp}
+
+%\usepackage[dvipsnames]{xcolor}
+
 %\usepackage{lstlinebgrd}
 
 \definecolor{bl}{rgb}{0.0,0.2,0.6} 
@@ -83,15 +85,16 @@
 % for mini table of contents at the beginning of chapters
 \usepackage{minitoc}
 
-%\usepackage{imakeidx}
-%\makeindex[intoc] 
-\usepackage{makeidx}
-\makeindex
-\usepackage[totoc]{idxlayout}
+%\usepackage{makeidx}
+%\makeindex
+%\usepackage[totoc]{idxlayout}
+
+\usepackage{hyperref}
 
 \author{D. Legland}
 \date{\today}
 \end_preamble
+\options idxtotoc
 \use_default_options true
 \maintain_unincluded_children no
 \language english
@@ -118,6 +121,7 @@
 \bibtex_command default
 \index_command default
 \float_placement h
+\float_alignment class
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -146,7 +150,7 @@
 \cite_engine_type authoryear
 \biblio_style plainnat
 \use_bibtopic false
-\use_indices false
+\use_indices true
 \paperorientation portrait
 \suppress_date false
 \justification true
@@ -154,8 +158,12 @@
 \use_formatted_ref 0
 \use_minted 0
 \use_lineno 0
-\index Index
+\index General Index
 \shortcut idx
+\color #008000
+\end_index
+\index Image Class Methods
+\shortcut met
 \color #008000
 \end_index
 \secnumdepth 3
@@ -1162,6 +1170,32 @@ The data are stored as a 5-dimensional array.
 
 \begin_layout Subsection
 Coordinate system
+\begin_inset Index idx
+range none
+pageformat default
+status open
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+coordinate system
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1407,10 +1441,11 @@ Spatial calibration
 \end_layout
 
 \begin_layout Standard
+The spatial calibration
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 spatial calibration
@@ -1418,7 +1453,7 @@ spatial calibration
 
 \end_inset
 
-The spatial calibration of images can be specified through the properties 
+ of images can be specified through the properties 
 \begin_inset Quotes sld
 \end_inset
 
@@ -1717,14 +1752,11 @@ Utility methods:
 \end_layout
 
 \begin_layout Minisec
-getBuffer 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Index idx
+getBuffer
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 getBuffer
@@ -1732,7 +1764,39 @@ getBuffer
 
 \end_inset
 
-Returns the inner data buffer of an image,
+
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Returns
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\nospellcheck default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ the inner data buffer of an image,
  with dimensions permuted such that they correspond to Matlab's [y,x,c,z,t] order.
 \end_layout
 
@@ -1885,22 +1949,36 @@ Several static methods are provided by the Image class for the creating new empt
 \end_layout
 
 \begin_layout Minisec
-img = Image.create(dims,
- type);
-\end_layout
-
-\begin_layout Standard
-\begin_inset Index idx
+create
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
 create
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Creates a new image instance by choosing the size and the type of the data array.
  Example:
 \begin_inset listings
@@ -1942,80 +2020,191 @@ Other static methods are provided to initialize with a given value and image typ
 \end_layout
 
 \begin_layout Minisec
-img = Image.ones(dims);
-\end_layout
-
-\begin_layout Standard
-\begin_inset Index idx
+ones
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
 ones
 \end_layout
 
 \end_inset
 
-Creates a new image containing only ones.
-\end_layout
 
-\begin_layout Minisec
-img = Image.zeros(dims);
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
-range none
-pageformat default
+Creates a new image containing only ones.
+ Usage:
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
+
+img = Image.ones(dims);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Minisec
+zeros 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
 zeros
 \end_layout
 
 \end_inset
 
-Creates a new image containing only zeros values.
- 
-\end_layout
 
-\begin_layout Minisec
-img = Image.false(dims);
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
-range none
-pageformat default
+Creates a new image containing only zeros values.
+ Usage:
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
+
+img = Image.zeros(dims);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Minisec
+false
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
 false
 \end_layout
 
 \end_inset
 
-Creates a new image of type 'binary' containing only 'false' values.
-\end_layout
 
-\begin_layout Minisec
-img = Image.true(dims);
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
-range none
-pageformat default
+Creates a new image of type 'binary' containing only 'false' values.
+ Usage:
+\begin_inset listings
+inline false
 status open
 
 \begin_layout Plain Layout
+
+img = Image.false(dims);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Minisec
+true
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
 true
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Creates a new image of type 'binary' containing only 'true' values.
+ Usage:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+img = Image.true(dims);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -2029,10 +2218,10 @@ img = Image.createRGB(red,
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 createRGB
@@ -2042,6 +2231,21 @@ createRGB
 
 Creates a new RGB image by concatenating three arrays corresponding to the red,
  green and blue channels.
+ Usage:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+img = Image.createRGB(red,
+ green,
+ blue);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -2053,18 +2257,6 @@ Reading from files
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
-range none
-pageformat default
-status open
-
-\begin_layout Plain Layout
-read
-\end_layout
-
-\end_inset
-
-
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Read"
@@ -2097,7 +2289,19 @@ readSeries
 \end_layout
 
 \begin_layout Minisec
-img = Image.read(fileName);
+read
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+read
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2165,14 +2369,14 @@ status open
 \end_layout
 
 \begin_layout Minisec
-img = Image.readSeries(filePattern);
+readSeries
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 readSeries
@@ -2201,16 +2405,14 @@ status open
 \end_layout
 
 \begin_layout Minisec
-img = Image.importRaw(fileName,
- dims,
- type);
+importRaw
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 importRaw
@@ -2246,21 +2448,21 @@ Writing to files
 \end_layout
 
 \begin_layout Standard
-\begin_inset Index idx
-range none
-pageformat default
-status open
-
-\begin_layout Plain Layout
-write
-\end_layout
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Write"
 
 \end_inset
 
 
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Write"
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+write
+\end_layout
 
 \end_inset
 
@@ -2280,8 +2482,19 @@ write
 \end_layout
 
 \begin_layout Minisec
-write(img,
- fileName);
+write
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+write
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2346,14 +2559,11 @@ name "subsec:FileInfo"
 \end_layout
 
 \begin_layout Minisec
-info = Image.fileInfo(fileName);
-\end_layout
-
-\begin_layout Standard
-\begin_inset Index idx
+fileInfo
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 fileInfo
@@ -2361,8 +2571,24 @@ fileInfo
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Returns the meta-data stored in the specified image file.
- 
+ Usage:
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+info = Image.fileInfo(fileName);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2393,7 +2619,7 @@ Several functions are provided for accessing the size and the dimensionality of 
 
 \begin_layout Minisec
 size
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2478,7 +2704,7 @@ ans =
 
 \begin_layout Minisec
 ndims 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2497,8 +2723,8 @@ Returns the number of spatial dimensions of the image.
 \end_layout
 
 \begin_layout Minisec
-elementCount
-\begin_inset Index idx
+elementCount 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2519,7 +2745,7 @@ Returns the number of elements in the image,
 
 \begin_layout Minisec
 isempty 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2539,7 +2765,7 @@ Returns true if the image has no element (element number is zero).
 
 \begin_layout Minisec
 isPlanarImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2559,7 +2785,7 @@ Returns true if the image has two spatial dimensions.
 
 \begin_layout Minisec
 is3dImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2579,7 +2805,7 @@ Returns true if the image has three spatial dimensions.
 
 \begin_layout Minisec
 isTimeLapseImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2590,7 +2816,7 @@ isTimeLapseImage
 
 \end_inset
 
-
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2607,7 +2833,7 @@ Several functions give information about the type of data stored within image.
 
 \begin_layout Minisec
 class 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2629,7 +2855,7 @@ Returns a char array describing the type of image,
 
 \begin_layout Minisec
 elementSize 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2651,7 +2877,7 @@ Returns the size of an image element.
 
 \begin_layout Minisec
 isBinaryImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2682,7 +2908,7 @@ nolink "false"
 
 \begin_layout Minisec
 isColorImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2702,7 +2928,7 @@ Returns true if the image is color.
 
 \begin_layout Minisec
 isComplexImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2722,7 +2948,7 @@ Returns true if the image contains complex values.
 
 \begin_layout Minisec
 isGrayscaleImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2742,7 +2968,7 @@ Returns true if the image is grayscale.
 
 \begin_layout Minisec
 isIntensityImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2764,7 +2990,7 @@ Returns true if the image is intensity,
 
 \begin_layout Minisec
 isLabelImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2795,7 +3021,7 @@ nolink "false"
 
 \begin_layout Minisec
 isScalarImage 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2815,7 +3041,7 @@ Returns true if the image contains scalar values.
 
 \begin_layout Minisec
 isVectorImage
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2976,8 +3202,8 @@ Additional methods provide facilities for converting between pixel coordinates a
 \end_layout
 
 \begin_layout Minisec
-physicalSize
-\begin_inset Index idx
+physicalSize 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -2997,8 +3223,8 @@ Returns the physical size occupied by this image,
 \end_layout
 
 \begin_layout Minisec
-physicalExtent
-\begin_inset Index idx
+physicalExtent 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3018,8 +3244,8 @@ Returns the physical size occupied by this image,
 \end_layout
 
 \begin_layout Minisec
-isCalibrated
-\begin_inset Index idx
+isCalibrated 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3041,8 +3267,8 @@ Returns true if image is calibrated,
 \end_layout
 
 \begin_layout Minisec
-clearCalibration
-\begin_inset Index idx
+clearCalibration 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3061,8 +3287,8 @@ Resets the spatial calibration of image to default values (spacing and origin eq
 \end_layout
 
 \begin_layout Minisec
-copySpatialCalibration
-\begin_inset Index idx
+copySpatialCalibration 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3082,7 +3308,7 @@ Copies the spatial calibration from an image to another.
 
 \begin_layout Minisec
 indexToPoint
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3102,7 +3328,7 @@ Converts image coordinates to real-world coordinates.
 
 \begin_layout Minisec
 pointToIndex
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3122,7 +3348,7 @@ Converts real world coordinates to integer image coordinates.
 
 \begin_layout Minisec
 pointToContinuousIndex
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3143,7 +3369,7 @@ Converts real world coordinates to image coordinates,
 
 \begin_layout Minisec
 xData
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3163,7 +3389,7 @@ Returns a row vector corresponding to the x-coordinates of pixels.
 
 \begin_layout Minisec
 yData
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3183,7 +3409,7 @@ Returns a row vector corresponding to the y-coordinates of pixels.
 
 \begin_layout Minisec
 zData
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3239,7 +3465,7 @@ Visualisation of 2D images
 
 \begin_layout Minisec
 show
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3410,7 +3636,59 @@ lineProfile
 \end_layout
 
 \begin_layout Standard
-Histogram and line profile can be computed on a color image using the same syntax,
+Histogram
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+histogram
+\end_layout
+
+\end_inset
+
+ and line profile
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+line profile
+\end_layout
+
+\end_inset
+
+ can be computed on a color image using the same syntax,
  as illustrated on the following script,
  and the Figure
 \begin_inset space ~
@@ -3539,7 +3817,7 @@ name "op:histogram"
 \end_inset
 
 histogram
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -3565,13 +3843,13 @@ name "op:lineProfile"
 \end_inset
 
 lineProfile
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-line profile
+lineProfile
 \end_layout
 
 \end_inset
@@ -3591,6 +3869,22 @@ name "op:interp"
 \end_inset
 
 interp 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+interp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Interpolates
 \begin_inset Index idx
 range none
 pageformat default
@@ -3602,11 +3896,7 @@ interpolation
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Interpolates the image at the specified point(s),
+ the image at the specified point(s),
  and returns the corresponding value(s).
  Returns the values into floating point arrays with the same size as the array of sampling coordinates.
 \end_layout
@@ -3619,6 +3909,22 @@ name "op:jointHistogram"
 \end_inset
 
 jointHistogram
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+jointHistogram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Computes the joint histogram 
 \begin_inset Index idx
 range none
 pageformat default
@@ -3630,11 +3936,7 @@ joint histogram
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Computes the joint histogram of two scalar images.
+ of two images containing scalar values.
  If not specified,
  the bins are computed automatically from the range of image intensities (Fig.
 \begin_inset space ~
@@ -3779,6 +4081,22 @@ nolink "false"
 
 \begin_layout Minisec
 showOrthoPlanes 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+showOrthoPlanes
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Displays three mutually orthogonal planes
 \begin_inset Index idx
 range none
 pageformat default
@@ -3790,11 +4108,7 @@ orthogonal planes
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Displays three mutually orthogonal planes (see Fig.
+ (see Fig.
 \begin_inset space ~
 \end_inset
 
@@ -3811,6 +4125,22 @@ nolink "false"
 
 \begin_layout Minisec
 showOrthoSlices 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+showOrthoSlices
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Displays three mutually orthogonal planes in 3D
 \begin_inset Index idx
 range none
 pageformat default
@@ -3822,11 +4152,7 @@ orthogonal slices
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Displays three mutually orthogonal planes in 3D (see Fig.
+ (see Fig.
 \begin_inset space ~
 \end_inset
 
@@ -3843,6 +4169,22 @@ nolink "false"
 
 \begin_layout Minisec
 showSlice3d 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+showSlice3d
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Displays a 3D slice 
 \begin_inset Index idx
 range none
 pageformat default
@@ -3854,11 +4196,7 @@ slice 3d
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Displays a 3D slice of a 3D image.
+ of a 3D image.
 \end_layout
 
 \begin_layout Standard
@@ -4002,6 +4340,18 @@ Different representations of a 3D grayscale image.
 
 \begin_layout Minisec
 showXSlice 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+showXSlice
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4010,6 +4360,18 @@ Displays a YZ slice of a 3D image.
 
 \begin_layout Minisec
 showYSlice 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+showYSlice
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4018,6 +4380,18 @@ Displays a ZY slice of a 3D image.
 
 \begin_layout Minisec
 showZSlice
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+showZSlice
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4033,7 +4407,7 @@ name "op:isosurface"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4048,7 +4422,19 @@ isosurface
 \end_layout
 
 \begin_layout Standard
-Computes the isosurface within a 3D grayscale or intensity image.
+Computes the isosurface
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+isosurface
+\end_layout
+
+\end_inset
+
+ within a 3D grayscale or intensity image.
  This is mainly a wrapper to the native isosurface function.
  See also the binarization operators (Section
 \begin_inset space ~
@@ -4081,6 +4467,16 @@ nolink "false"
 \end_inset
 
 ).
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+do we have isocontour somewhere?
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -4093,13 +4489,13 @@ Several functions allow to quickly assess the range of values within an image.
 
 \begin_layout Minisec
 dataExtent 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-data extent
+dataExtent
 \end_layout
 
 \end_inset
@@ -4113,13 +4509,13 @@ Returns the minimal and maximal intensity values within the image.
 
 \begin_layout Minisec
 grayscaleExtent 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-grayscale extent
+grayscaleExtent
 \end_layout
 
 \end_inset
@@ -4258,7 +4654,7 @@ For color images,
 
 \begin_layout Minisec
 mean
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4278,7 +4674,7 @@ Computes the mean value within image (as a scalar).
 
 \begin_layout Minisec
 median
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4297,8 +4693,8 @@ Computes the median of values within image.
 \end_layout
 
 \begin_layout Minisec
-sum 
-\begin_inset Index idx
+sum
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4317,8 +4713,8 @@ Computes the sum of values within image.
 \end_layout
 
 \begin_layout Minisec
-std 
-\begin_inset Index idx
+std
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4337,8 +4733,8 @@ Computes the standard deviation of values within image.
 \end_layout
 
 \begin_layout Minisec
-var 
-\begin_inset Index idx
+var
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4358,7 +4754,7 @@ Computes the variance of values within image.
 
 \begin_layout Minisec
 min
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4394,7 +4790,7 @@ nolink "false"
 
 \begin_layout Minisec
 max
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4774,10 +5170,10 @@ name "op:flip"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 flip
@@ -4809,7 +5205,7 @@ nolink "false"
 
 \begin_layout Minisec
 permute
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4829,7 +5225,7 @@ Permutes image dimensions.
 
 \begin_layout Minisec
 rotate90 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4864,7 +5260,7 @@ nolink "false"
 
 \begin_layout Minisec
 rotate
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4906,6 +5302,18 @@ name "op:slice"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+slice
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -4927,6 +5335,18 @@ Extracts the specified XY slice from a 3D image.
 
 \begin_layout Minisec
 slice3d 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+slice3d
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -4957,7 +5377,7 @@ name "op:montage"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -4977,7 +5397,7 @@ Displays multiple image frames as rectangular montage.
 
 \begin_layout Minisec
 squeeze 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5004,7 +5424,7 @@ name "op:reshape"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5102,6 +5522,18 @@ name "op:crop"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+crop
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -5145,7 +5577,7 @@ name "op:cropOrientedBox"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5444,27 +5876,27 @@ Concatenation of images.
 
 \begin_layout Minisec
 [] 
+\end_layout
+
+\begin_layout Standard
+Overloads the array concatenation 
 \begin_inset Index idx
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-Concatenation
+concatenation
 \end_layout
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-Overloads the concatenation operator.
+ operator.
 \end_layout
 
 \begin_layout Minisec
 cat 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5484,7 +5916,7 @@ Concatenates two images in the specified dimension.
 
 \begin_layout Minisec
 horzcat 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5504,13 +5936,13 @@ Concatenates two images in the horizontal (x) dimension.
 
 \begin_layout Minisec
 vercat 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-vertcat
+vercat
 \end_layout
 
 \end_inset
@@ -5524,7 +5956,7 @@ Concatenates two images in the vertical (y) dimension.
 
 \begin_layout Minisec
 repmat 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5548,6 +5980,18 @@ Other shape operations
 
 \begin_layout Minisec
 resize 
+\begin_inset Index met
+range none
+pageformat default
+status open
+
+\begin_layout Plain Layout
+resize
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -5568,7 +6012,7 @@ Resizes the input image.
 
 \begin_layout Minisec
 subsample 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5588,7 +6032,7 @@ Resamples the input image by integer ratio.
 
 \begin_layout Minisec
 resample
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5608,7 +6052,7 @@ Resamples the input image using a new coordinate basis.
 
 \begin_layout Minisec
 circshift 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5660,13 +6104,13 @@ nolink "false"
 
 \begin_layout Minisec
 ctranspose 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-tanspose
+ctranspose
 \end_layout
 
 \end_inset
@@ -5728,7 +6172,7 @@ Unary operators require a single image instance,
 
 \begin_layout Minisec
 abs 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5748,7 +6192,7 @@ Absolute value of image elements.
 
 \begin_layout Minisec
 exp 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5768,7 +6212,7 @@ Computes exponential of image elements.
 
 \begin_layout Minisec
 sqrt 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5788,7 +6232,7 @@ Computes square root of image elements.
 
 \begin_layout Minisec
 mpower
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5808,7 +6252,7 @@ Computes power of image elements.
 
 \begin_layout Minisec
 log 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5828,7 +6272,7 @@ Computes natural logarithm of image elements.
 
 \begin_layout Minisec
 log10 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5848,7 +6292,7 @@ Computes decimal logarithm of image elements.
 
 \begin_layout Minisec
 log2
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5868,7 +6312,7 @@ Computes binary logarithm of image elements.
 
 \begin_layout Minisec
 sign 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5907,7 +6351,7 @@ Binary operators require two image instances as input,
 
 \begin_layout Minisec
 max
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5927,7 +6371,7 @@ Computes the element-wise maximum between two images.
 
 \begin_layout Minisec
 min 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5947,7 +6391,7 @@ Computes the element-wise minimum between two images.
 
 \begin_layout Minisec
 minus
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5967,7 +6411,7 @@ Subtracts two images.
 
 \begin_layout Minisec
 plus 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -5987,7 +6431,7 @@ Adds two images.
 
 \begin_layout Minisec
 mtimes
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6007,7 +6451,7 @@ Multiplies two images element-wise.
 
 \begin_layout Minisec
 times 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6027,7 +6471,7 @@ Allows the pixel-wise or voxel-wise multiplication of two images.
 
 \begin_layout Minisec
 mrdivide 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6047,7 +6491,7 @@ Divides two images element-wise.
 
 \begin_layout Minisec
 uplus 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6067,7 +6511,7 @@ Overloads unary plus for images.
 
 \begin_layout Minisec
 uminus 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6087,7 +6531,7 @@ Overloads unary minus for images.
 
 \begin_layout Minisec
 absdiff 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6120,8 +6564,8 @@ Comparison operators require two image instances and return a binary image as re
 \end_layout
 
 \begin_layout Minisec
-eq
-\begin_inset Index idx
+eq 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6141,7 +6585,7 @@ Computes equality and returns a binary image.
 
 \begin_layout Minisec
 ge 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6161,7 +6605,7 @@ Computes greater than or equal and returns a binary image.
 
 \begin_layout Minisec
 gt 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6180,8 +6624,8 @@ Computes greater than and returns a binary image.
 \end_layout
 
 \begin_layout Minisec
-le
-\begin_inset Index idx
+le 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6200,8 +6644,8 @@ Computes less than or equal and returns a binary image.
 \end_layout
 
 \begin_layout Minisec
-lt
-\begin_inset Index idx
+lt 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6221,7 +6665,7 @@ Computes less than and returns a binary image.
 
 \begin_layout Minisec
 ismember 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6261,7 +6705,7 @@ add some examples
 
 \begin_layout Minisec
 or 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6289,7 +6733,7 @@ or
 
 \begin_layout Minisec
 and 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6317,7 +6761,7 @@ and
 
 \begin_layout Minisec
 xor 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6345,7 +6789,7 @@ xor
 
 \begin_layout Minisec
 not 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6385,7 +6829,7 @@ name "sec:Multi-Channel-Images"
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Color images
@@ -6397,7 +6841,19 @@ Color images
 \end_layout
 
 \begin_layout Standard
-Multi-channel images store data in a multi-dimensional array with fourth dimension greater that 1.
+Multi-channel
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+channel
+\end_layout
+
+\end_inset
+
+ images store data in a multi-dimensional array with fourth dimension greater that 1.
  Multi-channel images include color images.
  Conversion from a 3D scalar array can be performed through:
 \begin_inset listings
@@ -6420,7 +6876,7 @@ Several functions allows intuitive manipulation of channels,
 
 \begin_layout Minisec
 channelCount 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6440,7 +6896,7 @@ Returns the number of channels of the image (equal to 1 for single-channel image
 
 \begin_layout Minisec
 channel 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6460,7 +6916,7 @@ Extracts the specified channel from a multi-channel image.
 
 \begin_layout Minisec
 catChannels 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6480,7 +6936,7 @@ Concatenates several images to create a multi-channel image.
 
 \begin_layout Minisec
 splitChannels 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6499,8 +6955,8 @@ Splits a multi-channel image into several intensity images.
 \end_layout
 
 \begin_layout Minisec
-norm
-\begin_inset Index idx
+norm 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6550,8 +7006,8 @@ Time-lapse images store data in a multi-dimensional array with fifth dimension g
 \end_layout
 
 \begin_layout Minisec
-frameCount
-\begin_inset Index idx
+frameCount 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6571,6 +7027,18 @@ Returns the number of frames of the image (equal to 1 for non movie images).
 
 \begin_layout Minisec
 frame 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+frame
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -6591,7 +7059,7 @@ Extracts the specified frame from a time-lapse image.
 
 \begin_layout Minisec
 catFrames 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6611,7 +7079,7 @@ Concatenates several images to create a time-lapse image.
 
 \begin_layout Minisec
 splitFrames 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6647,7 +7115,7 @@ Most type conversion functions have been overloaded for the Image type.
 
 \begin_layout Minisec
 convertType 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6667,7 +7135,7 @@ Converts the type of image data array to the specified type.
 
 \begin_layout Minisec
 double 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6687,7 +7155,7 @@ Converts image to an intensity image containing double values.
 
 \begin_layout Minisec
 int8 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6706,8 +7174,8 @@ Converts image to an image containing int8 values.
 \end_layout
 
 \begin_layout Minisec
-int16
-\begin_inset Index idx
+int16 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6727,7 +7195,7 @@ Converts image to an image containing int16 values.
 
 \begin_layout Minisec
 int32 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6747,7 +7215,7 @@ Converts image to an image containing int32 values.
 
 \begin_layout Minisec
 uint8 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6767,10 +7235,10 @@ Converts image to an image containing uint8 values.
 
 \begin_layout Minisec
 uint16 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 uint16
@@ -6787,7 +7255,7 @@ Converts image to an image containing uint16 values.
 
 \begin_layout Minisec
 uint32 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6817,26 +7285,53 @@ name "subsec:Color-Conversions"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
-Color images
+color
 \end_layout
 
 \end_inset
 
-The functions listed here concern conversion from and between color spaces.
+
+\end_layout
+
+\begin_layout Standard
+The functions listed here concern conversion from and between color spaces
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+color space
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Minisec
-rgb2gray
-\begin_inset Index idx
+rgb2gray 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6855,8 +7350,8 @@ Converts a RGB color image into a grayscale image.
 \end_layout
 
 \begin_layout Minisec
-rgb2hsv
-\begin_inset Index idx
+rgb2hsv 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6875,8 +7370,8 @@ Converts a RGB color image into its corresponding HSV (Hue-Saturation-Value) rep
 \end_layout
 
 \begin_layout Minisec
-hsv2rgb
-\begin_inset Index idx
+hsv2rgb 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6895,8 +7390,8 @@ Converts a HSV (Hue-Saturation-Value) color image into its corresponding RGB rep
 \end_layout
 
 \begin_layout Minisec
-double2rgb
-\begin_inset Index idx
+double2rgb 
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6948,7 +7443,7 @@ Complex images are represented as multi-channel (vector) image with two channels
 
 \begin_layout Minisec
 imag 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6968,7 +7463,7 @@ Extracts the imaginary part of a complex image and returns a new intensity image
 
 \begin_layout Minisec
 real 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -6988,7 +7483,7 @@ Extracts the real part of a complex image and returns a new intensity image.
 
 \begin_layout Minisec
 angle 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -7008,7 +7503,7 @@ Extracts the angle of each element of a complex image and returns a new intensit
 
 \begin_layout Minisec
 fft 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -7028,7 +7523,7 @@ Computes the Fourier representation of an image and returns a complex image.
 
 \begin_layout Minisec
 fftshift 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -7048,7 +7543,7 @@ Shifts the values of an image to represent the low-frequencies in the middle of 
 
 \begin_layout Minisec
 ifft 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -7068,7 +7563,7 @@ Reconstructs an image from its Fourier representation (returns a complex image).
 
 \begin_layout Minisec
 ifftshift 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -7132,6 +7627,18 @@ name "op:adjustDynamic"
 \end_inset
 
 adjustDynamic 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+adjustDynamic
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -7170,7 +7677,7 @@ name "op:invert"
 \end_inset
 
 invert 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -7385,8 +7892,71 @@ Regional filtering
 
 \begin_layout Standard
 The operators depend on a neighborhood of finite size around each pixel or voxel.
- The comprise linear operators (the output value is a linear combination of the values in the neighborhood),
- or order filters such as median.
+ They comprise linear operators (the output value is a linear combination of the values in the neighborhood),
+ or order filters 
+\begin_inset Index idx
+range none
+pageformat default
+status open
+
+\begin_layout Plain Layout
+order filter
+\end_layout
+
+\end_inset
+
+ such as median.
+\end_layout
+
+\begin_layout Subsection
+Generic filter
+\end_layout
+
+\begin_layout Minisec
+filter 
+\begin_inset CommandInset label
+LatexCommand label
+name "op:filter"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+filter
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+filter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Wrapper for the 
+\begin_inset Quotes sld
+\end_inset
+
+imfilter
+\begin_inset Quotes srd
+\end_inset
+
+ function from Matlab.
 \end_layout
 
 \begin_layout Subsection
@@ -7569,49 +8139,14 @@ Comparison of several noise removal filters.
 \end_layout
 
 \begin_layout Minisec
-filter 
-\begin_inset CommandInset label
-LatexCommand label
-name "op:filter"
-
-\end_inset
-
-
-\begin_inset Index idx
-range none
-pageformat default
-status collapsed
-
-\begin_layout Plain Layout
-filter
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Wrapper for the 
-\begin_inset Quotes sld
-\end_inset
-
-imfilter
-\begin_inset Quotes srd
-\end_inset
-
- function from Matlab.
-\end_layout
-
-\begin_layout Minisec
 boxFilter
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-box filter
+boxFilter
 \end_layout
 
 \end_inset
@@ -7632,13 +8167,13 @@ name "op:gaussianFilter"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-gaussian filter
+gaussianFilter
 \end_layout
 
 \end_inset
@@ -7660,13 +8195,13 @@ name "op:medianFilter"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-median filter
+medianFilter
 \end_layout
 
 \end_inset
@@ -7680,13 +8215,13 @@ Computes the median value within a given neighborhood of each pixel/voxel.
 
 \begin_layout Minisec
 meanFilter 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-mean filter
+meanFilter
 \end_layout
 
 \end_inset
@@ -7713,7 +8248,19 @@ name "op:gradient"
 
 \end_inset
 
+gradient 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
 gradient
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -7982,6 +8529,32 @@ Many morphological filters depend on a neighborhood specified by a
 \series bold
  structuring element
 \series default
+
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+structuring element
+\end_layout
+
+\end_inset
+
 .
  The structuring element is a binary neighborhood defined by its shape and its size.
  Typical shapes for 2D structuring elements are the square (faster to process),
@@ -8000,11 +8573,63 @@ The most basic operators are the dilation and the erosion.
  the 
 \series bold
 morphological dilation
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+dilation
+\end_layout
+
+\end_inset
+
+
 \series default
  computes for each pixel the maximum within its neighborhood (defined by the structuring element),
  whereas the 
 \series bold
 morphological erosion
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+erosion
+\end_layout
+
+\end_inset
+
+
 \series default
  considers the minimum value within the neighborhood (Fig.
 \begin_inset space ~
@@ -8191,6 +8816,18 @@ name "op:dilation"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+dilation
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8214,6 +8851,18 @@ erosion
 \begin_inset CommandInset label
 LatexCommand label
 name "op:erosion"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+erosion
+\end_layout
 
 \end_inset
 
@@ -8440,6 +9089,18 @@ name "op:closing"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+closing
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8472,6 +9133,18 @@ name "op:opening"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+opening
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8496,7 +9169,7 @@ removing bright structures
 \end_layout
 
 \begin_layout Subsubsection
-Other morphological operators
+Other morphological filters
 \end_layout
 
 \begin_layout Minisec
@@ -8507,6 +9180,18 @@ name "op:morphoGradient"
 \end_inset
 
 morphoGradient 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+morphoGradient
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8554,6 +9239,18 @@ nolink "false"
 
 \begin_layout Minisec
 morphoLaplacian 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+morphoLaplacian
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8588,13 +9285,13 @@ name "op:whiteTopHat"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-white top-hat
+whiteTopHat
 \end_layout
 
 \end_inset
@@ -8632,13 +9329,13 @@ name "op:blackTopHat"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-black top-hat
+blackTopHat
 \end_layout
 
 \end_inset
@@ -8669,6 +9366,18 @@ enhances dark structures
 
 \begin_layout Minisec
 directionalFilter 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+directionalFilter
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8697,11 +9406,93 @@ Another family of morphological filters relies on the connected components that 
  
 \end_layout
 
+\begin_layout Subsubsection
+Morphological reconstruction
+\end_layout
+
+\begin_layout Standard
+Morphological reconstruction is the core methods of many other tools.
+ It requires two images:
+ one image (the 
+\begin_inset Quotes sld
+\end_inset
+
+marker
+\begin_inset Quotes srd
+\end_inset
+
+) is used to initialize the reconstruction,
+ another image (the 
+\begin_inset Quotes sld
+\end_inset
+
+mask
+\begin_inset Quotes srd
+\end_inset
+
+) is used to constrain the reconstruction.
+\end_layout
+
+\begin_layout Minisec
+reconstruction 
+\begin_inset CommandInset label
+LatexCommand label
+name "op:reconstruction"
+
+\end_inset
+
+ 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+reconstruction
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+morphological reconstruction
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Morphological reconstruction of binary or grayscale image.
+\end_layout
+
+\begin_layout Subsubsection
+Minima and maxima
+\end_layout
+
 \begin_layout Minisec
 regionalMaxima 
 \begin_inset CommandInset label
 LatexCommand label
 name "op:regionalMaxima"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionalMaxima
+\end_layout
 
 \end_inset
 
@@ -8745,6 +9536,18 @@ name "op:regionalMinima"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionalMinima
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8780,6 +9583,18 @@ extendedMaxima
 \begin_inset CommandInset label
 LatexCommand label
 name "op:extendedMaxima"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+extendedMaxima
+\end_layout
 
 \end_inset
 
@@ -8823,6 +9638,18 @@ name "op:extendedMinima"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+extendedMinima
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8862,6 +9689,18 @@ name "op:imposeMaxima"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+imposeMaxima
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8889,6 +9728,18 @@ name "op:imposeMinima"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+imposeMinima
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8907,6 +9758,10 @@ minima imposition
 Imposes binary minima image on an intensity or grayscale image.
 \end_layout
 
+\begin_layout Subsubsection
+Applications
+\end_layout
+
 \begin_layout Minisec
 areaOpening 
 \begin_inset CommandInset label
@@ -8916,6 +9771,18 @@ name "op:areaOpening"
 \end_inset
 
  
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+areaOpening
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8943,6 +9810,18 @@ name "op:attributeOpening"
 \end_inset
 
  
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+attributeOpening
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -8966,6 +9845,18 @@ fillHoles
 \begin_inset CommandInset label
 LatexCommand label
 name "op:fillHoles"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+fillHoles
+\end_layout
 
 \end_inset
 
@@ -8998,6 +9889,18 @@ name "op:killBorders"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+killBorders
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -9018,33 +9921,6 @@ Kills the borders of a grayscale or intensity image,
 \end_layout
 
 \begin_layout Minisec
-reconstruction 
-\begin_inset CommandInset label
-LatexCommand label
-name "op:reconstruction"
-
-\end_inset
-
- 
-\begin_inset Index idx
-range none
-pageformat default
-status collapsed
-
-\begin_layout Plain Layout
-reconstruction
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Morphological reconstruction of binary or grayscale image.
-\end_layout
-
-\begin_layout Minisec
 floodFill 
 \begin_inset CommandInset label
 LatexCommand label
@@ -9053,6 +9929,18 @@ name "op:floodFill"
 \end_inset
 
  
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+floodFill
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -9205,13 +10093,25 @@ Several methods are provided that implement automated determination of the thres
 
 \begin_layout Minisec
 binarize 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
 binarize
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+binarization
 \end_layout
 
 \end_inset
@@ -9227,6 +10127,18 @@ Performs a binarisation of the input grayscale or intensity image.
 
 \begin_layout Minisec
 otsuThreshold 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+otsuThreshold
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -9273,7 +10185,19 @@ nolink "false"
 \end_layout
 
 \begin_layout Minisec
-otsuThresholdValue 
+otsuThresholdValue
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+otsuThresholdValue
+\end_layout
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
@@ -9282,6 +10206,18 @@ Computes the value used for Otsu threshold.
 
 \begin_layout Minisec
 maxEntropyThreshold 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+maxEntropyThreshold
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -9302,6 +10238,18 @@ Performs a binarisation of the input grayscale image using maximisation of entro
 
 \begin_layout Minisec
 maxEntropyThresholdValue 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+maxEntropyThresholdValue
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -9492,6 +10440,18 @@ multiLevelOtsuThreshold
 \begin_inset CommandInset label
 LatexCommand label
 name "op:multiLevelOtsuThreshold"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+multiLevelOtsuThreshold
+\end_layout
 
 \end_inset
 
@@ -9745,13 +10705,25 @@ figure;
 
 \begin_layout Minisec
 kmeans
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
 kmeans
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+k-means segmentation
 \end_layout
 
 \end_inset
@@ -9798,10 +10770,22 @@ name "op:watershed"
 \end_inset
 
  
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+watershed
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 watershed
@@ -10168,6 +11152,18 @@ name "op:distanceMap"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+distanceMap
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -10210,6 +11206,18 @@ name "op:chamferDistanceMap"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+chamferDistanceMap
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -10235,6 +11243,18 @@ geodesicDistanceMap
 \begin_inset CommandInset label
 LatexCommand label
 name "op:geodesicDistanceMap"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+geodesicDistanceMap
+\end_layout
 
 \end_inset
 
@@ -10324,6 +11344,18 @@ Morphological operators
 
 \begin_layout Minisec
 boundary
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+boundary
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -10362,6 +11394,18 @@ skeleton
 \begin_inset CommandInset label
 LatexCommand label
 name "op:skeleton"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+skeleton
+\end_layout
 
 \end_inset
 
@@ -10405,7 +11449,7 @@ Utility methods
 
 \begin_layout Minisec
 find 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -10425,13 +11469,13 @@ Computes coordinates of non-zeros pixels or voxels within a binary image.
 
 \begin_layout Minisec
 largestRegion 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
-largest region
+largestRegion
 \end_layout
 
 \end_inset
@@ -10448,6 +11492,18 @@ overlay
 \begin_inset CommandInset label
 LatexCommand label
 name "op:overlay"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+overlay
+\end_layout
 
 \end_inset
 
@@ -10486,10 +11542,11 @@ name "sec:Label-Images"
 \end_layout
 
 \begin_layout Standard
+Label images 
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 label image
@@ -10497,11 +11554,11 @@ label image
 
 \end_inset
 
-Label images are often used to represent results of segmentation
+ are often used to represent results of segmentation
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 segmentation
@@ -10750,13 +11807,25 @@ name "op:componentLabeling"
 \end_inset
 
 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+componentLabeling
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-component labeling
+connected component labeling
 \end_layout
 
 \end_inset
@@ -10777,7 +11846,7 @@ name "op:label2rgb"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
@@ -10797,6 +11866,18 @@ Converts a label image to a RGB color image using the specified LUT.
 
 \begin_layout Minisec
 findRegionLabels 
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+findRegionLabels
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10808,6 +11889,18 @@ cropLabel
 \begin_inset CommandInset label
 LatexCommand label
 name "op:cropLabel"
+
+\end_inset
+
+
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+cropLabel
+\end_layout
 
 \end_inset
 
@@ -10854,6 +11947,18 @@ name "op:regionIsosurface"
 \end_inset
 
 regionIsosurface
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionIsosurface
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -10887,6 +11992,18 @@ Utility methods
 
 \begin_layout Minisec
 regionMinMaxIndices
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionMinMaxIndices
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10940,6 +12057,18 @@ name "sec:Region-Analysis"
 \end_inset
 
 
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+region
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10978,10 +12107,10 @@ name "op:analyzeRegions"
 \end_inset
 
 
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 analyzeRegions
@@ -11017,6 +12146,18 @@ The methods in this section allows to retrieve the position and/or the extent of
 
 \begin_layout Minisec
 regionElementCount
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionElementCount
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -11027,10 +12168,22 @@ Returns the number of elements (pixels or voxels) of each region within the bina
 
 \begin_layout Minisec
 regionBoundingBox
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionBoundingBox
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 bounding box
@@ -11048,10 +12201,22 @@ Computes the bounding box of each region within the binary/label 2D or 3D image,
 
 \begin_layout Minisec
 regionCentroid
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionCentroid
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
-status open
+status collapsed
 
 \begin_layout Plain Layout
 centroid
@@ -11117,13 +12282,13 @@ mean breadth
 
 \begin_layout Minisec
 regionArea
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-area
+regionArea
 \end_layout
 
 \end_inset
@@ -11132,20 +12297,46 @@ area
 \end_layout
 
 \begin_layout Standard
-Computes the area of regions within a 2D binary or label image.
+Computes the area
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+area
+\end_layout
+
+\end_inset
+
+ of regions within a 2D binary or label image.
  Consists in counting the number of pixels belonging to the regions,
  and multiplying by the area of a single pixel.
 \end_layout
 
 \begin_layout Minisec
 regionPerimeter
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-perimeter
+regionPerimeter
 \end_layout
 
 \end_inset
@@ -11154,20 +12345,46 @@ perimeter
 \end_layout
 
 \begin_layout Standard
-Computes the perimeter of regions within a 2D binary or label image.
+Computes the perimeter
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+perimeter
+\end_layout
+
+\end_inset
+
+ of regions within a 2D binary or label image.
  Uses a discretization of the Crofton formula,
  by counting intersections with lines in either 2 or 4 directions.
 \end_layout
 
 \begin_layout Minisec
 regionVolume
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-volume
+regionVolume
 \end_layout
 
 \end_inset
@@ -11176,20 +12393,46 @@ volume
 \end_layout
 
 \begin_layout Standard
-Computes the volume of regions within a 3D binary or label image.
+Computes the volume
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+volume
+\end_layout
+
+\end_inset
+
+ of regions within a 3D binary or label image.
  Consists in counting the number of voxels belonging to the regions,
  and multiplying by the volume of a single voxel.
 \end_layout
 
 \begin_layout Minisec
 regionSurfaceArea
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-surface area
+regionSurfaceArea
 \end_layout
 
 \end_inset
@@ -11198,20 +12441,46 @@ surface area
 \end_layout
 
 \begin_layout Standard
-Computes the surface area of regions within a 3D binary or label image.
- Uses a discretization of the Crofton formula,
- by counting intersections with 3D lines in either 3 or 13 directions.
-\end_layout
-
-\begin_layout Minisec
-regionMeanBreadth
+Computes the surface area
 \begin_inset Index idx
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-mean breadth
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+surface area
+\end_layout
+
+\end_inset
+
+ of regions within a 3D binary or label image.
+ Uses a discretization of the Crofton formula,
+ by counting intersections with 3D lines in either 3 or 13 directions.
+\end_layout
+
+\begin_layout Minisec
+regionMeanBreadth
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionMeanBreadth
 \end_layout
 
 \end_inset
@@ -11222,18 +12491,18 @@ mean breadth
 \begin_layout Standard
 Computes the mean breadth of regions within a 3D binary or label image.
  Uses a discretization of the Crofton formula,
- by integrating Euler number computed on the intersections with 3D planes orietned in either 3 or 13 directions.
+ by integrating Euler number computed on the intersections with 3D planes oriented in either 3 or 13 directions.
 \end_layout
 
 \begin_layout Minisec
 regionEulerNumber
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-Euler number
+regionEulerNumber
 \end_layout
 
 \end_inset
@@ -11242,13 +12511,39 @@ Euler number
 \end_layout
 
 \begin_layout Standard
-Computes the Euler number of regions within a 2D or 3D binary or label image.
+Computes the Euler number
+\begin_inset Index idx
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\nospellcheck off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Euler number
+\end_layout
+
+\end_inset
+
+ of regions within a 2D or 3D binary or label image.
  Euler number quantifies the topology of a set.
  For 2D regions,
  it corresponds to the number of connected components,
  minus the number of holes.
  For 3D regions,
- one need to count in addition the number of bubbles within the regions.
+ one needs to count in addition the number of bubbles within the regions.
 \end_layout
 
 \begin_layout Subsection
@@ -11279,13 +12574,25 @@ A binary region
 
 \begin_layout Minisec
 regionEquivalentEllipse
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionEquivalentEllipse
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-equivalent ellipse
+ellipse
 \end_layout
 
 \end_inset
@@ -11302,13 +12609,25 @@ Computes the equivalent ellipse of each region within the binary/label 2D image.
 
 \begin_layout Minisec
 regionEquivalentEllipsoid
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionEquivalentEllipsoid
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-equivalent ellipsoid
+ellipsoid
 \end_layout
 
 \end_inset
@@ -11342,6 +12661,18 @@ equivalent geometries
 
 \begin_layout Minisec
 regionFeretDiameter
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionFeretDiameter
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -11362,13 +12693,13 @@ Computes the Feret diameter along a given direction of regions within a (2D) bin
 
 \begin_layout Minisec
 regionMaxFeretDiameter
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-maximum Feret diameter
+regionMaxFeretDiameter
 \end_layout
 
 \end_inset
@@ -11382,6 +12713,18 @@ Computes the Maximum Feret diameter of regions within a (2D) binary or label ima
 
 \begin_layout Minisec
 regionGeodesicDiameter
+\begin_inset Index met
+range none
+pageformat default
+status collapsed
+
+\begin_layout Plain Layout
+regionGeodesicDiameter
+\end_layout
+
+\end_inset
+
+
 \begin_inset Index idx
 range none
 pageformat default
@@ -11402,13 +12745,13 @@ Computes the largest geodesic diameter within each region within a (2D) binary o
 
 \begin_layout Minisec
 regionInscribedCircle
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-inscribed circle
+regionInscribedCircle
 \end_layout
 
 \end_inset
@@ -11423,13 +12766,13 @@ Computes the largest inscribed circle within each region of a 2D binary or label
 
 \begin_layout Minisec
 regionInscribedBall
-\begin_inset Index idx
+\begin_inset Index met
 range none
 pageformat default
 status collapsed
 
 \begin_layout Plain Layout
-inscribed ball
+regionInscribedBall
 \end_layout
 
 \end_inset
@@ -11438,7 +12781,7 @@ inscribed ball
 \end_layout
 
 \begin_layout Standard
-Computes the largest inscribed circle within each region of a 3D binary or label image,
+Computes the largest inscribed ball within each region of a 3D binary or label image,
  and returns a numeric array containing center coordinates and radius of ball(s).
 \end_layout
 
@@ -14827,7 +16170,19 @@ Correspondencies from Image Processing Toolbox for image analysis
 \begin_inset CommandInset index_print
 LatexCommand printindex
 type "idx"
-name "Index"
+name "General Index"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset index_print
+LatexCommand printindex
+type "met"
+name "Image Class Methods"
+literal "false"
 
 \end_inset
 
